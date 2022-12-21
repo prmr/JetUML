@@ -1,233 +1,19 @@
 package org.jetuml.persistence.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.jetuml.persistence.json.JsonArray;
-import org.jetuml.persistence.json.JsonObject;
-import org.jetuml.persistence.json.JsonParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 public class TestTokener
 {
-	private static final String TEST = "{\n   \"name\": \"Jo\",\n   \"age\": 27\n}";
-	
-	private final JsonParser aTokener = new JsonParser(TEST);
-	
-	@Test
-	void testNextClean()
-	{
-		assertEquals('{', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals('n', nextNonWhitespace(aTokener));
-		assertEquals('a', nextNonWhitespace(aTokener));
-		assertEquals('m', nextNonWhitespace(aTokener));
-		assertEquals('e', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals(':', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals('J', nextNonWhitespace(aTokener));
-		assertEquals('o', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals(',', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals('a', nextNonWhitespace(aTokener));
-		assertEquals('g', nextNonWhitespace(aTokener));
-		assertEquals('e', nextNonWhitespace(aTokener));
-		assertEquals('"', nextNonWhitespace(aTokener));
-		assertEquals(':', nextNonWhitespace(aTokener));
-		assertEquals('2', nextNonWhitespace(aTokener));
-		assertEquals('7', nextNonWhitespace(aTokener));
-		assertEquals('}', nextNonWhitespace(aTokener));
-		assertFalse(aTokener.hasNext());
-	}
-	
-	@Test
-	void testNext()
-	{
-		assertEquals('{', aTokener.next());
-		assertEquals(10, aTokener.next()); // New line
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals('"', aTokener.next());
-		assertEquals('n', aTokener.next());
-		assertEquals('a', aTokener.next());
-		assertEquals('m', aTokener.next());
-		assertEquals('e', aTokener.next());
-		assertEquals('"', aTokener.next());
-		assertEquals(':', aTokener.next());
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals('"', aTokener.next());
-		assertEquals('J', aTokener.next());
-		assertEquals('o', aTokener.next());
-		assertEquals('"', aTokener.next());
-		assertEquals(',', aTokener.next());
-		assertEquals(10, aTokener.next()); // New line
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals('"', aTokener.next());
-		assertEquals('a', aTokener.next());
-		assertEquals('g', aTokener.next());
-		assertEquals('e', aTokener.next());
-		assertEquals('"', aTokener.next());
-		assertEquals(':', aTokener.next());
-		assertEquals(32, aTokener.next()); // Space
-		assertEquals('2', aTokener.next());
-		assertEquals('7', aTokener.next());
-		assertEquals(10, aTokener.next()); // New line
-		assertEquals('}', aTokener.next());
-		assertFalse(aTokener.hasNext());
-	}
-	
-	@Test
-	void testCanBackUp_Yes()
-	{
-		aTokener.next();
-		aTokener.next();
-		assertTrue(aTokener.canBackUp());
-	}
-	
-	@Test
-	void testCanBackUp_No()
-	{
-		assertFalse(aTokener.canBackUp());
-	}
-	
-	@Test
-	void testBack_Normal()
-	{
-		aTokener.next();
-		aTokener.next();
-		aTokener.next();
-		aTokener.next();
-		aTokener.next();
-		aTokener.next();
-		aTokener.next(); // Now next is 'a'
-		aTokener.backUp();  // Now next is 'n'
-		assertEquals('n', aTokener.next());
-	}
-	
-	@Test
-	void testNext_One()
-	{
-		JsonParser tokener = new JsonParser("a");
-		assertEquals('a', tokener.next());
-		assertFalse(tokener.hasNext());
-	}
-	
-	@Test
-	void testNext_Two()
-	{
-		JsonParser tokener = new JsonParser("ab");
-		assertEquals('a', tokener.next());
-		assertEquals('b', tokener.next());
-		assertFalse(tokener.hasNext());
-	}
-	
-	@Test
-	void testHasMore_BeginningOfString_No()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		assertFalse(hasMore(tokener,5));
-	}
-	
-	@Test
-	void testHasMore_MiddleOfString_No()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		tokener.next();
-		assertFalse(hasMore(tokener,4));
-	}
-	
-	@Test
-	void testHasMore_BeginningOfString_Yes()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		assertTrue(hasMore(tokener,3));
-	}
-	
-	@Test
-	void testHasMore_MiddleOfString_Yes()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		tokener.next();
-		assertTrue(hasMore(tokener,2));
-	}
-	
-	@Test
-	void testHasMore_EndOfString_Yes()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		tokener.next();
-		assertTrue(hasMore(tokener,3));
-	}
-	
-	@Test
-	void testNextInt_Beginning()
-	{
-		JsonParser tokener = new JsonParser("abcd");
-		assertEquals("abc", next(tokener,3));
-	}
-	
-	@Test
-	void testNextInt_Middle()
-	{
-		JsonParser tokener = new JsonParser("abcde");
-		tokener.next();
-		assertEquals("bc", next(tokener,2));
-	}
-	
-	@Test
-	void testNextInt_All()
-	{
-		JsonParser tokener = new JsonParser("abcde");
-		assertEquals("abcde", next(tokener,5));
-	}
-	
-	@Test
-	void testHasMoreNonWhiteSpace()
-	{
-		JsonParser tokener = new JsonParser("b  \ncd\ne\r\n");
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();  // e
-		assertTrue(hasMoreNonWhitespace(tokener));
-		tokener.next();  
-		assertFalse(hasMoreNonWhitespace(tokener));
-		tokener.next();  
-		assertFalse(hasMoreNonWhitespace(tokener));
-	}
-	
-	@Test
-	void testNextNonWhiteSpace()
-	{
-		JsonParser tokener = new JsonParser("b  \ncd\ne\r\n");
-		assertEquals('b', nextNonWhitespace(tokener));
-		assertEquals('c', nextNonWhitespace(tokener));
-		assertEquals('d', nextNonWhitespace(tokener));
-		assertEquals('e', nextNonWhitespace(tokener));
-	}
-	
 	@ParameterizedTest
 	@CsvSource({"abc,abc\"d", 
 				"e,e\"de", 
@@ -311,8 +97,7 @@ public class TestTokener
 	void testNextString_Unterminated_OneCharacter()
 	{
 		JsonParser tokener = new JsonParser("a\"");
-		tokener.next();
-		tokener.next();
+		moveToPosition(tokener, 2);
 		testNextStringWithException(tokener);
 	}
 	
@@ -320,8 +105,7 @@ public class TestTokener
 	void testNextString_Unterminated_MultipleCharacters()
 	{
 		JsonParser tokener = new JsonParser("a\"bcd");
-		tokener.next();
-		tokener.next();
+		moveToPosition(tokener, 2);
 		testNextStringWithException(tokener);
 	}
 	
@@ -329,7 +113,7 @@ public class TestTokener
 	void testNextString_NewLineInString1()
 	{
 		JsonParser tokener = new JsonParser("\"a\nb\"");
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -337,7 +121,7 @@ public class TestTokener
 	void testNextString_NewLineInString2()
 	{
 		JsonParser tokener = new JsonParser("\"a\rb\"");
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -346,7 +130,7 @@ public class TestTokener
 	{
 		char[] characters = {'"', 'a', '\\' };
 		JsonParser tokener = new JsonParser(new String(characters));
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -355,7 +139,7 @@ public class TestTokener
 	{
 		char[] characters = {'"', 'a', '\\' , 'x'};
 		JsonParser tokener = new JsonParser(new String(characters));
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -364,7 +148,7 @@ public class TestTokener
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3'};
 		JsonParser tokener = new JsonParser(new String(characters));
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -373,7 +157,7 @@ public class TestTokener
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
 		JsonParser tokener = new JsonParser(new String(characters));
-		tokener.next();
+		moveToPosition(tokener, 1);
 		testNextStringWithException(tokener);
 	}
 	
@@ -381,7 +165,7 @@ public class TestTokener
 	void testNextValue_String()
 	{
 		JsonParser tokener = new JsonParser("\"a\" : \"bc\"");
-		next(tokener,5);
+		moveToPosition(tokener, 5);
 		assertEquals("bc", nextValue(tokener));
 	}
 	
@@ -389,7 +173,7 @@ public class TestTokener
 	void testNextValue_true()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : true}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(true, nextValue(tokener));
 	}
 	
@@ -397,7 +181,7 @@ public class TestTokener
 	void testNextValue_false()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : false}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(false, nextValue(tokener));
 	}
 	
@@ -405,7 +189,7 @@ public class TestTokener
 	void testNextValue_null()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : null}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(JsonObject.NULL, nextValue(tokener));
 	}
 	
@@ -413,7 +197,7 @@ public class TestTokener
 	void testNextValue_positiveInteger()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 54}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(54, nextValue(tokener));
 	}
 	
@@ -421,7 +205,7 @@ public class TestTokener
 	void testNextValue_negativeInteger()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : -54}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(-54, nextValue(tokener));
 	}
 	
@@ -429,7 +213,7 @@ public class TestTokener
 	void testNextValue_Zero()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 0}");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(0, nextValue(tokener));
 	}
 	
@@ -451,7 +235,7 @@ public class TestTokener
 	void testNextValue_NumberEndsBuffer()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : -54");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		assertEquals(-54, nextValue(tokener));
 	}
 	
@@ -459,7 +243,7 @@ public class TestTokener
 	void testNextValue_Invalid_IncompleteBoolean1()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : tru");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -467,7 +251,7 @@ public class TestTokener
 	void testNextValue_Invalid_IncompleteBoolean2()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : tru }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -475,7 +259,7 @@ public class TestTokener
 	void testNextValue_Invalid_IncompleteNull()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : nul");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -483,7 +267,7 @@ public class TestTokener
 	void testNextValue_Invalid_InvalidNull()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : nulx }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -491,7 +275,7 @@ public class TestTokener
 	void testNextValue_Invalid_UnrecognizedValue()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : xxx }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -499,7 +283,7 @@ public class TestTokener
 	void testNextValue_Invalid_NumberStartsWith0()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 0123 }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -507,7 +291,7 @@ public class TestTokener
 	void testNextValue_Invalid_MinusNotANumber()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : -A123 }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -515,7 +299,7 @@ public class TestTokener
 	void testNextValue_Invalid_NumberOverflowsInt()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 21474836470 }");
-		next(tokener,6);
+		moveToPosition(tokener, 6);
 		testNextValueWithException(tokener);
 	}
 	
@@ -568,66 +352,6 @@ public class TestTokener
 		assertEquals("value", object.getString("key"));
 		assertEquals(12, object.getInt("k2"));
 		assertEquals(true, object.get("k3"));
-	}
-	
-	private static boolean hasMore(JsonParser pTokener, int pNumberOfCharacters)
-	{
-		try 
-		{
-			Method method = JsonParser.class.getDeclaredMethod("hasMore", int.class);
-			method.setAccessible(true);
-			return (boolean) method.invoke(pTokener, pNumberOfCharacters);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			fail();
-			return false;
-		}
-	}
-	
-	private static boolean hasMoreNonWhitespace(JsonParser pTokener)
-	{
-		try 
-		{
-			Method method = JsonParser.class.getDeclaredMethod("hasMoreNonWhitespace");
-			method.setAccessible(true);
-			return (boolean) method.invoke(pTokener);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			fail();
-			return false;
-		}
-	}
-	
-	private static char nextNonWhitespace(JsonParser pTokener)
-	{
-		try 
-		{
-			Method method = JsonParser.class.getDeclaredMethod("nextNonWhitespace");
-			method.setAccessible(true);
-			return (char) method.invoke(pTokener);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			fail();
-			return 0;
-		}
-	}
-	
-	private static String next(JsonParser pTokener, int pNumberOfCharacters)
-	{
-		try 
-		{
-			Method method = JsonParser.class.getDeclaredMethod("next", int.class);
-			method.setAccessible(true);
-			return (String) method.invoke(pTokener, pNumberOfCharacters);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			fail();
-			return "";
-		}
 	}
 	
 	private static Object nextValue(JsonParser pTokener)
@@ -706,6 +430,24 @@ public class TestTokener
 			}
 		}
 		catch(ReflectiveOperationException exception)
+		{
+			fail();
+		}
+	}
+	
+	private static void moveToPosition(JsonParser pParser, int pPosition)
+	{
+		try
+		{
+			Field field = JsonParser.class.getDeclaredField("aInput");
+			field.setAccessible(true);
+			CharacterBuffer buffer = (CharacterBuffer) field.get(pParser);
+			for( int i = 0; i < pPosition; i++ )
+			{
+				buffer.next();
+			}
+		}
+		catch(ReflectiveOperationException e)
 		{
 			fail();
 		}

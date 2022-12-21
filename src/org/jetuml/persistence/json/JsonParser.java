@@ -20,8 +20,6 @@
  ******************************************************************************/
 package org.jetuml.persistence.json;
 
-import static java.lang.Character.isWhitespace;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,11 +72,7 @@ public class JsonParser
 	}
 	
 	/* Complete input to traverse. */
-	private final String aInput;
-	
-	/* Current position in the input. Represents the position
-	 * of the last character read. Initialized at -1. */
-	private int aPosition = -1;
+	private final CharacterBuffer aInput;
 	
     /**
      * Constructs a new JsonParser initialized at the beginning of the input.
@@ -89,105 +83,7 @@ public class JsonParser
     public JsonParser(String pInput) 
     {
     	assert pInput != null;
-        aInput = pInput;
-    }
-    
-    /**
-     * Get the next character.
-     *
-     * @return The next character, assumed to exist.
-     * @pre hasNext()
-     */
-    public char next()
-    {
-    	assert hasNext();
-    	aPosition++;
-    	return aInput.charAt(aPosition);
-    }
-    
-    /**
-     * @return True iif there is at least one more character 
-     * to read.
-     */
-    public boolean hasNext()
-    {
-    	return aPosition + 1 < aInput.length();
-    }
-
-    /**
-     * Back up one character. 
-     * @pre canBackUp()
-     */
-    public void backUp()
-    {
-    	aPosition--;
-    }
-    
-    /**
-     * @return True if it is possible to back up one character. This is possible
-     * iff the position is not at the beginning of the input, before the first character.
-     */
-    public boolean canBackUp()
-    {
-    	return aPosition >= 0;
-    }
-
-    /* All methods below should be implemented using the methods above,
-     * as opposed to direct field manipulation. */
-    
-    /*
-     * Get the next pNumberOfCharacters characters as a string.
-     *
-     * @param pNumberOfCharacters The number of characters to take.
-     * @return A string of pNumberOfCharacters characters.
-     */
-    private String next(int pNumberOfCharacters)
-    {
-        assert pNumberOfCharacters > 0 && hasMore(pNumberOfCharacters);
-        String result = aInput.substring(aPosition+1, aPosition+1 + pNumberOfCharacters);
-        aPosition += pNumberOfCharacters;
-        return result;
-    }
-    
-    /*
-     * @return True if there are still pNumberOfCharacters or more to read.
-     */
-    private boolean hasMore(int pNumberOfCharacters)
-    {
-    	assert pNumberOfCharacters > 0;
-    	return aPosition + pNumberOfCharacters < aInput.length();
-    }
-
-    /**
-     * Get the next char in the string, skipping whitespace.
-     * @return  The next non-whitespace character, assumed to exist.
-     * @pre hasMoreNonWhitespace()
-     */
-    public char nextNonWhitespace()
-    {
-    	assert hasMoreNonWhitespace();
-       	while(hasNext())
-        {
-            char character = next();
-            if( !isWhitespace(character) ) 
-            {
-                return character;
-            }
-        }
-        assert false; // Precondition violated
-        return 0;
-    }
-    
-    /**
-     * @return True iif there is at least one non-whitespace 
-     * character left to read, as defined by !Character#isWhitespace
-     */
-    private boolean hasMoreNonWhitespace()
-    {
-    	return aInput
-    			.substring(aPosition + 1)
-    			.replaceAll("\\s+", "")
-    			.length() > 0;
+        aInput = new CharacterBuffer(pInput);
     }
 
     /**
@@ -202,15 +98,15 @@ public class JsonParser
      */
     private String nextString()
     {
-    	if( !hasNext() )
+    	if( !aInput.hasMore() )
     	{
     		throw new JsonException("Unterminated string");
     	}
     	
     	StringBuilder result = new StringBuilder();
-    	while(hasNext())
+    	while(aInput.hasMore())
     	{
-    		char next = next();
+    		char next = aInput.next();
     		if( next == CHAR_NEWLINE || next == CHAR_CARRIAGE_RETURN )
     		{
     			throw new JsonException("Newline in string");
@@ -237,11 +133,11 @@ public class JsonParser
      */
     private char nextEscaped()
     {
-    	if( !hasNext() )
+    	if( !aInput.hasMore() )
     	{
     		throw new JsonException("Invalid escape sequence found");
     	}
-    	char next = next();
+    	char next = aInput.next();
     	if( ESCAPE_CHARACTERS.containsKey(next))
     	{
     		return ESCAPE_CHARACTERS.get(next);
@@ -262,13 +158,13 @@ public class JsonParser
      */
     private char nextUnicode()
     {
-    	if( !hasMore(NUMBER_OF_UNICODE_DIGITS) )
+    	if( !aInput.hasMore(NUMBER_OF_UNICODE_DIGITS) )
     	{
     		throw new JsonException("Invalid escape sequence found");
     	}
     	try
     	{
-    		return (char) Integer.parseInt(next(NUMBER_OF_UNICODE_DIGITS), RADIX_HEXADECIMAL);
+    		return (char) Integer.parseInt(aInput.next(NUMBER_OF_UNICODE_DIGITS), RADIX_HEXADECIMAL);
     	}
     	catch( NumberFormatException exception )
     	{
@@ -281,9 +177,9 @@ public class JsonParser
      */
     private Boolean nextBoolean()
     {
-    	assert hasNext();
+    	assert aInput.hasMore();
     	String valueString = "";
-    	char next = next();
+    	char next = aInput.next();
     	assert next == CHAR_START_TRUE || next == CHAR_START_FALSE;
     	if( next == Boolean.TRUE.toString().charAt(0) )
     	{
@@ -293,12 +189,12 @@ public class JsonParser
     	{
     		valueString = Boolean.FALSE.toString();
     	}
-    	backUp();
-    	if( !hasMore(valueString.length() ))
+    	aInput.backUp();
+    	if( !aInput.hasMore(valueString.length() ))
     	{
     		throw new JsonException("Cannot parse " + valueString + " value");
     	}
-    	if(next(valueString.length()).equals(valueString))
+    	if(aInput.next(valueString.length()).equals(valueString))
     	{
     		return Boolean.valueOf(valueString);
     	}
@@ -310,11 +206,11 @@ public class JsonParser
     
     private Object nextNull()
     {
-    	if(!hasMore(VALUE_STRING_NULL.length()))
+    	if(!aInput.hasMore(VALUE_STRING_NULL.length()))
     	{
     		throw new JsonException("Cannot parse null");
     	}
-    	else if(next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
+    	else if(aInput.next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
     	{
     		return JsonObject.NULL;
     	}
@@ -330,19 +226,19 @@ public class JsonParser
     private Integer nextInteger()
     {
     	StringBuffer numberAsString = new StringBuffer();
-    	char next = next();
+    	char next = aInput.next();
     	assert startsInteger(next);
     	numberAsString.append(next);
-    	while( hasNext() )
+    	while( aInput.hasMore() )
     	{
-    		next = next();
+    		next = aInput.next();
     		if( isDigit(next) )
     		{
     			numberAsString.append(next);
     		}
     		else
     		{
-    			backUp();
+    			aInput.backUp();
     			return parseInt(numberAsString.toString());
     		}
     	}
@@ -406,7 +302,7 @@ public class JsonParser
      */
     public Object nextValue()
     {
-        char next = nextNonWhitespace();
+        char next = aInput.nextNonBlank();
 
         if(next == CHAR_QUOTE)
         {
@@ -414,27 +310,27 @@ public class JsonParser
         }
         else if(next == CHAR_START_OBJECT)
         {
-        	backUp();
+        	aInput.backUp();
         	return new JsonObject(this);
         }
         else if(next ==  CHAR_START_ARRAY)
         {
-        	backUp();
+        	aInput.backUp();
         	return new JsonArray(this);
         }
         else if(next == CHAR_START_TRUE || next == CHAR_START_FALSE)
         {
-        	backUp();
+        	aInput.backUp();
         	return nextBoolean();
         }
         else if(next == CHAR_START_NULL )
         {
-        	backUp();
+        	aInput.backUp();
         	return nextNull();
         }
         else if(startsInteger(next))
         {
-        	backUp();
+        	aInput.backUp();
         	return nextInteger();
         }
         else
@@ -443,21 +339,33 @@ public class JsonParser
         }
     }
     
+    // TODO Remove
+    public char nextNonWhitespace()
+    {
+    	return aInput.nextNonBlank();
+    }
+    
+    // TODO Remove
+    public void backUp()
+    {
+    	aInput.backUp();
+    }
+    
     public JsonObject parseObject() 
     {
         JsonObject object = new JsonObject();
         
-        if(nextNonWhitespace() != CHAR_START_OBJECT) 
+        if(aInput.nextNonBlank() != CHAR_START_OBJECT) 
         {
             throw new JsonException("A JSONObject text must begin with '{'");
         }
         while(true)
         {
-        	if( !hasMoreNonWhitespace())
+        	if( !aInput.hasMoreNonBlank())
         	{
         		throw new JsonException("Incomplete object");
         	}
-        	char next = nextNonWhitespace();
+        	char next = aInput.nextNonBlank();
         	if( next == CHAR_END_OBJECT )
         	{
         		return object;
@@ -472,7 +380,7 @@ public class JsonParser
         			}
         			else
         			{
-        				next = nextNonWhitespace();
+        				next = aInput.nextNonBlank();
         			}
         		}
         		if( next != CHAR_QUOTE )
@@ -481,11 +389,11 @@ public class JsonParser
         		}
         	}
         	String key = nextString();
-        	if( !hasMoreNonWhitespace() )
+        	if( !aInput.hasMoreNonBlank() )
         	{
         		throw new JsonException("Incomplete object");
         	}
-        	next = nextNonWhitespace();
+        	next = aInput.nextNonBlank();
         	if( next != CHAR_COLON )
         	{
         		throw new JsonException("Expecting a key-value separator");
@@ -494,7 +402,7 @@ public class JsonParser
         	{
         		throw new JsonException("Duplicate key");
         	}
-        	if( !hasMoreNonWhitespace() )
+        	if( !aInput.hasMoreNonBlank() )
         	{
         		throw new JsonException("Incomplete object");
         	}
