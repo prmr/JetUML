@@ -145,6 +145,7 @@ public class JsonArray implements Iterable<Object>
 
     /**
      * Construct a JSONArray from a Collection.
+     * Assumes all the values are legal Json values
      *
      * @param collection
      *            A Collection.
@@ -155,7 +156,7 @@ public class JsonArray implements Iterable<Object>
         } else {
             this.aElements = new ArrayList<>(collection.size());
         	for (Object o: collection){
-        		this.aElements.add(JsonObject.wrap(o));
+        		this.aElements.add(o);
         	}
         }
     }
@@ -166,13 +167,14 @@ public class JsonArray implements Iterable<Object>
      * @throws JsonException
      *             If not an array.
      */
+    // TODO Remove
     public JsonArray(Object array) throws JsonException {
         this();
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
             this.aElements.ensureCapacity(length);
             for (int i = 0; i < length; i += 1) {
-                this.put(JsonObject.wrap(Array.get(array, i)));
+                this.put(Array.get(array, i));
             }
         } else {
             throw new JsonException(

@@ -1,7 +1,5 @@
 package org.jetuml.persistence.json;
 
-import java.io.Closeable;
-
 /*
  * Copyright (c) 2002 JSON.org
  * 
@@ -24,14 +22,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -116,54 +109,8 @@ public class JsonObject
 	/**
 	 * Construct an empty JsonObject.
 	 */
-	public JsonObject() {}
-
-	/**
-	 * Construct a JSONObject from a Map.
-	 *
-	 * @param m A map object that can be used to initialize the contents of the JSONObject.
-	 */
-	public JsonObject(Map<?, ?> m)
+	public JsonObject()
 	{
-		if (m == null)
-		{
-			this.aProperties = new HashMap<>();
-		}
-		else
-		{
-			this.aProperties = new HashMap<>(m.size());
-			for (final Entry<?, ?> e : m.entrySet())
-			{
-				final Object value = e.getValue();
-				if (value != null)
-				{
-					this.aProperties.put(String.valueOf(e.getKey()), wrap(value));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Construct a JSONObject from an Object using bean getters. It reflects on all of the public methods of the object.
-	 * For each of the methods with no parameters and a name starting with <code>"get"</code> or <code>"is"</code>
-	 * followed by an uppercase letter, the method is invoked, and a key and the value returned from the getter method
-	 * are put into the new JSONObject.
-	 * <p>
-	 * The key is formed by removing the <code>"get"</code> or <code>"is"</code> prefix. If the second remaining
-	 * character is not upper case, then the first character is converted to lower case.
-	 * <p>
-	 * For example, if an object has a method named <code>"getName"</code>, and if the result of calling
-	 * <code>object.getName()</code> is <code>"Larry Fine"</code>, then the JSONObject will contain
-	 * <code>"name": "Larry Fine"</code>.
-	 * <p>
-	 * Methods that return <code>void</code> as well as <code>static</code> methods are ignored.
-	 * 
-	 * @param bean
-	 *            An object that has getter methods that should be used to make a JSONObject.
-	 */
-	public JsonObject(Object bean)
-	{
-		populateMap(bean);
 	}
 
 	/**
@@ -177,7 +124,7 @@ public class JsonObject
 	 */
 	public Object get(String key)
 	{
-		if(key == null)
+		if (key == null)
 		{
 			throw new JsonException("Null key.");
 		}
@@ -268,6 +215,7 @@ public class JsonObject
 	 *
 	 * @return A keySet.
 	 */
+	// TODO : only used for testing.
 	public Set<String> keySet()
 	{
 		return aProperties.keySet();
@@ -346,92 +294,6 @@ public class JsonObject
 	}
 
 	/**
-	 * Populates the internal map of the JSONObject with the bean properties. The bean can not be recursive.
-	 *
-	 * @see JsonObject#JSONObject(Object)
-	 *
-	 * @param bean
-	 *            the bean
-	 */
-	private void populateMap(Object bean)
-	{
-		Class<?> klass = bean.getClass();
-
-		// If klass is a System class then set includeSuperClass to false.
-
-		boolean includeSuperClass = klass.getClassLoader() != null;
-
-		Method[] methods = includeSuperClass ? klass.getMethods() : klass.getDeclaredMethods();
-		for (final Method method : methods)
-		{
-			final int modifiers = method.getModifiers();
-			if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && method.getParameterTypes().length == 0
-					&& !method.isBridge() && method.getReturnType() != Void.TYPE)
-			{
-				final String name = method.getName();
-				String key;
-				if (name.startsWith("get"))
-				{
-					if ("getClass".equals(name) || "getDeclaringClass".equals(name))
-					{
-						continue;
-					}
-					key = name.substring(3);
-				}
-				else if (name.startsWith("is"))
-				{
-					key = name.substring(2);
-				}
-				else
-				{
-					continue;
-				}
-				if (key.length() > 0 && Character.isUpperCase(key.charAt(0)))
-				{
-					if (key.length() == 1)
-					{
-						key = key.toLowerCase(Locale.ROOT);
-					}
-					else if (!Character.isUpperCase(key.charAt(1)))
-					{
-						key = key.substring(0, 1).toLowerCase(Locale.ROOT) + key.substring(1);
-					}
-
-					try
-					{
-						final Object result = method.invoke(bean);
-						if (result != null)
-						{
-							this.aProperties.put(key, wrap(result));
-							// we don't use the result anywhere outside of wrap
-							// if it's a resource we should be sure to close it after calling toString
-							if (result instanceof Closeable)
-							{
-								try
-								{
-									((Closeable) result).close();
-								}
-								catch (IOException ignore)
-								{
-								}
-							}
-						}
-					}
-					catch (IllegalAccessException ignore)
-					{
-					}
-					catch (IllegalArgumentException ignore)
-					{
-					}
-					catch (InvocationTargetException ignore)
-					{
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * Put a key/boolean pair in the JSONObject.
 	 *
 	 * @param key
@@ -480,11 +342,11 @@ public class JsonObject
 	 */
 	public JsonObject put(String key, Object value)
 	{
-		if(key == null)
+		if (key == null)
 		{
 			throw new NullPointerException("Null key.");
 		}
-		if(value != null)
+		if (value != null)
 		{
 			testValidity(value);
 			aProperties.put(key, value);
@@ -595,7 +457,7 @@ public class JsonObject
 	 *            The name to be removed.
 	 * @return The value that was associated with the name, or null if there was no value.
 	 */
-	public Object remove(String key)
+	private Object remove(String key)
 	{
 		return this.aProperties.remove(key);
 	}
@@ -608,7 +470,7 @@ public class JsonObject
 	 * @throws JsonException
 	 *             If o is a non-finite number.
 	 */
-	public static void testValidity(Object o) throws JsonException
+	private static void testValidity(Object o)
 	{
 		if (o != null)
 		{
@@ -678,7 +540,7 @@ public class JsonObject
 	 * @throws JsonException
 	 *             If the object contains an invalid number.
 	 */
-	public String toString(int indentFactor) throws JsonException
+	public String toString(int indentFactor)
 	{
 		StringWriter w = new StringWriter();
 		synchronized (w.getBuffer())
@@ -688,64 +550,8 @@ public class JsonObject
 		}
 	}
 
-	/**
-	 * Wrap an object, if necessary. If the object is null, return the NULL object. If it is an array or collection,
-	 * wrap it in a JSONArray. If it is a map, wrap it in a JSONObject. If it is a standard property (Double, String, et
-	 * al) then it is already wrapped. Otherwise, if it comes from one of the java packages, turn it into a string. And
-	 * if it doesn't, try to wrap it in a JSONObject. If the wrapping fails, then null is returned.
-	 *
-	 * @param object
-	 *            The object to wrap
-	 * @return The wrapped value
-	 */
-	public static Object wrap(Object object)
-	{
-		try
-		{
-			if (object == null)
-			{
-				return NULL;
-			}
-			if (object instanceof JsonObject || object instanceof JsonArray || NULL.equals(object)
-					|| object instanceof Byte || object instanceof Character || object instanceof Short
-					|| object instanceof Integer || object instanceof Long || object instanceof Boolean
-					|| object instanceof Float || object instanceof Double || object instanceof String
-					|| object instanceof BigInteger || object instanceof BigDecimal || object instanceof Enum)
-			{
-				return object;
-			}
-
-			if (object instanceof Collection)
-			{
-				Collection<?> coll = (Collection<?>) object;
-				return new JsonArray(coll);
-			}
-			if (object.getClass().isArray())
-			{
-				return new JsonArray(object);
-			}
-			if (object instanceof Map)
-			{
-				Map<?, ?> map = (Map<?, ?>) object;
-				return new JsonObject(map);
-			}
-			Package objectPackage = object.getClass().getPackage();
-			String objectPackageName = objectPackage != null ? objectPackage.getName() : "";
-			if (objectPackageName.startsWith("java.") || objectPackageName.startsWith("javax.")
-					|| object.getClass().getClassLoader() == null)
-			{
-				return object.toString();
-			}
-			return new JsonObject(object);
-		}
-		catch (Exception exception)
-		{
-			return null;
-		}
-	}
-
 	static final void writeValue(Writer writer, Object value, int indentFactor, int indent)
-			throws JsonException, IOException
+			throws IOException
 	{
 		if (value == null || value.equals(null))
 		{
@@ -785,11 +591,6 @@ public class JsonObject
 		else if (value instanceof JsonArray)
 		{
 			((JsonArray) value).write(writer, indentFactor, indent);
-		}
-		else if (value instanceof Map)
-		{
-			Map<?, ?> map = (Map<?, ?>) value;
-			new JsonObject(map).write(writer, indentFactor, indent);
 		}
 		else if (value instanceof Collection)
 		{
@@ -840,7 +641,7 @@ public class JsonObject
 	 *            The indentation of the top level.
 	 * @throws JsonException
 	 */
-	public void write(Writer writer, int indentFactor, int indent) throws JsonException
+	public void write(Writer writer, int indentFactor, int indent)
 	{
 		try
 		{
