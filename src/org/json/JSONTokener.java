@@ -51,10 +51,12 @@ public class JSONTokener
 	private static final char CHAR_ONE = '1';
 	private static final char CHAR_NINE = '9';
 	private static final char CHAR_START_OBJECT = '{';
+	private static final char CHAR_END_OBJECT = '}';
 	private static final char CHAR_START_ARRAY = '[';
 	private static final char CHAR_START_TRUE = 't';
 	private static final char CHAR_START_FALSE = 'f';
 	private static final char CHAR_START_NULL = 'n';
+	private static final char CHAR_COLON = ':';
 	
 	private static final String VALUE_STRING_NULL = "null";
 	
@@ -419,6 +421,66 @@ public class JSONTokener
         else
         {
         	throw new JSONException("Unsupported value");
+        }
+    }
+    
+    public JSONObject parseObject() 
+    {
+        JSONObject object = new JSONObject();
+        
+        if(nextNonWhitespace() != CHAR_START_OBJECT) 
+        {
+            throw new JSONException("A JSONObject text must begin with '{'");
+        }
+        while(true)
+        {
+        	if( !hasMoreNonWhitespace())
+        	{
+        		throw new JSONException("Incomplete object");
+        	}
+        	char next = nextNonWhitespace();
+        	if( next == CHAR_END_OBJECT )
+        	{
+        		return object;
+        	}
+        	else
+        	{
+        		if( !object.keySet().isEmpty() )
+        		{
+        			if( next != ',' )
+        			{
+        				throw new JSONException("Missing comma");
+        			}
+        			else
+        			{
+        				next = nextNonWhitespace();
+        			}
+        		}
+        		if( next != CHAR_QUOTE )
+        		{
+        			throw new JSONException("Invalid key");
+        		}
+        	}
+        	String key = nextString();
+        	if( !hasMoreNonWhitespace() )
+        	{
+        		throw new JSONException("Incomplete object");
+        	}
+        	next = nextNonWhitespace();
+        	if( next != CHAR_COLON )
+        	{
+        		throw new JSONException("Expecting a key-value separator");
+        	}
+        	if( object.has(key))
+        	{
+        		throw new JSONException("Duplicate key");
+        	}
+        	if( !hasMoreNonWhitespace() )
+        	{
+        		throw new JSONException("Incomplete object");
+        	}
+        	Object value = nextValue();
+        	object.put(key, value);
         }
     }
 }

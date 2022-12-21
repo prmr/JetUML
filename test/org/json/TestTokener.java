@@ -508,6 +508,57 @@ public class TestTokener
 		testNextValueWithException(tokener);
 	}
 	
+	@Test 
+	void testParseObject_Empty()
+	{
+		JSONTokener tokener = new JSONTokener("{  }");
+		JSONObject object = tokener.parseObject();
+		assertTrue(object.keySet().isEmpty());
+	}
+	
+	@Test 
+	void testParseObject_OnePair()
+	{
+		JSONTokener tokener = new JSONTokener("{\n \"key\" : \"value\" \n}");
+		JSONObject object = tokener.parseObject();
+		assertEquals(1, object.keySet().size());
+		assertTrue(object.has("key"));
+		assertEquals("value", object.getString("key"));
+	}
+	
+	@Test 
+	void testParseObject_TwoPairs()
+	{
+		JSONTokener tokener = new JSONTokener("""
+				{ \"key\" : \"value\", 
+				  \"k2\" : 12
+				}""");
+		JSONObject object = tokener.parseObject();
+		assertEquals(2, object.keySet().size());
+		assertTrue(object.has("key"));
+		assertTrue(object.has("k2"));
+		assertEquals("value", object.getString("key"));
+		assertEquals(12, object.getInt("k2"));
+	}
+	
+	@Test 
+	void testParseObject_ThreePairs()
+	{
+		JSONTokener tokener = new JSONTokener("""
+				{ \"key\" : \"value\", 
+				  \"k2\" : 12,
+				  \"k3\" : true
+				}""");
+		JSONObject object = tokener.parseObject();
+		assertEquals(3, object.keySet().size());
+		assertTrue(object.has("key"));
+		assertTrue(object.has("k2"));
+		assertTrue(object.has("k3"));
+		assertEquals("value", object.getString("key"));
+		assertEquals(12, object.getInt("k2"));
+		assertEquals(true, object.get("k3"));
+	}
+	
 	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
 	{
 		try 
