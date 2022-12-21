@@ -316,7 +316,7 @@ public class JSONTokener
     	}
     	else if(next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
     	{
-    		return JSONObject.NULL;
+    		return JsonObject.NULL;
     	}
     	else
     	{
@@ -415,7 +415,7 @@ public class JSONTokener
         else if(next == CHAR_START_OBJECT)
         {
         	backUp();
-        	return new JSONObject(this);
+        	return new JsonObject(this);
         }
         else if(next ==  CHAR_START_ARRAY)
         {
@@ -443,9 +443,9 @@ public class JSONTokener
         }
     }
     
-    public JSONObject parseObject() 
+    public JsonObject parseObject() 
     {
-        JSONObject object = new JSONObject();
+        JsonObject object = new JsonObject();
         
         if(nextNonWhitespace() != CHAR_START_OBJECT) 
         {

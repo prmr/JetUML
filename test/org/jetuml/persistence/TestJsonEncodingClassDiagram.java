@@ -36,7 +36,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.PropertyName;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ public class TestJsonEncodingClassDiagram
 	@Test
 	public void testEmpty()
 	{
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("ClassDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	

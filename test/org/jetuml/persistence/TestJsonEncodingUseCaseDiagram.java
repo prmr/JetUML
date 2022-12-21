@@ -38,7 +38,7 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.json.JsonArray;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,7 +99,7 @@ public class TestJsonEncodingUseCaseDiagram
 	@Test
 	public void testEmpty()
 	{
-		JSONObject object = JsonEncoder.encode(aDiagram);
+		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
@@ -111,12 +111,12 @@ public class TestJsonEncodingUseCaseDiagram
 	{
 		aDiagram.addRootNode(new NoteNode());
 		
-		JSONObject object = JsonEncoder.encode(aDiagram);
+		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(1, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());	
-		JSONObject node = object.getJSONArray("nodes").getJSONObject(0);
+		JsonObject node = object.getJSONArray("nodes").getJSONObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -130,7 +130,7 @@ public class TestJsonEncodingUseCaseDiagram
 	{
 		initDiagram1();
 
-		JSONObject object = JsonEncoder.encode(aDiagram);
+		JsonObject object = JsonEncoder.encode(aDiagram);
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
@@ -138,11 +138,11 @@ public class TestJsonEncodingUseCaseDiagram
 		assertEquals(1, object.getJSONArray("edges").length());	
 		
 		JsonArray nodes = object.getJSONArray("nodes");
-		JSONObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));
-		JSONObject useCase = find(nodes, "UseCaseNode", build(PropertyName.NAME, "Do it"));
+		JsonObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));
+		JsonObject useCase = find(nodes, "UseCaseNode", build(PropertyName.NAME, "Do it"));
 				
 		JsonArray edges = object.getJSONArray("edges");
-		JSONObject edge1 = find(edges, "UseCaseAssociationEdge", build());
+		JsonObject edge1 = find(edges, "UseCaseAssociationEdge", build());
 
 		assertEquals(edge1.getInt("start"), actor.getInt("id"));
 		assertEquals(edge1.getInt("end"), useCase.getInt("id"));

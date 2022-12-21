@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.json.JSONTokener;
 
 /**
@@ -60,7 +60,7 @@ final class TipLoader
 				String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
 			JSONTokener jsonTokener = new JSONTokener(inputStreamToString(tipsInputStream));
-			JSONObject jsonObject = new JSONObject(jsonTokener); 
+			JsonObject jsonObject = new JsonObject(jsonTokener); 
 			Tip tip = new Tip(pId, jsonObject);
 			return tip;
 		}
@@ -96,7 +96,7 @@ final class TipLoader
 		 * @param pTip the JSONObject obtained from the file tip-pId.json, where pId is the 
 		 * 		  same as the pId parameter.
 		 */
-		private Tip(int pId, JSONObject pTip)
+		private Tip(int pId, JsonObject pTip)
 		{
 			
 			aId = pId;
@@ -132,7 +132,7 @@ final class TipLoader
 		 * @param pTip a JSONObject obtained from the JSONArray gotten by loading the tips.
 		 */
 		@SuppressWarnings("unchecked")
-		private static List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
+		private static List<TipElement> convertJSONObjectToTipElements(JsonObject pTip)
 		{
 			List<TipElement> elements = new ArrayList<>();
 			Map<String, Object> tipMap = pTip.toMap();

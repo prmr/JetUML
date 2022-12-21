@@ -34,7 +34,7 @@ import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
 import org.jetuml.diagram.PropertyName;
 import org.json.JsonArray;
-import org.json.JSONObject;
+import org.json.JsonObject;
 
 /**
  * Utilities to facilitate writing tests for the persistence
@@ -58,7 +58,7 @@ public final class PersistenceTestUtils
 		return properties;
 	}
 	
-	static void assertHasKeys(JSONObject pObject, String... pKeys)
+	static void assertHasKeys(JsonObject pObject, String... pKeys)
 	{
 		for( String key : pKeys )
 		{
@@ -97,13 +97,13 @@ public final class PersistenceTestUtils
 	/*
 	 * Finds the object in an array with the specified properties
 	 */
-	static JSONObject find(JsonArray pArray, String pType, Properties pProperties)
+	static JsonObject find(JsonArray pArray, String pType, Properties pProperties)
 	{
-		JSONObject found = null;
+		JsonObject found = null;
 		for( int i = 0; i < pArray.length(); i++ )
 		{
 			boolean match = true;
-			JSONObject object = pArray.getJSONObject(i);
+			JsonObject object = pArray.getJSONObject(i);
 			for( Property property : pProperties )
 			{
 				if( !object.has(property.name().external()))

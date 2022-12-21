@@ -94,7 +94,8 @@ import java.util.Set;
  * @author JSON.org
  * @version 2016-08-15
  */
-public class JSONObject {
+public class JsonObject 
+{
     /**
      * JSONObject.NULL is equivalent to the value that JavaScript calls null,
      * whilst Java's null is equivalent to the value that JavaScript calls
@@ -162,7 +163,7 @@ public class JSONObject {
     /**
      * Construct an empty JSONObject.
      */
-    public JSONObject() {
+    public JsonObject() {
         // HashMap is used on purpose to ensure that elements are unordered by 
         // the specification.
         // JSON tends to be a portable transfer format to allows the container 
@@ -181,7 +182,7 @@ public class JSONObject {
      *             If there is a syntax error in the source string or a
      *             duplicated key.
      */
-    public JSONObject(JSONTokener x) throws JsonException {
+    public JsonObject(JSONTokener x) throws JsonException {
         this();
         char c;
         String key;
@@ -248,7 +249,7 @@ public class JSONObject {
      *            A map object that can be used to initialize the contents of
      *            the JSONObject.
      */
-    public JSONObject(Map<?, ?> m) {
+    public JsonObject(Map<?, ?> m) {
         if (m == null) {
             this.map = new HashMap<>();
         } else {
@@ -286,7 +287,7 @@ public class JSONObject {
      *            An object that has getter methods that should be used to make
      *            a JSONObject.
      */
-    public JSONObject(Object bean) {
+    public JsonObject(Object bean) {
         this();
         this.populateMap(bean);
     }
@@ -303,7 +304,7 @@ public class JSONObject {
      *                If there is a syntax error in the source string or a
      *                duplicated key.
      */
-    public JSONObject(String source) throws JsonException {
+    public JsonObject(String source) throws JsonException {
         this(new JSONTokener(source));
     }
 
@@ -476,7 +477,7 @@ public class JSONObject {
      * Populates the internal map of the JSONObject with the bean properties.
      * The bean can not be recursive.
      *
-     * @see JSONObject#JSONObject(Object)
+     * @see JsonObject#JSONObject(Object)
      *
      * @param bean
      *            the bean
@@ -551,7 +552,7 @@ public class JSONObject {
      * @throws JsonException
      *             If the key is null.
      */
-    public JSONObject put(String key, boolean value) throws JsonException {
+    public JsonObject put(String key, boolean value) throws JsonException {
         this.put(key, value ? Boolean.TRUE : Boolean.FALSE);
         return this;
     }
@@ -567,7 +568,7 @@ public class JSONObject {
      * @throws JsonException
      *             If the key is null.
      */
-    public JSONObject put(String key, int value) throws JsonException {
+    public JsonObject put(String key, int value) throws JsonException {
         this.put(key, Integer.valueOf(value));
         return this;
     }
@@ -586,7 +587,7 @@ public class JSONObject {
      * @throws JsonException
      *             If the value is non-finite number or if the key is null.
      */
-    public JSONObject put(String key, Object value) throws JsonException {
+    public JsonObject put(String key, Object value) throws JsonException {
         if (key == null) {
             throw new NullPointerException("Null key.");
         }
@@ -725,7 +726,7 @@ public class JSONObject {
             return Boolean.FALSE;
         }
         if (string.equalsIgnoreCase("null")) {
-            return JSONObject.NULL;
+            return JsonObject.NULL;
         }
 
         /*
@@ -807,7 +808,7 @@ public class JSONObject {
     /**
      * Make a pretty-printed JSON text of this JSONObject.
      * 
-     * <p>If <code>indentFactor > 0</code> and the {@link JSONObject}
+     * <p>If <code>indentFactor > 0</code> and the {@link JsonObject}
      * has only one key, then the object will be output on a single line:
      * <pre>{@code {"key": 1}}</pre>
      * 
@@ -856,7 +857,7 @@ public class JSONObject {
             if (object == null) {
                 return NULL;
             }
-            if (object instanceof JSONObject || object instanceof JsonArray
+            if (object instanceof JsonObject || object instanceof JsonArray
                     || NULL.equals(object)
                     || object instanceof Byte || object instanceof Character
                     || object instanceof Short || object instanceof Integer
@@ -876,7 +877,7 @@ public class JSONObject {
             }
             if (object instanceof Map) {
                 Map<?, ?> map = (Map<?, ?>) object;
-                return new JSONObject(map);
+                return new JsonObject(map);
             }
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
@@ -886,7 +887,7 @@ public class JSONObject {
                     || object.getClass().getClassLoader() == null) {
                 return object.toString();
             }
-            return new JSONObject(object);
+            return new JsonObject(object);
         } catch (Exception exception) {
             return null;
         }
@@ -917,13 +918,13 @@ public class JSONObject {
     		writer.write(value.toString());
     	} else if (value instanceof Enum<?>) {
     		writer.write(quote(((Enum<?>)value).name()));
-    	} else if (value instanceof JSONObject) {
-    		((JSONObject) value).write(writer, indentFactor, indent);
+    	} else if (value instanceof JsonObject) {
+    		((JsonObject) value).write(writer, indentFactor, indent);
     	} else if (value instanceof JsonArray) {
     		((JsonArray) value).write(writer, indentFactor, indent);
     	} else if (value instanceof Map) {
     		Map<?, ?> map = (Map<?, ?>) value;
-    		new JSONObject(map).write(writer, indentFactor, indent);
+    		new JsonObject(map).write(writer, indentFactor, indent);
     	} else if (value instanceof Collection) {
     		Collection<?> coll = (Collection<?>) value;
     		new JsonArray(coll).write(writer, indentFactor, indent);
@@ -943,7 +944,7 @@ public class JSONObject {
     /**
      * Write the contents of the JSONObject as JSON text to a writer.
      * 
-     * <p>If <code>indentFactor > 0</code> and the {@link JSONObject}
+     * <p>If <code>indentFactor > 0</code> and the {@link JsonObject}
      * has only one key, then the object will be output on a single line:
      * <pre>{@code {"key": 1}}</pre>
      * 
@@ -1034,8 +1035,8 @@ public class JSONObject {
             Object value;
             if (entry.getValue() == null || NULL.equals(entry.getValue())) {
                 value = null;
-            } else if (entry.getValue() instanceof JSONObject) {
-                value = ((JSONObject) entry.getValue()).toMap();
+            } else if (entry.getValue() instanceof JsonObject) {
+                value = ((JsonObject) entry.getValue()).toMap();
             } else if (entry.getValue() instanceof JsonArray) {
                 value = ((JsonArray) entry.getValue()).toList();
             } else {

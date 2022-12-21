@@ -28,7 +28,7 @@ import org.jetuml.diagram.Property;
 import org.jetuml.geom.Point;
 import org.json.JsonArray;
 import org.json.JsonException;
-import org.json.JSONObject;
+import org.json.JsonObject;
 
 /**
  * Converts a JSONObject to a versioned diagram.
@@ -45,7 +45,7 @@ public final class JsonDecoder
 	 * @return The decoded diagram.
 	 * @throws DeserializationException If it's not possible to decode the object into a valid diagram.
 	 */
-	public static Diagram decode(JSONObject pDiagram)
+	public static Diagram decode(JsonObject pDiagram)
 	{
 		assert pDiagram != null;
 		try
@@ -70,14 +70,14 @@ public final class JsonDecoder
 	 * to represent them.
 	 * throws Deserialization Exception
 	 */
-	private static void decodeNodes(DeserializationContext pContext, JSONObject pObject)
+	private static void decodeNodes(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray nodes = pObject.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			try
 			{
-				JSONObject object = nodes.getJSONObject(i);
+				JsonObject object = nodes.getJSONObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
 				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
 				node.moveTo(new Point(object.getInt("x"), object.getInt("y")));
@@ -112,12 +112,12 @@ public final class JsonDecoder
 	 * Restores the parent-child hierarchy within the context's diagram. Assumes
 	 * the context has been initialized with all the nodes.
 	 */
-	private static void restoreChildren(DeserializationContext pContext, JSONObject pObject)
+	private static void restoreChildren(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray nodes = pObject.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
-			JSONObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJSONObject(i);
 			if( object.has("children"))
 			{
 				Node node = pContext.getNode( object.getInt("id"));
@@ -135,14 +135,14 @@ public final class JsonDecoder
 	 * to represent them.
 	 * throws Deserialization Exception
 	 */
-	private static void decodeEdges(DeserializationContext pContext, JSONObject pObject)
+	private static void decodeEdges(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray edges = pObject.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			try
 			{
-				JSONObject object = edges.getJSONObject(i);
+				JsonObject object = edges.getJSONObject(i);
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
 				Edge edge = (Edge) edgeClass.getDeclaredConstructor().newInstance();
 				

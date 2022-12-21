@@ -114,7 +114,7 @@ public class JsonArray implements Iterable<Object>
             for (;;) {
                 if (pTokener.nextNonWhitespace() == ',') {
                     pTokener.backUp();
-                    this.aElements.add(JSONObject.NULL);
+                    this.aElements.add(JsonObject.NULL);
                 } else {
                     pTokener.backUp();
                     this.aElements.add(pTokener.nextValue());
@@ -155,7 +155,7 @@ public class JsonArray implements Iterable<Object>
         } else {
             this.aElements = new ArrayList<>(collection.size());
         	for (Object o: collection){
-        		this.aElements.add(JSONObject.wrap(o));
+        		this.aElements.add(JsonObject.wrap(o));
         	}
         }
     }
@@ -172,7 +172,7 @@ public class JsonArray implements Iterable<Object>
             int length = Array.getLength(array);
             this.aElements.ensureCapacity(length);
             for (int i = 0; i < length; i += 1) {
-                this.put(JSONObject.wrap(Array.get(array, i)));
+                this.put(JsonObject.wrap(Array.get(array, i)));
             }
         } else {
             throw new JsonException(
@@ -231,10 +231,10 @@ public class JsonArray implements Iterable<Object>
      *             If there is no value for the index or if the value is not a
      *             JSONObject
      */
-    public JSONObject getJSONObject(int index) throws JsonException {
+    public JsonObject getJSONObject(int index) throws JsonException {
         Object object = this.get(index);
-        if (object instanceof JSONObject) {
-            return (JSONObject) object;
+        if (object instanceof JsonObject) {
+            return (JsonObject) object;
         }
         throw new JsonException("JSONArray[" + index + "] is not a JSONObject.");
     }
@@ -397,7 +397,7 @@ public class JsonArray implements Iterable<Object>
 
             if (length == 1) {
                 try {
-                    JSONObject.writeValue(writer, this.aElements.get(0),
+                    JsonObject.writeValue(writer, this.aElements.get(0),
                             indentFactor, indent);
                 } catch (Exception e) {
                     throw new JsonException("Unable to write JSONArray value at index: 0", e);
@@ -412,9 +412,9 @@ public class JsonArray implements Iterable<Object>
                     if (indentFactor > 0) {
                         writer.write('\n');
                     }
-                    JSONObject.indent(writer, newindent);
+                    JsonObject.indent(writer, newindent);
                     try {
-                        JSONObject.writeValue(writer, this.aElements.get(i),
+                        JsonObject.writeValue(writer, this.aElements.get(i),
                                 indentFactor, newindent);
                     } catch (Exception e) {
                         throw new JsonException("Unable to write JSONArray value at index: " + i, e);
@@ -424,7 +424,7 @@ public class JsonArray implements Iterable<Object>
                 if (indentFactor > 0) {
                     writer.write('\n');
                 }
-                JSONObject.indent(writer, indent);
+                JsonObject.indent(writer, indent);
             }
             writer.write(']');
         } catch (IOException e) {
@@ -444,12 +444,12 @@ public class JsonArray implements Iterable<Object>
     public List<Object> toList() {
         List<Object> results = new ArrayList<>(this.aElements.size());
         for (Object element : this.aElements) {
-            if (element == null || JSONObject.NULL.equals(element)) {
+            if (element == null || JsonObject.NULL.equals(element)) {
                 results.add(null);
             } else if (element instanceof JsonArray) {
                 results.add(((JsonArray) element).toList());
-            } else if (element instanceof JSONObject) {
-                results.add(((JSONObject) element).toMap());
+            } else if (element instanceof JsonObject) {
+                results.add(((JsonObject) element).toMap());
             } else {
                 results.add(element);
             }

@@ -39,7 +39,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
 import org.json.JsonArray;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -136,7 +136,7 @@ public class TestJsonEncodingStateDiagram
 	@Test
 	public void testEmpty()
 	{
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
@@ -148,12 +148,12 @@ public class TestJsonEncodingStateDiagram
 	{
 		aGraph.addRootNode(new NoteNode());
 		
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
 		assertEquals(1, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());	
-		JSONObject node = object.getJSONArray("nodes").getJSONObject(0);
+		JsonObject node = object.getJSONArray("nodes").getJSONObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -167,7 +167,7 @@ public class TestJsonEncodingStateDiagram
 	{
 		initiGraph1();
 
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JsonObject object = JsonEncoder.encode(aGraph);
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
@@ -175,15 +175,15 @@ public class TestJsonEncodingStateDiagram
 		assertEquals(3, object.getJSONArray("edges").length());	
 		
 		JsonArray nodes = object.getJSONArray("nodes");
-		JSONObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));
-		JSONObject node2b = find(nodes, "StateNode", build(PropertyName.NAME, "End"));
-		JSONObject startb = find(nodes, "InitialStateNode", build());
-		JSONObject endb = find(nodes, "FinalStateNode", build());
+		JsonObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));
+		JsonObject node2b = find(nodes, "StateNode", build(PropertyName.NAME, "End"));
+		JsonObject startb = find(nodes, "InitialStateNode", build());
+		JsonObject endb = find(nodes, "FinalStateNode", build());
 		
 		JsonArray edges = object.getJSONArray("edges");
-		JSONObject edge1b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge1"));
-		JSONObject edge2b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge2"));
-		JSONObject edge3b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge3"));
+		JsonObject edge1b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge1"));
+		JsonObject edge2b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge2"));
+		JsonObject edge3b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge3"));
 
 		assertEquals(edge1b.getInt("start"), startb.getInt("id"));
 		assertEquals(edge1b.getInt("end"), node1b.getInt("id"));

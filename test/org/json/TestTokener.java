@@ -403,7 +403,7 @@ public class TestTokener
 	{
 		JSONTokener tokener = new JSONTokener("{\"a\" : null}");
 		next(tokener,6);
-		assertEquals(JSONObject.NULL, nextValue(tokener));
+		assertEquals(JsonObject.NULL, nextValue(tokener));
 	}
 	
 	@Test
@@ -434,7 +434,7 @@ public class TestTokener
 	void testNextValue_object()
 	{
 		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");
-		assertTrue(nextValue(tokener).getClass() == JSONObject.class);
+		assertTrue(nextValue(tokener).getClass() == JsonObject.class);
 	}
 	
 	@Test
@@ -520,7 +520,7 @@ public class TestTokener
 	void testParseObject_Empty()
 	{
 		JSONTokener tokener = new JSONTokener("{  }");
-		JSONObject object = tokener.parseObject();
+		JsonObject object = tokener.parseObject();
 		assertTrue(object.keySet().isEmpty());
 	}
 	
@@ -528,7 +528,7 @@ public class TestTokener
 	void testParseObject_OnePair()
 	{
 		JSONTokener tokener = new JSONTokener("{\n \"key\" : \"value\" \n}");
-		JSONObject object = tokener.parseObject();
+		JsonObject object = tokener.parseObject();
 		assertEquals(1, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertEquals("value", object.getString("key"));
@@ -541,7 +541,7 @@ public class TestTokener
 				{ \"key\" : \"value\", 
 				  \"k2\" : 12
 				}""");
-		JSONObject object = tokener.parseObject();
+		JsonObject object = tokener.parseObject();
 		assertEquals(2, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertTrue(object.has("k2"));
@@ -557,7 +557,7 @@ public class TestTokener
 				  \"k2\" : 12,
 				  \"k3\" : true
 				}""");
-		JSONObject object = tokener.parseObject();
+		JsonObject object = tokener.parseObject();
 		assertEquals(3, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertTrue(object.has("k2"));

@@ -37,7 +37,7 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 import org.json.JsonArray;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -93,7 +93,7 @@ public class TestTipJsons {
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			JSONObject tip = loadTipAsJsonObject(id);
+			JsonObject tip = loadTipAsJsonObject(id);
 			assertTrue(tip != null);
 		}
 	}
@@ -103,7 +103,7 @@ public class TestTipJsons {
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			JSONObject jObj = loadTipAsJsonObject(id);
+			JsonObject jObj = loadTipAsJsonObject(id);
 			assertEquals(jObj.length(), 2);
 		}
 	}
@@ -115,7 +115,7 @@ public class TestTipJsons {
 		
 		for (int id = 1; id<= NUM_TIPS; id++)
 		{
-			JSONObject jObj = loadTipAsJsonObject(id);
+			JsonObject jObj = loadTipAsJsonObject(id);
 			Object title = jObj.get(TipFieldName.TITLE.asString()); 
 			assertTrue(title instanceof String);
 		}
@@ -128,14 +128,14 @@ public class TestTipJsons {
 		
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			JSONObject jObj = loadTipAsJsonObject(id);
+			JsonObject jObj = loadTipAsJsonObject(id);
 			Object obj = jObj.get(TipFieldName.CONTENT.asString());
 			assertTrue(obj instanceof JsonArray);
 			JsonArray jArr = (JsonArray) obj;
 			for(Object contentElement : jArr)
 			{
-				assertTrue(contentElement instanceof JSONObject);
-				JSONObject contentElementJsonObj = (JSONObject) contentElement;
+				assertTrue(contentElement instanceof JsonObject);
+				JsonObject contentElementJsonObj = (JsonObject) contentElement;
 				assertEquals(contentElementJsonObj.length(), 1);
 				
 				Set<String> tipMediaSet = contentElementJsonObj.keySet();
@@ -157,7 +157,7 @@ public class TestTipJsons {
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			JSONObject jObj = loadTipAsJsonObject(id);
+			JsonObject jObj = loadTipAsJsonObject(id);
 			if(!jObj.has(pTipFieldName.asString()))
 			{
 				return false;
@@ -166,13 +166,13 @@ public class TestTipJsons {
 		return true;
 	}
 	
-	private static JSONObject loadTipAsJsonObject(int pId) throws IOException
+	private static JsonObject loadTipAsJsonObject(int pId) throws IOException
 	{
 		try( InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
 			String input = TestTipLoader.inputStreamToString(inputStream);
 			JSONTokener jTok = new JSONTokener(input);
-			JSONObject jObj = new JSONObject(jTok);
+			JsonObject jObj = new JsonObject(jTok);
 			return jObj;
 		}
 	}

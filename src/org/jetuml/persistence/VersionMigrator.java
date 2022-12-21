@@ -35,7 +35,7 @@ import org.jetuml.JetUML;
 import org.jetuml.application.Version;
 import org.json.JsonArray;
 import org.json.JsonException;
-import org.json.JSONObject;
+import org.json.JsonObject;
 
 /**
  * Utility class to migrate a pre-3.0 saved diagram to post 3.0.
@@ -76,7 +76,7 @@ public final class VersionMigrator
 		try (BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream("test.class.jet"), StandardCharsets.UTF_8)))
 		{
-			new VersionMigrator().migrate(new JSONObject(in.readLine()));
+			new VersionMigrator().migrate(new JsonObject(in.readLine()));
 		}
 		catch( JsonException e )
 		{
@@ -89,7 +89,7 @@ public final class VersionMigrator
 	 *            The loaded diagram to migrate
 	 * @return A migrated Diagram object.
 	 */
-	public VersionedDiagram migrate(JSONObject pDiagram)
+	public VersionedDiagram migrate(JsonObject pDiagram)
 	{
 		Version version = Version.parse(pDiagram.getString("version"));
 
@@ -112,12 +112,12 @@ public final class VersionMigrator
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
 	}
 
-	private void convertPackageNodeToPackageDescriptionNode(JSONObject pDiagram)
+	private void convertPackageNodeToPackageDescriptionNode(JsonObject pDiagram)
 	{
 		JsonArray nodes = pDiagram.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
-			JSONObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJSONObject(i);
 			if( object.getString("type").equals("PackageNode") && !object.has("children") && object.has("contents") )
 			{
 				object.put("type", "PackageDescriptionNode");
@@ -126,12 +126,12 @@ public final class VersionMigrator
 		}
 	}
 	
-	private void removeInterfaceStereotype(JSONObject pDiagram)
+	private void removeInterfaceStereotype(JsonObject pDiagram)
 	{
 		JsonArray nodes = pDiagram.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
-			JSONObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJSONObject(i);
 			if( object.getString("type").equals("InterfaceNode") )
 			{
 				if( object.getString("name").contains("\u00ABinterface\u00BB"))
@@ -143,13 +143,13 @@ public final class VersionMigrator
 		}
 	}
 
-	private void removeSelfDependencies(JSONObject pDiagram)
+	private void removeSelfDependencies(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJSONArray("edges");
-		List<JSONObject> newEdges = new ArrayList<>();
+		List<JsonObject> newEdges = new ArrayList<>();
 		for( int i = 0; i < edges.length(); i++ )
 		{
-			JSONObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJSONObject(i);
 			if( object.getString("type").equals("DependencyEdge") && object.getInt("start") == object.getInt("end") )
 			{
 				aMigrated = true; // We don't add the dependency, essentially removing it.
@@ -162,12 +162,12 @@ public final class VersionMigrator
 		pDiagram.put("edges", new JsonArray(newEdges));
 	}
 
-	private void addDirectionalityPropertyToDependencyEdges(JSONObject pDiagram)
+	private void addDirectionalityPropertyToDependencyEdges(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
-			JSONObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJSONObject(i);
 			if( object.getString("type").equals("DependencyEdge") )
 			{
 				object.put("directionality", "Unidirectional");
@@ -180,12 +180,12 @@ public final class VersionMigrator
 	 * Replace associations with a "Start" directionality with
 	 * a directional edge in the reverse direction. 
 	 */
-	private void flipInversedAssociations(JSONObject pDiagram)
+	private void flipInversedAssociations(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
-			JSONObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJSONObject(i);
 			if( object.getString("type").equals("AssociationEdge") && object.getString("directionality").equals("Start"))
 			{
 				object.put("directionality", "End");
@@ -198,12 +198,12 @@ public final class VersionMigrator
 		}
 	}
 	
-	private void renameAssociationDirectionality(JSONObject pDiagram)
+	private void renameAssociationDirectionality(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
-			JSONObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJSONObject(i);
 			if( object.getString("type").equals("AssociationEdge"))
 			{
 				if( object.get("directionality").equals("None"))
@@ -223,15 +223,15 @@ public final class VersionMigrator
 		}
 	}
 
-	private void replaceDualDependenciesWithBidirectionalEdge(JSONObject pDiagram)
+	private void replaceDualDependenciesWithBidirectionalEdge(JsonObject pDiagram)
 	{
-		Map<Set<Integer>, JSONObject> links = new HashMap<>();
-		List<JSONObject> newEdges = new ArrayList<>();
+		Map<Set<Integer>, JsonObject> links = new HashMap<>();
+		List<JsonObject> newEdges = new ArrayList<>();
 		
 		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
-			JSONObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJSONObject(i);
 			newEdges.add(object);
 			if( object.getString("type").equals("DependencyEdge") ) 
 			{

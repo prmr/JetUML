@@ -23,7 +23,7 @@ package org.jetuml.persistence;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.jetuml.JavaFXLoader;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ public class TestJsonDecoder
 	@Test
 	public void testEmptyJSONObject()
 	{
-		JSONObject object = new JSONObject();
+		JsonObject object = new JsonObject();
 		assertThrows(DeserializationException.class, () -> JsonDecoder.decode(object));
 	}
 	
@@ -53,7 +53,7 @@ public class TestJsonDecoder
 	@Test
 	public void testIncompleteJSONObject()
 	{
-		JSONObject object = new JSONObject();
+		JsonObject object = new JsonObject();
 		object.put("version", "1.2");
 		object.put("diagram", "StateDiagram");
 		assertThrows(DeserializationException.class, () -> JsonDecoder.decode(object));

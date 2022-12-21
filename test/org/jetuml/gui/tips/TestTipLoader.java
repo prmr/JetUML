@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.jetuml.gui.tips.TipLoader.Tip;
-import org.json.JSONObject;
+import org.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ public class TestTipLoader
 	private static final String TIP_CONTENT_TEXT_FIELD = Media.TEXT.name().toLowerCase();
 	private static final String TIP_CONTENT_IMAGE_FIELD = Media.IMAGE.name().toLowerCase();
 	
-	private static JSONObject WELL_FORMATTED_TIP;
+	private static JsonObject WELL_FORMATTED_TIP;
 	private final static String WELL_FORMATTED_TIP_STRING = 
 			  "{"
 			+ " \"" + TIP_TITLE_FIELD + "\": \"First Tip\","
@@ -54,7 +54,7 @@ public class TestTipLoader
 	@BeforeAll
 	public static void setupClass()
 	{
-		WELL_FORMATTED_TIP = new JSONObject(WELL_FORMATTED_TIP_STRING);
+		WELL_FORMATTED_TIP = new JsonObject(WELL_FORMATTED_TIP_STRING);
 	}
 	
 	@Test
@@ -117,11 +117,11 @@ public class TestTipLoader
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
+	private static List<TipElement> convertJSONObjectToTipElements(JsonObject pTip)
 	{
 		try
 		{
-			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJSONObjectToTipElements", JSONObject.class);
+			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJSONObjectToTipElements", JsonObject.class);
 			method.setAccessible(true);
 			return (List<TipElement>) method.invoke(null, pTip);
 		}

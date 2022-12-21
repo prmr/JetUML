@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.jetuml.diagram.Diagram;
 import org.json.JsonException;
-import org.json.JSONObject;
+import org.json.JsonObject;
 
 /**
  * Services for saving and loading Diagram objects. The files are encoded
@@ -78,7 +78,7 @@ public final class PersistenceService
 		{
 			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
 			// Replace VersionMigrator.migrate with JSonDecoder.decode
-			return new VersionMigrator().migrate(new JSONObject(in.readLine())); 
+			return new VersionMigrator().migrate(new JsonObject(in.readLine())); 
 		}
 		catch( JsonException e )
 		{

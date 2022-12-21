@@ -27,7 +27,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
 import org.json.JsonArray;
-import org.json.JSONObject;
+import org.json.JsonObject;
 
 /**
  * Converts a graph to JSON notation. The notation includes:
@@ -44,11 +44,11 @@ public final class JsonEncoder
 	 * @param pDiagram The diagram to serialize.
 	 * @return A JSON object that encodes the diagram.
 	 */
-	public static JSONObject encode(Diagram pDiagram)
+	public static JsonObject encode(Diagram pDiagram)
 	{
 		assert pDiagram != null;
 		
-		JSONObject object = new JSONObject();
+		JsonObject object = new JsonObject();
 		object.put("version", JetUML.VERSION.toString());
 		object.put("diagram", pDiagram.getName());
 		SerializationContext context = new SerializationContext(pDiagram);
@@ -67,9 +67,9 @@ public final class JsonEncoder
 		return nodes;
 	}
 	
-	private static JSONObject encodeNode(Node pNode, SerializationContext pContext)
+	private static JsonObject encodeNode(Node pNode, SerializationContext pContext)
 	{
-		JSONObject object = toJSONObject(pNode.properties());
+		JsonObject object = toJSONObject(pNode.properties());
 		object.put("id", pContext.getId(pNode));
 		object.put("type", pNode.getClass().getSimpleName());
 		object.put("x", pNode.position().getX());
@@ -93,7 +93,7 @@ public final class JsonEncoder
 		JsonArray edges = new JsonArray();
 		for( Edge edge : pContext.pDiagram().edges() ) 
 		{
-			JSONObject object = toJSONObject(edge.properties());
+			JsonObject object = toJSONObject(edge.properties());
 			object.put("type", edge.getClass().getSimpleName());
 			object.put("start", pContext.getId(edge.getStart()));
 			object.put("end", pContext.getId(edge.getEnd()));
@@ -103,9 +103,9 @@ public final class JsonEncoder
 		return edges;
 	}
 	
-	private static JSONObject toJSONObject(Properties pProperties)
+	private static JsonObject toJSONObject(Properties pProperties)
 	{
-		JSONObject object = new JSONObject();
+		JsonObject object = new JsonObject();
 		for( Property property : pProperties )
 		{
 			Object value = property.get();
