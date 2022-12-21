@@ -1,33 +1,29 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ * 
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * http://www.gnu.org/licenses.
+ * 
+ * The code in this class was originally based on JSON.org.
+ * 
+ ******************************************************************************/
 package org.json;
 
 import static java.lang.Character.isWhitespace;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/*
-Copyright (c) 2002 JSON.org
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-The Software shall be used for Good, not Evil.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
 
 /**
  * An object to step through a string character by characters, with
@@ -44,11 +40,23 @@ public class JSONTokener
 	
 	private static final int NUMBER_OF_UNICODE_DIGITS = 4;
 	private static final int RADIX_HEXADECIMAL = 16;
+	
 	private static final char CHAR_UNICODE_ESCAPE = 'u';
 	private static final char CHAR_NEWLINE = '\n';
 	private static final char CHAR_CARRIAGE_RETURN = '\r';
 	private static final char CHAR_ESCAPE = '\\';
 	private static final char CHAR_QUOTE = '"';
+	private static final char CHAR_MINUS = '-';
+	private static final char CHAR_ZERO = '0';
+	private static final char CHAR_ONE = '1';
+	private static final char CHAR_NINE = '9';
+	private static final char CHAR_START_OBJECT = '{';
+	private static final char CHAR_START_ARRAY = '[';
+	private static final char CHAR_START_TRUE = 't';
+	private static final char CHAR_START_FALSE = 'f';
+	private static final char CHAR_START_NULL = 'n';
+	
+	private static final String VALUE_STRING_NULL = "null";
 	
 	static
 	{
@@ -266,52 +274,151 @@ public class JSONTokener
     		throw new JSONException("Invalid unicode");
     	}
     }
+    
+    /*
+     * Attempts to parse the next characters as a JSON boolean;
+     */
+    private Boolean nextBoolean()
+    {
+    	assert hasNext();
+    	String valueString = "";
+    	char next = next();
+    	assert next == CHAR_START_TRUE || next == CHAR_START_FALSE;
+    	if( next == Boolean.TRUE.toString().charAt(0) )
+    	{
+    		valueString = Boolean.TRUE.toString();
+    	}
+    	else
+    	{
+    		valueString = Boolean.FALSE.toString();
+    	}
+    	backUp();
+    	if( !hasMore(valueString.length() ))
+    	{
+    		throw new JSONException("Cannot parse " + valueString + " value");
+    	}
+    	if(next(valueString.length()).equals(valueString))
+    	{
+    		return Boolean.valueOf(valueString);
+    	}
+    	else
+    	{
+    		throw new JSONException("Cannot parse " + valueString + " value");
+    	}
+    }
+    
+    private Object nextNull()
+    {
+    	if(!hasMore(VALUE_STRING_NULL.length()))
+    	{
+    		throw new JSONException("Cannot parse null");
+    	}
+    	else if(next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
+    	{
+    		return JSONObject.NULL;
+    	}
+    	else
+    	{
+    		throw new JSONException("Cannot parse null");
+    	}
+    }
+    
+    /*
+     * @pre the next character is a valid integer start number
+     */
+    private Integer nextInteger()
+    {
+    	StringBuffer numberAsString = new StringBuffer();
+    	char next = next();
+    	assert startsInteger(next);
+    	numberAsString.append(next);
+    	while( hasNext() )
+    	{
+    		next = next();
+    		if( isDigit(next) )
+    		{
+    			numberAsString.append(next);
+    		}
+    		else
+    		{
+    			backUp();
+    			return parseInt(numberAsString.toString());
+    		}
+    	}
+    	return parseInt(numberAsString.toString());
+    }
+    
+    private static int parseInt(String pNumber)
+    {
+    	try
+    	{
+    		return Integer.parseInt(pNumber);
+    	}
+    	catch(NumberFormatException exception)
+    	{
+    		throw new JSONException("Illegal integer value: " + pNumber);
+    	}
+    }
+    
+    /*
+     * @return True if the character can be the valid first
+     * character of an integer, which is - or [1-9]
+     */
+    private static boolean startsInteger(char pCharacter)
+    {
+    	return pCharacter == CHAR_MINUS ||
+    			(pCharacter >= CHAR_ONE && pCharacter <= CHAR_NINE);
+    }
+    
+    private static boolean isDigit(char pCharacter)
+    {
+    	return pCharacter >= CHAR_ZERO && pCharacter <= CHAR_NINE;
+    }
 
     /**
      * Get the next value. The value can be a Boolean, Double, Integer,
      * JSONArray, JSONObject, Long, or String, or the JSONObject.NULL object.
+     * However, this implementation only support integers number formats.
      * @throws JSONException If syntax error.
      *
      * @return An object.
      */
     public Object nextValue()
     {
-        char c = nextNonWhitespace();
-        String string;
+        char next = nextNonWhitespace();
 
-        switch (c) 
+        if(next == CHAR_QUOTE)
         {
-        case '"':
-            return nextString();
-        case '{':
-            backUp();
-            return new JSONObject(this);
-        case '[':
-            backUp();
-            return new JSONArray(this);
+        	return nextString();
         }
-
-        /*
-         * Handle unquoted text. This could be the values true, false, or
-         * null, or it can be a number. An implementation (such as this one)
-         * is allowed to also accept non-standard forms.
-         *
-         * Accumulate characters until we reach the end of the text or a
-         * formatting character.
-         */
-
-        StringBuilder sb = new StringBuilder();
-        while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) 
+        else if(next == CHAR_START_OBJECT)
         {
-            sb.append(c);
-            c = next();
+        	backUp();
+        	return new JSONObject(this);
         }
-        backUp();
-
-        string = sb.toString().trim();
-        if ("".equals(string)) {
-            throw new JSONException("Missing value");
+        else if(next ==  CHAR_START_ARRAY)
+        {
+        	backUp();
+        	return new JSONArray(this);
         }
-        return JSONObject.stringToValue(string);
+        else if(next == CHAR_START_TRUE || next == CHAR_START_FALSE)
+        {
+        	backUp();
+        	return nextBoolean();
+        }
+        else if(next == CHAR_START_NULL )
+        {
+        	backUp();
+        	return nextNull();
+        }
+        else if(startsInteger(next))
+        {
+        	backUp();
+        	return nextInteger();
+        }
+        else
+        {
+        	throw new JSONException("Unsupported value");
+        }
     }
 }

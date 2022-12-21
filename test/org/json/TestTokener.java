@@ -374,6 +374,140 @@ public class TestTokener
 		testNextStringWithException(tokener);
 	}
 	
+	@Test
+	void testNextValue_String()
+	{
+		JSONTokener tokener = new JSONTokener("\"a\" : \"bc\"");
+		next(tokener,5);
+		assertEquals("bc", nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_true()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : true}");
+		next(tokener,6);
+		assertEquals(true, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_false()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : false}");
+		next(tokener,6);
+		assertEquals(false, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_null()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : null}");
+		next(tokener,6);
+		assertEquals(JSONObject.NULL, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_positiveInteger()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : 54}");
+		next(tokener,6);
+		assertEquals(54, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_negativeInteger()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");
+		next(tokener,6);
+		assertEquals(-54, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_object()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");
+		assertTrue(nextValue(tokener).getClass() == JSONObject.class);
+	}
+	
+	@Test
+	void testNextValue_array()
+	{
+		JSONTokener tokener = new JSONTokener("[]");
+		assertTrue(nextValue(tokener).getClass() == JSONArray.class);
+	}
+	
+	@Test
+	void testNextValue_NumberEndsBuffer()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : -54");
+		next(tokener,6);
+		assertEquals(-54, nextValue(tokener));
+	}
+	
+	@Test
+	void testNextValue_Invalid_IncompleteBoolean1()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : tru");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_IncompleteBoolean2()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : tru }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_IncompleteNull()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : nul");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_InvalidNull()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : nulx }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_UnrecognizedValue()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : xxx }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_NumberStartsWith0()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : 0123 }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_MinusNotANumber()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : -A123 }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
+	@Test
+	void testNextValue_Invalid_NumberOverflowsInt()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : 21474836470 }");
+		next(tokener,6);
+		testNextValueWithException(tokener);
+	}
+	
 	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
 	{
 		try 
@@ -434,6 +568,22 @@ public class TestTokener
 		}
 	}
 	
+	private static Object nextValue(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("nextValue");
+			method.setAccessible(true);
+			return method.invoke(pTokener);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			exception.printStackTrace();
+			fail();
+			return null;
+		}
+	}
+	
 	private static String nextString(JSONTokener pTokener)
 	{
 		try 
@@ -457,6 +607,31 @@ public class TestTokener
 		try 
 		{
 			Method method = JSONTokener.class.getDeclaredMethod("nextString");
+			method.setAccessible(true);
+			method.invoke(pTokener);
+			fail();
+		}
+		catch(InvocationTargetException exception)
+		{
+			if( exception.getTargetException().getClass() != org.json.JSONException.class)
+			{
+				fail();
+			}
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+		}
+	}
+	
+	/**
+	 * Checks that calling nextString throws a JSONException 
+	 */
+	private static void testNextValueWithException(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("nextValue");
 			method.setAccessible(true);
 			method.invoke(pTokener);
 			fail();
