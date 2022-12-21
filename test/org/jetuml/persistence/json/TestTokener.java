@@ -374,7 +374,7 @@ public class TestTokener
 	{
 		try 
 		{
-			Method method = JsonParser.class.getDeclaredMethod("nextString");
+			Method method = JsonParser.class.getDeclaredMethod("parseString");
 			method.setAccessible(true);
 			return (String) method.invoke(pTokener);
 		}
@@ -392,7 +392,7 @@ public class TestTokener
 	{
 		try 
 		{
-			Method method = JsonParser.class.getDeclaredMethod("nextString");
+			Method method = JsonParser.class.getDeclaredMethod("parseString");
 			method.setAccessible(true);
 			method.invoke(pTokener);
 			fail();
