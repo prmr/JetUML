@@ -672,7 +672,7 @@ public class TestTokener
 		}
 		catch(InvocationTargetException exception)
 		{
-			if( exception.getTargetException().getClass() != org.json.JSONException.class)
+			if( exception.getTargetException().getClass() != org.json.JsonException.class)
 			{
 				fail();
 			}
@@ -697,7 +697,7 @@ public class TestTokener
 		}
 		catch(InvocationTargetException exception)
 		{
-			if( exception.getTargetException().getClass() != org.json.JSONException.class)
+			if( exception.getTargetException().getClass() != org.json.JsonException.class)
 			{
 				fail();
 			}

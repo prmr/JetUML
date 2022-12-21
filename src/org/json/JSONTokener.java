@@ -198,13 +198,13 @@ public class JSONTokener
      * in single quotes, and they are not accepted by this method.
      * Strings are not allowed to span lines.
      * @return A string
-     * @throws JSONException If there's is an unanticipated error processing the string.
+     * @throws JsonException If there's is an unanticipated error processing the string.
      */
     private String nextString()
     {
     	if( !hasNext() )
     	{
-    		throw new JSONException("Unterminated string");
+    		throw new JsonException("Unterminated string");
     	}
     	
     	StringBuilder result = new StringBuilder();
@@ -213,7 +213,7 @@ public class JSONTokener
     		char next = next();
     		if( next == CHAR_NEWLINE || next == CHAR_CARRIAGE_RETURN )
     		{
-    			throw new JSONException("Newline in string");
+    			throw new JsonException("Newline in string");
     		}
     		else if(next == CHAR_ESCAPE )
     		{
@@ -228,7 +228,7 @@ public class JSONTokener
     			result.append(next);
     		}
     	}
-    	throw new JSONException("Unterminated string");
+    	throw new JsonException("Unterminated string");
     }
     
     /*
@@ -239,7 +239,7 @@ public class JSONTokener
     {
     	if( !hasNext() )
     	{
-    		throw new JSONException("Invalid escape sequence found");
+    		throw new JsonException("Invalid escape sequence found");
     	}
     	char next = next();
     	if( ESCAPE_CHARACTERS.containsKey(next))
@@ -252,7 +252,7 @@ public class JSONTokener
     	}
     	else
     	{
-    		throw new JSONException("Invalid escape sequence found");
+    		throw new JsonException("Invalid escape sequence found");
     	}
     }
     
@@ -264,7 +264,7 @@ public class JSONTokener
     {
     	if( !hasMore(NUMBER_OF_UNICODE_DIGITS) )
     	{
-    		throw new JSONException("Invalid escape sequence found");
+    		throw new JsonException("Invalid escape sequence found");
     	}
     	try
     	{
@@ -272,7 +272,7 @@ public class JSONTokener
     	}
     	catch( NumberFormatException exception )
     	{
-    		throw new JSONException("Invalid unicode");
+    		throw new JsonException("Invalid unicode");
     	}
     }
     
@@ -296,7 +296,7 @@ public class JSONTokener
     	backUp();
     	if( !hasMore(valueString.length() ))
     	{
-    		throw new JSONException("Cannot parse " + valueString + " value");
+    		throw new JsonException("Cannot parse " + valueString + " value");
     	}
     	if(next(valueString.length()).equals(valueString))
     	{
@@ -304,7 +304,7 @@ public class JSONTokener
     	}
     	else
     	{
-    		throw new JSONException("Cannot parse " + valueString + " value");
+    		throw new JsonException("Cannot parse " + valueString + " value");
     	}
     }
     
@@ -312,7 +312,7 @@ public class JSONTokener
     {
     	if(!hasMore(VALUE_STRING_NULL.length()))
     	{
-    		throw new JSONException("Cannot parse null");
+    		throw new JsonException("Cannot parse null");
     	}
     	else if(next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
     	{
@@ -320,7 +320,7 @@ public class JSONTokener
     	}
     	else
     	{
-    		throw new JSONException("Cannot parse null");
+    		throw new JsonException("Cannot parse null");
     	}
     }
     
@@ -355,13 +355,13 @@ public class JSONTokener
     	{
     		if( illegalNumber(pNumber) )
     		{
-    			throw new JSONException("Illegal integer value: " + pNumber);
+    			throw new JsonException("Illegal integer value: " + pNumber);
     		}
     		return Integer.parseInt(pNumber);
     	}
     	catch(NumberFormatException exception)
     	{
-    		throw new JSONException("Illegal integer value: " + pNumber);
+    		throw new JsonException("Illegal integer value: " + pNumber);
     	}
     }
     
@@ -400,7 +400,7 @@ public class JSONTokener
      * Get the next value. The value can be a Boolean, Double, Integer,
      * JSONArray, JSONObject, Long, or String, or the JSONObject.NULL object.
      * However, this implementation only support integers number formats.
-     * @throws JSONException If syntax error.
+     * @throws JsonException If syntax error.
      *
      * @return An object.
      */
@@ -439,7 +439,7 @@ public class JSONTokener
         }
         else
         {
-        	throw new JSONException("Unsupported value");
+        	throw new JsonException("Unsupported value");
         }
     }
     
@@ -449,13 +449,13 @@ public class JSONTokener
         
         if(nextNonWhitespace() != CHAR_START_OBJECT) 
         {
-            throw new JSONException("A JSONObject text must begin with '{'");
+            throw new JsonException("A JSONObject text must begin with '{'");
         }
         while(true)
         {
         	if( !hasMoreNonWhitespace())
         	{
-        		throw new JSONException("Incomplete object");
+        		throw new JsonException("Incomplete object");
         	}
         	char next = nextNonWhitespace();
         	if( next == CHAR_END_OBJECT )
@@ -468,7 +468,7 @@ public class JSONTokener
         		{
         			if( next != ',' )
         			{
-        				throw new JSONException("Missing comma");
+        				throw new JsonException("Missing comma");
         			}
         			else
         			{
@@ -477,26 +477,26 @@ public class JSONTokener
         		}
         		if( next != CHAR_QUOTE )
         		{
-        			throw new JSONException("Invalid key");
+        			throw new JsonException("Invalid key");
         		}
         	}
         	String key = nextString();
         	if( !hasMoreNonWhitespace() )
         	{
-        		throw new JSONException("Incomplete object");
+        		throw new JsonException("Incomplete object");
         	}
         	next = nextNonWhitespace();
         	if( next != CHAR_COLON )
         	{
-        		throw new JSONException("Expecting a key-value separator");
+        		throw new JsonException("Expecting a key-value separator");
         	}
         	if( object.has(key))
         	{
-        		throw new JSONException("Duplicate key");
+        		throw new JsonException("Duplicate key");
         	}
         	if( !hasMoreNonWhitespace() )
         	{
-        		throw new JSONException("Incomplete object");
+        		throw new JsonException("Incomplete object");
         	}
         	Object value = nextValue();
         	object.put(key, value);

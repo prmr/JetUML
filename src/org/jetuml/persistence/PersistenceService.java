@@ -31,7 +31,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 import org.jetuml.diagram.Diagram;
-import org.json.JSONException;
+import org.json.JsonException;
 import org.json.JSONObject;
 
 /**
@@ -80,7 +80,7 @@ public final class PersistenceService
 			// Replace VersionMigrator.migrate with JSonDecoder.decode
 			return new VersionMigrator().migrate(new JSONObject(in.readLine())); 
 		}
-		catch( JSONException e )
+		catch( JsonException e )
 		{
 			throw new DeserializationException("Cannot decode the file", e);
 		}

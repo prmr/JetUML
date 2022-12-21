@@ -27,7 +27,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Property;
 import org.jetuml.geom.Point;
 import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.JsonException;
 import org.json.JSONObject;
 
 /**
@@ -59,7 +59,7 @@ public final class JsonDecoder
 			context.attachNodes();
 			return diagram;
 		}
-		catch( JSONException | IllegalArgumentException exception )
+		catch( JsonException | IllegalArgumentException exception )
 		{
 			throw new DeserializationException("Cannot decode serialized object", exception);
 		}

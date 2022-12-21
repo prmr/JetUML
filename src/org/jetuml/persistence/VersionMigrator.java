@@ -34,7 +34,7 @@ import java.util.Set;
 import org.jetuml.JetUML;
 import org.jetuml.application.Version;
 import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.JsonException;
 import org.json.JSONObject;
 
 /**
@@ -78,7 +78,7 @@ public final class VersionMigrator
 		{
 			new VersionMigrator().migrate(new JSONObject(in.readLine()));
 		}
-		catch( JSONException e )
+		catch( JsonException e )
 		{
 			throw new DeserializationException("Cannot decode the file", e);
 		}
