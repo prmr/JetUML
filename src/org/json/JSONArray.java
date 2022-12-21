@@ -100,14 +100,14 @@ public class JSONArray implements Iterable<Object>
         this();
         if(pTokener.nextNonWhitespace() != '[')
         {
-            throw pTokener.syntaxError("A JSONArray text must start with '['");
+            throw new JSONException("A JSONArray text must start with '['");
         }
         
         char nextChar = pTokener.nextNonWhitespace();
         if(nextChar == 0) 
         {
             // array is unclosed. No ']' found, instead EOF
-            throw pTokener.syntaxError("Expected a ',' or ']'");
+            throw new JSONException("Expected a ',' or ']'");
         }
         if (nextChar != ']') {
             pTokener.backUp();
@@ -122,12 +122,12 @@ public class JSONArray implements Iterable<Object>
                 switch (pTokener.nextNonWhitespace()) {
                 case 0:
                     // array is unclosed. No ']' found, instead EOF
-                    throw pTokener.syntaxError("Expected a ',' or ']'");
+                    throw new JSONException("Expected a ',' or ']'");
                 case ',':
                     nextChar = pTokener.nextNonWhitespace();
                     if (nextChar == 0) {
                         // array is unclosed. No ']' found, instead EOF
-                        throw pTokener.syntaxError("Expected a ',' or ']'");
+                        throw new JSONException("Expected a ',' or ']'");
                     }
                     if (nextChar == ']') {
                         return;
@@ -137,7 +137,7 @@ public class JSONArray implements Iterable<Object>
                 case ']':
                     return;
                 default:
-                    throw pTokener.syntaxError("Expected a ',' or ']'");
+                    throw new JSONException("Expected a ',' or ']'");
                 }
             }
         }

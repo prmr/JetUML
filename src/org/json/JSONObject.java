@@ -187,13 +187,13 @@ public class JSONObject {
         String key;
 
         if (x.nextNonWhitespace() != '{') {
-            throw x.syntaxError("A JSONObject text must begin with '{'");
+            throw new JSONException("A JSONObject text must begin with '{'");
         }
         for (;;) {
             c = x.nextNonWhitespace();
             switch (c) {
             case 0:
-                throw x.syntaxError("A JSONObject text must end with '}'");
+                throw new JSONException("A JSONObject text must end with '}'");
             case '}':
                 return;
             default:
@@ -205,7 +205,7 @@ public class JSONObject {
 
             c = x.nextNonWhitespace();
             if (c != ':') {
-                throw x.syntaxError("Expected a ':' after a key");
+                throw new JSONException("Expected a ':' after a key");
             }
             
             // Use syntaxError(..) to include error location
@@ -214,7 +214,7 @@ public class JSONObject {
                 // Check if key exists
                 if (this.opt(key) != null) {
                     // key already exists
-                    throw x.syntaxError("Duplicate key \"" + key + "\"");
+                    throw new JSONException("Duplicate key \"" + key + "\"");
                 }
                 // Only add value if non-null
                 Object value = x.nextValue();
@@ -236,7 +236,7 @@ public class JSONObject {
             case '}':
                 return;
             default:
-                throw x.syntaxError("Expected a ',' or '}'");
+                throw new JSONException("Expected a ',' or '}'");
             }
         }
     }

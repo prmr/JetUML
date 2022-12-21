@@ -310,19 +310,8 @@ public class JSONTokener
 
         string = sb.toString().trim();
         if ("".equals(string)) {
-            throw syntaxError("Missing value");
+            throw new JSONException("Missing value");
         }
         return JSONObject.stringToValue(string);
-    }
-
-    /**
-     * Make a JSONException to signal a syntax error.
-     *
-     * @param message The error message.
-     * @return  A JSONException object, suitable for throwing
-     */
-    public JSONException syntaxError(String message) 
-    {
-        return new JSONException(message + toString());
     }
 }
