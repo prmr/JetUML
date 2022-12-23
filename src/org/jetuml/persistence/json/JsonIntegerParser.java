@@ -4,7 +4,7 @@ package org.jetuml.persistence.json;
  * Parses integer values in JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
-public final class JsonIntegerParser implements JsonValueParser
+final class JsonIntegerParser implements JsonValueParser
 {
 	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_ZERO = '0';

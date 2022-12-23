@@ -6,7 +6,7 @@ import java.util.List;
  * Parses any value in a JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
-public final class JsonAnyValueParser implements JsonValueParser
+final class JsonAnyValueParser implements JsonValueParser
 {
 	private static final List<JsonValueParser> PARSERS = List.of(
 			new JsonStringParser(),

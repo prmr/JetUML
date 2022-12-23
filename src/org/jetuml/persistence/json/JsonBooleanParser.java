@@ -4,7 +4,7 @@ package org.jetuml.persistence.json;
  * Parses boolean values in JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
-public final class JsonBooleanParser implements JsonValueParser
+final class JsonBooleanParser implements JsonValueParser
 {
 	@Override
 	public boolean isApplicable(ParsableCharacterBuffer pInput)

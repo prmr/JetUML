@@ -4,7 +4,7 @@ package org.jetuml.persistence.json;
  * Parses objects in JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
-public final class JsonObjectParser implements JsonValueParser
+final class JsonObjectParser implements JsonValueParser
 {
 	private static final JsonStringParser STRING_PARSER = new JsonStringParser();
 	private static final JsonAnyValueParser VALUE_PARSER = new JsonAnyValueParser();

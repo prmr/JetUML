@@ -9,7 +9,7 @@ import java.util.Map;
  * Parses strings in JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
-public final class JsonStringParser implements JsonValueParser
+final class JsonStringParser implements JsonValueParser
 {
 	/*
 	 * Maps a character in an escape (after the slash) to the escaped character,

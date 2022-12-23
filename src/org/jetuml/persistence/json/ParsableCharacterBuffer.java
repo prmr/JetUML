@@ -6,7 +6,7 @@ package org.jetuml.persistence.json;
  * for state-changing methods, this class accepts any input and 
  * throws a JsonException if the operation is illegal.
  */
-public class ParsableCharacterBuffer extends CharacterBuffer
+class ParsableCharacterBuffer extends CharacterBuffer
 {
 	/**
 	 * Creates a new ParsableCharacterBuffer with no character read.

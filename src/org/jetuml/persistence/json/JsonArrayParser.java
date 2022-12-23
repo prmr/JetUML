@@ -7,7 +7,7 @@ import java.util.List;
  * Parses arrays in JSON document according to the ECMA-404 2nd edition December
  * 2017.
  */
-public final class JsonArrayParser implements JsonValueParser
+final class JsonArrayParser implements JsonValueParser
 {
 	private static final JsonAnyValueParser VALUE_PARSER = new JsonAnyValueParser();
 	

@@ -1,6 +1,6 @@
 package org.jetuml.persistence.json;
 
-public interface JsonValueParser
+interface JsonValueParser
 {
 	boolean isApplicable(ParsableCharacterBuffer pInput);
 	
