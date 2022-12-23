@@ -65,7 +65,7 @@ public final class JsonStringUtilities
 			char next = pInput.next();
 			if (isISOControl(next))
 			{
-				throw new JsonException("Control character found while parsing string.");
+				throw new JsonParsingException(pInput.position());
 			}
 			else if (next == CHAR_ESCAPE)
 			{
@@ -81,7 +81,7 @@ public final class JsonStringUtilities
 				result.append(next);
 			}
 		}
-		throw new JsonException("Unterminated string");
+		throw new JsonParsingException(pInput.position());
 	}
 
 	/**
@@ -115,7 +115,7 @@ public final class JsonStringUtilities
 		}
 		else
 		{
-			throw new JsonException("Invalid escape sequence found");
+			throw new JsonParsingException(pInput.position());
 		}
 	}
 
@@ -141,7 +141,7 @@ public final class JsonStringUtilities
 	{
 		if (!pInput.hasMore(NUMBER_OF_UNICODE_DIGITS))
 		{
-			throw new JsonException("Invalid unicode");
+			throw new JsonParsingException(pInput.position());
 		}
 		try
 		{
@@ -149,7 +149,7 @@ public final class JsonStringUtilities
 		}
 		catch (NumberFormatException exception)
 		{
-			throw new JsonException("Invalid unicode");
+			throw new JsonParsingException(pInput.position());
 		}
 	}
 }

@@ -30,7 +30,7 @@ public class ParsableCharacterBuffer extends CharacterBuffer
 	{
 		if(!hasMore())
 		{
-			throw new JsonException("Attempting to read past the end of the buffer.");
+			throw new JsonParsingException(position());
 		}
 		return super.next();
 	}
@@ -63,7 +63,7 @@ public class ParsableCharacterBuffer extends CharacterBuffer
 	{
 		if( next() != pCharacter )
 		{
-			throw new JsonException(String.format("Expecting '%s' at position %d", pCharacter, position()));
+			throw new JsonParsingException(position());
 		}
 	}
 }

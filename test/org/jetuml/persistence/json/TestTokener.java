@@ -233,7 +233,7 @@ public class TestTokener
 		}
 		catch(InvocationTargetException exception)
 		{
-			if( exception.getTargetException().getClass() != org.jetuml.persistence.json.JsonException.class)
+			if( exception.getTargetException().getClass() != JsonParsingException.class)
 			{
 				fail();
 			}

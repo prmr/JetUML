@@ -95,52 +95,52 @@ public class TestJsonStringUtilities
 	@Test
 	void testNextString_Unterminated_OneCharacter()
 	{
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer("\"")));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer("\"")));
 	}
 	
 	@Test
 	void testNextString_Unterminated_MultipleCharacters()
 	{
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer("a\"bcd")));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer("a\"bcd")));
 	}
 	
 	@Test
 	void testNextString_NewLineInString1()
 	{
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer("\"a\nb\"")));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer("\"a\nb\"")));
 	}
 	
 	@Test
 	void testNextString_NewLineInString2()
 	{
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer("\"a\rb\"")));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer("\"a\rb\"")));
 	}
 	
 	@Test
 	void testNextString_IncompleteEscape()
 	{
 		char[] characters = {'"', 'a', '\\' };
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
 	}
 	
 	@Test
 	void testNextString_InvalidEscape()
 	{
 		char[] characters = {'"', 'a', '\\' , 'x'};
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
 	}
 	
 	@Test
 	void testNextString_MissingUnicodeDigits()
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3'};
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
 	}
 	
 	@Test
 	void testNextString_InvalidUnicodeDigits()
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
-		assertThrows(JsonException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
+		assertThrows(JsonParsingException.class, () -> parseString(new ParsableCharacterBuffer(new String(characters))));
 	}
 }

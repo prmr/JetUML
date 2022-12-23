@@ -82,7 +82,7 @@ public class JsonParser
     	aInput.backUp();
     	if( !aInput.hasMore(valueString.length() ))
     	{
-    		throw new JsonException("Cannot parse " + valueString + " value");
+    		throw new JsonParsingException(aInput.position());
     	}
     	if(aInput.next(valueString.length()).equals(valueString))
     	{
@@ -90,7 +90,7 @@ public class JsonParser
     	}
     	else
     	{
-    		throw new JsonException("Cannot parse " + valueString + " value");
+    		throw new JsonParsingException(aInput.position());
     	}
     }
     
@@ -118,19 +118,19 @@ public class JsonParser
     	return parseInt(numberAsString.toString());
     }
     
-    private static int parseInt(String pNumber)
+    private int parseInt(String pNumber)
     {
     	try
     	{
     		if( illegalNumber(pNumber) )
     		{
-    			throw new JsonException("Illegal integer value: " + pNumber);
+    			throw new JsonParsingException(aInput.position());
     		}
     		return Integer.parseInt(pNumber);
     	}
     	catch(NumberFormatException exception)
     	{
-    		throw new JsonException("Illegal integer value: " + pNumber);
+    		throw new JsonParsingException(aInput.position());
     	}
     }
     
@@ -204,7 +204,7 @@ public class JsonParser
         }
         else
         {
-        	throw new JsonException("Unsupported value");
+        	throw new JsonParsingException(aInput.position());
         }
     }
     

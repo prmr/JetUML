@@ -36,7 +36,7 @@ public class TestParsableCharacterBuffer
 		assertEquals('a', aBuffer.next());
 		assertEquals('b', aBuffer.next());
 		assertEquals('c', aBuffer.next());
-		assertThrows(JsonException.class, ()->aBuffer.next());
+		assertThrows(JsonParsingException.class, ()->aBuffer.next());
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class TestParsableCharacterBuffer
 	@Test
 	void testNext_Int_Error()
 	{
-		assertThrows(JsonException.class, ()->aBuffer.next(4));
+		assertThrows(JsonParsingException.class, ()->aBuffer.next(4));
 	}
 	
 	@Test
@@ -73,13 +73,13 @@ public class TestParsableCharacterBuffer
 	@Test
 	void testConsume_Incorrect()
 	{
-		assertThrows(JsonException.class, ()->aBuffer.consume('x'));
+		assertThrows(JsonParsingException.class, ()->aBuffer.consume('x'));
 	}
 	
 	@Test
 	void testConsume_ReadPastTheEnd()
 	{
 		aBuffer.next(3);
-		assertThrows(JsonException.class, ()->aBuffer.consume('x'));
+		assertThrows(JsonParsingException.class, ()->aBuffer.consume('x'));
 	}
 }
