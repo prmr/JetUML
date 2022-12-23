@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs referred to as
@@ -51,6 +52,15 @@ import java.util.Map.Entry;
  */
 public class JsonObject
 {
+	private static final Set<Class<?>> VALID_VALUE_TYPES = Set.of(
+			String.class,
+			Boolean.class,
+			boolean.class,
+			Integer.class,
+			int.class,
+			JsonObject.class,
+			JsonArray.class);
+	
 	/**
 	 * JSONObject.NULL is equivalent to the value that JavaScript calls null,
 	 * whilst Java's null is equivalent to the value that JavaScript calls
@@ -143,6 +153,26 @@ public class JsonObject
 		{
 			throw new JsonException(String.format("Attempting to retrieve an %s as a %s",
 					get(pName).getClass().getSimpleName(), pType.getSimpleName()));
+		}
+	}
+	
+	private void validateNotNull(String pName, Object pValue)
+	{
+		if(pName == null)
+		{
+			throw new JsonException("Null property name");
+		}
+		if(pValue == null)
+		{
+			throw new JsonException("Null property value");
+		}
+	}
+	
+	private void validateValueType(Object pValue)
+	{
+		if( !VALID_VALUE_TYPES.contains(pValue.getClass()) )
+		{
+			throw new JsonException("Invalid value type: " + pValue.getClass().getSimpleName());
 		}
 	}
 
@@ -244,8 +274,10 @@ public class JsonObject
 	/**
 	 * Determine if this object contains a given property.
 	 *
-	 * @param pName The property name
-	 * @return true if the key exists in the JSONObject.
+	 * @param pName The property name. Null is accepted but 
+	 * will always return false as it is not possible for
+	 * an object of this class to store a property with a null name.
+	 * @return true if the property exists in this object.
 	 */
 	public boolean hasProperty(String pName)
 	{
@@ -263,93 +295,19 @@ public class JsonObject
 	}
 
 	/**
-	 * Produce a string from a Number.
+	 * Adds a property to this object. Overrides any previous value associated with
+	 * the property name.
 	 *
-	 * @param number A Number
-	 * @return A String.
-	 * @throws JsonException If n is a non-finite number.
+	 * @param pName The name of the property. Should not be null.
+	 * @param pValue The value of the property. It should not be null and be of one of these
+	 * types: boolean/Boolean, int/Integer, JsonArray, JsonObject, or String.
+	 * @throws JsonException If the name is null or if the value is not of a valid type.
 	 */
-	public static String numberToString(Number number)
+	public void put(String pName, Object pValue)
 	{
-		if (number == null)
-		{
-			throw new JsonException("Null pointer");
-		}
-		testValidity(number);
-
-		// Shave off trailing zeros and decimal point, if possible.
-
-		String string = number.toString();
-		if (string.indexOf('.') > 0 && string.indexOf('e') < 0 && string.indexOf('E') < 0)
-		{
-			while (string.endsWith("0"))
-			{
-				string = string.substring(0, string.length() - 1);
-			}
-			if (string.endsWith("."))
-			{
-				string = string.substring(0, string.length() - 1);
-			}
-		}
-		return string;
-	}
-
-	/**
-	 * Put a key/boolean pair in the JSONObject.
-	 *
-	 * @param key A key string.
-	 * @param value A boolean which is the value.
-	 * @return this.
-	 * @throws JsonException If the key is null.
-	 */
-	public JsonObject put(String key, boolean value)
-	{
-		put(key, value ? Boolean.TRUE : Boolean.FALSE);
-		return this;
-	}
-
-	/**
-	 * Put a key/int pair in the JSONObject.
-	 *
-	 * @param key A key string.
-	 * @param value An int which is the value.
-	 * @return this.
-	 * @throws JsonException If the key is null.
-	 */
-	public JsonObject put(String key, int value)
-	{
-		put(key, Integer.valueOf(value));
-		return this;
-	}
-
-	/**
-	 * Put a key/value pair in the JSONObject. If the value is null, then the
-	 * key will be removed from the JSONObject if it is present.
-	 *
-	 * @param key A key string.
-	 * @param value An object which is the value. It should be of one of these
-	 * types: Boolean, Double, Integer, JSONArray, JSONObject, Long, String, or
-	 * the JSONObject.NULL object.
-	 * @return this.
-	 * @throws JsonException If the value is non-finite number or if the key is
-	 * null.
-	 */
-	public JsonObject put(String key, Object value)
-	{
-		if (key == null)
-		{
-			throw new NullPointerException("Null key.");
-		}
-		if (value != null)
-		{
-			testValidity(value);
-			aProperties.put(key, value);
-		}
-		else
-		{
-			remove(key);
-		}
-		return this;
+		validateNotNull(pName, pValue);
+		validateValueType(pValue);
+		aProperties.put(pName, pValue);
 	}
 
 	/*
@@ -444,18 +402,6 @@ public class JsonObject
 			}
 		}
 		pWriter.write('"');
-	}
-
-	/**
-	 * Remove a name and its value, if present.
-	 *
-	 * @param key The name to be removed.
-	 * @return The value that was associated with the name, or null if there was
-	 * no value.
-	 */
-	private Object remove(String key)
-	{
-		return this.aProperties.remove(key);
 	}
 
 	/**
@@ -748,4 +694,37 @@ public class JsonObject
 		}
 		return results;
 	}
+	
+	/*
+	 * Produce a string from a Number.
+	 *
+	 * @param number A Number
+	 * @return A String.
+	 * @throws JsonException If n is a non-finite number.
+	 */
+	private static String numberToString(Number number)
+	{
+		if (number == null)
+		{
+			throw new JsonException("Null pointer");
+		}
+		testValidity(number);
+
+		// Shave off trailing zeros and decimal point, if possible.
+
+		String string = number.toString();
+		if (string.indexOf('.') > 0 && string.indexOf('e') < 0 && string.indexOf('E') < 0)
+		{
+			while (string.endsWith("0"))
+			{
+				string = string.substring(0, string.length() - 1);
+			}
+			if (string.endsWith("."))
+			{
+				string = string.substring(0, string.length() - 1);
+			}
+		}
+		return string;
+	}
+
 }

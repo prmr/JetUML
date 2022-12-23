@@ -115,11 +115,11 @@ public final class JsonEncoder
 			}
 			else if( value instanceof Integer)
 			{
-				object.put(property.name().external(), (int) value);
+				object.put(property.name().external(), value);
 			}
 			else if( value instanceof Boolean)
 			{
-				object.put(property.name().external(), (boolean) value);
+				object.put(property.name().external(), value);
 			}
 		}
 		return object;
