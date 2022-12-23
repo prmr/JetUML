@@ -55,7 +55,7 @@ public class TestJsonAnyValueParser
 	void testParse_AsObject()
 	{
 		JsonObject result = (JsonObject) PARSER.parse(new ParsableCharacterBuffer("{ \"a\" : 3}"));
-		assertEquals(1, result.length());
+		assertEquals(1, result.numberOfProperties());
 		assertEquals(3, result.get("a"));
 	}
 	

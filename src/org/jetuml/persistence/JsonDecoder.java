@@ -72,7 +72,7 @@ public final class JsonDecoder
 	 */
 	private static void decodeNodes(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray nodes = pObject.getJSONArray("nodes");
+		JsonArray nodes = pObject.getJsonArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			try
@@ -114,14 +114,14 @@ public final class JsonDecoder
 	 */
 	private static void restoreChildren(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray nodes = pObject.getJSONArray("nodes");
+		JsonArray nodes = pObject.getJsonArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			JsonObject object = nodes.getJSONObject(i);
-			if( object.has("children"))
+			if( object.hasProperty("children"))
 			{
 				Node node = pContext.getNode( object.getInt("id"));
-				JsonArray children = object.getJSONArray("children");
+				JsonArray children = object.getJsonArray("children");
 				for( int j = 0; j < children.length(); j++ )
 				{
 					node.addChild(pContext.getNode(children.getInt(j)));
@@ -137,7 +137,7 @@ public final class JsonDecoder
 	 */
 	private static void decodeEdges(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray edges = pObject.getJSONArray("edges");
+		JsonArray edges = pObject.getJsonArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			try

@@ -139,8 +139,8 @@ public class TestJsonEncodingStateDiagram
 		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJSONArray("nodes").length());	
-		assertEquals(0, object.getJSONArray("edges").length());				
+		assertEquals(0, object.getJsonArray("nodes").length());	
+		assertEquals(0, object.getJsonArray("edges").length());				
 	}
 	
 	@Test
@@ -151,9 +151,9 @@ public class TestJsonEncodingStateDiagram
 		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(1, object.getJSONArray("nodes").length());	
-		assertEquals(0, object.getJSONArray("edges").length());	
-		JsonObject node = object.getJSONArray("nodes").getJSONObject(0);
+		assertEquals(1, object.getJsonArray("nodes").length());	
+		assertEquals(0, object.getJsonArray("edges").length());	
+		JsonObject node = object.getJsonArray("nodes").getJSONObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -171,16 +171,16 @@ public class TestJsonEncodingStateDiagram
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(4, object.getJSONArray("nodes").length());	
-		assertEquals(3, object.getJSONArray("edges").length());	
+		assertEquals(4, object.getJsonArray("nodes").length());	
+		assertEquals(3, object.getJsonArray("edges").length());	
 		
-		JsonArray nodes = object.getJSONArray("nodes");
+		JsonArray nodes = object.getJsonArray("nodes");
 		JsonObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));
 		JsonObject node2b = find(nodes, "StateNode", build(PropertyName.NAME, "End"));
 		JsonObject startb = find(nodes, "InitialStateNode", build());
 		JsonObject endb = find(nodes, "FinalStateNode", build());
 		
-		JsonArray edges = object.getJSONArray("edges");
+		JsonArray edges = object.getJsonArray("edges");
 		JsonObject edge1b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge1"));
 		JsonObject edge2b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge2"));
 		JsonObject edge3b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge3"));

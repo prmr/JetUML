@@ -104,7 +104,7 @@ public class TestTipJsons {
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
-			assertEquals(jObj.length(), 2);
+			assertEquals(jObj.numberOfProperties(), 2);
 		}
 	}
 	
@@ -136,9 +136,9 @@ public class TestTipJsons {
 			{
 				assertTrue(contentElement instanceof JsonObject);
 				JsonObject contentElementJsonObj = (JsonObject) contentElement;
-				assertEquals(contentElementJsonObj.length(), 1);
+				assertEquals(contentElementJsonObj.numberOfProperties(), 1);
 				
-				Set<String> tipMediaSet = contentElementJsonObj.keySet();
+				Set<String> tipMediaSet = contentElementJsonObj.toMap().keySet();
 				String tipMediaName = (String)tipMediaSet.toArray()[0];
 				assertTrue(contentElementJsonObj.get(tipMediaName) instanceof String);
 				try
@@ -158,7 +158,7 @@ public class TestTipJsons {
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
-			if(!jObj.has(pTipFieldName.asString()))
+			if(!jObj.hasProperty(pTipFieldName.asString()))
 			{
 				return false;
 			}

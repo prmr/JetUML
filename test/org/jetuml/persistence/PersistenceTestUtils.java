@@ -62,7 +62,7 @@ public final class PersistenceTestUtils
 	{
 		for( String key : pKeys )
 		{
-			assertTrue(pObject.has(key));
+			assertTrue(pObject.hasProperty(key));
 		}
 	}
 	
@@ -106,7 +106,7 @@ public final class PersistenceTestUtils
 			JsonObject object = pArray.getJSONObject(i);
 			for( Property property : pProperties )
 			{
-				if( !object.has(property.name().external()))
+				if( !object.hasProperty(property.name().external()))
 				{
 					match = false;
 				}

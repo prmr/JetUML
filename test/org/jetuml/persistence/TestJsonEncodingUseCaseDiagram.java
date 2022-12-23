@@ -102,8 +102,8 @@ public class TestJsonEncodingUseCaseDiagram
 		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJSONArray("nodes").length());	
-		assertEquals(0, object.getJSONArray("edges").length());				
+		assertEquals(0, object.getJsonArray("nodes").length());	
+		assertEquals(0, object.getJsonArray("edges").length());				
 	}
 	
 	@Test
@@ -114,9 +114,9 @@ public class TestJsonEncodingUseCaseDiagram
 		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(1, object.getJSONArray("nodes").length());	
-		assertEquals(0, object.getJSONArray("edges").length());	
-		JsonObject node = object.getJSONArray("nodes").getJSONObject(0);
+		assertEquals(1, object.getJsonArray("nodes").length());	
+		assertEquals(0, object.getJsonArray("edges").length());	
+		JsonObject node = object.getJsonArray("nodes").getJSONObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -134,14 +134,14 @@ public class TestJsonEncodingUseCaseDiagram
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(2, object.getJSONArray("nodes").length());	
-		assertEquals(1, object.getJSONArray("edges").length());	
+		assertEquals(2, object.getJsonArray("nodes").length());	
+		assertEquals(1, object.getJsonArray("edges").length());	
 		
-		JsonArray nodes = object.getJSONArray("nodes");
+		JsonArray nodes = object.getJsonArray("nodes");
 		JsonObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));
 		JsonObject useCase = find(nodes, "UseCaseNode", build(PropertyName.NAME, "Do it"));
 				
-		JsonArray edges = object.getJSONArray("edges");
+		JsonArray edges = object.getJsonArray("edges");
 		JsonObject edge1 = find(edges, "UseCaseAssociationEdge", build());
 
 		assertEquals(edge1.getInt("start"), actor.getInt("id"));

@@ -33,14 +33,14 @@ public class TestJsonObjectParser
 	void testParse_Empty()
 	{
 		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{}"));
-		assertEquals(0, result.length());
+		assertEquals(0, result.numberOfProperties());
 	}
 
 	@Test
 	void testParse_WithStringProperty()
 	{
 		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\"}"));
-		assertEquals(1, result.length());
+		assertEquals(1, result.numberOfProperties());
 		assertEquals("b", result.get("a"));
 	}
 
@@ -48,7 +48,7 @@ public class TestJsonObjectParser
 	void testParse_WithIntegerProperty()
 	{
 		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : 5  }"));
-		assertEquals(1, result.length());
+		assertEquals(1, result.numberOfProperties());
 		assertEquals(5, result.get("a"));
 	}
 
@@ -56,7 +56,7 @@ public class TestJsonObjectParser
 	void testParse_WithBooleanProperty()
 	{
 		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : true  }"));
-		assertEquals(1, result.length());
+		assertEquals(1, result.numberOfProperties());
 		assertEquals(true, result.get("a"));
 	}
 
@@ -64,7 +64,7 @@ public class TestJsonObjectParser
 	void testParse_WithTwoProperties()
 	{
 		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\", \"c\": 4  }"));
-		assertEquals(2, result.length());
+		assertEquals(2, result.numberOfProperties());
 		assertEquals("b", result.get("a"));
 		assertEquals(4, result.get("c"));
 	}

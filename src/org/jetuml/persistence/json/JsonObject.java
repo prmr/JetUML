@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs referred to as
@@ -41,6 +40,14 @@ import java.util.Set;
  * The values can be any of these types: Boolean, JsonArray, JsonObject,
  * Integer, String. Null values and non-integer number formats are not supported
  * by this implementation.
+ * 
+ * Any attempt at an illegal operation will raise a JsonException.
+ * 
+ * As an additional robustness feature, this class makes not type conversion.
+ * This means that values can only be obtained in the same type as they were put
+ * in. For example, putting a property "size" as a string will store it
+ * internally as a string, and attempting to retrieve it as an int will throw a
+ * JsonException.
  */
 public class JsonObject
 {
@@ -100,12 +107,13 @@ public class JsonObject
 		}
 	}
 
-	// HashMap is used on purpose to ensure that elements are unordered by
-	// the specification.
-	// JSON tends to be a portable transfer format to allows the container
-	// implementations to rearrange their items for a faster element
-	// retrieval based on associative access.
-	// Therefore, an implementation mustn't rely on the order of the item.
+	/*
+	 * HashMap is used on purpose to ensure that elements are unordered by the
+	 * specification. JSON tends to be a portable transfer format to allows the
+	 * container implementations to rearrange their items for a faster element
+	 * retrieval based on associative access. Therefore, an implementation
+	 * mustn't rely on the order of the item.
+	 */
 	private Map<String, Object> aProperties = new HashMap<>();
 
 	/**
@@ -128,10 +136,22 @@ public class JsonObject
 		}
 	}
 
+	private void validateValueType(String pName, Class<?> pType)
+	{
+		assert aProperties.containsKey(pName);
+		if (get(pName).getClass() != pType)
+		{
+			throw new JsonException(String.format("Attempting to retrieve an %s as a %s",
+					get(pName).getClass().getSimpleName(), pType.getSimpleName()));
+		}
+	}
+
 	/**
 	 * Construct a JsonObject with no property.
 	 */
-	public JsonObject() {}
+	public JsonObject()
+	{
+	}
 
 	/**
 	 * Get the value associated with a name.
@@ -151,114 +171,93 @@ public class JsonObject
 	 *
 	 * @param pName The property name
 	 * @return The integer value.
-	 * @throws JsonException if the key is null or not found or if the value cannot be
-	 * converted to an integer.
+	 * @throws JsonException if the key is null or not found or if the value was
+	 * not originally stored as an integer.
 	 */
 	public int getInt(String pName)
 	{
 		validateProperty(pName);
-		Object object = get(pName);
-		try
-		{
-			if(object instanceof Number)
-			{
-				return ((Number) object).intValue();
-			}
-			else
-			{
-				return Integer.parseInt((String) object);
-			}
-		}
-		catch(NumberFormatException e)
-		{
-			throw new JsonException("JSONObject[" + quote(pName) + "] is not an int.", e);
-		}
+		validateValueType(pName, Integer.class);
+		return (int) get(pName);
 	}
 
 	/**
-	 * Get the JSONArray value associated with a key.
+	 * Get a property value as a JsonArray.
 	 *
-	 * @param key A key string.
-	 * @return A JSONArray which is the value.
-	 * @throws JsonException if the key is not found or if the value is not a
-	 * JSONArray.
+	 * @param pName The property name
+	 * @return The JsonArray value.
+	 * @throws JsonException if the key is null or not found or if the value was
+	 * not originally stored as a JsonArray.
 	 */
-	public JsonArray getJSONArray(String key)
+	public JsonArray getJsonArray(String pName)
 	{
-		Object object = get(key);
-		if (object instanceof JsonArray)
-		{
-			return (JsonArray) object;
-		}
-		throw new JsonException("JSONObject[" + quote(key) + "] is not a JSONArray.");
+		validateProperty(pName);
+		validateValueType(pName, JsonArray.class);
+		return (JsonArray) get(pName);
 	}
-
+	
 	/**
-	 * Get the string associated with a key.
+	 * Get a property value as a JsonObject.
 	 *
-	 * @param key A key string.
-	 * @return A string which is the value.
-	 * @throws JsonException if there is no string value for the key.
+	 * @param pName The property name
+	 * @return The JsonObject value.
+	 * @throws JsonException if the key is null or not found or if the value was
+	 * not originally stored as a JsonObject.
 	 */
-	public String getString(String key)
+	public JsonObject getJsonObject(String pName)
 	{
-		Object object = get(key);
-		if (object instanceof String)
-		{
-			return (String) object;
-		}
-		throw new JsonException("JSONObject[" + quote(key) + "] not a string.");
+		validateProperty(pName);
+		validateValueType(pName, JsonObject.class);
+		return (JsonObject) get(pName);
 	}
 
 	/**
-	 * Determine if the JSONObject contains a specific key.
+	 * Get a property value as a String.
 	 *
-	 * @param key A key string.
+	 * @param pName The property name
+	 * @return The String value.
+	 * @throws JsonException if the key is null or not found or if the value was
+	 * not originally stored as a String.
+	 */
+	public String getString(String pName)
+	{
+		validateProperty(pName);
+		validateValueType(pName, String.class);
+		return (String) get(pName);
+	}
+	
+	/**
+	 * Get a property value as a boolean.
+	 *
+	 * @param pName The property name
+	 * @return The boolean value.
+	 * @throws JsonException if the key is null or not found or if the value was
+	 * not originally stored as a boolean.
+	 */
+	public boolean getBoolean(String pName)
+	{
+		validateProperty(pName);
+		validateValueType(pName, Boolean.class);
+		return (boolean) get(pName);
+	}
+
+	/**
+	 * Determine if this object contains a given property.
+	 *
+	 * @param pName The property name
 	 * @return true if the key exists in the JSONObject.
 	 */
-	public boolean has(String key)
+	public boolean hasProperty(String pName)
 	{
-		return aProperties.containsKey(key);
+		return aProperties.containsKey(pName);
 	}
 
 	/**
-	 * Get a set of keys of the JSONObject. Modifying this key Set will also
-	 * modify the JSONObject. Use with caution.
+	 * Get the number of properties stored by this object.
 	 *
-	 * @see Map#keySet()
-	 *
-	 * @return A keySet.
+	 * @return The number of properties in the object.
 	 */
-	// TODO : only used for testing.
-	public Set<String> keySet()
-	{
-		return aProperties.keySet();
-	}
-
-	/**
-	 * Get a set of entries of the JSONObject. These are raw values and may not
-	 * match what is returned by the JSONObject get* and opt* functions.
-	 * Modifying the returned EntrySet or the Entry objects contained therein
-	 * will modify the backing JSONObject. This does not return a clone or a
-	 * read-only view.
-	 * 
-	 * Use with caution.
-	 *
-	 * @see Map#entrySet()
-	 *
-	 * @return An Entry Set
-	 */
-	protected Set<Entry<String, Object>> entrySet()
-	{
-		return aProperties.entrySet();
-	}
-
-	/**
-	 * Get the number of keys stored in the JSONObject.
-	 *
-	 * @return The number of keys in the JSONObject.
-	 */
-	public int length()
+	public int numberOfProperties()
 	{
 		return aProperties.size();
 	}
@@ -354,12 +353,14 @@ public class JsonObject
 	}
 
 	/*
-	 * Converts the input string to a version in double quotes with backslash sequences in all the
-	 * right places. A backslash will be inserted within </, producing <\/,
-	 * allowing JSON text to be delivered in HTML. In JSON text, a string cannot
-	 * contain a control character or an unescaped quote or backslash.
+	 * Converts the input string to a version in double quotes with backslash
+	 * sequences in all the right places. A backslash will be inserted within
+	 * </, producing <\/, allowing JSON text to be delivered in HTML. In JSON
+	 * text, a string cannot contain a control character or an unescaped quote
+	 * or backslash.
 	 *
 	 * @param string A String
+	 * 
 	 * @return A String correctly formatted for insertion in a JSON text.
 	 */
 	private static String quote(String string)
@@ -645,12 +646,12 @@ public class JsonObject
 		try
 		{
 			boolean commanate = false;
-			final int length = this.length();
+			final int length = this.numberOfProperties();
 			writer.write('{');
 
 			if (length == 1)
 			{
-				final Entry<String, ?> entry = this.entrySet().iterator().next();
+				final Entry<String, ?> entry = aProperties.entrySet().iterator().next();
 				final String key = entry.getKey();
 				writer.write(quote(key));
 				writer.write(':');
@@ -670,7 +671,7 @@ public class JsonObject
 			else if (length != 0)
 			{
 				final int newindent = indent + indentFactor;
-				for (final Entry<String, ?> entry : this.entrySet())
+				for (final Entry<String, ?> entry : aProperties.entrySet())
 				{
 					if (commanate)
 					{
@@ -724,7 +725,7 @@ public class JsonObject
 	public Map<String, Object> toMap()
 	{
 		Map<String, Object> results = new HashMap<>();
-		for (Entry<String, Object> entry : this.entrySet())
+		for (Entry<String, Object> entry : aProperties.entrySet())
 		{
 			Object value;
 			if (entry.getValue() == null || NULL.equals(entry.getValue()))

@@ -36,7 +36,7 @@ final class JsonObjectParser implements JsonValueParser
             	return object;
             }
             
-            if(object.entrySet().size() > 0)
+            if(object.numberOfProperties() > 0)
             {
             	pInput.consume(CHAR_COMMA);
             	pInput.skipBlanks();
@@ -47,7 +47,7 @@ final class JsonObjectParser implements JsonValueParser
         	pInput.consume(CHAR_COLON);
         	pInput.skipBlanks();
 			Object value = VALUE_PARSER.parse(pInput);
-			if( object.has(key))
+			if( object.hasProperty(key))
 			{
 				throw new JsonParsingException(pInput.position());
 			}
