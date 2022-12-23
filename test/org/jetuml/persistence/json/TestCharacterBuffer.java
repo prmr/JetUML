@@ -83,15 +83,6 @@ public class TestCharacterBuffer
 	}
 	
 	@Test
-	void testNext_Int()
-	{
-		assertEquals("abc", aBuffer1.next(3));
-		assertEquals("\nd", aBuffer1.next(2));
-		assertEquals("e\r\b\f", aBuffer1.next(4));
-		assertEquals("fg h", aBuffer1.next(4));
-	}
-	
-	@Test
 	void testNext()
 	{
 		assertEquals('a', aBuffer1.next());

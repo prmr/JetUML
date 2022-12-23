@@ -75,7 +75,7 @@ public class JsonParser
 	}
 	
 	/* Complete input to traverse. */
-	private final CharacterBuffer aInput;
+	private final ParsableCharacterBuffer aInput;
 	
     /**
      * Constructs a new JsonParser initialized at the beginning of the input.
@@ -86,18 +86,7 @@ public class JsonParser
     public JsonParser(String pInput) 
     {
     	assert pInput != null;
-        aInput = new CharacterBuffer(pInput.trim());
-    }
-    
-    /*
-     * Check that the next non-blank character is pSymbol, and read it.
-     */
-    private void consume(char pSymbol)
-    {
-    	if(!aInput.hasMore() || aInput.next() != pSymbol)
-    	{
-    		throw new JsonException(String.format("Expecting '%s' at position %d", pSymbol, aInput.position()));
-    	}
+        aInput = new ParsableCharacterBuffer(pInput.trim());
     }
     
     /**
@@ -112,7 +101,7 @@ public class JsonParser
      */
     private String parseString()
     {
-    	consume(CHAR_QUOTE);
+    	aInput.consume(CHAR_QUOTE);
     	
     	StringBuilder result = new StringBuilder();
     	while(aInput.hasMore())
@@ -329,36 +318,31 @@ public class JsonParser
         }
     }
     
-    private void whitespace()
-    {
-    	aInput.skipBlanks();
-    }
-    
     private JsonObject parseObject() 
     {
         JsonObject object = new JsonObject();
         
-        consume(CHAR_START_OBJECT);
+        aInput.consume(CHAR_START_OBJECT);
 			
         while(true)
 		{
-        	whitespace();
+        	aInput.skipBlanks();
             if( aInput.isNext(CHAR_END_OBJECT))
             {
-            	consume(CHAR_END_OBJECT);
+            	aInput.consume(CHAR_END_OBJECT);
             	return object;
             }
             
             if(object.entrySet().size() > 0)
             {
-            	consume(CHAR_COMMA);
-            	whitespace();
+            	aInput.consume(CHAR_COMMA);
+            	aInput.skipBlanks();
             }
        
         	String key = parseString();
-        	whitespace();
-			consume(CHAR_COLON);
-			whitespace();
+        	aInput.skipBlanks();
+			aInput.consume(CHAR_COLON);
+			aInput.skipBlanks();
 			Object value = nextValue();
 			if( object.has(key))
 			{
@@ -375,20 +359,20 @@ public class JsonParser
     {
         List<Object> values = new ArrayList<>();
         
-        consume(CHAR_START_ARRAY);
+        aInput.consume(CHAR_START_ARRAY);
         
         while(true)
         {
-        	whitespace();
+        	aInput.skipBlanks();
         	if(aInput.isNext(CHAR_END_ARRAY))
         	{
-        		consume(CHAR_END_ARRAY);
+        		aInput.consume(CHAR_END_ARRAY);
         		return new JsonArray(values);
         	}
         	if( values.size() > 0 )
         	{
-        		consume(CHAR_COMMA);
-        		whitespace();
+        		aInput.consume(CHAR_COMMA);
+        		aInput.skipBlanks();
         	}
         	values.add(nextValue());
         }
