@@ -20,8 +20,6 @@
  ******************************************************************************/
 package org.jetuml.persistence.json;
 
-import static org.jetuml.persistence.json.JsonStringUtilities.parseString;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,8 @@ import java.util.List;
  */
 public class JsonParser 
 {
-	private static final char CHAR_QUOTE = '"';
+	private static final JsonStringParser STRING_PARSER = new JsonStringParser();
+	
 	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_COMMA = ',';
 	private static final char CHAR_ZERO = '0';
@@ -182,9 +181,9 @@ public class JsonParser
      */
     private Object nextValue()
     {
-    	if(aInput.isNext(CHAR_QUOTE))
+    	if(STRING_PARSER.isApplicable(aInput))
         {
-        	return parseString(aInput);
+        	return STRING_PARSER.parse(aInput);
         }
     	else if(aInput.isNext(CHAR_START_OBJECT))
         {
@@ -229,7 +228,7 @@ public class JsonParser
             	aInput.skipBlanks();
             }
        
-        	String key = parseString(aInput);
+        	String key = STRING_PARSER.parse(aInput);
         	aInput.skipBlanks();
 			aInput.consume(CHAR_COLON);
 			aInput.skipBlanks();
