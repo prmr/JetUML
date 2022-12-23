@@ -1,0 +1,100 @@
+package org.jetuml.persistence.json;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+public class TestJsonObjectParser
+{
+	private static final JsonObjectParser PARSER = new JsonObjectParser();
+
+	@Test
+	void testIsApplicable_Empty()
+	{
+		assertFalse(PARSER.isApplicable(new ParsableCharacterBuffer("")));
+	}
+
+	@Test
+	void testIsApplicable_SingleOpening()
+	{
+		assertTrue(PARSER.isApplicable(new ParsableCharacterBuffer("{")));
+	}
+
+	@Test
+	void testIsApplicable_SingleFalse()
+	{
+		assertFalse(PARSER.isApplicable(new ParsableCharacterBuffer(" ")));
+	}
+
+	@Test
+	void testParse_Empty()
+	{
+		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{}"));
+		assertEquals(0, result.length());
+	}
+
+	@Test
+	void testParse_WithStringProperty()
+	{
+		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\"}"));
+		assertEquals(1, result.length());
+		assertEquals("b", result.get("a"));
+	}
+
+	@Test
+	void testParse_WithIntegerProperty()
+	{
+		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : 5  }"));
+		assertEquals(1, result.length());
+		assertEquals(5, result.get("a"));
+	}
+
+	@Test
+	void testParse_WithBooleanProperty()
+	{
+		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : true  }"));
+		assertEquals(1, result.length());
+		assertEquals(true, result.get("a"));
+	}
+
+	@Test
+	void testParse_WithTwoProperties()
+	{
+		JsonObject result = PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\", \"c\": 4  }"));
+		assertEquals(2, result.length());
+		assertEquals("b", result.get("a"));
+		assertEquals(4, result.get("c"));
+	}
+
+	@Test
+	void testParse_DuplicateKey()
+	{
+		assertThrows(JsonParsingException.class,
+				() -> PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\", \"a\": 4  }")));
+	}
+	
+	@Test
+	void testParse_NotClosed()
+	{
+		assertThrows(JsonParsingException.class,
+				() -> PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\", \"a\": 4  ")));
+	}
+	
+	@Test
+	void testParse_MissingColon()
+	{
+		assertThrows(JsonParsingException.class,
+				() -> PARSER.parse(new ParsableCharacterBuffer("{\"a\"  \"b\", \"a\": 4  }")));
+	}
+	
+	@Test
+	void testParse_MissingComma()
+	{
+		assertThrows(JsonParsingException.class,
+				() -> PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\" \"a\": 4  }")));
+	}
+
+}

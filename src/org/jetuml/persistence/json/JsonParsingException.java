@@ -37,7 +37,7 @@ public class JsonParsingException extends RuntimeException
      */
     public JsonParsingException(int pPosition) 
     {
-        super(String.format("Invalid JSON text at character position: ", pPosition));
+        super(String.format("Invalid JSON text at character position: %d", pPosition));
         aPosition = pPosition;
     }
     
