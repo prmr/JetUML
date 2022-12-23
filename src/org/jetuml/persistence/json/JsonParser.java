@@ -34,11 +34,9 @@ public class JsonParser
 {
 	private static final JsonStringParser STRING_PARSER = new JsonStringParser();
 	private static final JsonBooleanParser BOOLEAN_PARSER = new JsonBooleanParser();
+	private static final JsonIntegerParser INTEGER_PARSER = new JsonIntegerParser();
 	
-	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_COMMA = ',';
-	private static final char CHAR_ZERO = '0';
-	private static final char CHAR_NINE = '9';
 	private static final char CHAR_START_OBJECT = '{';
 	private static final char CHAR_END_OBJECT = '}';
 	private static final char CHAR_START_ARRAY = '[';
@@ -58,84 +56,6 @@ public class JsonParser
     {
     	assert pInput != null;
         aInput = new ParsableCharacterBuffer(pInput.trim());
-    }
-    
-    /*
-     * @pre the next character is a valid integer start number
-     */
-    private Integer nextInteger()
-    {
-    	StringBuffer numberAsString = new StringBuffer();
-    	char next = aInput.next();
-    	numberAsString.append(next);
-    	while( aInput.hasMore() )
-    	{
-    		next = aInput.next();
-    		if( isDigit(next) )
-    		{
-    			numberAsString.append(next);
-    		}
-    		else
-    		{
-    			aInput.backUp();
-    			return parseInt(numberAsString.toString());
-    		}
-    	}
-    	return parseInt(numberAsString.toString());
-    }
-    
-    private int parseInt(String pNumber)
-    {
-    	try
-    	{
-    		if( illegalNumber(pNumber) )
-    		{
-    			throw new JsonParsingException(aInput.position());
-    		}
-    		return Integer.parseInt(pNumber);
-    	}
-    	catch(NumberFormatException exception)
-    	{
-    		throw new JsonParsingException(aInput.position());
-    	}
-    }
-    
-    private static boolean illegalNumber(String pNumber)
-    {
-    	if(pNumber.isBlank())
-    	{
-    		return true;
-    	}
-    	if(pNumber.startsWith("-0"))
-    	{
-    		return true;
-    	}
-    	if( pNumber.length() >=2 && pNumber.charAt(0) == CHAR_ZERO && isDigit(pNumber.charAt(1)))
-    	{
-    		return true;
-    	}
-    	return false;
-    }
-    
-    /*
-     * @return True if the next non-blank character can be the valid first
-     * character of an integer, which is - or [1-9]
-     */
-    private boolean startsInteger()
-    {
-    	aInput.skipBlanks();
-    	if (!aInput.hasMore() )
-    	{
-    		return false;
-    	}
-    	char next = aInput.next();
-    	aInput.backUp();
-		return next == CHAR_MINUS || isDigit(next);
-    }
-    
-    private static boolean isDigit(char pCharacter)
-    {
-    	return pCharacter >= CHAR_ZERO && pCharacter <= CHAR_NINE;
     }
     
     /**
@@ -164,9 +84,9 @@ public class JsonParser
         {
         	return BOOLEAN_PARSER.parse(aInput);
         }
-        else if(startsInteger())
+        else if(INTEGER_PARSER.isApplicable(aInput))
         {
-        	return nextInteger();
+        	return INTEGER_PARSER.parse(aInput);
         }
         else
         {

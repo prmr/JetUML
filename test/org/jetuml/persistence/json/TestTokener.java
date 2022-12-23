@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 
 public class TestTokener
 {
-
-	
 	@Test
 	void testNextValue_String()
 	{
@@ -50,7 +48,7 @@ public class TestTokener
 	void testNextValue_positiveInteger()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 54}");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(54, nextValue(tokener));
 	}
 	
@@ -58,7 +56,7 @@ public class TestTokener
 	void testNextValue_negativeInteger()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : -54}");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(-54, nextValue(tokener));
 	}
 	
@@ -66,7 +64,7 @@ public class TestTokener
 	void testNextValue_Zero()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : 0}");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(0, nextValue(tokener));
 	}
 	
@@ -88,7 +86,7 @@ public class TestTokener
 	void testNextValue_NumberEndsBuffer()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : -54");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(-54, nextValue(tokener));
 	}
 	
