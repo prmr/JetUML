@@ -38,52 +38,6 @@ public final class JsonStringParser implements JsonValueParser
 		ESCAPE_CHARACTERS.put('/', '/');
 	}
 
-//	/**
-//	 * Attempts to retrieve a valid JSON string from pBuffer by reading
-//	 * characters starting at the next available position, or throws an
-//	 * exception. This method has a side effect on the character buffer. For
-//	 * this method to succeed, the first character in the buffer must be the
-//	 * quote character '"' (\u0022), but it is not necessary for the last
-//	 * character to also be a quote. Characters beyond the closing quote will
-//	 * simply not be read. The buffer will be left at the position of the
-//	 * closing quote.
-//	 * 
-//	 * @param pInput A buffer from which to read a string.
-//	 * @return A valid string
-//	 * @pre pInput != null
-//	 * @throws JsonException if it is not possible to parse a string from
-//	 * pInput.
-//	 */
-//	public static String parseString(ParsableCharacterBuffer pInput)
-//	{
-//		assert pInput != null;
-//		pInput.consume(CHAR_QUOTE);
-//
-//		StringBuilder result = new StringBuilder();
-//		while (pInput.hasMore())
-//		{
-//			char next = pInput.next();
-//			if (isISOControl(next))
-//			{
-//				throw new JsonParsingException(pInput.position());
-//			}
-//			else if (next == CHAR_ESCAPE)
-//			{
-//				pInput.backUp();
-//				result.append(parseEscape(pInput));
-//			}
-//			else if (next == CHAR_QUOTE)
-//			{
-//				return result.toString();
-//			}
-//			else
-//			{
-//				result.append(next);
-//			}
-//		}
-//		throw new JsonParsingException(pInput.position());
-//	}
-
 	/*
 	 * Attempts to retrieve a valid JSON escaped character by reading characters
 	 * starting at the next available position, or throws an exception. This

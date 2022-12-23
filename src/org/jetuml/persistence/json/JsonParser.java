@@ -33,6 +33,7 @@ import java.util.List;
 public class JsonParser 
 {
 	private static final JsonStringParser STRING_PARSER = new JsonStringParser();
+	private static final JsonBooleanParser BOOLEAN_PARSER = new JsonBooleanParser();
 	
 	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_COMMA = ',';
@@ -42,8 +43,6 @@ public class JsonParser
 	private static final char CHAR_END_OBJECT = '}';
 	private static final char CHAR_START_ARRAY = '[';
 	private static final char CHAR_END_ARRAY = ']';
-	private static final char CHAR_START_TRUE = 't';
-	private static final char CHAR_START_FALSE = 'f';
 	private static final char CHAR_COLON = ':';
 	
 	/* Complete input to traverse. */
@@ -59,38 +58,6 @@ public class JsonParser
     {
     	assert pInput != null;
         aInput = new ParsableCharacterBuffer(pInput.trim());
-    }
-    
-    /*
-     * Attempts to parse the next characters as a JSON boolean;
-     */
-    private Boolean nextBoolean()
-    {
-    	assert aInput.hasMore();
-    	String valueString = "";
-    	char next = aInput.next();
-    	assert next == CHAR_START_TRUE || next == CHAR_START_FALSE;
-    	if( next == Boolean.TRUE.toString().charAt(0) )
-    	{
-    		valueString = Boolean.TRUE.toString();
-    	}
-    	else
-    	{
-    		valueString = Boolean.FALSE.toString();
-    	}
-    	aInput.backUp();
-    	if( !aInput.hasMore(valueString.length() ))
-    	{
-    		throw new JsonParsingException(aInput.position());
-    	}
-    	if(aInput.next(valueString.length()).equals(valueString))
-    	{
-    		return Boolean.valueOf(valueString);
-    	}
-    	else
-    	{
-    		throw new JsonParsingException(aInput.position());
-    	}
     }
     
     /*
@@ -193,9 +160,9 @@ public class JsonParser
         {
         	return parseArray();
         }
-        else if(aInput.isNext(CHAR_START_TRUE) || aInput.isNext(CHAR_START_FALSE))
+        else if(BOOLEAN_PARSER.isApplicable(aInput))
         {
-        	return nextBoolean();
+        	return BOOLEAN_PARSER.parse(aInput);
         }
         else if(startsInteger())
         {
