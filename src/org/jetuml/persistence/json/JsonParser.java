@@ -20,10 +20,10 @@
  ******************************************************************************/
 package org.jetuml.persistence.json;
 
+import static org.jetuml.persistence.json.JsonStringUtilities.parseString;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An object to step through a string character by characters, with
@@ -34,19 +34,6 @@ import java.util.Map;
  */
 public class JsonParser 
 {
-	/*
-	 * Maps a character in an escape (after the slash) to the escaped character,
-	 * e.g., b -> \b
-	 */
-	private static final Map<Character,Character> ESCAPE_CHARACTERS = new HashMap<>();
-	
-	private static final int NUMBER_OF_UNICODE_DIGITS = 4;
-	private static final int RADIX_HEXADECIMAL = 16;
-	
-	private static final char CHAR_UNICODE_ESCAPE = 'u';
-	private static final char CHAR_NEWLINE = '\n';
-	private static final char CHAR_CARRIAGE_RETURN = '\r';
-	private static final char CHAR_ESCAPE = '\\';
 	private static final char CHAR_QUOTE = '"';
 	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_COMMA = ',';
@@ -59,20 +46,6 @@ public class JsonParser
 	private static final char CHAR_START_TRUE = 't';
 	private static final char CHAR_START_FALSE = 'f';
 	private static final char CHAR_COLON = ':';
-	
-	static
-	{
-		// The first five are re-escaped
-		ESCAPE_CHARACTERS.put('b','\b');
-		ESCAPE_CHARACTERS.put('t','\t');
-		ESCAPE_CHARACTERS.put('n','\n');
-		ESCAPE_CHARACTERS.put('f','\f');
-		ESCAPE_CHARACTERS.put('r','\r');
-		// The last three remain unescaped
-		ESCAPE_CHARACTERS.put('"','"');
-		ESCAPE_CHARACTERS.put('\\','\\');
-		ESCAPE_CHARACTERS.put('/','/');
-	}
 	
 	/* Complete input to traverse. */
 	private final ParsableCharacterBuffer aInput;
@@ -87,89 +60,6 @@ public class JsonParser
     {
     	assert pInput != null;
         aInput = new ParsableCharacterBuffer(pInput.trim());
-    }
-    
-    /**
-     * Return the characters up to the next quote character. For 
-     * a given string, the first (opening) quote character should 
-     * already have been read. This method is intended to properly 
-     * process escapes. The formal JSON format does not allow strings
-     * in single quotes, and they are not accepted by this method.
-     * Strings are not allowed to span lines.
-     * @return A string
-     * @throws JsonException If there's is an unanticipated error processing the string.
-     */
-    private String parseString()
-    {
-    	aInput.consume(CHAR_QUOTE);
-    	
-    	StringBuilder result = new StringBuilder();
-    	while(aInput.hasMore())
-    	{
-    		char next = aInput.next();
-    		if( next == CHAR_NEWLINE || next == CHAR_CARRIAGE_RETURN )
-    		{
-    			throw new JsonException("Newline in string");
-    		}
-    		else if(next == CHAR_ESCAPE )
-    		{
-    			result.append(nextEscaped());
-    		}
-    		else if(next == CHAR_QUOTE )
-    		{
-    			return result.toString();
-    		}
-    		else
-    		{
-    			result.append(next);
-    		}
-    	}
-    	throw new JsonException("Unterminated string");
-    }
-    
-    /*
-     * Call after the escaping character '\' is detected in 
-     * the input, to complete the decoding of the escaped character.
-     */
-    private char nextEscaped()
-    {
-    	if( !aInput.hasMore() )
-    	{
-    		throw new JsonException("Invalid escape sequence found");
-    	}
-    	char next = aInput.next();
-    	if( ESCAPE_CHARACTERS.containsKey(next))
-    	{
-    		return ESCAPE_CHARACTERS.get(next);
-    	}
-    	else if( next == CHAR_UNICODE_ESCAPE ) 
-    	{
-    		return nextUnicode();
-    	}
-    	else
-    	{
-    		throw new JsonException("Invalid escape sequence found");
-    	}
-    }
-    
-    /*
-     * Call after the escaping characters '\' and 'u' are detected in 
-     * the input, to complete the decoding of the escaped unicode character.
-     */
-    private char nextUnicode()
-    {
-    	if( !aInput.hasMore(NUMBER_OF_UNICODE_DIGITS) )
-    	{
-    		throw new JsonException("Invalid escape sequence found");
-    	}
-    	try
-    	{
-    		return (char) Integer.parseInt(aInput.next(NUMBER_OF_UNICODE_DIGITS), RADIX_HEXADECIMAL);
-    	}
-    	catch( NumberFormatException exception )
-    	{
-    		throw new JsonException("Invalid unicode");
-    	}
     }
     
     /*
@@ -294,7 +184,7 @@ public class JsonParser
     {
     	if(aInput.isNext(CHAR_QUOTE))
         {
-        	return parseString();
+        	return parseString(aInput);
         }
     	else if(aInput.isNext(CHAR_START_OBJECT))
         {
@@ -339,7 +229,7 @@ public class JsonParser
             	aInput.skipBlanks();
             }
        
-        	String key = parseString();
+        	String key = parseString(aInput);
         	aInput.skipBlanks();
 			aInput.consume(CHAR_COLON);
 			aInput.skipBlanks();
