@@ -31,7 +31,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a
@@ -88,60 +87,6 @@ public class JsonArray implements Iterable<Object>
     {
         aElements = new ArrayList<>();
     }
-
-//    /**
-//     * Construct a JSONArray from a JSONTokener.
-//     *
-//     * @param pTokener A JSONTokener
-//     * @throws JsonException If there is a syntax error.
-//     */
-//    public JsonArray(JsonParser pTokener) 
-//    {
-//        this();
-//        if(pTokener.nextNonWhitespace() != '[')
-//        {
-//            throw new JsonException("A JSONArray text must start with '['");
-//        }
-//        
-//        char nextChar = pTokener.nextNonWhitespace();
-//        if(nextChar == 0) 
-//        {
-//            // array is unclosed. No ']' found, instead EOF
-//            throw new JsonException("Expected a ',' or ']'");
-//        }
-//        if (nextChar != ']') {
-//            pTokener.backUp();
-//            for (;;) {
-//                if (pTokener.nextNonWhitespace() == ',') {
-//                    pTokener.backUp();
-//                    this.aElements.add(JsonObject.NULL);
-//                } else {
-//                    pTokener.backUp();
-//                    this.aElements.add(pTokener.nextValue());
-//                }
-//                switch (pTokener.nextNonWhitespace()) {
-//                case 0:
-//                    // array is unclosed. No ']' found, instead EOF
-//                    throw new JsonException("Expected a ',' or ']'");
-//                case ',':
-//                    nextChar = pTokener.nextNonWhitespace();
-//                    if (nextChar == 0) {
-//                        // array is unclosed. No ']' found, instead EOF
-//                        throw new JsonException("Expected a ',' or ']'");
-//                    }
-//                    if (nextChar == ']') {
-//                        return;
-//                    }
-//                    pTokener.backUp();
-//                    break;
-//                case ']':
-//                    return;
-//                default:
-//                    throw new JsonException("Expected a ',' or ']'");
-//                }
-//            }
-//        }
-//    }
 
     /**
      * Construct a JSONArray from a Collection.
@@ -432,30 +377,5 @@ public class JsonArray implements Iterable<Object>
         } catch (IOException e) {
             throw new JsonException(e);
         }
-    }
-
-    /**
-     * Returns a java.util.List containing all of the elements in this array.
-     * If an element in the array is a JSONArray or JSONObject it will also
-     * be converted.
-     * <p>
-     * Warning: This method assumes that the data structure is acyclical.
-     *
-     * @return a java.util.List containing the elements of this array
-     */
-    public List<Object> toList() {
-        List<Object> results = new ArrayList<>(this.aElements.size());
-        for (Object element : this.aElements) {
-            if (element == null || JsonObject.NULL.equals(element)) {
-                results.add(null);
-            } else if (element instanceof JsonArray) {
-                results.add(((JsonArray) element).toList());
-            } else if (element instanceof JsonObject) {
-                results.add(((JsonObject) element).toMap());
-            } else {
-                results.add(element);
-            }
-        }
-        return results;
     }
 }

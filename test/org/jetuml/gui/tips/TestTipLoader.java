@@ -122,7 +122,7 @@ public class TestTipLoader
 	{
 		try
 		{
-			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJSONObjectToTipElements", JsonObject.class);
+			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJsonObjectToTipElements", JsonObject.class);
 			method.setAccessible(true);
 			return (List<TipElement>) method.invoke(null, pTip);
 		}

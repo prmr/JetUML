@@ -659,42 +659,6 @@ public class JsonObject
 		}
 	}
 
-	/**
-	 * Returns a java.util.Map containing all of the entries in this object. If
-	 * an entry in the object is a JSONArray or JSONObject it will also be
-	 * converted.
-	 * <p>
-	 * Warning: This method assumes that the data structure is acyclical.
-	 *
-	 * @return a java.util.Map containing the entries of this object
-	 */
-	public Map<String, Object> toMap()
-	{
-		Map<String, Object> results = new HashMap<>();
-		for (Entry<String, Object> entry : aProperties.entrySet())
-		{
-			Object value;
-			if (entry.getValue() == null || NULL.equals(entry.getValue()))
-			{
-				value = null;
-			}
-			else if (entry.getValue() instanceof JsonObject)
-			{
-				value = ((JsonObject) entry.getValue()).toMap();
-			}
-			else if (entry.getValue() instanceof JsonArray)
-			{
-				value = ((JsonArray) entry.getValue()).toList();
-			}
-			else
-			{
-				value = entry.getValue();
-			}
-			results.put(entry.getKey(), value);
-		}
-		return results;
-	}
-	
 	/*
 	 * Produce a string from a Number.
 	 *
