@@ -63,7 +63,7 @@ public class TestJsonAnyValueParser
 	void testParse_AsArray()
 	{
 		JsonArray result = (JsonArray) PARSER.parse(new ParsableCharacterBuffer("[2,3, false ]"));
-		assertEquals(3, result.length());
+		assertEquals(3, result.size());
 		assertEquals(2, result.get(0));
 		assertEquals(3, result.get(1));
 		assertEquals(false, result.get(2));

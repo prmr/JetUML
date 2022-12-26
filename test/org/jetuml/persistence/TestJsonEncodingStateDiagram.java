@@ -139,8 +139,8 @@ public class TestJsonEncodingStateDiagram
 		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJsonArray("nodes").length());	
-		assertEquals(0, object.getJsonArray("edges").length());				
+		assertEquals(0, object.getJsonArray("nodes").size());	
+		assertEquals(0, object.getJsonArray("edges").size());				
 	}
 	
 	@Test
@@ -151,9 +151,9 @@ public class TestJsonEncodingStateDiagram
 		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(1, object.getJsonArray("nodes").length());	
-		assertEquals(0, object.getJsonArray("edges").length());	
-		JsonObject node = object.getJsonArray("nodes").getJSONObject(0);
+		assertEquals(1, object.getJsonArray("nodes").size());	
+		assertEquals(0, object.getJsonArray("edges").size());	
+		JsonObject node = object.getJsonArray("nodes").getJsonObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -171,8 +171,8 @@ public class TestJsonEncodingStateDiagram
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("StateDiagram", object.getString("diagram"));
-		assertEquals(4, object.getJsonArray("nodes").length());	
-		assertEquals(3, object.getJsonArray("edges").length());	
+		assertEquals(4, object.getJsonArray("nodes").size());	
+		assertEquals(3, object.getJsonArray("edges").size());	
 		
 		JsonArray nodes = object.getJsonArray("nodes");
 		JsonObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));

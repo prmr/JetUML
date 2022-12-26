@@ -3,10 +3,9 @@ package org.jetuml.persistence.json;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A JsonArray is an ordered sequence of values. Its external text form is a
@@ -24,169 +23,139 @@ public class JsonArray implements Iterable<Object>
 	/**
 	 * Append an object value. This increases the array's length by one.
 	 *
-	 * @param pValue A non-null Json value.
- 	 * @throws JsonException If the name is null or if the value is not of a valid Json value.
+	 * @param pValue A valid Json value.
+ 	 * @throws JsonException If value is null or not of a valid Json value.
 	 */
 	public void add(Object pValue)
 	{
+		JsonValueValidator.validateType(pValue);
 		aElements.add(pValue);
 	}
-	
-	/// Processed are above
-	
-	
 
 	/**
-	 * Construct a JSONArray from a Collection. Assumes all the values are legal
-	 * Json values
-	 *
-	 * @param collection A Collection.
+	 * Construct a JsonArray by adding each element from pList in sequence. 
+	 * 
+	 * @param pList A list of JSON values to store in the array.
+	 * @pre pList != null
+	 * @throws JsonException if any of the element in the list is not a valid Json value.
 	 */
-	public JsonArray(Collection<?> collection)
+	public JsonArray(List<?> pList)
 	{
-		for( Object o : collection )
+		for( Object element : pList )
 		{
-			aElements.add(o);
+			aElements.add(element);
 		}
 	}
-
-	/**
-	 * Construct a JSONArray from an array
-	 *
-	 * @throws JsonException If not an array.
-	 */
-	// TODO Remove
-	public JsonArray(Object array) throws JsonException
-	{
-		this();
-		if( array.getClass().isArray() )
-		{
-			int length = Array.getLength(array);
-			this.aElements.ensureCapacity(length);
-			for( int i = 0; i < length; i += 1 )
-			{
-				this.add(Array.get(array, i));
-			}
-		}
-		else
-		{
-			throw new JsonException("JSONArray initial value should be a string or collection or array.");
-		}
-	}
-
+	
 	@Override
 	public Iterator<Object> iterator()
 	{
 		return aElements.iterator();
 	}
-
+	
+	private void validateIndex(int pIndex)
+	{
+		if(pIndex < 0 || pIndex > aElements.size() -1 )
+		{
+			throw new JsonException("JsonArray index out of bounds");
+		}
+	}
+	
 	/**
 	 * Get the object value associated with an index.
 	 *
-	 * @param index The index must be between 0 and length() - 1.
-	 * @return An object value.
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The JSON value at this index.
 	 * @throws JsonException If there is no value for the index.
 	 */
-	public Object get(int index) throws JsonException
+	public Object get(int pIndex)
 	{
-		Object object = this.opt(index);
-		if( object == null )
-		{
-			throw new JsonException("JSONArray[" + index + "] not found.");
-		}
-		return object;
+		validateIndex(pIndex);
+		return aElements.get(pIndex);
 	}
-
+	
 	/**
 	 * Get the int value associated with an index.
 	 *
-	 * @param index The index must be between 0 and length() - 1.
-	 * @return The value.
-	 * @throws JsonException If the key is not found or if the value is not a
-	 * number.
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The int value at this index.
+	 * @throws JsonException If there is no value for the index of if the 
+	 * value is not an Integer
 	 */
-	public int getInt(int index) throws JsonException
+	public int getInt(int pIndex)
 	{
-		Object object = this.get(index);
-		try
-		{
-			return object instanceof Number ? ((Number) object).intValue() : Integer.parseInt((String) object);
-		}
-		catch (Exception e)
-		{
-			throw new JsonException("JSONArray[" + index + "] is not a number.", e);
-		}
+		validateIndex(pIndex);
+		return JsonValueValidator.asInt(get(pIndex));
 	}
-
+	
 	/**
-	 * Get the JSONObject associated with an index.
+	 * Get the String value associated with an index.
 	 *
-	 * @param index subscript
-	 * @return A JSONObject value.
-	 * @throws JsonException If there is no value for the index or if the value
-	 * is not a JSONObject
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The String value at this index.
+	 * @throws JsonException If there is no value for the index of if the 
+	 * value is not a String
 	 */
-	public JsonObject getJSONObject(int index) throws JsonException
+	public String getString(int pIndex)
 	{
-		Object object = this.get(index);
-		if( object instanceof JsonObject )
-		{
-			return (JsonObject) object;
-		}
-		throw new JsonException("JSONArray[" + index + "] is not a JSONObject.");
+		validateIndex(pIndex);
+		return JsonValueValidator.asString(get(pIndex));
 	}
-
+	
 	/**
-	 * Get the string associated with an index.
+	 * Get the boolean value associated with an index.
 	 *
-	 * @param index The index must be between 0 and length() - 1.
-	 * @return A string value.
-	 * @throws JsonException If there is no string value for the index.
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The boolean value at this index.
+	 * @throws JsonException If there is no value for the index of if the 
+	 * value is not a Boolean
 	 */
-	public String getString(int index) throws JsonException
+	public boolean getBoolean(int pIndex)
 	{
-		Object object = this.get(index);
-		if( object instanceof String )
-		{
-			return (String) object;
-		}
-		throw new JsonException("JSONArray[" + index + "] not a string.");
+		validateIndex(pIndex);
+		return JsonValueValidator.asBoolean(get(pIndex));
 	}
-
+	
+	/**
+	 * Get the JsonObject associated with an index.
+	 *
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The JsonObject value at this index.
+	 * @throws JsonException If there is no value for the index of if the 
+	 * value is not a JsonObject
+	 */
+	public JsonObject getJsonObject(int pIndex)
+	{
+		validateIndex(pIndex);
+		return JsonValueValidator.asJsonObject(get(pIndex));
+	}
+	
+	/**
+	 * Get the JsonArray associated with an index.
+	 *
+	 * @param pIndex The index must be between 0 and length() - 1.
+	 * @return The JsonArray value at this index.
+	 * @throws JsonException If there is no value for the index of if the 
+	 * value is not a JsonArray
+	 */
+	public JsonArray getJsonArray(int pIndex)
+	{
+		validateIndex(pIndex);
+		return JsonValueValidator.asJsonArray(get(pIndex));
+	}
+	
 	/**
 	 * Get the number of elements in the JSONArray, included nulls.
 	 *
 	 * @return The length (or size).
 	 */
-	public int length()
+	public int size()
 	{
 		return aElements.size();
 	}
-
-	/**
-	 * Get the optional object value associated with an index.
-	 *
-	 * @param index The index must be between 0 and length() - 1. If not, null
-	 * is returned.
-	 * @return An object value, or null if there is no object at that index.
-	 */
-	public Object opt(int index)
-	{
-		return (index < 0 || index >= this.length()) ? null : this.aElements.get(index);
-	}
-
-	/**
-	 * Append an int value. This increases the array's length by one.
-	 *
-	 * @param value An int value.
-	 * @return this.
-	 */
-	public JsonArray put(int value)
-	{
-		this.add(Integer.valueOf(value));
-		return this;
-	}
-
+	
+	/// Processed are above
+	
 	/**
 	 * Make a JSON text of this JSONArray. For compactness, no unnecessary
 	 * whitespace is added. If it is not possible to produce a syntactically
@@ -289,7 +258,7 @@ public class JsonArray implements Iterable<Object>
 		try
 		{
 			boolean commanate = false;
-			int length = this.length();
+			int length = this.size();
 			writer.write('[');
 
 			if( length == 1 )

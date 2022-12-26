@@ -116,9 +116,9 @@ public final class VersionMigrator
 	private void convertPackageNodeToPackageDescriptionNode(JsonObject pDiagram)
 	{
 		JsonArray nodes = pDiagram.getJsonArray("nodes");
-		for( int i = 0; i < nodes.length(); i++ )
+		for( int i = 0; i < nodes.size(); i++ )
 		{
-			JsonObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJsonObject(i);
 			if( object.getString("type").equals("PackageNode") && !object.hasProperty("children") && object.hasProperty("contents") )
 			{
 				object.put("type", "PackageDescriptionNode");
@@ -130,9 +130,9 @@ public final class VersionMigrator
 	private void removeInterfaceStereotype(JsonObject pDiagram)
 	{
 		JsonArray nodes = pDiagram.getJsonArray("nodes");
-		for( int i = 0; i < nodes.length(); i++ )
+		for( int i = 0; i < nodes.size(); i++ )
 		{
-			JsonObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJsonObject(i);
 			if( object.getString("type").equals("InterfaceNode") )
 			{
 				if( object.getString("name").contains("\u00ABinterface\u00BB"))
@@ -148,9 +148,9 @@ public final class VersionMigrator
 	{
 		JsonArray edges = pDiagram.getJsonArray("edges");
 		List<JsonObject> newEdges = new ArrayList<>();
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
-			JsonObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJsonObject(i);
 			if( object.getString("type").equals("DependencyEdge") && object.getInt("start") == object.getInt("end") )
 			{
 				aMigrated = true; // We don't add the dependency, essentially removing it.
@@ -166,9 +166,9 @@ public final class VersionMigrator
 	private void addDirectionalityPropertyToDependencyEdges(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJsonArray("edges");
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
-			JsonObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJsonObject(i);
 			if( object.getString("type").equals("DependencyEdge") )
 			{
 				object.put("directionality", "Unidirectional");
@@ -184,9 +184,9 @@ public final class VersionMigrator
 	private void flipInversedAssociations(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJsonArray("edges");
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
-			JsonObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJsonObject(i);
 			if( object.getString("type").equals("AssociationEdge") && object.getString("directionality").equals("Start"))
 			{
 				object.put("directionality", "End");
@@ -202,9 +202,9 @@ public final class VersionMigrator
 	private void renameAssociationDirectionality(JsonObject pDiagram)
 	{
 		JsonArray edges = pDiagram.getJsonArray("edges");
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
-			JsonObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJsonObject(i);
 			if( object.getString("type").equals("AssociationEdge"))
 			{
 				if( object.get("directionality").equals("None"))
@@ -230,9 +230,9 @@ public final class VersionMigrator
 		List<JsonObject> newEdges = new ArrayList<>();
 		
 		JsonArray edges = pDiagram.getJsonArray("edges");
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
-			JsonObject object = edges.getJSONObject(i);
+			JsonObject object = edges.getJsonObject(i);
 			newEdges.add(object);
 			if( object.getString("type").equals("DependencyEdge") ) 
 			{

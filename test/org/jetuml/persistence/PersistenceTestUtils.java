@@ -100,10 +100,10 @@ public final class PersistenceTestUtils
 	static JsonObject find(JsonArray pArray, String pType, Properties pProperties)
 	{
 		JsonObject found = null;
-		for( int i = 0; i < pArray.length(); i++ )
+		for( int i = 0; i < pArray.size(); i++ )
 		{
 			boolean match = true;
-			JsonObject object = pArray.getJSONObject(i);
+			JsonObject object = pArray.getJsonObject(i);
 			for( Property property : pProperties )
 			{
 				if( !object.hasProperty(property.name().external()))

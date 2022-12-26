@@ -73,11 +73,11 @@ public final class JsonDecoder
 	private static void decodeNodes(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray nodes = pObject.getJsonArray("nodes");
-		for( int i = 0; i < nodes.length(); i++ )
+		for( int i = 0; i < nodes.size(); i++ )
 		{
 			try
 			{
-				JsonObject object = nodes.getJSONObject(i);
+				JsonObject object = nodes.getJsonObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
 				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
 				node.moveTo(new Point(object.getInt("x"), object.getInt("y")));
@@ -115,14 +115,14 @@ public final class JsonDecoder
 	private static void restoreChildren(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray nodes = pObject.getJsonArray("nodes");
-		for( int i = 0; i < nodes.length(); i++ )
+		for( int i = 0; i < nodes.size(); i++ )
 		{
-			JsonObject object = nodes.getJSONObject(i);
+			JsonObject object = nodes.getJsonObject(i);
 			if( object.hasProperty("children"))
 			{
 				Node node = pContext.getNode( object.getInt("id"));
 				JsonArray children = object.getJsonArray("children");
-				for( int j = 0; j < children.length(); j++ )
+				for( int j = 0; j < children.size(); j++ )
 				{
 					node.addChild(pContext.getNode(children.getInt(j)));
 				}
@@ -138,11 +138,11 @@ public final class JsonDecoder
 	private static void decodeEdges(DeserializationContext pContext, JsonObject pObject)
 	{
 		JsonArray edges = pObject.getJsonArray("edges");
-		for( int i = 0; i < edges.length(); i++ )
+		for( int i = 0; i < edges.size(); i++ )
 		{
 			try
 			{
-				JsonObject object = edges.getJSONObject(i);
+				JsonObject object = edges.getJsonObject(i);
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
 				Edge edge = (Edge) edgeClass.getDeclaredConstructor().newInstance();
 				

@@ -76,8 +76,8 @@ public class TestJsonEncodingClassDiagram
 		JsonObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("ClassDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJsonArray("nodes").length());	
-		assertEquals(0, object.getJsonArray("edges").length());				
+		assertEquals(0, object.getJsonArray("nodes").size());	
+		assertEquals(0, object.getJsonArray("edges").size());				
 	}
 	
 	@Test

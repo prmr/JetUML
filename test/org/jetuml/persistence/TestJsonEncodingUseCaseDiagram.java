@@ -102,8 +102,8 @@ public class TestJsonEncodingUseCaseDiagram
 		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJsonArray("nodes").length());	
-		assertEquals(0, object.getJsonArray("edges").length());				
+		assertEquals(0, object.getJsonArray("nodes").size());	
+		assertEquals(0, object.getJsonArray("edges").size());				
 	}
 	
 	@Test
@@ -114,9 +114,9 @@ public class TestJsonEncodingUseCaseDiagram
 		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(1, object.getJsonArray("nodes").length());	
-		assertEquals(0, object.getJsonArray("edges").length());	
-		JsonObject node = object.getJsonArray("nodes").getJSONObject(0);
+		assertEquals(1, object.getJsonArray("nodes").size());	
+		assertEquals(0, object.getJsonArray("edges").size());	
+		JsonObject node = object.getJsonArray("nodes").getJsonObject(0);
 		assertHasKeys(node, "type", "id", "x", "y", "name");
 		assertEquals(0, node.getInt("x"));
 		assertEquals(0, node.getInt("y"));
@@ -134,8 +134,8 @@ public class TestJsonEncodingUseCaseDiagram
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
-		assertEquals(2, object.getJsonArray("nodes").length());	
-		assertEquals(1, object.getJsonArray("edges").length());	
+		assertEquals(2, object.getJsonArray("nodes").size());	
+		assertEquals(1, object.getJsonArray("edges").size());	
 		
 		JsonArray nodes = object.getJsonArray("nodes");
 		JsonObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));

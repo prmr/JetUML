@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -114,18 +113,6 @@ public class JsonObject
 		}
 	}
 
-	private void validateNotNull(String pName, Object pValue)
-	{
-		if(pName == null)
-		{
-			throw new JsonException("Null property name");
-		}
-		if(pValue == null)
-		{
-			throw new JsonException("Null property value");
-		}
-	}
-	
 	/**
 	 * Construct a JsonObject with no property.
 	 */
@@ -250,7 +237,10 @@ public class JsonObject
 	 */
 	public void put(String pName, Object pValue)
 	{
-		validateNotNull(pName, pValue);
+		if(pName == null)
+		{
+			throw new JsonException("Null property name");
+		}
 		validateType(pValue);
 		aProperties.put(pName, pValue);
 	}
@@ -483,15 +473,15 @@ public class JsonObject
 		{
 			((JsonArray) value).write(writer, indentFactor, indent);
 		}
-		else if (value instanceof Collection)
-		{
-			Collection<?> coll = (Collection<?>) value;
-			new JsonArray(coll).write(writer, indentFactor, indent);
-		}
-		else if (value.getClass().isArray())
-		{
-			new JsonArray(value).write(writer, indentFactor, indent);
-		}
+//		else if (value instanceof Collection)
+//		{
+//			Collection<?> coll = (Collection<?>) value;
+//			new JsonArray(coll).write(writer, indentFactor, indent);
+//		}
+//		else if (value.getClass().isArray())
+//		{
+//			new JsonArray(value).write(writer, indentFactor, indent);
+//		}
 		else
 		{
 			quote(value.toString(), writer);
