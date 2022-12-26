@@ -1,28 +1,6 @@
 package org.jetuml.persistence.json;
 
-/*
- * Copyright (c) 2002 JSON.org
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * The Software shall be used for Good, not Evil.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+import static org.jetuml.persistence.json.JsonValueValidator.validateType;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -32,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs referred to as
@@ -52,15 +29,6 @@ import java.util.Set;
  */
 public class JsonObject
 {
-	private static final Set<Class<?>> VALID_VALUE_TYPES = Set.of(
-			String.class,
-			Boolean.class,
-			boolean.class,
-			Integer.class,
-			int.class,
-			JsonObject.class,
-			JsonArray.class);
-	
 	/**
 	 * JSONObject.NULL is equivalent to the value that JavaScript calls null,
 	 * whilst Java's null is equivalent to the value that JavaScript calls
@@ -136,26 +104,16 @@ public class JsonObject
 
 	private void validateProperty(String pName)
 	{
-		if (pName == null)
+		if( pName == null )
 		{
 			throw new JsonException("Property name cannot be null");
 		}
-		if (!aProperties.containsKey(pName))
+		if( !aProperties.containsKey(pName) )
 		{
 			throw new JsonException("Property " + pName + " not found");
 		}
 	}
 
-	private void validateValueType(String pName, Class<?> pType)
-	{
-		assert aProperties.containsKey(pName);
-		if (get(pName).getClass() != pType)
-		{
-			throw new JsonException(String.format("Attempting to retrieve an %s as a %s",
-					get(pName).getClass().getSimpleName(), pType.getSimpleName()));
-		}
-	}
-	
 	private void validateNotNull(String pName, Object pValue)
 	{
 		if(pName == null)
@@ -168,14 +126,6 @@ public class JsonObject
 		}
 	}
 	
-	private void validateValueType(Object pValue)
-	{
-		if( !VALID_VALUE_TYPES.contains(pValue.getClass()) )
-		{
-			throw new JsonException("Invalid value type: " + pValue.getClass().getSimpleName());
-		}
-	}
-
 	/**
 	 * Construct a JsonObject with no property.
 	 */
@@ -207,8 +157,7 @@ public class JsonObject
 	public int getInt(String pName)
 	{
 		validateProperty(pName);
-		validateValueType(pName, Integer.class);
-		return (int) get(pName);
+		return JsonValueValidator.asInt(get(pName));
 	}
 
 	/**
@@ -222,8 +171,7 @@ public class JsonObject
 	public JsonArray getJsonArray(String pName)
 	{
 		validateProperty(pName);
-		validateValueType(pName, JsonArray.class);
-		return (JsonArray) get(pName);
+		return JsonValueValidator.asJsonArray(get(pName));
 	}
 	
 	/**
@@ -237,8 +185,7 @@ public class JsonObject
 	public JsonObject getJsonObject(String pName)
 	{
 		validateProperty(pName);
-		validateValueType(pName, JsonObject.class);
-		return (JsonObject) get(pName);
+		return JsonValueValidator.asJsonObject(get(pName));
 	}
 
 	/**
@@ -252,8 +199,7 @@ public class JsonObject
 	public String getString(String pName)
 	{
 		validateProperty(pName);
-		validateValueType(pName, String.class);
-		return (String) get(pName);
+		return JsonValueValidator.asString(get(pName));
 	}
 	
 	/**
@@ -267,8 +213,7 @@ public class JsonObject
 	public boolean getBoolean(String pName)
 	{
 		validateProperty(pName);
-		validateValueType(pName, Boolean.class);
-		return (boolean) get(pName);
+		return JsonValueValidator.asBoolean(get(pName));
 	}
 
 	/**
@@ -301,12 +246,12 @@ public class JsonObject
 	 * @param pName The name of the property. Should not be null.
 	 * @param pValue The value of the property. It should not be null and be of one of these
 	 * types: boolean/Boolean, int/Integer, JsonArray, JsonObject, or String.
-	 * @throws JsonException If the name is null or if the value is not of a valid type.
+	 * @throws JsonException If the name is null or if the value is not of a valid Json value.
 	 */
 	public void put(String pName, Object pValue)
 	{
 		validateNotNull(pName, pValue);
-		validateValueType(pValue);
+		validateType(pValue);
 		aProperties.put(pName, pValue);
 	}
 

@@ -62,7 +62,7 @@ public final class JsonEncoder
 		JsonArray nodes = new JsonArray();
 		for( Node node : pContext ) 
 		{
-			nodes.put(encodeNode(node, pContext));
+			nodes.add(encodeNode(node, pContext));
 		}
 		return nodes;
 	}
@@ -98,7 +98,7 @@ public final class JsonEncoder
 			object.put("start", pContext.getId(edge.getStart()));
 			object.put("end", pContext.getId(edge.getEnd()));
 			
-			edges.put(object);
+			edges.add(object);
 		}
 		return edges;
 	}
