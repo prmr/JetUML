@@ -1,8 +1,25 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ * 
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.persistence.json;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -154,160 +171,15 @@ public class JsonArray implements Iterable<Object>
 		return aElements.size();
 	}
 	
-	/// Processed are above
-	
 	/**
-	 * Make a JSON text of this JSONArray. For compactness, no unnecessary
-	 * whitespace is added. If it is not possible to produce a syntactically
-	 * correct JSON text then null will be returned instead. This could occur if
-	 * the array contains an invalid number.
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 *
-	 * @return a printable, displayable, transmittable representation of the
-	 * array.
+	 * Make a JSON text of this JsonArray. For compactness, no unnecessary
+	 * whitespace is added. This method assumes that the data structure is acyclical.
+
+	 * @return A serialized version of this array.
 	 */
 	@Override
 	public String toString()
 	{
-		try
-		{
-			return this.toString(0);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Make a pretty-printed JSON text of this JSONArray.
-	 * 
-	 * <p>
-	 * If <code>indentFactor > 0</code> and the {@link JsonArray} has only one
-	 * element, then the array will be output on a single line:
-	 * 
-	 * <pre>{@code [1]}</pre>
-	 * 
-	 * <p>
-	 * If an array has 2 or more elements, then it will be output across
-	 * multiple lines:
-	 * 
-	 * <pre>{@code
-	 * [
-	 * 1,
-	 * "value 2",
-	 * 3
-	 * ]
-	 * }</pre>
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 * 
-	 * @param indentFactor The number of spaces to add to each level of
-	 * indentation.
-	 * @return a printable, displayable, transmittable representation of the
-	 * object, beginning with <code>[</code>&nbsp;<small>(left bracket)</small>
-	 * and ending with <code>]</code> &nbsp;<small>(right bracket)</small>.
-	 * @throws JsonException
-	 */
-	public String toString(int indentFactor) throws JsonException
-	{
-		StringWriter sw = new StringWriter();
-		synchronized (sw.getBuffer())
-		{
-			this.write(sw, indentFactor, 0);
-			return sw.toString();
-		}
-	}
-
-	/**
-	 * Write the contents of the JSONArray as JSON text to a writer.
-	 * 
-	 * <p>
-	 * If <code>indentFactor > 0</code> and the {@link JsonArray} has only one
-	 * element, then the array will be output on a single line:
-	 * 
-	 * <pre>{@code [1]}</pre>
-	 * 
-	 * <p>
-	 * If an array has 2 or more elements, then it will be output across
-	 * multiple lines:
-	 * 
-	 * <pre>{@code
-	 * [
-	 * 1,
-	 * "value 2",
-	 * 3
-	 * ]
-	 * }</pre>
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 *
-	 * @param writer Writes the serialized JSON
-	 * @param indentFactor The number of spaces to add to each level of
-	 * indentation.
-	 * @param indent The indentation of the top level.
-	 * @return The writer.
-	 * @throws JsonException
-	 */
-	public void write(final Writer writer, int indentFactor, int indent) throws JsonException
-	{
-		try
-		{
-			boolean commanate = false;
-			int length = this.size();
-			writer.write('[');
-
-			if( length == 1 )
-			{
-				try
-				{
-					JsonObject.writeValue(writer, this.aElements.get(0), indentFactor, indent);
-				}
-				catch (Exception e)
-				{
-					throw new JsonException("Unable to write JSONArray value at index: 0", e);
-				}
-			}
-			else if( length != 0 )
-			{
-				final int newindent = indent + indentFactor;
-
-				for( int i = 0; i < length; i += 1 )
-				{
-					if( commanate )
-					{
-						writer.write(',');
-					}
-					if( indentFactor > 0 )
-					{
-						writer.write('\n');
-					}
-					JsonObject.indent(writer, newindent);
-					try
-					{
-						JsonObject.writeValue(writer, this.aElements.get(i), indentFactor, newindent);
-					}
-					catch (Exception e)
-					{
-						throw new JsonException("Unable to write JSONArray value at index: " + i, e);
-					}
-					commanate = true;
-				}
-				if( indentFactor > 0 )
-				{
-					writer.write('\n');
-				}
-				JsonObject.indent(writer, indent);
-			}
-			writer.write(']');
-		}
-		catch (IOException e)
-		{
-			throw new JsonException(e);
-		}
+		return JsonArrayParser.writeJsonArray(this);
 	}
 }

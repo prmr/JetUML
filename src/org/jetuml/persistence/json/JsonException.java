@@ -18,7 +18,6 @@
  * The code in this class was originally based on JSON.org.
  * 
  ******************************************************************************/
-
 package org.jetuml.persistence.json;
 
 /**

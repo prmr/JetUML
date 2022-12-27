@@ -1,14 +1,29 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ * 
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.persistence.json;
 
 import static org.jetuml.persistence.json.JsonValueValidator.validateType;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -53,9 +68,7 @@ public class JsonObject
 	/**
 	 * Construct a JsonObject with no property.
 	 */
-	public JsonObject()
-	{
-	}
+	public JsonObject() {}
 
 	/**
 	 * Get the value associated with a name.
@@ -190,385 +203,15 @@ public class JsonObject
 		aProperties.put(pName, pValue);
 	}
 
-	/*
-	 * Converts the input string to a version in double quotes with backslash
-	 * sequences in all the right places. A backslash will be inserted within
-	 * </, producing <\/, allowing JSON text to be delivered in HTML. In JSON
-	 * text, a string cannot contain a control character or an unescaped quote
-	 * or backslash.
-	 *
-	 * @param string A String
-	 * 
-	 * @return A String correctly formatted for insertion in a JSON text.
-	 */
-	private static String quote(String string)
-	{
-		StringWriter sw = new StringWriter();
-		synchronized (sw.getBuffer())
-		{
-			try
-			{
-				quote(string, sw);
-				return sw.toString();
-			}
-			catch (IOException ignored)
-			{
-				// will never happen - we are writing to a string writer
-				return "";
-			}
-		}
-	}
-
-	private static void quote(String string, final Writer pWriter) throws IOException
-	{
-		if (string == null || string.length() == 0)
-		{
-			pWriter.write("\"\"");
-			return;
-		}
-
-		char b;
-		char c = 0;
-		String hhhh;
-		int i;
-		int len = string.length();
-
-		pWriter.write('"');
-		for (i = 0; i < len; i += 1)
-		{
-			b = c;
-			c = string.charAt(i);
-			switch (c)
-			{
-			case '\\':
-			case '"':
-				pWriter.write('\\');
-				pWriter.write(c);
-				break;
-			case '/':
-				if (b == '<')
-				{
-					pWriter.write('\\');
-				}
-				pWriter.write(c);
-				break;
-			case '\b':
-				pWriter.write("\\b");
-				break;
-			case '\t':
-				pWriter.write("\\t");
-				break;
-			case '\n':
-				pWriter.write("\\n");
-				break;
-			case '\f':
-				pWriter.write("\\f");
-				break;
-			case '\r':
-				pWriter.write("\\r");
-				break;
-			default:
-				if (c < ' ' || (c >= '\u0080' && c < '\u00a0') || (c >= '\u2000' && c < '\u2100'))
-				{
-					pWriter.write("\\u");
-					hhhh = Integer.toHexString(c);
-					pWriter.write("0000", 0, 4 - hhhh.length());
-					pWriter.write(hhhh);
-				}
-				else
-				{
-					pWriter.write(c);
-				}
-			}
-		}
-		pWriter.write('"');
-	}
-
 	/**
-	 * Throw an exception if the object is a NaN or infinite number.
+	 * Make a JSON text of this object. For compactness, no whitespace is
+	 * added. This method assumes that the data structure is acyclical.
 	 *
-	 * @param o The object to test.
-	 * @throws JsonException If o is a non-finite number.
-	 */
-	private static void testValidity(Object o)
-	{
-		if (o != null)
-		{
-			if (o instanceof Double)
-			{
-				if (((Double) o).isInfinite() || ((Double) o).isNaN())
-				{
-					throw new JsonException("JSON does not allow non-finite numbers.");
-				}
-			}
-			else if (o instanceof Float)
-			{
-				if (((Float) o).isInfinite() || ((Float) o).isNaN())
-				{
-					throw new JsonException("JSON does not allow non-finite numbers.");
-				}
-			}
-		}
-	}
-
-	/**
-	 * Make a JSON text of this JSONObject. For compactness, no whitespace is
-	 * added. If this would not result in a syntactically correct JSON text,
-	 * then null will be returned instead.
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 * 
-	 * @return a printable, displayable, portable, transmittable representation
-	 * of the object, beginning with <code>{</code>&nbsp;<small>(left
-	 * brace)</small> and ending with <code>}</code>&nbsp;<small>(right
-	 * brace)</small>.
+	 * @return A serialized version of this object.
 	 */
 	@Override
 	public String toString()
 	{
-		try
-		{
-			return toString(0);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		return JsonObjectParser.writeJsonObject(this);
 	}
-
-	/**
-	 * Make a pretty-printed JSON text of this JSONObject.
-	 * 
-	 * <p>
-	 * If <code>indentFactor > 0</code> and the {@link JsonObject} has only one
-	 * key, then the object will be output on a single line:
-	 * 
-	 * <pre>{@code {"key": 1}}</pre>
-	 * 
-	 * <p>
-	 * If an object has 2 or more keys, then it will be output across multiple
-	 * lines: <code><pre>{
-	 *  "key1": 1,
-	 *  "key2": "value 2",
-	 *  "key3": 3
-	 * }</pre></code>
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 *
-	 * @param indentFactor The number of spaces to add to each level of
-	 * indentation.
-	 * @return a printable, displayable, portable, transmittable representation
-	 * of the object, beginning with <code>{</code>&nbsp;<small>(left
-	 * brace)</small> and ending with <code>}</code>&nbsp;<small>(right
-	 * brace)</small>.
-	 * @throws JsonException If the object contains an invalid number.
-	 */
-	public String toString(int indentFactor)
-	{
-		StringWriter w = new StringWriter();
-		synchronized (w.getBuffer())
-		{
-			this.write(w, indentFactor, 0);
-			return w.toString();
-		}
-	}
-
-	static final void writeValue(Writer writer, Object value, int indentFactor, int indent) throws IOException
-	{
-		if (value == null || value.equals(null))
-		{
-			writer.write("null");
-		}
-		else if (value instanceof Number)
-		{
-			// not all Numbers may match actual JSON Numbers. i.e. fractions or
-			// Imaginary
-			final String numberAsString = numberToString((Number) value);
-			try
-			{
-				// Use the BigDecimal constructor for it's parser to validate
-				// the format.
-				@SuppressWarnings("unused")
-				BigDecimal testNum = new BigDecimal(numberAsString);
-				// Close enough to a JSON number that we will use it unquoted
-				writer.write(numberAsString);
-			}
-			catch (NumberFormatException ex)
-			{
-				// The Number value is not a valid JSON number.
-				// Instead we will quote it as a string
-				quote(numberAsString, writer);
-			}
-		}
-		else if (value instanceof Boolean)
-		{
-			writer.write(value.toString());
-		}
-		else if (value instanceof Enum<?>)
-		{
-			writer.write(quote(((Enum<?>) value).name()));
-		}
-		else if (value instanceof JsonObject)
-		{
-			((JsonObject) value).write(writer, indentFactor, indent);
-		}
-		else if (value instanceof JsonArray)
-		{
-			((JsonArray) value).write(writer, indentFactor, indent);
-		}
-//		else if (value instanceof Collection)
-//		{
-//			Collection<?> coll = (Collection<?>) value;
-//			new JsonArray(coll).write(writer, indentFactor, indent);
-//		}
-//		else if (value.getClass().isArray())
-//		{
-//			new JsonArray(value).write(writer, indentFactor, indent);
-//		}
-		else
-		{
-			quote(value.toString(), writer);
-		}
-	}
-
-	static final void indent(Writer writer, int indent) throws IOException
-	{
-		for (int i = 0; i < indent; i += 1)
-		{
-			writer.write(' ');
-		}
-	}
-
-	/**
-	 * Write the contents of the JSONObject as JSON text to a writer.
-	 * 
-	 * <p>
-	 * If <code>indentFactor > 0</code> and the {@link JsonObject} has only one
-	 * key, then the object will be output on a single line:
-	 * 
-	 * <pre>{@code {"key": 1}}</pre>
-	 * 
-	 * <p>
-	 * If an object has 2 or more keys, then it will be output across multiple
-	 * lines: <code><pre>{
-	 *  "key1": 1,
-	 *  "key2": "value 2",
-	 *  "key3": 3
-	 * }</pre></code>
-	 * <p>
-	 * <b> Warning: This method assumes that the data structure is acyclical.
-	 * </b>
-	 *
-	 * @param writer Writes the serialized JSON
-	 * @param indentFactor The number of spaces to add to each level of
-	 * indentation.
-	 * @param indent The indentation of the top level.
-	 * @throws JsonException
-	 */
-	public void write(Writer writer, int indentFactor, int indent)
-	{
-		try
-		{
-			boolean commanate = false;
-			final int length = this.numberOfProperties();
-			writer.write('{');
-
-			if (length == 1)
-			{
-				final Entry<String, ?> entry = aProperties.entrySet().iterator().next();
-				final String key = entry.getKey();
-				writer.write(quote(key));
-				writer.write(':');
-				if (indentFactor > 0)
-				{
-					writer.write(' ');
-				}
-				try
-				{
-					writeValue(writer, entry.getValue(), indentFactor, indent);
-				}
-				catch (Exception e)
-				{
-					throw new JsonException("Unable to write JSONObject value for key: " + key, e);
-				}
-			}
-			else if (length != 0)
-			{
-				final int newindent = indent + indentFactor;
-				for (final Entry<String, ?> entry : aProperties.entrySet())
-				{
-					if (commanate)
-					{
-						writer.write(',');
-					}
-					if (indentFactor > 0)
-					{
-						writer.write('\n');
-					}
-					indent(writer, newindent);
-					final String key = entry.getKey();
-					writer.write(quote(key));
-					writer.write(':');
-					if (indentFactor > 0)
-					{
-						writer.write(' ');
-					}
-					try
-					{
-						writeValue(writer, entry.getValue(), indentFactor, newindent);
-					}
-					catch (Exception e)
-					{
-						throw new JsonException("Unable to write JSONObject value for key: " + key, e);
-					}
-					commanate = true;
-				}
-				if (indentFactor > 0)
-				{
-					writer.write('\n');
-				}
-				indent(writer, indent);
-			}
-			writer.write('}');
-		}
-		catch (IOException exception)
-		{
-			throw new JsonException(exception);
-		}
-	}
-
-	/*
-	 * Produce a string from a Number.
-	 *
-	 * @param number A Number
-	 * @return A String.
-	 * @throws JsonException If n is a non-finite number.
-	 */
-	private static String numberToString(Number number)
-	{
-		if (number == null)
-		{
-			throw new JsonException("Null pointer");
-		}
-		testValidity(number);
-
-		// Shave off trailing zeros and decimal point, if possible.
-
-		String string = number.toString();
-		if (string.indexOf('.') > 0 && string.indexOf('e') < 0 && string.indexOf('E') < 0)
-		{
-			while (string.endsWith("0"))
-			{
-				string = string.substring(0, string.length() - 1);
-			}
-			if (string.endsWith("."))
-			{
-				string = string.substring(0, string.length() - 1);
-			}
-		}
-		return string;
-	}
-
 }

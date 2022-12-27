@@ -25,7 +25,7 @@ package org.jetuml.persistence.json;
  * Represents an error while parsing JSON text.
  */
 @SuppressWarnings("serial")
-public class JsonParsingException extends RuntimeException 
+public class JsonParsingException extends JsonException 
 {
 	private final int aPosition;
 

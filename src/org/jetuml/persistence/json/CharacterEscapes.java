@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ * 
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.persistence.json;
 
 import java.util.HashMap;
@@ -16,7 +36,7 @@ import java.util.Map.Entry;
  * This instance is stateless so it can be shared, but this is not enforced
  * (e.g., via a Singleton) in case it is more convenient to have multiple copies.
  */
-public final class CharacterEscapes
+final class CharacterEscapes
 {
 	private static final char CHAR_BACKSLASH = '\\';
 
@@ -25,7 +45,6 @@ public final class CharacterEscapes
 
 	CharacterEscapes()
 	{
-
 		// The first five are re-escaped
 		aSymbolToCodePoint.put('b', '\b');
 		aSymbolToCodePoint.put('t', '\t');
@@ -73,5 +92,4 @@ public final class CharacterEscapes
 		assert isEscapableCodePoint(pCharacter);
 		return aCodePointToSymbol.get(pCharacter);
 	}
-	
 }

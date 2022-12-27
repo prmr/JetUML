@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ * 
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.persistence.json;
 
 import java.util.Set;
@@ -6,7 +26,7 @@ import java.util.Set;
  * Utility methods to uniformly validate and access
  * Object instances as Json values.
  */
-public final class JsonValueValidator
+final class JsonValueValidator
 {
 	private static final Set<Class<?>> VALID_VALUE_TYPES = Set.of(
 			String.class,
@@ -25,7 +45,7 @@ public final class JsonValueValidator
 	 * @throws JsonException is pValue is null or an instance of an object
 	 * not recognized as a valid JSON value.
 	 */
-	public static void validateType(Object pValue)
+	static void validateType(Object pValue)
 	{
 		if( pValue == null )
 		{
@@ -42,7 +62,7 @@ public final class JsonValueValidator
 	 * @return The value as an int
 	 * @throws JsonException if pValue is null or not an Integer.
 	 */
-	public static int asInt(Object pValue)
+	static int asInt(Object pValue)
 	{
 		if( pValue.getClass() != Integer.class )
 		{
@@ -57,7 +77,7 @@ public final class JsonValueValidator
 	 * @return The value as a String.
 	 * @throws JsonException if pValue is null or not an String.
 	 */
-	public static String asString(Object pValue)
+	static String asString(Object pValue)
 	{
 		if( pValue.getClass() != String.class )
 		{
@@ -72,7 +92,7 @@ public final class JsonValueValidator
 	 * @return The value as a boolean.
 	 * @throws JsonException if pValue is null or not a Boolean.
 	 */
-	public static boolean asBoolean(Object pValue)
+	static boolean asBoolean(Object pValue)
 	{
 		if( pValue.getClass() != Boolean.class )
 		{
@@ -87,7 +107,7 @@ public final class JsonValueValidator
 	 * @return The value as a JsonObject.
 	 * @throws JsonException if pValue is null or not a JsonObject.
 	 */
-	public static JsonObject asJsonObject(Object pValue)
+	static JsonObject asJsonObject(Object pValue)
 	{
 		if( pValue.getClass() != JsonObject.class )
 		{
@@ -102,7 +122,7 @@ public final class JsonValueValidator
 	 * @return The value as a JsonArray.
 	 * @throws JsonException if pValue is null or not a JsonArray.
 	 */
-	public static JsonArray asJsonArray(Object pValue)
+	static JsonArray asJsonArray(Object pValue)
 	{
 		if( pValue.getClass() != JsonArray.class )
 		{
