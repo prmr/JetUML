@@ -96,5 +96,45 @@ public class TestJsonObjectParser
 		assertThrows(JsonParsingException.class,
 				() -> PARSER.parse(new ParsableCharacterBuffer("{\"a\" : \"b\" \"a\": 4  }")));
 	}
-
+	
+	@Test
+	void testWriteJsonObject_Empty()
+	{
+		assertEquals("{}", JsonObjectParser.writeJsonObject(new JsonObject()));
+	}
+	
+	@Test
+	void testWriteJsonObject_SingleValue()
+	{
+		JsonObject object = new JsonObject();
+		object.put("a",1);
+		assertEquals("{\"a\":1}", JsonObjectParser.writeJsonObject(object));
+	}
+	
+	@Test
+	void testWriteJsonObject_TwoValues()
+	{
+		JsonObject object = new JsonObject();
+		object.put("a",1);
+		object.put("b",2);
+		assertEquals("{\"a\":1,\"b\":2}", JsonObjectParser.writeJsonObject(object));
+	}
+	
+	@Test
+	void testWriteJsonObject_MixedValues()
+	{
+		JsonObject object = new JsonObject();
+		object.put("a",1);
+		object.put("b","XXX");
+		object.put("c",false);
+		object.put("d",new JsonObject());
+		object.put("e",new JsonArray());
+		assertEquals("{\"a\":1,\"b\":\"XXX\",\"c\":false,\"d\":{},\"e\":[]}", JsonObjectParser.writeJsonObject(object));
+	}
+	
+	@Test
+	void testWriteJsonObject_InvalidValue()
+	{
+		assertThrows(JsonException.class, () -> JsonObjectParser.writeJsonObject(1.0));
+	}
 }

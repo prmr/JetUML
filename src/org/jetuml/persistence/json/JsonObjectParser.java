@@ -1,8 +1,11 @@
 package org.jetuml.persistence.json;
 
+import java.util.StringJoiner;
+
 /**
  * Parses objects in JSON document according to the ECMA-404 2nd
- * edition December 2017.
+ * edition December 2017. Also provides support for writing JsonObjects 
+ * in JSON text.
  */
 final class JsonObjectParser implements JsonValueParser
 {
@@ -56,5 +59,23 @@ final class JsonObjectParser implements JsonValueParser
 				object.put(key, value);
 			}
 		}
+	}
+	
+	/**
+	 * Serializes this object into its standard JSON notation.
+	 * 
+	 * @param pObject The object to serialize.
+	 * @return The serialized object.
+	 * @throws JsonException if pObject is not an instance of JsonObject.
+	 */
+	static String writeJsonObject(Object pObject)
+	{
+		JsonObject jsonObject = JsonValueValidator.asJsonObject(pObject);
+		StringJoiner result = new StringJoiner("" + CHAR_COMMA);
+		for(String property : jsonObject.properties() )
+		{
+			result.add(JsonStringParser.writeJsonString(property) + CHAR_COLON + JsonWriter.write(jsonObject.get(property)));
+		}
+		return CHAR_START_OBJECT + result.toString() + CHAR_END_OBJECT;
 	}
 }

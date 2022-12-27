@@ -27,7 +27,11 @@ public final class JsonValueValidator
 	 */
 	public static void validateType(Object pValue)
 	{
-		if( pValue == null || !VALID_VALUE_TYPES.contains(pValue.getClass()) )
+		if( pValue == null )
+		{
+			throw new JsonException("Null value");
+		}
+		if( !VALID_VALUE_TYPES.contains(pValue.getClass()) )
 		{
 			throw new JsonException("Invalid value type: " + pValue.getClass().getSimpleName());
 		}

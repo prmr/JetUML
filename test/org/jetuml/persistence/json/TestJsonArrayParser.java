@@ -2,6 +2,7 @@ package org.jetuml.persistence.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -69,5 +70,46 @@ public class TestJsonArrayParser
 		assertEquals(5, result.get(2));
 		assertEquals(false, result.get(3));
 		assertEquals(-1, result.get(4));
+	}
+	
+	@Test
+	void testWriteJsonArray_Empty()
+	{
+		assertEquals("[]", JsonArrayParser.writeJsonArray(new JsonArray()));
+	}
+	
+	@Test
+	void testWriteJsonArray_SingleValue()
+	{
+		JsonArray array = new JsonArray();
+		array.add(1);
+		assertEquals("[1]", JsonArrayParser.writeJsonArray(array));
+	}
+	
+	@Test
+	void testWriteJsonArray_TwoValues()
+	{
+		JsonArray array = new JsonArray();
+		array.add(1);
+		array.add(2);
+		assertEquals("[1,2]", JsonArrayParser.writeJsonArray(array));
+	}
+	
+	@Test
+	void testWriteJsonArray_MixedValues()
+	{
+		JsonArray array = new JsonArray();
+		array.add(1);
+		array.add("XXX");
+		array.add(false);
+		array.add(new JsonObject());
+		array.add(new JsonArray());
+		assertEquals("[1,\"XXX\",false,{},[]]", JsonArrayParser.writeJsonArray(array));
+	}
+	
+	@Test
+	void testWriteJsonArray_InvalidValue()
+	{
+		assertThrows(JsonException.class, () -> JsonArrayParser.writeJsonArray(1.0));
 	}
 }

@@ -4,7 +4,8 @@ import static java.lang.Character.isISOControl;
 
 /**
  * Parses strings in JSON document according to the ECMA-404 2nd
- * edition December 2017.
+ * edition December 2017. Also provides support for writing strings 
+ * in JSON standard.
  */
 final class JsonStringParser implements JsonValueParser
 {
@@ -142,6 +143,14 @@ final class JsonStringParser implements JsonValueParser
 		throw new JsonParsingException(pInput.position());
 	}
 	
+	/**
+	 * Escapes characters that need to be escaped so that the string
+	 * is a proper JSON format string.
+	 * 
+	 * @param pString The string to escape.
+	 * @return The escaped string.
+	 * @throws JsonException if pString is not an instance of String.
+	 */
 	static String writeJsonString(Object pString)
 	{
 		StringBuilder result = new StringBuilder();

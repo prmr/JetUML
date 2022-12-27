@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs referred to as
@@ -160,6 +161,14 @@ public class JsonObject
 	public int numberOfProperties()
 	{
 		return aProperties.size();
+	}
+	
+	/**
+	 * @return A set of all property names in this object.
+	 */
+	public Set<String> properties()
+	{
+		return aProperties.keySet();
 	}
 
 	/**
