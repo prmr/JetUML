@@ -2,41 +2,19 @@ package org.jetuml.persistence.json;
 
 import static java.lang.Character.isISOControl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Parses strings in JSON document according to the ECMA-404 2nd
  * edition December 2017.
  */
 final class JsonStringParser implements JsonValueParser
 {
-	/*
-	 * Maps a character in an escape (after the slash) to the escaped character,
-	 * e.g., b -> \b
-	 */
-	private static final Map<Character, Character> ESCAPE_CHARACTERS = new HashMap<>();
-
+	private static final CharacterEscapes CHARACTER_ESCAPES = new CharacterEscapes();
 	private static final int NUMBER_OF_UNICODE_DIGITS = 4;
 	private static final int RADIX_HEXADECIMAL = 16;
 	
 	private static final char CHAR_QUOTE = '"';
 	private static final char CHAR_ESCAPE = '\\';
 	private static final char CHAR_UNICODE_ESCAPE = 'u';
-
-	static
-	{
-		// The first five are re-escaped
-		ESCAPE_CHARACTERS.put('b', '\b');
-		ESCAPE_CHARACTERS.put('t', '\t');
-		ESCAPE_CHARACTERS.put('n', '\n');
-		ESCAPE_CHARACTERS.put('f', '\f');
-		ESCAPE_CHARACTERS.put('r', '\r');
-		// The last three remain unescaped
-		ESCAPE_CHARACTERS.put('"', '"');
-		ESCAPE_CHARACTERS.put('\\', '\\');
-		ESCAPE_CHARACTERS.put('/', '/');
-	}
 
 	/*
 	 * Attempts to retrieve a valid JSON escaped character by reading characters
@@ -59,11 +37,11 @@ final class JsonStringParser implements JsonValueParser
 
 		pInput.consume(CHAR_ESCAPE);
 		char next = pInput.next();
-		if (ESCAPE_CHARACTERS.containsKey(next))
+		if( CHARACTER_ESCAPES.isSymbol(next) )
 		{
-			return ESCAPE_CHARACTERS.get(next);
+			return CHARACTER_ESCAPES.getCodePoint(next);
 		}
-		else if (next == CHAR_UNICODE_ESCAPE)
+		else if( next == CHAR_UNICODE_ESCAPE )
 		{
 			return parseUnicode(pInput);
 		}
@@ -162,5 +140,33 @@ final class JsonStringParser implements JsonValueParser
 			}
 		}
 		throw new JsonParsingException(pInput.position());
+	}
+	
+	static String writeJsonString(Object pString)
+	{
+		StringBuilder result = new StringBuilder();
+		result.append(CHAR_QUOTE);
+		for( char character : JsonValueValidator.asString(pString).toCharArray())
+		{
+			if( CHARACTER_ESCAPES.isEscapableCodePoint(character))
+			{
+				result.append(CHARACTER_ESCAPES.getEscape(character));
+			}
+			else if( Character.isISOControl(character))
+			{
+				result.append(toUnicodeString(character));
+			}
+			else
+			{
+				result.append(character);
+			}
+		}
+		result.append(CHAR_QUOTE);
+		return result.toString();
+	}
+	
+	private static String toUnicodeString(char pCharacter)
+	{
+		return "\\u" + String.format("%04x", (int)pCharacter);
 	}
 }

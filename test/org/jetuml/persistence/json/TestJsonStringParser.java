@@ -144,4 +144,50 @@ public class TestJsonStringParser
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
 		assertThrows(JsonParsingException.class, () -> PARSER.parse(new ParsableCharacterBuffer(new String(characters))));
 	}
+	
+	@Test
+	void testWriteJsonStringEmpty()
+	{
+		assertEquals("\"\"", JsonStringParser.writeJsonString(""));
+	}
+	
+	@Test
+	void testWriteJsonStringNormal()
+	{
+		assertEquals("\"abc\"", JsonStringParser.writeJsonString("abc"));
+	}
+	
+	@Test
+	void testWriteJsonStringWithReEscapes()
+	{
+		assertEquals("\"a\\b\\n\\f\\r\\tc\"", JsonStringParser.writeJsonString("a\b\n\f\r\tc"));
+	}
+	
+	@Test
+	void testWriteJsonStringWithQuote()
+	{
+		char[] characters = {'a', '\\', 'c'};
+		assertEquals("\"a\\\\c\"", JsonStringParser.writeJsonString(new String(characters)));
+	}
+	
+	@Test
+	void testWriteJsonStringWithSolidus()
+	{
+		char[] characters = {'a', '/', 'c'};
+		assertEquals("\"a\\/c\"", JsonStringParser.writeJsonString(new String(characters)));
+	}
+	
+	@Test
+	void testWriteJsonStringWithReverseSolidus()
+	{
+		char[] characters = {'a', '\\', 'c'};
+		assertEquals("\"a\\\\c\"", JsonStringParser.writeJsonString(new String(characters)));
+	}
+	
+	@Test
+	void testWriteJsonStringWithControlCharacter()
+	{
+		char[] characters = {'a', '\u0001', 'c'};
+		assertEquals("\"a\\u0001c\"", JsonStringParser.writeJsonString(new String(characters)));
+	}
 }
