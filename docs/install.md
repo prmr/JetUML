@@ -1,13 +1,9 @@
 # Installation Instructions
 
-*For older releases please see the [Legacy Section](#legacy) at the bottom of this page.*
+JetUML is distributed in two formats:
 
-## Release 3.0 and Up
-
-Starting with Release 3.0, JetUML is distributed in two formats:
-
-* **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform.
-* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
+* **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform. Currently available for Windows only, with plans to offer binaries for Windows and Linux when resources permit it.
+* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
 
 ### Self-Contained Application
 
@@ -15,7 +11,7 @@ Starting with Release 3.0, JetUML is distributed in two formats:
 
 * Run or install the file as customary on the appropriate operating system. You will be asked where to extract the application and a shortcut will be added to the desktop. 
 
-* If you are upgrading from a previous version, you can install the new application on top of the older version. See the [compatibility guide](compatibility) for information on loading diagram saved using older versions of JetUML.
+* If you are upgrading from a previous version, you can install the new application on top of the older version.
 
 ### Thin Jar
 
@@ -42,7 +38,3 @@ Some systems may have a pre-packaged version of JetUML available.
 | System | Link | Maintainers |
 |--------|------|-------------|
 | Arch   | [aur.archlinux.org/packages/jetuml](https://aur.archlinux.org/packages/jetuml) | Community   |
-
-## Legacy
-
-Versions prior to 2.0 will run as a self-executing jar on any version of Java. Versions 2.0 and higher require JavaFX. They will run as a self-executing jar on Java 8 only. To run versions 2.0-2.6 on Java 11 and later, follow the instructions for [thin jar](#thin-jar), above.
