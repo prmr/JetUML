@@ -211,7 +211,7 @@ public abstract class DiagramBuilder
 						{ 
 							Edge edge = (Edge) element;
 							aDiagramRenderer.diagram().addEdge(edge); 
-							edge.connect(edge.getStart(), edge.getEnd(), aDiagramRenderer.diagram());	
+							edge.connect(edge.getStart(), edge.getEnd());	
 						},
 						()-> aDiagramRenderer.diagram().removeEdge((Edge)element)));
 			}
@@ -456,7 +456,7 @@ public abstract class DiagramBuilder
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
-		pEdge.connect(pStartNode, pEndNode, aDiagramRenderer.diagram());
+		pEdge.connect(pStartNode, pEndNode);
 		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(pEdge),
 				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
 	}

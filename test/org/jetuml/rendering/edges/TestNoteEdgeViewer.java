@@ -68,10 +68,10 @@ public class TestNoteEdgeViewer
 	@Test
 	public void testBasicConnection()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect(aNoteNode, aPointNode);
 		assertTrue( aNoteEdge.getStart() == aNoteNode );
 		assertTrue( aNoteEdge.getEnd() == aPointNode );
-		aNoteEdge.connect(aPointNode, aNoteNode, aGraph);
+		aNoteEdge.connect(aPointNode, aNoteNode);
 		assertTrue( aNoteEdge.getStart() == aPointNode );
 		assertTrue( aNoteEdge.getEnd() == aNoteNode );
 	}
@@ -79,7 +79,7 @@ public class TestNoteEdgeViewer
 	@Test
 	public void testBoundsCalculation()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect(aNoteNode, aPointNode);
 		assertEquals(new Rectangle(59,19,42,2), aRenderer.getBounds(aNoteEdge));
 		
 		Line connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);

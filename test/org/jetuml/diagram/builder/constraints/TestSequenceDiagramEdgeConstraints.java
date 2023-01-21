@@ -142,7 +142,7 @@ public class TestSequenceDiagramEdgeConstraints
 	void testreturnEdgeEndNotCaller()
 	{
 		createDiagram();
-		aCallEdge.connect(aCallNode1, aCallNode2, aDiagram);
+		aCallEdge.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge);
 		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode3, aPoint, aPoint, aRenderer));
 	}
@@ -151,7 +151,7 @@ public class TestSequenceDiagramEdgeConstraints
 	void testreturnEdgeSelfCaller()
 	{
 		createDiagram();
-		aCallEdge.connect(aCallNode1, aCallNode3, aDiagram);
+		aCallEdge.connect(aCallNode1, aCallNode3);
 		aDiagram.addEdge(aCallEdge);
 		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode3, aCallNode1, aPoint, aPoint, aRenderer));
 	}
@@ -160,7 +160,7 @@ public class TestSequenceDiagramEdgeConstraints
 	void testreturnEdgeValid()
 	{
 		createDiagram();
-		aCallEdge.connect(aCallNode1, aCallNode2, aDiagram);
+		aCallEdge.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge);
 		assertTrue(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode1, aPoint, aPoint, aRenderer));
 	}	

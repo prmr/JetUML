@@ -89,11 +89,11 @@ public class TestCallNodeViewer
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		
-		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2);
 		aDiagram.addEdge(aCallEdge1);
 		
 		aImplicitParameterNode2.addChild(aCallNode1);
-		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
+		aCallEdge2.connect(aDefaultCallNode1, aCallNode1);
 		aDiagram.addEdge(aCallEdge2);
 		
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -111,7 +111,7 @@ public class TestCallNodeViewer
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		
-		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2);
 		aDiagram.addEdge(aConstructorEdge);
 		
 		aRenderer.getBounds(); // Trigger rendering pass

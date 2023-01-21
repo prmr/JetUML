@@ -159,7 +159,7 @@ public class TestSequenceDiagramBuilder
 		aParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aParameterNode1);
 		aDiagram.addRootNode(aParameterNode2);
-		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
+		aCallEdge1.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge1);
 		
 		CallNode callNode = new CallNode();
@@ -268,7 +268,7 @@ public class TestSequenceDiagramBuilder
 	@Test
 	public void testGetCoRemovalsCallEdge()
 	{
-		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
+		aCallEdge1.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge1);
 		aDiagram.addRootNode(aCallNode1);
 		aDiagram.addRootNode(aCallNode2);
@@ -335,7 +335,7 @@ public class TestSequenceDiagramBuilder
 	@Test
 	public void testGetCoRemovalsConstructorEdge()
 	{
-		aConstructorEdge.connect(aCallNode1, aCallNode2, aDiagram);
+		aConstructorEdge.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aConstructorEdge);
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
@@ -355,7 +355,7 @@ public class TestSequenceDiagramBuilder
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge = new NoteEdge();
-		noteEdge.connect(noteNode, aCallNode3, aDiagram);
+		noteEdge.connect(noteNode, aCallNode3);
 		aDiagram.addRootNode(noteNode);
 		aDiagram.addEdge(noteEdge);
 		

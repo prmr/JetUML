@@ -61,7 +61,6 @@ public class TestClipboard
 	private Field aEdgesField;
 	private ClassNode aNode1 = new ClassNode();
 	private ClassNode aNode2 = new ClassNode();
-	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	
 	public TestClipboard() throws ReflectiveOperationException
 	{
@@ -132,9 +131,9 @@ public class TestClipboard
 	void testCopyEdges_NodesAndEdges()
 	{
 		Edge edge1 = new DependencyEdge();
-		edge1.connect(aNode1, aNode2, aDiagram);
+		edge1.connect(aNode1, aNode2);
 		Edge edge2 = new AssociationEdge();
-		edge2.connect(aNode2, aNode1, aDiagram);
+		edge2.connect(aNode2, aNode1);
 		List<Edge> copies = copyEdges(List.of(aNode1, edge1, aNode2, edge2));
 		assertNotSame(edge1, copies.get(0));
 		assertSame(DependencyEdge.class, copies.get(0).getClass());
@@ -170,7 +169,7 @@ public class TestClipboard
 		aNode1.translate(10, 10);
 		aNode2.translate(200, 200);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode2, aDiagram);
+		edge.connect(aNode1, aNode2);
 		aClipboard.copy(Arrays.asList(aNode1, aNode2, edge));
 		
 		List<Node> nodes = getClipboardNodes();
@@ -187,7 +186,7 @@ public class TestClipboard
 		aNode1.translate(10, 10);
 		aNode2.translate(200, 200);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode2, aDiagram);
+		edge.connect(aNode1, aNode2);
 		aClipboard.copy(Arrays.asList(aNode1, edge));
 		
 		List<Node> nodes = getClipboardNodes();
@@ -202,7 +201,7 @@ public class TestClipboard
 		PackageNode pn = new PackageNode();
 		pn.addChild(aNode1);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode1, aDiagram);
+		edge.connect(aNode1, aNode1);
 		aClipboard.copy(Arrays.asList(pn));
 		
 		List<Node> nodes = getClipboardNodes();
@@ -221,7 +220,7 @@ public class TestClipboard
 		PackageNode packageNode = new PackageNode();
 		packageNode.addChild(aNode1);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode1, aDiagram);
+		edge.connect(aNode1, aNode1);
 		aClipboard.copy(Arrays.asList(aNode1));
 		
 		List<Node> nodes = getClipboardNodes();

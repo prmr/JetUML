@@ -67,7 +67,7 @@ public class DiagramAccessor
 	
 	public void connectAndAdd(Edge pEdge, Node pStart, Node pEnd)
 	{
-		pEdge.connect(pStart, pEnd, aDiagram);
+		pEdge.connect(pStart, pEnd);
 		aDiagram.addEdge(pEdge);
 	}
 }

@@ -129,7 +129,7 @@ public class TestEdgeConstraints
 	{
 		createDiagram();
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aRenderer));
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		assertFalse(EdgeConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aRenderer));
 	}
@@ -139,11 +139,11 @@ public class TestEdgeConstraints
 	{
 		createDiagram();
 		assertTrue(EdgeConstraints.maxEdges(2).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aRenderer));
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		assertTrue(EdgeConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aRenderer));
 		DependencyEdge edge = aEdge1;
-		edge.connect(aNode1, aNode2, aDiagram);
+		edge.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge);
 		assertFalse(EdgeConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aRenderer));
 	}
@@ -152,7 +152,7 @@ public class TestEdgeConstraints
 	void testMaxEdgesNodesMatchNoMatch()
 	{
 		createDiagram();
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		ClassNode node3 = new ClassNode();
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, node3, aPoint, aPoint, aRenderer));
@@ -162,7 +162,7 @@ public class TestEdgeConstraints
 	void testMaxEdgesNodesNoMatchMatch()
 	{
 		createDiagram();
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		ClassNode node3 = new ClassNode();
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(aEdge1, node3, aNode2, aPoint, aPoint, aRenderer));
@@ -172,7 +172,7 @@ public class TestEdgeConstraints
 	void testMaxEdgesNodesNoMatchNoMatch()
 	{
 		createDiagram();
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		ClassNode node3 = new ClassNode();
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(aEdge1, node3, new ClassNode(), aPoint, aPoint, aRenderer));
@@ -182,7 +182,7 @@ public class TestEdgeConstraints
 	void testMaxEdgesNodesDifferentEdgeType()
 	{
 		createDiagram();
-		aEdge1.connect(aNode1, aNode2, aDiagram);
+		aEdge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(aEdge1);
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(new NoteEdge(), aNode1, aNode2, aPoint, aPoint, aRenderer ));
 	}

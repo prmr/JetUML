@@ -77,7 +77,7 @@ public final class Diagram implements DiagramData
 		}
 
 		// Reassign diagram
-		copy.aEdges.forEach(edge -> edge.connect(edge.getStart(), edge.getEnd(), copy));
+		copy.aEdges.forEach(edge -> edge.connect(edge.getStart(), edge.getEnd()));
 		return copy;
 	}
 
@@ -91,11 +91,11 @@ public final class Diagram implements DiagramData
 		{
 			if( edge.getStart() == pOriginal )
 			{
-				edge.connect(pCopy, edge.getEnd(), edge.getDiagram());
+				edge.connect(pCopy, edge.getEnd());
 			}
 			if( edge.getEnd() == pOriginal )
 			{
-				edge.connect(edge.getStart(), pCopy, edge.getDiagram());
+				edge.connect(edge.getStart(), pCopy);
 			}
 		}
 		List<Node> oldChildren = pOriginal.getChildren();
@@ -280,7 +280,7 @@ public final class Diagram implements DiagramData
 	 */
 	public void addEdge(Edge pEdge)
 	{
-		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getDiagram() != null;
+		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null;
 		aEdges.add(pEdge);
 	}
 	

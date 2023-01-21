@@ -110,7 +110,7 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		
-		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2);
 		aDiagram.addEdge(aConstructorEdge1);
 		
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -133,8 +133,8 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		aDiagram.addRootNode(aImplicitParameterNode3);
 		
-		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
-		aConstructorEdge1.connect(aDefaultCallNode1, aCallNode1, aDiagram);
+		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2);
+		aConstructorEdge1.connect(aDefaultCallNode1, aCallNode1);
 		aDiagram.addEdge(aCallEdge1);
 		aDiagram.addEdge(aConstructorEdge1);
 		
@@ -160,8 +160,8 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		aDiagram.addRootNode(aImplicitParameterNode3);
 		
-		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
-		aConstructorEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
+		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2);
+		aConstructorEdge2.connect(aDefaultCallNode1, aCallNode1);
 		aDiagram.addEdge(aConstructorEdge1);
 		aDiagram.addEdge(aConstructorEdge2);
 		

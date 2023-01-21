@@ -79,7 +79,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
 		assertSame( aClassNode1, aDependencyEdge.getStart());
 		assertSame( aClassNode2, aDependencyEdge.getEnd());
-		assertSame( aDiagram, aDependencyEdge.getDiagram() );
 		
 		select(aClassNode1, aClassNode2, aDependencyEdge);
 		copy();
@@ -95,7 +94,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		Edge edge = diagram2.edges().iterator().next();
 		assertSame(node1, edge.getStart());
 		assertSame(node2, edge.getEnd());
-		assertSame(diagram2, edge.getDiagram());
 	}
 	
 	@Test

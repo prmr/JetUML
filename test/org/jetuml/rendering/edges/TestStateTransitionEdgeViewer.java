@@ -72,7 +72,7 @@ public class TestStateTransitionEdgeViewer
 		aStateNode2 = new StateNode();
 		aStateNode2.translate(pDistanceInX, pDistanceInY);
 		aTransitionEdge.setMiddleLabel(pString);
-		aTransitionEdge.connect(aStateNode1, aStateNode2, aDiagram);
+		aTransitionEdge.connect(aStateNode1, aStateNode2);
 		String label = wrapLabel(aTransitionEdge);
 		int numberOfLines = (int)label.chars().filter(c -> c == '\n').count() + 1;
 		assertEquals(pExpectedNumberOfLines, numberOfLines);

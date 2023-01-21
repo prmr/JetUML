@@ -82,11 +82,11 @@ public class TestJsonEncodingStateDiagram
 		aGraph.addRootNode(node2);
 		aGraph.addRootNode(start);
 		aGraph.addRootNode(end);
-		edge1.connect(start, node1, aGraph);
+		edge1.connect(start, node1);
 		aGraph.addEdge(edge1);
-		edge2.connect(node1, node2, aGraph);
+		edge2.connect(node1, node2);
 		aGraph.addEdge(edge2);
-		edge3.connect(node2, end, aGraph);
+		edge3.connect(node2, end);
 		aGraph.addEdge(edge3);
 	}
 	
@@ -111,13 +111,13 @@ public class TestJsonEncodingStateDiagram
 		
 		aGraph.addRootNode(node1);
 		aGraph.addRootNode(node2);
-		self1.connect(node1, node1, aGraph);
+		self1.connect(node1, node1);
 		aGraph.addEdge(self1);
-		self2.connect(node1, node1, aGraph);
+		self2.connect(node1, node1);
 		aGraph.addEdge(self2);
-		edge1.connect(node1, node2, aGraph);
+		edge1.connect(node1, node2);
 		aGraph.addEdge(edge1);
-		edge2.connect(node1, node2, aGraph);
+		edge2.connect(node1, node2);
 		aGraph.addEdge(edge2);
 	}
 	

@@ -69,7 +69,7 @@ public class TestDiagramDuplicate
 		aClassDiagram.addRootNode(node1);
 		aClassDiagram.addRootNode(node2);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(node1, node2, aClassDiagram);
+		edge.connect(node1, node2);
 		aClassDiagram.addEdge(edge);
 		Diagram copy = aClassDiagram.duplicate();
 		assertNotSame(aClassDiagram.rootNodes().get(0), copy.rootNodes().get(0));
@@ -96,10 +96,8 @@ public class TestDiagramDuplicate
 		aClassDiagram.addRootNode(node1);
 		aClassDiagram.addRootNode(node2);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(node1, node2, aClassDiagram);
+		edge.connect(node1, node2);
 		aClassDiagram.addEdge(edge);
-		Diagram copy = aClassDiagram.duplicate();
-		assertSame(copy, copy.edges().get(0).getDiagram());
 	}
 	
 	@Test
@@ -118,7 +116,7 @@ public class TestDiagramDuplicate
 		aClassDiagram.addRootNode(p2);
 		p1.addChild(n1);
 		p2.addChild(n2);
-		edge.connect(n1, n2, aClassDiagram);
+		edge.connect(n1, n2);
 		aClassDiagram.addEdge(edge);
 		Diagram copy = aClassDiagram.duplicate();
 		PackageNode p1Copy = (PackageNode) copy.rootNodes().get(0);
@@ -137,6 +135,5 @@ public class TestDiagramDuplicate
 		assertNotSame(edge, edgeCopy);
 		assertSame(n1Copy, edgeCopy.getStart());
 		assertSame(n2Copy, edgeCopy.getEnd());
-		assertSame(copy, edgeCopy.getDiagram());
 	}
 }

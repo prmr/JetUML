@@ -30,10 +30,8 @@ public interface Edge extends DiagramElement
     * Connect this edge to two nodes.
     * @param pStart the starting node
     * @param pEnd the end node
-    * @param pDiagram the graph where the two connected nodes 
-    *     exists. Can be null.
   	*/
-  void connect(Node pStart, Node pEnd, Diagram pDiagram);
+	void connect(Node pStart, Node pEnd);
 
    	/**
      * @return The start node for this edge.
@@ -44,11 +42,6 @@ public interface Edge extends DiagramElement
      * @return The end node for this edge.
    	 */
    	Node getEnd();
-   	
-   	/**
-   	 * @return The diagram that contains this edge.
-   	 */
-   	Diagram getDiagram();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning

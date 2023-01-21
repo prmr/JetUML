@@ -203,7 +203,7 @@ public class TestStoredEdgeViewer
 	@Test
 	public void testContains()
 	{
-		aDependencyEdge.connect(aNodeB, aNodeA, aDiagram);
+		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
 		assertTrue(aStoredEdgeViewer.contains(aDependencyEdge, new Point(0, 50)));
@@ -214,7 +214,7 @@ public class TestStoredEdgeViewer
 	@Test
 	public void testGetConnectionPoints()
 	{
-		aDependencyEdge.connect(aNodeB, aNodeA, aDiagram);
+		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
 		assertEquals(new Point(0, 0), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).getPoint1());
@@ -224,7 +224,7 @@ public class TestStoredEdgeViewer
 	@Test
 	public void testGetStoredEdgePath()
 	{
-		aDependencyEdge.connect(aNodeB, aNodeA, aDiagram);
+		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
 		assertEquals(new EdgePath(new Point(0, 0), new Point(0, 100)), getStoredEdgePath(aDependencyEdge));

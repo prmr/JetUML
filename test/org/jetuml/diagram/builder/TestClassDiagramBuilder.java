@@ -232,7 +232,7 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(node1, node2, aDiagram);
+		edge.connect(node1, node2);
 		aDiagram.addEdge(edge);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
 	}
@@ -329,7 +329,7 @@ public class TestClassDiagramBuilder
 		ClassNode node2 = new ClassNode();
 		node2.moveTo(new Point(100,100));
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(node1, node2, aDiagram);
+		edge.connect(node1, node2);
 		elements.addAll(Arrays.asList(new DiagramElement[]{edge, node1, node2}));
 		
 		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);

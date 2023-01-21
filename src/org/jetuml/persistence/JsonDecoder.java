@@ -149,7 +149,7 @@ public final class JsonDecoder
 				{
 					property.set(object.get(property.name().external()));
 				}
-				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")), pContext.pDiagram());
+				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
 				pContext.pDiagram().addEdge(edge);
 			}
 			catch( ReflectiveOperationException exception )

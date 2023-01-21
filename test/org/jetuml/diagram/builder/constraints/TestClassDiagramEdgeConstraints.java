@@ -85,7 +85,7 @@ public class TestClassDiagramEdgeConstraints
 	{
 		createDiagram();
 		GeneralizationEdge edge = new GeneralizationEdge();
-		edge.connect(aNode1, aNode2, aDiagram);
+		edge.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge);
 		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aRenderer));
 	}
@@ -95,7 +95,7 @@ public class TestClassDiagramEdgeConstraints
 	{
 		createDiagram();
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode2, aDiagram);
+		edge.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge);
 		assertFalse(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aNode2, aNode1, aPoint, aPoint, aRenderer));
 	}

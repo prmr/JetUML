@@ -89,9 +89,9 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(aEdge2);
 		assertEquals(2, aDiagram.edges().size());
 	}
@@ -101,9 +101,9 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(aEdge2);
 		assertEquals(0, aDiagram.indexOf(aEdge1));
 		assertEquals(1, aDiagram.indexOf(aEdge2));
@@ -114,7 +114,7 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(0, aEdge1);
 		assertEquals(1, aDiagram.edges().size());
 		assertEquals(0, aDiagram.indexOf(aEdge1));
@@ -125,9 +125,9 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(0, aEdge2);
 		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(0));
@@ -139,9 +139,9 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(1, aEdge2);
 		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
@@ -171,15 +171,15 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
 		assertEquals(1, aDiagramAccessor.getEdges().size());
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(aEdge2);
 		assertEquals(2, aDiagramAccessor.getEdges().size());
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
-		aEdge3.connect(aClassNode2, aClassNode1, aDiagram);
+		aEdge3.connect(aClassNode2, aClassNode1);
 		aDiagram.addEdge(aEdge3);
 		assertEquals(3, aDiagramAccessor.getEdges().size());
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
@@ -208,11 +208,11 @@ public class TestClassDiagram
 	{
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(aEdge2);
-		aEdge3.connect(aClassNode2, aClassNode1, aDiagram);
+		aEdge3.connect(aClassNode2, aClassNode1);
 		assertTrue(aDiagram.contains(aEdge1));
 		assertTrue(aDiagram.contains(aEdge2));
 		assertFalse(aDiagram.contains(aEdge3));
@@ -277,9 +277,9 @@ public class TestClassDiagram
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aDiagram.addRootNode(aClassNode3);
-		aEdge1.connect(aClassNode2, aClassNode2, aDiagram);
-		aEdge2.connect(aClassNode2, aClassNode3, aDiagram);
-		aEdge3.connect(aClassNode3, aClassNode2, aDiagram);
+		aEdge1.connect(aClassNode2, aClassNode2);
+		aEdge2.connect(aClassNode2, aClassNode3);
+		aEdge3.connect(aClassNode3, aClassNode2);
 		aDiagram.addEdge(aEdge1);
 		aDiagram.addEdge(aEdge2);
 		aDiagram.addEdge(aEdge3);

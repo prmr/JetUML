@@ -180,7 +180,6 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private Path getSegmentPath(Edge pEdge) 
 	{
 		assert pEdge != null;
-		assert pEdge.getDiagram().getType() == DiagramType.CLASS;
 		Path shape = new Path();
 		EdgePath path = getStoredEdgePath(pEdge);
 		shape.getElements().add(new MoveTo(path.getStartPoint().getX(), path.getStartPoint().getY()));
@@ -241,8 +240,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	
 	private String wrapLabel(String pString, Point pEndPoint1, Point pEndPoint2) 
 	{
-		int distanceInX = (int)Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
-		int distanceInY = (int)Math.abs(pEndPoint1.getY() - pEndPoint2.getY());
+		int distanceInX = Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
+		int distanceInY = Math.abs(pEndPoint1.getY() - pEndPoint2.getY());
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
 		double distanceInXPerChar = distanceInX / SINGLE_CHAR_WIDTH;
 		double distanceInYPerChar = distanceInY / SIGLE_CHAR_HEIGHT;
@@ -267,13 +266,13 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if (pString == null || pString.isEmpty())
 		{
-			return new Rectangle((int)Math.round(pEndPoint2.getX()), 
-					(int)Math.round(pEndPoint2.getY()), 0, 0);
+			return new Rectangle(Math.round(pEndPoint2.getX()), 
+					Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pString);
 		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.width(), textDimensions.height());
 		Point a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter, pIsStepUp);
-		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
+		return new Rectangle(Math.round(a.getX()), Math.round(a.getY()),
 				Math.round(stringDimensions.getWidth()), Math.round(stringDimensions.getHeight()));
 	}
 

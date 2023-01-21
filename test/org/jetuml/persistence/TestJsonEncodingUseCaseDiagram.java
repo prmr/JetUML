@@ -73,7 +73,7 @@ public class TestJsonEncodingUseCaseDiagram
 		aDiagram.addRootNode(useCase);
 		
 		UseCaseAssociationEdge edge = new UseCaseAssociationEdge();
-		edge.connect(actor, useCase, aDiagram);
+		edge.connect(actor, useCase);
 		aDiagram.addEdge(edge);
 	}
 	
@@ -92,7 +92,7 @@ public class TestJsonEncodingUseCaseDiagram
 		aDiagram.addRootNode(node2);
 		
 		UseCaseDependencyEdge edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
-		edge.connect(node1, node2, aDiagram);
+		edge.connect(node1, node2);
 		aDiagram.addEdge(edge);
 	}
 	

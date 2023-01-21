@@ -22,8 +22,6 @@ package org.jetuml.diagram.edges;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +32,6 @@ public class TestNoteEdge
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
-	private Diagram aGraph;
 	
 	@BeforeEach
 	public void setup()
@@ -46,17 +43,15 @@ public class TestNoteEdge
 		aPointNode = new PointNode(); 
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
-		
-		aGraph = new Diagram(DiagramType.CLASS);
 	}
 	
 	@Test
 	public void testBasicConnection()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect(aNoteNode, aPointNode);
 		assertTrue( aNoteEdge.getStart() == aNoteNode );
 		assertTrue( aNoteEdge.getEnd() == aPointNode );
-		aNoteEdge.connect(aPointNode, aNoteNode, aGraph);
+		aNoteEdge.connect(aPointNode, aNoteNode);
 		assertTrue( aNoteEdge.getStart() == aPointNode );
 		assertTrue( aNoteEdge.getEnd() == aNoteNode );
 	}
@@ -64,7 +59,7 @@ public class TestNoteEdge
 	@Test
 	public void testClone()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect(aNoteNode, aPointNode);
 		NoteEdge clonedEdge = (NoteEdge) aNoteEdge.clone();
 		
 		// Test that the start and end nodes are the same object

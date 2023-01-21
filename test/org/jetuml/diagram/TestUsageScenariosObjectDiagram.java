@@ -284,7 +284,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addNode(aObjectNode1, new Point(0,0));
 		addNode(aObjectNode2, new Point(100,0));
 		addNode(aFieldNode1, new Point(10,10));
-		aReferenceEdge1.connect(aFieldNode1, aObjectNode2, aDiagram);
+		aReferenceEdge1.connect(aFieldNode1, aObjectNode2);
 		aDiagram.addEdge(aReferenceEdge1);
 		select(aObjectNode1);
 		deleteSelected();

@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -43,7 +42,6 @@ import org.junit.jupiter.api.Test;
 public class TestEdgeStorage 
 {
 	private EdgeStorage aEdgeStorage;
-	private Diagram aDiagram;
 	private Edge edge1;
 	private Edge edge2;
 	private Edge edge3;
@@ -63,7 +61,6 @@ public class TestEdgeStorage
 		path2 = new EdgePath(new Point(300,300), new Point(300,350));
 		path3 = new EdgePath(new Point(0,200), new Point(200, 200), new Point(200, 100), new Point(100, 100));
 		aEdgeStorage = new EdgeStorage();
-		aDiagram = new Diagram(null);
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
 		nodeC = new ClassNode();
@@ -100,9 +97,9 @@ public class TestEdgeStorage
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
 		nodeC = new ClassNode();
-		edge1.connect(nodeB, nodeA, aDiagram);
-		edge2.connect(nodeA, nodeC, aDiagram);
-		edge3.connect(nodeB, nodeC, aDiagram);
+		edge1.connect(nodeB, nodeA);
+		edge2.connect(nodeA, nodeC);
+		edge3.connect(nodeB, nodeC);
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
 		aEdgeStorage.store(edge3, path3);
@@ -137,9 +134,9 @@ public class TestEdgeStorage
 	{
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
-		edge1.connect(nodeB, nodeA, aDiagram);
-		edge2.connect(nodeA, nodeB, aDiagram);
-		edge3.connect(nodeC, nodeB, aDiagram);
+		edge1.connect(nodeB, nodeA);
+		edge2.connect(nodeA, nodeB);
+		edge3.connect(nodeC, nodeB);
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
 		aEdgeStorage.store(edge3, path3);

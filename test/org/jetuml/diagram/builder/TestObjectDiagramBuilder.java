@@ -161,7 +161,7 @@ public class TestObjectDiagramBuilder
 		aDiagram.addRootNode(aObjectNode1);
 		aDiagram.addRootNode(aObjectNode2);
 		assertTrue(aBuilder.canAdd(aCollaboration1, new Point(10,10), new Point(110,110)));
-		aCollaboration1.connect(aObjectNode1, aObjectNode2, aDiagram);
+		aCollaboration1.connect(aObjectNode1, aObjectNode2);
 		aDiagram.addEdge(aCollaboration1);
 		ObjectCollaborationEdge edge = new ObjectCollaborationEdge();
 		assertFalse(aBuilder.canAdd(edge, new Point(10,10), new Point(110,110)));

@@ -284,11 +284,11 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		newParameterNode2.addChild(callee2);
 		
 		CallEdge callEdge1 = new CallEdge();
-		callEdge1.connect(caller, callee1, aDiagram);
+		callEdge1.connect(caller, callee1);
 		aDiagram.addEdge(callEdge1);
 		
 		CallEdge callEdge2 = new CallEdge();
-		callEdge2.connect(caller, callee2, aDiagram);
+		callEdge2.connect(caller, callee2);
 		aDiagram.addEdge(callEdge2);
 				
 		select(caller);
@@ -315,15 +315,15 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		CallNode end = new CallNode();
 		newParameterNode.addChild(end);
 		
-		aCallEdge1.connect(aCallNode1, middleCallNode, aDiagram);
+		aCallEdge1.connect(aCallNode1, middleCallNode);
 		aDiagram.addEdge(aCallEdge1);
 		
 		CallEdge edge = new CallEdge();
-		edge.connect(middleCallNode, end, aDiagram);
+		edge.connect(middleCallNode, end);
 		aDiagram.addEdge(edge);
 		
 		ReturnEdge redge = new ReturnEdge();
-		redge.connect(middleCallNode, aCallNode1, aDiagram);
+		redge.connect(middleCallNode, aCallNode1);
 		aDiagram.addEdge(redge);
 		
 		select(middleCallNode);
@@ -353,9 +353,9 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(middleCallNode);
 		CallEdge callEdge = new CallEdge();
-		callEdge.connect(aCallNode1, middleCallNode, aDiagram);
+		callEdge.connect(aCallNode1, middleCallNode);
 		aDiagram.addEdge(callEdge);
-		returnEdge.connect(middleCallNode, aCallNode1, aDiagram);
+		returnEdge.connect(middleCallNode, aCallNode1);
 		aDiagram.addEdge(returnEdge);
 		
 		select(returnEdge);
@@ -534,7 +534,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
 		
-		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
+		aCallEdge1.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge1);
 		
 		assertSame(aCallNode1, aCallEdge1.getStart());
@@ -570,13 +570,13 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aParameterNode2.addChild(middleCallNode);
 		newParameterNode.addChild(aCallNode2);
 		
-		aCallEdge1.connect(aCallNode1, middleCallNode, aDiagram);
+		aCallEdge1.connect(aCallNode1, middleCallNode);
 		aDiagram.addEdge(aCallEdge1);
 		
-		aCallEdge2.connect(middleCallNode, aCallNode2, aDiagram);
+		aCallEdge2.connect(middleCallNode, aCallNode2);
 		aDiagram.addEdge(aCallEdge2);
 		
-		aReturnEdge.connect(middleCallNode, aCallNode1, aDiagram);
+		aReturnEdge.connect(middleCallNode, aCallNode1);
 		aDiagram.addEdge(aReturnEdge);
 		
 		selectAll();

@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -39,7 +37,6 @@ import org.junit.jupiter.api.Test;
 
 public class TestEdgePriority 
 {
-	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private Edge aInheritanceEdge = new GeneralizationEdge(Type.Inheritance);
 	private Edge aImplementationEdge = new GeneralizationEdge(Type.Implementation);
 	private Edge aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
@@ -52,7 +49,7 @@ public class TestEdgePriority
 
 	TestEdgePriority()
 	{
-		aSelfEdge.connect(aNode1, aNode1, aDiagram);
+		aSelfEdge.connect(aNode1, aNode1);
 	}
 	
 	@Test

@@ -177,7 +177,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		
 		// CSOFF: Needed for assigning to the final variable
 		final Edge edge = canCreateConstructorCall(pStartPoint, pEndPoint)?new ConstructorEdge():pEdge; // CSON:
-		edge.connect(start, end, aDiagramRenderer.diagram());
+		edge.connect(start, end);
 		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, edge),
 				()-> aDiagramRenderer.diagram().removeEdge(edge)));
 	}

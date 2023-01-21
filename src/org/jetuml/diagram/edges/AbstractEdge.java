@@ -21,7 +21,6 @@
 package org.jetuml.diagram.edges;
 
 import org.jetuml.diagram.AbstractDiagramElement;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 
@@ -32,15 +31,13 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 {
 	private Node aStart;
 	private Node aEnd;
-	private Diagram aDiagram;
 	
 	@Override
-	public final void connect(Node pStart, Node pEnd, Diagram pDiagram)
+	public final void connect(Node pStart, Node pEnd)
 	{
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
-		aDiagram = pDiagram;
 	}
 
 	@Override
@@ -53,12 +50,6 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	public Node getEnd()
 	{
 		return aEnd;
-	}
-
-	@Override
-	public Diagram getDiagram()
-	{
-		return aDiagram;
 	}
 
 	@Override

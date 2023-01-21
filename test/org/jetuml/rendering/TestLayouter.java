@@ -112,7 +112,7 @@ public class TestLayouter
 	{
 		aDiagram.addRootNode(aNodeA);//start node
 		aDiagram.addRootNode(aNodeB);//end node
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeA);
 	}
 	
@@ -126,8 +126,8 @@ public class TestLayouter
 		 aDiagram.addRootNode(aNodeB);
 		 aDiagram.addRootNode(aNodeC);
 		
-		 aEdgeA.connect(aNodeB, aNodeA, aDiagram);
-		 aEdgeB.connect(aNodeC, aNodeA, aDiagram);
+		 aEdgeA.connect(aNodeB, aNodeA);
+		 aEdgeB.connect(aNodeC, aNodeA);
 		 
 		 aDiagram.addEdge(aEdgeA);
 		 aDiagram.addEdge(aEdgeB);
@@ -149,9 +149,9 @@ public class TestLayouter
 		aEdgeB = new AggregationEdge();
 		aEdgeC = new AggregationEdge();
 		aEdgeD = new AggregationEdge();
-		aEdgeA.connect(aNodeD, aNodeA, aDiagram);
-		aEdgeB.connect(aNodeD, aNodeB, aDiagram);
-		aEdgeC.connect(aNodeD, aNodeC, aDiagram);
+		aEdgeA.connect(aNodeD, aNodeA);
+		aEdgeB.connect(aNodeD, aNodeB);
+		aEdgeC.connect(aNodeD, aNodeC);
 		aDiagram.addEdge(aEdgeA);
 		aDiagram.addEdge(aEdgeB);
 		aDiagram.addEdge(aEdgeC);
@@ -165,9 +165,9 @@ public class TestLayouter
 	 */
 	private void setUpMergedEndEdges()
 	{
-		aEdgeA.connect(aNodeA, aNodeD, aDiagram);
-		aEdgeB.connect(aNodeB, aNodeD, aDiagram);
-		aEdgeC.connect(aNodeC, aNodeD, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeD);
+		aEdgeB.connect(aNodeB, aNodeD);
+		aEdgeC.connect(aNodeC, aNodeD);
 		aDiagram.addEdge(aEdgeA);
 		aDiagram.addEdge(aEdgeB);
 		aDiagram.addEdge(aEdgeC);
@@ -184,8 +184,8 @@ public class TestLayouter
 	{
 		dependencyEdge = new DependencyEdge();
 		generalizationEdge = new GeneralizationEdge();
-		dependencyEdge.connect(aNodeB, aNodeA, aDiagram);
-		generalizationEdge.connect(aNodeC, aNodeA, aDiagram);
+		dependencyEdge.connect(aNodeB, aNodeA);
+		generalizationEdge.connect(aNodeC, aNodeA);
 		aDiagram.addEdge(dependencyEdge);
 		aDiagram.addEdge(generalizationEdge);
 		aDiagram.addRootNode(aNodeA);
@@ -213,10 +213,10 @@ public class TestLayouter
 			aDiagram.addRootNode(node);
 		}
 		
-		aEdgeA.connect(aNodeD, aNodeA, aDiagram);
-		aEdgeB.connect(aNodeD, aNodeB, aDiagram);
-		aEdgeC.connect(aNodeD, aNodeC, aDiagram);
-		aEdgeD.connect(aNodeE, aNodeD, aDiagram);
+		aEdgeA.connect(aNodeD, aNodeA);
+		aEdgeB.connect(aNodeD, aNodeB);
+		aEdgeC.connect(aNodeD, aNodeC);
+		aEdgeD.connect(aNodeE, aNodeD);
 		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
 			aDiagram.addEdge(edge);
@@ -251,10 +251,10 @@ public class TestLayouter
 		{
 			aDiagram.addRootNode(node);
 		}
-		aEdgeA.connect(aNodeA, endNode, aDiagram);
-		aEdgeB.connect(aNodeB, endNode, aDiagram);
-		aEdgeC.connect(aNodeC, endNode, aDiagram);
-		aEdgeD.connect(aNodeD, endNode, aDiagram);
+		aEdgeA.connect(aNodeA, endNode);
+		aEdgeB.connect(aNodeB, endNode);
+		aEdgeC.connect(aNodeC, endNode);
+		aEdgeD.connect(aNodeD, endNode);
 		
 		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
@@ -284,13 +284,13 @@ public class TestLayouter
 		{
 			aDiagram.addRootNode(node);
 		}
-		aEdgeA.connect(aNodeA, endNode, aDiagram);
-		aEdgeB.connect(aNodeB, endNode, aDiagram);
-		aEdgeC.connect(aNodeC, endNode, aDiagram);
-		aEdgeD.connect(aNodeD, endNode, aDiagram);
-		aEdgeE.connect(aNodeE, endNode, aDiagram);
-		aEdgeF.connect(aNodeF, endNode, aDiagram);
-		aEdgeG.connect(aNodeG, endNode, aDiagram);
+		aEdgeA.connect(aNodeA, endNode);
+		aEdgeB.connect(aNodeB, endNode);
+		aEdgeC.connect(aNodeC, endNode);
+		aEdgeD.connect(aNodeD, endNode);
+		aEdgeE.connect(aNodeE, endNode);
+		aEdgeF.connect(aNodeF, endNode);
+		aEdgeG.connect(aNodeG, endNode);
 		
 		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD, aEdgeE, aEdgeF, aEdgeG))
 		{
@@ -615,8 +615,8 @@ public class TestLayouter
 	{
 		Edge selfEdge = new AggregationEdge();
 		Edge nonSelfEdge = new AggregationEdge();
-		selfEdge.connect(aNodeA, aNodeA, aDiagram);
-		nonSelfEdge.connect(aNodeA, aNodeB, aDiagram);
+		selfEdge.connect(aNodeA, aNodeA);
+		nonSelfEdge.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(selfEdge);
 		aDiagram.addEdge(nonSelfEdge);
 		aDiagram.addRootNode(aNodeA);
@@ -635,7 +635,7 @@ public class TestLayouter
 		Node node = new ClassNode();
 		node.moveTo(new Point(20, 20));
 		Edge selfEdge = new AggregationEdge();
-		selfEdge.connect(node, node, aDiagram);
+		selfEdge.connect(node, node);
 		EdgePath expected = new EdgePath(new Point(100, 20), new Point(100, 0), new Point(140, 0), new Point(140, 40), new Point(120, 40));
 		assertEquals(expected, buildSelfEdge(selfEdge, NodeCorner.TOP_RIGHT));
 	}
@@ -646,7 +646,7 @@ public class TestLayouter
 		Node node = new ClassNode();
 		node.moveTo(new Point(20, 20));
 		Edge selfEdge = new AggregationEdge();
-		selfEdge.connect(node, node, aDiagram);
+		selfEdge.connect(node, node);
 		EdgePath expected = new EdgePath(new Point(40, 20), new Point(40, 0), new Point(0, 0), new Point(0, 40), new Point(20, 40));
 		assertEquals(expected, buildSelfEdge(selfEdge, NodeCorner.TOP_LEFT));
 	}
@@ -657,7 +657,7 @@ public class TestLayouter
 		Node node = new ClassNode();
 		node.moveTo(new Point(20, 20));
 		Edge selfEdge = new AggregationEdge();
-		selfEdge.connect(node, node, aDiagram);
+		selfEdge.connect(node, node);
 		EdgePath expected = new EdgePath(new Point(40, 80), new Point(40, 100), new Point(0, 100), new Point(0, 60), new Point(20, 60));
 		assertEquals(expected, buildSelfEdge(selfEdge, NodeCorner.BOTTOM_LEFT));
 	}
@@ -668,7 +668,7 @@ public class TestLayouter
 		Node node = new ClassNode();
 		node.moveTo(new Point(20, 20));
 		Edge selfEdge = new AggregationEdge();
-		selfEdge.connect(node, node, aDiagram);
+		selfEdge.connect(node, node);
 		EdgePath expected = new EdgePath(new Point(100, 80), new Point(100, 100), new Point(140, 100), new Point(140, 60), new Point(120, 60));
 		assertEquals(expected, buildSelfEdge(selfEdge, NodeCorner.BOTTOM_RIGHT));
 	}
@@ -678,14 +678,14 @@ public class TestLayouter
 	{
 		Node node = new ClassNode();
 		Edge selfEdge = new AggregationEdge();
-		selfEdge.connect(node, node, aDiagram);
+		selfEdge.connect(node, node);
 		node.moveTo(new Point(100, 100));
 		aDiagram.addRootNode(node);
 		aDiagram.addEdge(selfEdge);
-		aEdgeA.connect(node, aNodeB, aDiagram);
-		aEdgeB.connect(aNodeB, node, aDiagram);
-		aEdgeC.connect(aNodeC, node, aDiagram);
-		aEdgeD.connect(node, aNodeD, aDiagram);
+		aEdgeA.connect(node, aNodeB);
+		aEdgeB.connect(aNodeB, node);
+		aEdgeC.connect(aNodeC, node);
+		aEdgeD.connect(node, aNodeD);
 		aDiagram.addEdge(aEdgeA);
 		aDiagram.addEdge(aEdgeB);
 		aDiagram.addEdge(aEdgeC);
@@ -736,29 +736,29 @@ public class TestLayouter
 		startNode.moveTo(new Point(200, 120));
 		//edgeA should not be in the resulting list of edges to merge (it is pEdge)
 		nodeA.moveTo(new Point(0, 0));
-		edgeA.connect(startNode, nodeA, aDiagram);
+		edgeA.connect(startNode, nodeA);
 		
 		//edgeB should merge
 		nodeB.moveTo(new Point(0, 100));
-		edgeB.connect(startNode, nodeB, aDiagram);
+		edgeB.connect(startNode, nodeB);
 		
 		//edgeC should not merge (its has a different EdgePriority)
 		nodeC.moveTo(new Point(0, 200));
-		edgeC.connect(nodeC, startNode, aDiagram);
+		edgeC.connect(nodeC, startNode);
 		store(edgeC, new EdgePath(new Point(100, 250), new Point(150, 250), new Point(150, 250), new Point(200, 250)));
 		
 		//edgeD should not merge (start label)
 		nodeD.moveTo(new Point(0, 300));
-		edgeD.connect(startNode, nodeD, aDiagram);
+		edgeD.connect(startNode, nodeD);
 		edgeD.setStartLabel("label");
 		
 		//edgeE should not merge (it is not outgoing from startNode)
 		nodeE.moveTo(new Point(0, 400));
-		edgeE.connect(nodeE, startNode, aDiagram);
+		edgeE.connect(nodeE, startNode);
 		
 		//edgeF should not connect (it has a different attachment side)
 		nodeF.moveTo(new Point(200, 210));
-		edgeF.connect(startNode, nodeF, aDiagram);
+		edgeF.connect(startNode, nodeF);
 		
 		aDiagram.addRootNode(startNode);
 		aDiagram.addRootNode(nodeA);
@@ -801,28 +801,28 @@ public class TestLayouter
 		endNode.moveTo(new Point(250, 0));
 		//edgeA should not merge: different attachment side
 		nodeA.moveTo(new Point(0,0));
-		edgeA.connect(nodeA, endNode, aDiagram);
+		edgeA.connect(nodeA, endNode);
 		
 		//edgeB should not merge: different direction
 		nodeB.moveTo(new Point(0,180));
-		edgeB.connect(endNode, nodeB, aDiagram);
+		edgeB.connect(endNode, nodeB);
 		
 		//edgeC should merge
 		nodeC.moveTo(new Point(100,180));
-		edgeC.connect(nodeC, endNode, aDiagram);
+		edgeC.connect(nodeC, endNode);
 		
 		//edgeD is the edge to merge (so it should not be included in the resulting list)
 		nodeD.moveTo(new Point(200, 180));
-		edgeD.connect(nodeD, endNode, aDiagram);
+		edgeD.connect(nodeD, endNode);
 		
 		//edgeE should not merge: (it is a different priority type)
 		nodeE.moveTo(new Point(300, 180));
-		edgeE.connect(nodeE, endNode, aDiagram);
+		edgeE.connect(nodeE, endNode);
 		store(edgeE, new EdgePath(new Point(350, 180), new Point(350, 120), new Point(300, 120), new Point(300, 60)));
 		
 		//edgeF should not merge: it there is another edge (edgeE) in between it and edgeD
 		nodeF.moveTo(new Point(400, 180));
-		edgeF.connect(nodeF, endNode, aDiagram);
+		edgeF.connect(nodeF, endNode);
 		
 		aDiagram.addRootNode(endNode);
 		aDiagram.addRootNode(nodeA);
@@ -856,10 +856,10 @@ public class TestLayouter
 		aEdgeB = new GeneralizationEdge(Type.Inheritance);
 		aEdgeC = new AssociationEdge();
 		aEdgeD = new DependencyEdge();
-		aEdgeA.connect(aNodeA, endNode, aDiagram);
-		aEdgeB.connect(aNodeB, endNode, aDiagram);
-		aEdgeC.connect(aNodeC, endNode, aDiagram);
-		aEdgeD.connect(aNodeD, endNode, aDiagram);
+		aEdgeA.connect(aNodeA, endNode);
+		aEdgeB.connect(aNodeB, endNode);
+		aEdgeC.connect(aNodeC, endNode);
+		aEdgeD.connect(aNodeD, endNode);
 		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
 			aDiagram.addEdge(edge);
@@ -892,7 +892,7 @@ public class TestLayouter
 		//aEdgeB connects aEdgeC ---> aEdgeA
 		//aEdgeC connects aEdgeD ---> aEdgeA
 		setUpThreeConnectedNodes();
-		aEdgeC.connect(aNodeD, aNodeA, aDiagram);
+		aEdgeC.connect(aNodeD, aNodeA);
 		aDiagram.addRootNode(aNodeD);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(50, 120));
@@ -911,7 +911,7 @@ public class TestLayouter
 		//aEdgeB connects aEdgeC ---> aEdgeA
 		//aEdgeC connects aEdgeD ---> aEdgeA
 		setUpThreeConnectedNodes();
-		aEdgeC.connect(aNodeD, aNodeA, aDiagram);
+		aEdgeC.connect(aNodeD, aNodeA);
 		aDiagram.addRootNode(aNodeD);
 		aNodeA.moveTo(new Point(0, 110));
 		aNodeB.moveTo(new Point(100, 0));
@@ -930,7 +930,7 @@ public class TestLayouter
 		//aEdgeB connects aEdgeC ---> aEdgeA
 		//aEdgeC connects aEdgeD ---> aEdgeA
 		setUpThreeConnectedNodes();
-		aEdgeC.connect(aNodeD, aNodeA, aDiagram);
+		aEdgeC.connect(aNodeD, aNodeA);
 		aDiagram.addRootNode(aNodeD);
 		aNodeA.moveTo(new Point(220, 0));
 		aNodeB.moveTo(new Point(0, 10));
@@ -949,7 +949,7 @@ public class TestLayouter
 		//aEdgeB connects aEdgeC ---> aEdgeA
 		//aEdgeC connects aEdgeD ---> aEdgeA
 		setUpThreeConnectedNodes();
-		aEdgeC.connect(aNodeD, aNodeA, aDiagram);
+		aEdgeC.connect(aNodeD, aNodeA);
 		aDiagram.addRootNode(aNodeD);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 10));
@@ -972,8 +972,8 @@ public class TestLayouter
 		aDiagram.addRootNode(aNodeB);
 		Edge storedEdge = new GeneralizationEdge();
 		Edge newEdge = new AssociationEdge();
-		storedEdge.connect(aNodeA, aNodeB, aDiagram);
-		newEdge.connect(aNodeA, aNodeB, aDiagram);
+		storedEdge.connect(aNodeA, aNodeB);
+		newEdge.connect(aNodeA, aNodeB);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(20, 120));
 		store(storedEdge, new EdgePath(new Point(50, 60), new Point(50, 90), new Point(70, 90), new Point(70, 120)));
@@ -996,7 +996,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(20, 120));
 		Edge newEdge = new GeneralizationEdge();
-		newEdge.connect(aNodeA, aNodeB, aDiagram);
+		newEdge.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(newEdge);
 		assertEquals(90, getHorizontalMidLine(new Point(50, 60), new Point(70, 120), Side.BOTTOM, newEdge));
 	}
@@ -1010,9 +1010,9 @@ public class TestLayouter
 		Edge storedEdge = new GeneralizationEdge();
 		Edge associationEdge = new AssociationEdge();
 		Edge newAggregationEdge = new AggregationEdge();
-		storedEdge.connect(aNodeB, aNodeA, aDiagram);
-		associationEdge.connect(aNodeC, aNodeA, aDiagram);
-		newAggregationEdge.connect(aNodeC, aNodeA, aDiagram);
+		storedEdge.connect(aNodeB, aNodeA);
+		associationEdge.connect(aNodeC, aNodeA);
+		newAggregationEdge.connect(aNodeC, aNodeA);
 		aDiagram.addEdge(newAggregationEdge);
 		aDiagram.addEdge(associationEdge);
 		//aNodeB and aNodeC are beside each other, and below aNodeA.
@@ -1040,8 +1040,8 @@ public class TestLayouter
 		aDiagram.addRootNode(aNodeB);
 		Edge storedEdge = new GeneralizationEdge();
 		Edge newEdge = new AssociationEdge();
-		storedEdge.connect(aNodeA, aNodeB, aDiagram);
-		newEdge.connect(aNodeA, aNodeB, aDiagram);
+		storedEdge.connect(aNodeA, aNodeB);
+		newEdge.connect(aNodeA, aNodeB);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 20));
 		store(storedEdge, new EdgePath(new Point(100, 30), new Point(150, 30), new Point(150, 50), new Point(200, 50)));
@@ -1062,7 +1062,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(20, 120));
 		Edge newEdge = new GeneralizationEdge();
-		newEdge.connect(aNodeA, aNodeB, aDiagram);
+		newEdge.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(newEdge);
 		assertEquals(150, getVerticalMidLine(new Point(100, 30), new Point(200, 50), Side.RIGHT, newEdge));
 	}
@@ -1076,9 +1076,9 @@ public class TestLayouter
 		Edge storedEdge = new GeneralizationEdge();
 		Edge associationEdge = new AssociationEdge();
 		Edge newAggregationEdge = new AggregationEdge();
-		storedEdge.connect(aNodeB, aNodeA, aDiagram);
-		associationEdge.connect(aNodeC, aNodeA, aDiagram);
-		newAggregationEdge.connect(aNodeC, aNodeA, aDiagram);
+		storedEdge.connect(aNodeB, aNodeA);
+		associationEdge.connect(aNodeC, aNodeA);
+		newAggregationEdge.connect(aNodeC, aNodeA);
 		aDiagram.addEdge(newAggregationEdge);
 		aDiagram.addEdge(associationEdge);
 		//aNodeB and aNodeC are both to the left of aNodeA
@@ -1102,7 +1102,7 @@ public class TestLayouter
 		aDiagram.addRootNode(aNodeA);
 		aDiagram.addRootNode(aNodeB);
 		Edge storedEdge = new GeneralizationEdge();
-		storedEdge.connect(aNodeA, aNodeB, aDiagram);
+		storedEdge.connect(aNodeA, aNodeB);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(20, 120));
 		store(storedEdge, new EdgePath(new Point(50, 60), new Point(50, 90), new Point(70, 90), new Point(70, 120)));
@@ -1110,10 +1110,10 @@ public class TestLayouter
 		Edge associationEdgeSouth = new AssociationEdge();
 		Edge aggregationEdgeNorth = new AggregationEdge();
 		Edge aggregationEdgeSouth = new AggregationEdge();
-		associationEdgeSouth.connect(aNodeA, aNodeB, aDiagram);
-		associationEdgeNorth.connect(aNodeB, aNodeA, aDiagram);
-		aggregationEdgeSouth.connect(aNodeA, aNodeB, aDiagram);
-		aggregationEdgeNorth.connect(aNodeB, aNodeA, aDiagram);
+		associationEdgeSouth.connect(aNodeA, aNodeB);
+		associationEdgeNorth.connect(aNodeB, aNodeA);
+		aggregationEdgeSouth.connect(aNodeA, aNodeB);
+		aggregationEdgeNorth.connect(aNodeB, aNodeA);
 		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeSouth, Side.BOTTOM));
 		assertEquals(80, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeNorth, Side.TOP));
 		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeSouth, Side.BOTTOM));
@@ -1126,7 +1126,7 @@ public class TestLayouter
 		aDiagram.addRootNode(aNodeA);
 		aDiagram.addRootNode(aNodeB);
 		Edge storedEdge = new GeneralizationEdge();
-		storedEdge.connect(aNodeA, aNodeB, aDiagram);
+		storedEdge.connect(aNodeA, aNodeB);
 		//aNodeA is to the left of aNodeB
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 20));
@@ -1135,10 +1135,10 @@ public class TestLayouter
 		Edge associationEdgeWest = new AssociationEdge();
 		Edge aggregationEdgeEast = new AggregationEdge();
 		Edge aggregationEdgeWest = new AggregationEdge();
-		associationEdgeEast.connect(aNodeA, aNodeB, aDiagram);
-		associationEdgeWest.connect(aNodeB, aNodeA, aDiagram);
-		aggregationEdgeEast.connect(aNodeA, aNodeB, aDiagram);
-		aggregationEdgeWest.connect(aNodeB, aNodeA, aDiagram);
+		associationEdgeEast.connect(aNodeA, aNodeB);
+		associationEdgeWest.connect(aNodeB, aNodeA);
+		aggregationEdgeEast.connect(aNodeA, aNodeB);
+		aggregationEdgeWest.connect(aNodeB, aNodeA);
 		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeEast, Side.RIGHT));
 		assertEquals(140, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeWest, Side.LEFT));
 		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeEast, Side.RIGHT));
@@ -1160,7 +1160,7 @@ public class TestLayouter
 		Node startNode = new ClassNode();
 		startNode.moveTo(new Point(200, 70));
 		Edge newEdge = new GeneralizationEdge();
-		newEdge.connect(startNode, aNodeA, aDiagram);
+		newEdge.connect(startNode, aNodeA);
 		//Without any conflicting edges in storage: returns empty
 		assertEquals(Optional.empty(), closestConflictingVerticalSegment(Side.LEFT, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
@@ -1181,7 +1181,7 @@ public class TestLayouter
 		Node startNode = new ClassNode();
 		startNode.moveTo(new Point(200, 70));
 		AggregationEdge newEdge = new AggregationEdge();
-		newEdge.connect(startNode, aNodeA, aDiagram);
+		newEdge.connect(startNode, aNodeA);
 		//Without any conflicting edges in storage: returns empty
 		assertEquals(Optional.empty(), closestConflictingVerticalSegment(Side.LEFT, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
@@ -1201,7 +1201,7 @@ public class TestLayouter
 		Node startNode = new ClassNode();
 		startNode.moveTo(new Point(300, 300));
 		Edge newEdge = new GeneralizationEdge();
-		newEdge.connect(startNode, aNodeA, aDiagram);
+		newEdge.connect(startNode, aNodeA);
 		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(Side.TOP, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(160, 300), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
@@ -1220,7 +1220,7 @@ public class TestLayouter
 		Node startNode = new ClassNode();
 		startNode.moveTo(new Point(300, 300));
 		AggregationEdge newEdge = new AggregationEdge();
-		newEdge.connect(startNode, aNodeA, aDiagram);
+		newEdge.connect(startNode, aNodeA);
 		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(Side.TOP, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(160, 300), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
@@ -1238,9 +1238,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new GeneralizationEdge();
 		Edge edge3 = new GeneralizationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1268,9 +1268,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new GeneralizationEdge();
 		Edge edge3 = new GeneralizationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1297,9 +1297,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new AggregationEdge();
 		Edge edge3 = new AggregationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1322,9 +1322,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new AggregationEdge();
 		Edge edge3 = new AggregationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1354,9 +1354,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new GeneralizationEdge();
 		Edge edge3 = new GeneralizationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1391,9 +1391,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new GeneralizationEdge();
 		Edge edge3 = new GeneralizationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1427,9 +1427,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new AggregationEdge();
 		Edge edge3 = new AggregationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1459,9 +1459,9 @@ public class TestLayouter
 		Edge edge1 = new GeneralizationEdge();
 		Edge edge2 = new AggregationEdge();
 		Edge edge3 = new AggregationEdge();
-		edge1.connect(aNodeB, aNodeA, aDiagram);
-		edge2.connect(aNodeC, aNodeA, aDiagram);
-		edge3.connect(aNodeA, aNodeC, aDiagram);
+		edge1.connect(aNodeB, aNodeA);
+		edge2.connect(aNodeC, aNodeA);
+		edge3.connect(aNodeA, aNodeC);
 		aDiagram.addEdge(edge1);
 		aDiagram.addEdge(edge2);
 		aDiagram.addEdge(edge3);
@@ -1508,12 +1508,12 @@ public class TestLayouter
 		Edge edge4 = new GeneralizationEdge();
 		Edge edge5 = new GeneralizationEdge();
 		Edge edge6 = new GeneralizationEdge();
-		edge1.connect(startNode1, endNode, aDiagram);
-		edge2.connect(startNode2, endNode, aDiagram);
-		edge3.connect(startNode3, endNode, aDiagram);
-		edge4.connect(startNode4, endNode, aDiagram);
-		edge5.connect(startNode5, endNode, aDiagram);
-		edge6.connect(startNode6, endNode, aDiagram);
+		edge1.connect(startNode1, endNode);
+		edge2.connect(startNode2, endNode);
+		edge3.connect(startNode3, endNode);
+		edge4.connect(startNode4, endNode);
+		edge5.connect(startNode5, endNode);
+		edge6.connect(startNode6, endNode);
 		//Position nodes so that all start nodes are below and to the right of endNode
 		endNode.moveTo(new Point(200, 0));
 		startNode1.moveTo(new Point(400, 300));
@@ -1567,10 +1567,10 @@ public class TestLayouter
 		Edge edge2 = new GeneralizationEdge();
 		Edge edge3 = new GeneralizationEdge();
 		Edge edge4 = new GeneralizationEdge();
-		edge1.connect(startNode1, endNode, aDiagram);
-		edge2.connect(startNode2, endNode, aDiagram);
-		edge3.connect(startNode3, endNode, aDiagram);
-		edge4.connect(startNode4, endNode, aDiagram);
+		edge1.connect(startNode1, endNode);
+		edge2.connect(startNode2, endNode);
+		edge3.connect(startNode3, endNode);
+		edge4.connect(startNode4, endNode);
 		//Position nodes so that all start nodes are above and to the left of the end node
 		startNode1.moveTo(new Point(0, 0));
 		startNode2.moveTo(new Point(0, 100));
@@ -1604,11 +1604,11 @@ public class TestLayouter
 		assertEquals(aNodeA, getSharedNode(aEdgeA, aEdgeB));
 		assertEquals(aNodeA, getSharedNode(aEdgeB, aEdgeA));
 		//End node of aEdgeA is the start node of aEdgeB:
-		aEdgeB.connect(aNodeA, aNodeC, aDiagram);
+		aEdgeB.connect(aNodeA, aNodeC);
 		assertEquals(aNodeA, getSharedNode(aEdgeA, aEdgeB));
 		assertEquals(aNodeA, getSharedNode(aEdgeB, aEdgeA));
 		//start node of aEdgeA is the start node of aEdgeB:
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		assertEquals(aNodeA, getSharedNode(aEdgeA, aEdgeB));
 		assertEquals(aNodeA, getSharedNode(aEdgeB, aEdgeA));
 	}
@@ -1635,7 +1635,7 @@ public class TestLayouter
 		setUpThreeConnectedNodes();
 		Edge storedEdge = new GeneralizationEdge();
 		Node storedEdgeStartNode = new ClassNode();
-		storedEdge.connect(storedEdgeStartNode, aNodeA, aDiagram);
+		storedEdge.connect(storedEdgeStartNode, aNodeA);
 		aDiagram.addEdge(storedEdge);
 		storedEdgeStartNode.moveTo(new Point(300, 140));
 		//Positions of nodes in this scenario: (x,y)
@@ -1654,7 +1654,7 @@ public class TestLayouter
 		setUpThreeConnectedNodes();
 		Edge storedEdge = new GeneralizationEdge();
 		Node storedEdgeStartNode = new ClassNode();
-		storedEdge.connect(storedEdgeStartNode, aNodeA, aDiagram);
+		storedEdge.connect(storedEdgeStartNode, aNodeA);
 		aDiagram.addEdge(storedEdge);
 		
 		//Reposition nodes so that aNodeA is above all other nodes, and storedEdgeStartNode is in between aNodeB and aNodeC: 
@@ -1854,7 +1854,7 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(400, 400));
 		//aggregationEdge connects aEdgeA to aEdgeB
 		Edge aggregationEdge = new AggregationEdge();
-		aggregationEdge.connect(aNodeA, aNodeB, aDiagram);
+		aggregationEdge.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aggregationEdge);
 		assertEquals(Side.RIGHT, attachedSide(aggregationEdge, aNodeA));
 		assertEquals(Side.LEFT, attachedSide(aggregationEdge, aNodeB));	
@@ -1880,7 +1880,7 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(400, 0));
 		store(aEdgeA, new EdgePath(new Point(100, 30), new Point(250, 30), new Point(250, 30), new Point(400, 30)));
 		Edge newEdge = new AggregationEdge();
-		newEdge.connect(aNodeB, aNodeA, aDiagram);
+		newEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(newEdge);
 		assertEquals(Side.RIGHT, attachedSide(newEdge, aNodeA));
 		assertEquals(Side.LEFT, attachedSide(newEdge, aNodeB));
@@ -1894,7 +1894,7 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(0, 200));
-		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeB.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aEdgeB);
 		assertEquals(Side.BOTTOM, attachedSidePreferringEastWest(aEdgeA));
 		assertEquals(Side.TOP, attachedSidePreferringEastWest(aEdgeB));
@@ -1908,7 +1908,7 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 0));
-		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeB.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aEdgeB);
 		assertEquals(Side.RIGHT, attachedSidePreferringEastWest(aEdgeA));
 		assertEquals(Side.LEFT, attachedSidePreferringEastWest(aEdgeB));
@@ -1922,7 +1922,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(100, 200));
 		//Also connect aEdgeB from aNodeB to aNodeA to test the method for both East and West directions
-		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeB.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aEdgeB);
 		assertEquals(Side.BOTTOM, attachedSidePreferringNorthSouth(aEdgeA));
 		assertEquals(Side.TOP, attachedSidePreferringNorthSouth(aEdgeB));
@@ -1935,7 +1935,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 0));
 		//Also connect aEdgeB aNodeA <---- aNodeB to test the method for both East and West directions
-		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeB.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aEdgeB);
 		assertEquals(Side.RIGHT, attachedSidePreferringNorthSouth(aEdgeA));
 		assertEquals(Side.LEFT, attachedSidePreferringNorthSouth(aEdgeB));
@@ -1992,7 +1992,7 @@ public class TestLayouter
 	public void testGetStoredEdgePath_edgeInStorage()
 	{
 		EdgePath path = new EdgePath(new Point(0,0), new Point(100, 100));
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, path);
 		assertEquals(path, getStoredEdgePath(aEdgeA));
@@ -2030,7 +2030,7 @@ public class TestLayouter
 	{
 		aNodeA.moveTo(new Point(100, 0));
 		aNodeB.moveTo(new Point(100, 200));
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(130, 60), new Point(130, 130), new Point(130, 130), new Point(130, 200)));
 		assertEquals(Side.TOP, attachedSideFromStorage(aEdgeA, aNodeB));
@@ -2041,7 +2041,7 @@ public class TestLayouter
 	{
 		aNodeA.moveTo(new Point(100, 0));
 		aNodeB.moveTo(new Point(100, 200));
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(130, 60), new Point(130, 130), new Point(130, 130), new Point(130, 200)));
 		assertEquals(Side.BOTTOM, attachedSideFromStorage(aEdgeA, aNodeA));
@@ -2052,7 +2052,7 @@ public class TestLayouter
 	{
 		aNodeA.moveTo(new Point(300, 300));
 		aNodeB.moveTo(new Point(200, 300));
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(260, 330), new Point(280, 330), new Point(280, 330), new Point(300, 330)));
 		assertEquals(Side.RIGHT, attachedSideFromStorage(aEdgeA, aNodeB));
@@ -2063,7 +2063,7 @@ public class TestLayouter
 	{
 		aNodeA.moveTo(new Point(300, 300));
 		aNodeB.moveTo(new Point(200, 300));
-		aEdgeA.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeA.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(260, 330), new Point(280, 330), new Point(280, 330), new Point(300, 330)));
 		assertEquals(Side.LEFT, attachedSideFromStorage(aEdgeA, aNodeA));
@@ -2073,7 +2073,7 @@ public class TestLayouter
 	@Test
 	public void testVerticalDistanceToNode()
 	{
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(0, 400));
 		store(aEdgeA, new EdgePath(new Point(30, 60), new Point(30, 230), new Point(30, 230), new Point(30, 400)));
@@ -2083,7 +2083,7 @@ public class TestLayouter
 	@Test
 	public void testHorizontalDistanceToNode()
 	{
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(400, 10));
 		aDiagram.addEdge(aEdgeA);
@@ -2097,7 +2097,7 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(100, 100));
 		aNodeB.moveTo(new Point(70, 0));
-		aEdgeB.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeB.connect(aNodeA, aNodeB);
 		aDiagram.addEdge(aEdgeB);
 		//aEdgeA connects aNodeA --> aNodeB
 		//aEdgeB connects aNodeB --> aNodeA
@@ -2227,7 +2227,7 @@ public class TestLayouter
 	@Test
 	public void testGetOtherNode()
 	{
-		aEdgeA.connect(aNodeB, aNodeA, aDiagram);
+		aEdgeA.connect(aNodeB, aNodeA);
 		assertSame(aNodeB, getOtherNode(aEdgeA, aNodeA));
 		assertSame(aNodeA, getOtherNode(aEdgeA, aNodeB));
 	}
@@ -2235,7 +2235,7 @@ public class TestLayouter
 	@Test
 	public void testIsOutgoingEdge()
 	{
-		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
+		aEdgeA.connect(aNodeA, aNodeB);
 		assertTrue(isOutgoingEdge(aEdgeA, aNodeA));
 		assertFalse(isOutgoingEdge(aEdgeA, aNodeB));
 	}
