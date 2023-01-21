@@ -156,8 +156,6 @@ public class TestSequenceDiagramBuilder
 	{
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
-		aCallNode1.attach(aDiagram);
-		aCallNode2.attach(aDiagram);
 		aParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aParameterNode1);
 		aDiagram.addRootNode(aParameterNode2);

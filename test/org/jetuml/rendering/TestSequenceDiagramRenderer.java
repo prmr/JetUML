@@ -104,8 +104,6 @@ public class TestSequenceDiagramRenderer
 		
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
-		callNode1.attach(aDiagram);
-		callNode2.attach(aDiagram);
 		node1.addChild(callNode1);
 		node2.addChild(callNode2);
 		CallEdge edge = new CallEdge();
@@ -126,8 +124,6 @@ public class TestSequenceDiagramRenderer
 		
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
-		callNode1.attach(aDiagram);
-		callNode2.attach(aDiagram);
 		node1.addChild(callNode1);
 		node1.addChild(callNode2);
 		CallEdge edge = new CallEdge();
@@ -161,7 +157,6 @@ public class TestSequenceDiagramRenderer
 		aDiagram.addRootNode(node1);
 		
 		CallNode callNode1 = new CallNode();
-		callNode1.attach(aDiagram);
 		node1.addChild(callNode1);
 				
 		assertSame(callNode1, reflectivelyCallFindRoot().get());
@@ -176,10 +171,8 @@ public class TestSequenceDiagramRenderer
 		aDiagram.addRootNode(node2);
 		
 		CallNode callNode1 = new CallNode();
-		callNode1.attach(aDiagram);
 		node1.addChild(callNode1);
 		CallNode callNode2 = new CallNode();
-		callNode2.attach(aDiagram);
 		node2.addChild(callNode2);
 		
 		CallEdge edge = new CallEdge();
@@ -200,13 +193,10 @@ public class TestSequenceDiagramRenderer
 		aDiagram.addRootNode(node2);
 		
 		CallNode callNode1 = new CallNode();
-		callNode1.attach(aDiagram);
 		node1.addChild(callNode1);
 		CallNode callNode2 = new CallNode();
-		callNode2.attach(aDiagram);
 		node2.addChild(callNode2);
 		CallNode callNode3 = new CallNode();
-		callNode3.attach(aDiagram);
 		node3.addChild(callNode3);
 		
 		CallEdge edge = new CallEdge();

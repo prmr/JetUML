@@ -155,15 +155,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			CallNode newCallNode = new CallNode();
 			ImplicitParameterNode parent = (ImplicitParameterNode) pStartNode;
-			pOperation.add(new SimpleOperation(() -> 
-			{
-				newCallNode.attach(aDiagramRenderer.diagram());
-				parent.addChild(newCallNode);
-			}, () -> 
-			{
-				newCallNode.detach();
-				parent.removeChild(newCallNode);
-			}));
+			pOperation.add(new SimpleOperation(() -> parent.addChild(newCallNode), 
+					() -> parent.removeChild(newCallNode)));
 			start = newCallNode;
 		}
 		ImplicitParameterNode endParent = null;
@@ -178,17 +171,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		CallNode end = new CallNode();
 		final ImplicitParameterNode parent = endParent;
-		pOperation.add(new SimpleOperation(()-> 
-		{
-			end.attach(aDiagramRenderer.diagram());
-			parent.addChild(end);
-		},
-		()-> 
-		{
-			end.detach();
-			parent.removeChild(end);
-		}
-		));
+		pOperation.add(new SimpleOperation(()-> parent.addChild(end),
+				()-> parent.removeChild(end)));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
 		
 		// CSOFF: Needed for assigning to the final variable
@@ -219,16 +203,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			Optional<ImplicitParameterNode> target = insideTargetArea(pRequestedPosition);
 			if( target.isPresent() )
 			{
-				result = new SimpleOperation(()-> 
-				{ 
-					pNode.attach(aDiagramRenderer.diagram());
-					target.get().addChild(pNode); 
-				},
-				()-> 
-				{
-					pNode.detach();
-					target.get().removeChild(pNode);
-				});
+				result = new SimpleOperation(()-> target.get().addChild(pNode),
+						()-> target.get().removeChild(pNode));
 			}
 		}
 		if( result == null )

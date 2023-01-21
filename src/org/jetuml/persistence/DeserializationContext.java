@@ -43,17 +43,6 @@ public class DeserializationContext extends AbstractContext
 	}
 	
 	/**
-	 * Attach all deserialized nodes to their diagram.
-	 */
-	public void attachNodes()
-	{
-		for( Node node : this )
-		{
-			node.attach(pDiagram());
-		}
-	}
-	
-	/**
 	 * Adds a node to the context.
 	 * 
 	 * @param pNode The node to add.

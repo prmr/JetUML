@@ -187,7 +187,6 @@ public class TestObjectDiagramBuilder
 		aDiagram.addRootNode(aObjectNode1);
 		aDiagram.addRootNode(aObjectNode2);
 		aObjectNode1.addChild(aFieldNode1);
-		aFieldNode1.attach(aDiagram);
 		DiagramOperation operation = aBuilder.createAddEdgeOperation(aReference1, new Point(10,75), new Point(110,110));
 		operation.execute();
 		assertEquals(1, aAccessor.getEdges().size());

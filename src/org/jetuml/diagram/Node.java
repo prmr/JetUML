@@ -22,7 +22,6 @@
 package org.jetuml.diagram;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.jetuml.geom.Point;
 
@@ -68,25 +67,6 @@ public interface Node extends DiagramElement
 	 * @return A clone of the node.
 	 */
 	Node clone();
-	
-	/**
-	 * Attaches this node to a diagram.
-	 * 
-	 * @param pDiagram The diagram attached to the node.
-	 * @pre pDiagram != null
-	 */
-	void attach(Diagram pDiagram);
-	
-	/**
-	 * Detaches this node from its current diagram.
-	 */
-	void detach();
-	
-	/**
-	 * @return The diagram this node is attached to,
-	 *     or empty() if the node is not attached.
-	 */
-	Optional<Diagram> getDiagram();
 	
 	/**
 	 * @return True if this node is linked to a parent node.

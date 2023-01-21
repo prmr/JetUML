@@ -78,23 +78,7 @@ public final class Diagram implements DiagramData
 
 		// Reassign diagram
 		copy.aEdges.forEach(edge -> edge.connect(edge.getStart(), edge.getEnd(), copy));
-		for( Node node : copy.aRootNodes )
-		{
-			copy.attachNode(node);
-		}
 		return copy;
-	}
-
-	/*
-	 * Recursively attach the node and all its children to this diagram.
-	 */
-	private void attachNode(Node pNode)
-	{
-		pNode.attach(this);
-		for( Node child : pNode.getChildren() )
-		{
-			attachNode(child);
-		}
 	}
 
 	/*
@@ -271,20 +255,7 @@ public final class Diagram implements DiagramData
 	public void addRootNode(Node pNode)
 	{
 		assert pNode != null;
-		recursiveAttach(pNode);
 		aRootNodes.add(pNode);
-	}
-
-	private void recursiveAttach(Node pNode)
-	{
-		pNode.attach(this);
-		pNode.getChildren().forEach(this::recursiveAttach);
-	}
-
-	private void recursiveDetach(Node pNode)
-	{
-		pNode.detach();
-		pNode.getChildren().forEach(this::recursiveDetach);
 	}
 
 	/**
@@ -297,7 +268,6 @@ public final class Diagram implements DiagramData
 	public void removeRootNode(Node pNode)
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
-		recursiveDetach(pNode);
 		aRootNodes.remove(pNode);
 	}
 

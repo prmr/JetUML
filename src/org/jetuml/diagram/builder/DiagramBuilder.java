@@ -431,7 +431,6 @@ public abstract class DiagramBuilder
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			node2 = new PointNode();
-			node2.attach(aDiagramRenderer.diagram());
 			node2.translate(pEnd.getX(), pEnd.getY());
 			Node end = node2; // Effectively final to include in closure
 			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
@@ -466,11 +465,7 @@ public abstract class DiagramBuilder
 	{
 		Node parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);
-		return ()-> 
-		{
-			parent.addChild(index, pNode);
-			pNode.attach(aDiagramRenderer.diagram());
-		};
+		return ()-> parent.addChild(index, pNode);
 	}
 	
 	private Runnable createDetachOperation(Node pNode)
@@ -481,14 +476,12 @@ public abstract class DiagramBuilder
 			return ()-> 
 			{ 
 				Rectangle parentBound = packageNodeRenderer().getBounds(parent);
-				pNode.detach(); 
 				parent.removeChild(pNode); 
 				parent.translate( parentBound.getX()-parent.position().getX(),  parentBound.getY()-parent.position().getY() );
 			};
 		}
 		return ()-> 
 		{ 
-			pNode.detach(); 
 			parent.removeChild(pNode); 
 		};
 	}

@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,13 +33,11 @@ public class TestObjectNode
 	private ObjectNode aObject2;
 	private FieldNode aField1;
 	private FieldNode aField2;
-	private Diagram aDiagram;
 	
 	
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new Diagram(DiagramType.OBJECT);
 		aObject1 = new ObjectNode();
 		aObject2 = new ObjectNode();
 		aField1 = new FieldNode();
@@ -82,7 +78,6 @@ public class TestObjectNode
 	public void testClone_NoFields()
 	{
 		aObject1.setName("Test");
-		aObject1.attach(aDiagram);
 		ObjectNode clone = aObject1.clone();
 		assertNotSame(aObject1, clone);
 		assertEquals(aObject1.getName(), clone.getName());
@@ -92,11 +87,8 @@ public class TestObjectNode
 	public void testClone_WithFields()
 	{
 		aObject1.setName("Test");
-		aObject1.attach(aDiagram);
 		aObject1.addChild(aField1);
 		aObject1.addChild(aField2);
-		aField1.attach(aDiagram);
-		aField2.attach(aDiagram);
 		ObjectNode clone = aObject1.clone();
 		assertNotSame(aObject1, clone);
 		assertEquals(aObject1.getName(), clone.getName());

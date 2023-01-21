@@ -104,11 +104,8 @@ public class TestImplicitParameterNodeViewer
 	public void testGetBoundsContructorCallWithFirstCallee()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aDefaultCallNode1.attach(aDiagram);
-		
 		aImplicitParameterNode2.translate(100, 0);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aDefaultCallNode2.attach(aDiagram);
 		
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
@@ -126,11 +123,8 @@ public class TestImplicitParameterNodeViewer
 	public void testGetBoundsContructorCallWithSecondCallCallee1()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aDefaultCallNode1.attach(aDiagram);
-		
 		aImplicitParameterNode2.translate(100, 0);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aDefaultCallNode2.attach(aDiagram);
 		
 		aImplicitParameterNode3.translate(200, 0);
 		aImplicitParameterNode3.addChild(aCallNode1);
@@ -155,11 +149,9 @@ public class TestImplicitParameterNodeViewer
 	public void testGetBoundsContructorCallWithSecondCallCallee2()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aDefaultCallNode1.attach(aDiagram);
 		
 		aImplicitParameterNode2.translate(100, 0);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aDefaultCallNode2.attach(aDiagram);
 		
 		aImplicitParameterNode3.translate(200, 0);
 		aImplicitParameterNode3.addChild(aCallNode1);

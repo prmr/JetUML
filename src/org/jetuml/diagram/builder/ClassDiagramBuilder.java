@@ -91,16 +91,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				{
 					positionNode(pNode, pRequestedPosition);
 				}
-				result = new SimpleOperation( ()->  
-				{ 
-					pNode.attach(aDiagramRenderer.diagram());
-					container.get().addChild(pNode); 
-				},
-				()-> 
-				{ 
-					pNode.detach();
-					container.get().removeChild(pNode); 
-				});
+				result = new SimpleOperation( ()-> container.get().addChild(pNode),
+						()-> container.get().removeChild(pNode));
 			}
 		}
 		if( result == null )

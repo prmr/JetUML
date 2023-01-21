@@ -23,10 +23,8 @@ package org.jetuml.diagram.nodes;
 import static java.util.Collections.emptyList;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.jetuml.diagram.AbstractDiagramElement;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
 
@@ -36,7 +34,6 @@ import org.jetuml.geom.Point;
 public abstract class AbstractNode extends AbstractDiagramElement implements Node
 {
 	private Point aPosition = new Point(0, 0);
-	private Optional<Diagram> aDiagram = Optional.empty();
 	
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
@@ -68,25 +65,6 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	public String toString()
 	{
 		return getClass().getSimpleName() + " at " + position();
-	}
-	
-	@Override
-	public final void attach(Diagram pDiagram)
-	{
-		assert pDiagram != null;
-		aDiagram = Optional.of(pDiagram);
-	}
-
-	@Override
-	public final void detach()
-	{
-		aDiagram = Optional.empty();
-	}
-
-	@Override
-	public final Optional<Diagram> getDiagram()
-	{
-		return aDiagram;
 	}
 	
 	@Override

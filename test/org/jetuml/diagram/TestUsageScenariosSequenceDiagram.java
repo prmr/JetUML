@@ -533,8 +533,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
-		aCallNode1.attach(aDiagram);
-		aCallNode2.attach(aDiagram);
 		
 		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);

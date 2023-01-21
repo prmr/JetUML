@@ -44,7 +44,6 @@ public class TestObjectNodeViewer
 	private ObjectNode aNode; 
 	private FieldNode aField1;
 	private FieldNode aField2;
-	private Diagram aDiagram; 
 	private final ObjectNodeRenderer aViewer = new ObjectNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.OBJECT)));
 	
 	@BeforeAll
@@ -58,7 +57,6 @@ public class TestObjectNodeViewer
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new Diagram(DiagramType.OBJECT);
 		aField1 = new FieldNode();
 		aField1.setName("");
 		aField1.setValue("");
@@ -66,9 +64,6 @@ public class TestObjectNodeViewer
 		aField2.setName("");
 		aField2.setValue("");
 		aNode = new ObjectNode();
-		aNode.attach(aDiagram);
-		aField1.attach(aDiagram);
-		aField2.attach(aDiagram);
 	}
 	
 	@AfterAll

@@ -84,9 +84,7 @@ public class TestCallNodeViewer
 	void testGetBoundsSecondCalleeOfCaller()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aDefaultCallNode1.attach(aDiagram);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aDefaultCallNode2.attach(aDiagram);
 		aImplicitParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
@@ -95,7 +93,6 @@ public class TestCallNodeViewer
 		aDiagram.addEdge(aCallEdge1);
 		
 		aImplicitParameterNode2.addChild(aCallNode1);
-		aCallNode1.attach(aDiagram);
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge2);
 		
@@ -110,9 +107,7 @@ public class TestCallNodeViewer
 	void testGetBoundsWithConstructorCall()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aDefaultCallNode1.attach(aDiagram);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aDefaultCallNode2.attach(aDiagram);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
 		

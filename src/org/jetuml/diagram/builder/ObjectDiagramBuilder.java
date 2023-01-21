@@ -149,15 +149,8 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			if( object != null )
 			{
 				result = new SimpleOperation( 
-						()-> 
-						{ pNode.attach(aDiagramRenderer.diagram()); 
-						object.addChild(pNode); },
-						()-> 
-						{ 
-							pNode.detach();
-							object.removeChild(pNode);
-						}
-						);
+						()-> object.addChild(pNode),
+						()-> object.removeChild(pNode));
 			}
 		}
 		if( result == null )

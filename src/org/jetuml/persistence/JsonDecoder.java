@@ -56,7 +56,6 @@ public final class JsonDecoder
 			restoreChildren(context, pDiagram);
 			restoreRootNodes(context);
 			decodeEdges(context, pDiagram);
-			context.attachNodes();
 			return diagram;
 		}
 		catch( JsonException | IllegalArgumentException exception )
