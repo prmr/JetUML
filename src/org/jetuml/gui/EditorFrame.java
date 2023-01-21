@@ -25,6 +25,7 @@ import static org.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -580,7 +581,7 @@ public class EditorFrame extends BorderPane
 			BufferedImage image = getBufferedImage(frame); 
 			if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
-				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
+				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
 				Graphics2D graphics = imageRGB.createGraphics();
 				graphics.drawImage(image, 0,  0, null);
 				ImageIO.write(imageRGB, format, out);

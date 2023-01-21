@@ -27,8 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.PropertyName;
 import org.jetuml.geom.Point;
@@ -109,25 +107,6 @@ public class TestActorNode
 	{
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertNotSame(aNode.properties(), clone.properties());
-	}
-	
-	@Test
-	public void testClone_OfDiagram()
-	{
-		Diagram diagram = new Diagram(DiagramType.USECASE);
-		aNode.attach(diagram);
-		assertSame(diagram, aNode.getDiagram().get());
-	}
-	
-	@Test
-	public void testAttachDetach()
-	{
-		assertFalse(aNode.getDiagram().isPresent());
-		Diagram diagram = new Diagram(DiagramType.USECASE);
-		aNode.attach(diagram);
-		assertSame(diagram, aNode.getDiagram().get());
-		aNode.detach();
-		assertFalse(aNode.getDiagram().isPresent());
 	}
 	
 	@Test

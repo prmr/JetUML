@@ -25,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.PropertyName;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,14 +75,6 @@ public class TestCallNode
 		ImplicitParameterNode parent = new ImplicitParameterNode();
 		aNode.link(parent);
 		assertSame(parent, aNode.clone().getParent());
-	}
-	
-	@Test
-	public void testClone_Diagram()
-	{
-		Diagram diagram = new Diagram(DiagramType.SEQUENCE);
-		aNode.attach(diagram);
-		assertSame(diagram, aNode.clone().getDiagram().get());
 	}
 	
 	@Test

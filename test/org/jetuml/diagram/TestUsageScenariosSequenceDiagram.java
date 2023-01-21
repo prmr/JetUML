@@ -425,7 +425,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		NoteEdge noteEdge = new NoteEdge();
 		aDiagramAccessor.connectAndAdd(noteEdge, aCallNode1, noteNode);
 		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
-				.getStartNodeIfExclusive((Edge) noteEdge);
+				.getStartNodeIfExclusive(noteEdge);
 		assertTrue(start.isEmpty());
 	}
 
@@ -434,7 +434,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		createSampleDiagram();
 		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
-				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+				.getStartNodeIfExclusive(aConstructorEdge);
 		assertTrue(start.isPresent());
 		assertSame(aCallNode1, start.get());
 	}
@@ -448,7 +448,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aDiagramAccessor.connectAndAdd(aCallEdge4, aCallNode1, callNode);
 
 		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
-				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+				.getStartNodeIfExclusive(aConstructorEdge);
 		assertTrue(start.isPresent());
 		assertSame(aCallNode1, start.get());
 	}
@@ -462,7 +462,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aDiagramAccessor.connectAndAdd(aCallEdge4, aCallNode1, callNode);
 
 		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
-				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+				.getStartNodeIfExclusive(aConstructorEdge);
 		assertTrue(start.isEmpty());
 	}
 
@@ -478,7 +478,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aDiagramAccessor.connectAndAdd(constructorEdge, aCallNode2, callNode);
 
 		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
-				.getStartNodeIfExclusive((Edge) constructorEdge);
+				.getStartNodeIfExclusive(constructorEdge);
 		assertTrue(start.isEmpty());
 	}
 
@@ -541,7 +541,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		assertSame(aCallNode1, aCallEdge1.getStart());
 		assertSame(aCallNode2, aCallEdge1.getEnd());
-		assertSame( aDiagram, aCallNode1.getDiagram().get());
 		
 		select(aParameterNode1, aParameterNode2, aCallEdge1);
 		copy();
@@ -555,7 +554,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		Node node1 = nodes.next();
 		CallNode callNode = (CallNode)((ImplicitParameterNode)node1).getChildren().get(0);
 		assertSame(node1, callNode.getParent());
-		assertSame( diagram2, callNode.getDiagram().get());
 	}
 	
 	@Test

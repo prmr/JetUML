@@ -132,7 +132,7 @@ public class TestPersistenceService
 		// Point nodes don't have any properties, so we add the properties of the other node
 		if( pElement instanceof PointNode )
 		{
-			Edge edge = ((PointNode)pElement).getDiagram().get().edgesConnectedTo(((Node)pElement)).iterator().next();
+			Edge edge = pDiagram.edgesConnectedTo(((Node)pElement)).iterator().next();
 			Node note = edge.getStart();
 			if( note == pElement )
 			{

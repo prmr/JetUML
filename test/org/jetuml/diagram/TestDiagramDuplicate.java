@@ -86,8 +86,6 @@ public class TestDiagramDuplicate
 		Diagram copy = aClassDiagram.duplicate();
 		assertEquals(0, copy.edges().size());
 		assertEquals(1, copy.rootNodes().size());
-		Node node = copy.rootNodes().get(0);
-		assertSame(copy, node.getDiagram().get());
 	}
 	
 	@Test
@@ -139,10 +137,6 @@ public class TestDiagramDuplicate
 		assertNotSame(edge, edgeCopy);
 		assertSame(n1Copy, edgeCopy.getStart());
 		assertSame(n2Copy, edgeCopy.getEnd());
-		assertSame(copy, p1Copy.getDiagram().get());
-		assertSame(copy, p2Copy.getDiagram().get());
-		assertSame(copy, n2Copy.getDiagram().get());
-		assertSame(copy, n2Copy.getDiagram().get());
 		assertSame(copy, edgeCopy.getDiagram());
 	}
 }

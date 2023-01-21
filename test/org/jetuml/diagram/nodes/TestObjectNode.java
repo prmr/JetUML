@@ -86,7 +86,6 @@ public class TestObjectNode
 		ObjectNode clone = aObject1.clone();
 		assertNotSame(aObject1, clone);
 		assertEquals(aObject1.getName(), clone.getName());
-		assertSame(aObject1.getDiagram().get(), clone.getDiagram().get());
 	}
 	
 	@Test
@@ -101,11 +100,8 @@ public class TestObjectNode
 		ObjectNode clone = aObject1.clone();
 		assertNotSame(aObject1, clone);
 		assertEquals(aObject1.getName(), clone.getName());
-		assertSame(aObject1.getDiagram().get(), clone.getDiagram().get());
 		assertNotSame(aObject1.getChildren().get(0), clone.getChildren().get(0));
 		assertNotSame(aObject1.getChildren().get(1), clone.getChildren().get(1));
-		assertSame(aObject1.getChildren().get(0).getDiagram().get(), clone.getChildren().get(0).getDiagram().get());
-		assertSame(aObject1.getChildren().get(1).getDiagram().get(), clone.getChildren().get(1).getDiagram().get());
 	}
 	
 	@Test

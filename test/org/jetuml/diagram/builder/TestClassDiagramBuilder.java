@@ -41,7 +41,6 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
@@ -86,7 +85,6 @@ public class TestClassDiagramBuilder
 		NoteNode node = new NoteNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
 		operation.execute();
-		assertSame(aDiagram, node.getDiagram().get());
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(10,10), node.position());
@@ -94,9 +92,6 @@ public class TestClassDiagramBuilder
 		aBuilder.createAddEdgeOperation(edge, new Point(11,11), new Point(100,100)).execute();
 		assertEquals(1, aDiagram.edges().size());
 		assertSame(node, edge.getStart());
-		assertSame(aDiagram, node.getDiagram().get());
-		PointNode end = (PointNode) edge.getEnd();
-		assertSame(aDiagram, end.getDiagram().get());
 	}
 	
 	@Test
