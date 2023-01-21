@@ -71,7 +71,7 @@ public final class ClassDiagramEdgeConstraints
 			{
 				return true;
 			}
-			for( Edge edge : pStart.getDiagram().get().edgesConnectedTo(pStart) )
+			for( Edge edge : pRenderer.diagram().edgesConnectedTo(pStart) )
 			{
 				if( edge.getClass() == pEdgeType && edge.getEnd() == pStart && edge.getStart() == pEnd )
 				{
@@ -93,7 +93,7 @@ public final class ClassDiagramEdgeConstraints
 			{
 				return true;
 			}
-			for( Edge edge : pStart.getDiagram().get().edgesConnectedTo(pStart) )
+			for( Edge edge : pRenderer.diagram().edgesConnectedTo(pStart) )
 			{
 				boolean targetEdge = edge.getClass() == AssociationEdge.class || edge.getClass() == AggregationEdge.class;
 				boolean sameInOneDirection = edge.getStart() == pStart && edge.getEnd() == pEnd;
