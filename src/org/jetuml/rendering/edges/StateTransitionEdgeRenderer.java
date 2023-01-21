@@ -202,7 +202,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 		
 		// Additional gap to make sure the labels don't overlap
-		if( pEdge.getDiagram() != null && getPosition(pEdge) > 1 )
+		if( getPosition(pEdge) > 1 )
 		{
 			final double angleLowerBound = Math.atan2(1, 1);
 			final double angleUpperBound = 3 * angleLowerBound;
@@ -319,11 +319,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 *     edges between the same start and end nodes. 
 	 * @pre getGraph() != null
 	 */
-	private static int getPosition(Edge pEdge)
+	private int getPosition(Edge pEdge)
 	{
-		assert pEdge.getDiagram() != null;
 		int lReturn = 0;
-		for( Edge edge : pEdge.getDiagram().edgesConnectedTo(pEdge.getStart()))
+		for( Edge edge : parent().diagram().edgesConnectedTo(pEdge.getStart()))
 		{
 			if( edge.getStart() == pEdge.getStart() && edge.getEnd() == pEdge.getEnd())
 			{
@@ -421,7 +420,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;
-		if( pEdge.getDiagram() != null && getPosition(pEdge) > 1 )
+		if( getPosition(pEdge) > 1 )
 		{
 			turn = DEGREES_20;
 		}

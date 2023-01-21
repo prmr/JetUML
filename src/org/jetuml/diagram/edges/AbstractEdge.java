@@ -35,7 +35,7 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	private Diagram aDiagram;
 	
 	@Override
-	public void connect(Node pStart, Node pEnd, Diagram pDiagram)
+	public final void connect(Node pStart, Node pEnd, Diagram pDiagram)
 	{
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
