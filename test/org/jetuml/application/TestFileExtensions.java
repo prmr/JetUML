@@ -39,7 +39,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class TestFileExtensions 
 {
 	@Test
-	public void all() 
+	void all() 
 	{
 		List<ExtensionFilter> filters = FileExtensions.all();
 		assertThat(filters, hasSize, 7);
@@ -47,13 +47,13 @@ public class TestFileExtensions
 	}
 	
 	@Test
-	public void all_Values_size()
+	void all_Values_size()
 	{
 		FileExtensions.all().forEach( ext -> assertEquals(1, ext.getExtensions().size() ));
 	}
 	
 	@Test
-	public void all_Values_order()
+	void all_Values_order()
 	{
 		List<ExtensionFilter> filters = FileExtensions.all();
 		assertEquals("*.jet", filters.get(0).getExtensions().get(0));
@@ -66,7 +66,7 @@ public class TestFileExtensions
 	}
 	
 	@Test
-	public void test_forDiagram()
+	void test_forDiagram()
 	{
 		for( DiagramType type : DiagramType.values() )
 		{
@@ -75,14 +75,14 @@ public class TestFileExtensions
 	}
 	
 	@Test
-	public void testClipApplicationExtension_noExtension()
+	void testClipApplicationExtension_noExtension()
 	{
 		File file = new File("XXX");
 		assertSame(file, FileExtensions.clipApplicationExtension(file));
 	}
 	
 	@Test
-	public void testClipApplicationExtension_hasExtension()
+	void testClipApplicationExtension_hasExtension()
 	{
 		File file = new File("XXX.jet");
 		assertNotSame(file, FileExtensions.clipApplicationExtension(file));

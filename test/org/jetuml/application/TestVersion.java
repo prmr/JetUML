@@ -53,43 +53,43 @@ public class TestVersion
 	private static final Version VERSION2 = Version.create(0, 6, 1);
 	
 	@Test
-	public void testToString_Patch()
+	void testToString_Patch()
 	{
 		assertEquals("2.5", VERSION1.toString());
 	}
 	
 	@Test
-	public void testToString_NoPatch()
+	void testToString_NoPatch()
 	{
 		assertEquals("0.6.1", VERSION2.toString());
 	}
 	
 	@Test
-	public void testParse_Patch()
+	void testParse_Patch()
 	{
 		assertEquals(VERSION2, Version.parse("0.6.1"));
 	}
 	
 	@Test
-	public void testParse_NoPatch()
+	void testParse_NoPatch()
 	{
 		assertEquals(VERSION1, Version.parse("2.5"));
 	}
 	
 	@Test
-	public void testParse_TooShort()
+	void testParse_TooShort()
 	{
 		assertThrows(IllegalArgumentException.class, () -> Version.parse("0"));
 	}
 	
 	@Test
-	public void testParse_TooLong()
+	void testParse_TooLong()
 	{
 		assertThrows(IllegalArgumentException.class, () -> Version.parse("0.1.2.3"));
 	}
 	
 	@Test
-	public void testParse_NumberFormat()
+	void testParse_NumberFormat()
 	{
 		assertThrows(IllegalArgumentException.class, () -> Version.parse("a.1.2"));
 		assertThrows(IllegalArgumentException.class, () -> Version.parse("0.a.2"));
@@ -97,83 +97,83 @@ public class TestVersion
 	}
 	
 	@Test
-	public void testEquals_Same()
+	void testEquals_Same()
 	{
 		assertTrue(VERSION1.equals(VERSION1));
 	}
 	
 	@Test
-	public void testEquals_Null()
+	void testEquals_Null()
 	{
 		assertFalse(VERSION1.equals(null));
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
-	public void testEquals_NotSameClass()
+	void testEquals_NotSameClass()
 	{
 		assertFalse(VERSION1.equals("2.5.0"));
 	}
 	
 	@Test
-	public void testEquals_DifferentMajor()
+	void testEquals_DifferentMajor()
 	{
 		assertFalse(VERSION1.equals(Version.create(3, 5, 0)));
 	}
 	
 	@Test
-	public void testEquals_DifferentMinor()
+	void testEquals_DifferentMinor()
 	{
 		assertFalse(VERSION1.equals(Version.create(2, 6, 0)));
 	}
 	
 	@Test
-	public void testEquals_DifferentPatch()
+	void testEquals_DifferentPatch()
 	{
 		assertFalse(VERSION1.equals(Version.create(2, 5, 1)));
 	}
 	
 	@Test
-	public void testEquals_True()
+	void testEquals_True()
 	{
 		assertTrue(VERSION1.equals(Version.create(2, 5, 0)));
 	}
 	
 	@Test
-	public void testCompareTo_Equals()
+	void testCompareTo_Equals()
 	{
 		assertTrue(VERSION1.compareTo(VERSION1) == 0);
 		assertTrue(VERSION2.compareTo(VERSION2) == 0);
 	}
 	
 	@Test
-	public void testCompareTo_Lower()
+	void testCompareTo_Lower()
 	{
 		assertTrue(VERSION2.compareTo(VERSION1) < 0 );
 	}
 	
 	@Test
-	public void testCompareTo_Higher()
+	void testCompareTo_Higher()
 	{
 		assertTrue(VERSION1.compareTo(VERSION2) > 0 );
 	}
 	
 	@Test
-	public void compatibleWith_Same()
+	void compatibleWith_Same()
 	{
 		assertTrue(VERSION1.compatibleWith(VERSION1));
 		assertTrue(VERSION2.compatibleWith(VERSION2));
 	}
 	
 	@Test
-	public void compatibleWith_False()
+	void compatibleWith_False()
 	{
 		assertFalse(Version.create(2,1).compatibleWith(Version.create(3, 0)));
 		assertFalse(Version.create(2,1,1).compatibleWith(Version.create(3, 0, 1)));
 	}
 	
 	@Test
-	public void compatibleWith_True()
+	void compatibleWith_True()
 	{
 		assertTrue(Version.create(2,1).compatibleWith(Version.create(2, 2)));
 		assertTrue(Version.create(3,0).compatibleWith(Version.create(3, 1)));

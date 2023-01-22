@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class TestRecentFilesQueue 
 {
 	@Test
-	public void testInit()
+	void testInit()
 	{
 		RecentFilesQueue queue = new RecentFilesQueue();
 		assertEquals(0, queue.size());
@@ -38,7 +38,7 @@ public class TestRecentFilesQueue
 	}
 	
 	@Test
-	public void testAdd()
+	void testAdd()
 	{
 		RecentFilesQueue queue = new RecentFilesQueue();
 		queue.add("testdata/test1.class.jet");
@@ -107,7 +107,7 @@ public class TestRecentFilesQueue
 	}
 	
 	@Test
-	public void testGetMostRecentDirectory()
+	void testGetMostRecentDirectory()
 	{
 		RecentFilesQueue queue = new RecentFilesQueue();
 		assertEquals(new File("."), queue.getMostRecentDirectory() );
@@ -116,7 +116,7 @@ public class TestRecentFilesQueue
 	}
 	
 	@Test
-	public void testSerialize()
+	void testSerialize()
 	{
 		RecentFilesQueue queue = new RecentFilesQueue();
 		assertEquals("", queue.serialize());
@@ -137,7 +137,7 @@ public class TestRecentFilesQueue
 	
 	
 	@Test
-	public void testDeserialize()
+	void testDeserialize()
 	{
 		RecentFilesQueue queue = new RecentFilesQueue();
 		queue.deserialize("");

@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 public class TestApplicationResources 
 {
 	@Test
-	public void testStringFound()
+	void testStringFound()
 	{
 		assertEquals("JetUML", RESOURCES.getString("application.name"));
 	}
 	
 	@Test
-	public void testStringNotFound()
+	void testStringNotFound()
 	{
 		assertEquals("[Resource cannot be found]", RESOURCES.getString("zzzzzzzzzzzzzz"));
 	}
