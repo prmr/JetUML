@@ -97,14 +97,27 @@ public final class SequenceDiagramSemanticConstraints
         !pNode.getChildren().isEmpty();
   }
 
-  private static boolean canCreateConstructor(Node pStartNode, Node pEndNode)
+  /**
+   * Checks whether it is permitted to create a "creates" edge between
+   * pStartNode and pEndNode.
+   *
+   * This is possible pStartNode is a CallNode or an ImplicitParameterNode, and if
+   * the end node it is an ImplicitParameterNode with no child node and the point selected
+   * is in its top rectangle.
+   *
+   * @param pStartNode The desired start node for the "creates" edge.
+   * @param pEndNode The desired end node of the "creates" edge.
+   * @return True if pStartNode is a CallNode or and ImplicitParameterNode and pEndNode
+   *     is an ImplicitParameterNode with no child node and pPoint is within the top rectangular bound of pNode.
+   */
+
+  public static boolean canCreateConstructor(Node pStartNode, Node pEndNode)
   {
     if( !(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) )
     {
       return false;
     }
-    return pEndNode instanceof ImplicitParameterNode &&
-        pEndNode.getChildren().isEmpty();
+    return pEndNode instanceof ImplicitParameterNode && pEndNode.getChildren().isEmpty();
   }
 
   /*
