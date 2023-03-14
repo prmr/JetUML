@@ -42,6 +42,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.ClassDiagramBuilder;
 import org.jetuml.diagram.builder.CompoundOperation;
 import org.jetuml.diagram.builder.DiagramBuilder;
+import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.PackageNode;
@@ -75,6 +76,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private final DiagramBuilder aDiagramBuilder;
+	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
 	
@@ -92,13 +94,17 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * Constructs the canvas, assigns the diagram to it.
 	 * 
 	 * @param pDiagramBuilder The builder wrapping the diagram to draw on this canvas.
+	 * @param pDiagramValidator The validator that checks the diagram's semantic validity.
 	 * @pre pDiagramBuilder != null;
 	 */
-	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
+	public DiagramCanvas(DiagramBuilder pDiagramBuilder,
+						 DiagramTabToolBar pToolBar,
+						 DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler)
 	{
-		assert pDiagramBuilder != null;
+		assert pDiagramBuilder != null && pDiagramValidator.isDiagramValid();
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
+		aDiagramValidator = pDiagramValidator;
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
 		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());

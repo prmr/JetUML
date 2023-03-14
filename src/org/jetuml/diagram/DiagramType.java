@@ -25,13 +25,18 @@ import static org.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-
 import org.jetuml.diagram.builder.ClassDiagramBuilder;
 import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.builder.ObjectDiagramBuilder;
 import org.jetuml.diagram.builder.SequenceDiagramBuilder;
 import org.jetuml.diagram.builder.StateDiagramBuilder;
 import org.jetuml.diagram.builder.UseCaseDiagramBuilder;
+import org.jetuml.diagram.validator.ClassDiagramValidator;
+import org.jetuml.diagram.validator.DiagramValidator;
+import org.jetuml.diagram.validator.ObjectDiagramValidator;
+import org.jetuml.diagram.validator.SequenceDiagramValidator;
+import org.jetuml.diagram.validator.StateDiagramValidator;
+import org.jetuml.diagram.validator.UseCaseDiagramValidator;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.ObjectDiagramRenderer;
@@ -50,6 +55,7 @@ public enum DiagramType
 			".class",
 			ClassDiagramBuilder::new, 
 			ClassDiagramRenderer::new,
+			ClassDiagramValidator::new,
 			new DiagramElement [] { 
 					Prototypes.CLASS, 
 					Prototypes.INTERFACE, 
@@ -68,7 +74,8 @@ public enum DiagramType
 			"SequenceDiagram",
 			".sequence",
 			SequenceDiagramBuilder::new, 
-			SequenceDiagramRenderer::new, 
+			SequenceDiagramRenderer::new,
+			SequenceDiagramValidator::new,
 			new DiagramElement[]{
 					Prototypes.IMPLICIT_PARAMETER,
 					Prototypes.NOTE,
@@ -80,7 +87,8 @@ public enum DiagramType
 			"StateDiagram",
 			".state",
 			StateDiagramBuilder::new, 
-			StateDiagramRenderer::new, 
+			StateDiagramRenderer::new,
+			StateDiagramValidator::new,
 			new DiagramElement[]{
 					Prototypes.STATE,
 					Prototypes.START_STATE,
@@ -93,7 +101,8 @@ public enum DiagramType
 			"ObjectDiagram",
 			".object",
 			ObjectDiagramBuilder::new, 
-			ObjectDiagramRenderer::new, 
+			ObjectDiagramRenderer::new,
+			ObjectDiagramValidator::new,
 			new DiagramElement[] {
 					Prototypes.OBJECT,
 					Prototypes.FIELD,
@@ -106,7 +115,8 @@ public enum DiagramType
 			"UseCaseDiagram",
 			".usecase",
 			UseCaseDiagramBuilder::new, 
-			UseCaseDiagramRenderer::new, 
+			UseCaseDiagramRenderer::new,
+			UseCaseDiagramValidator::new,
 			new DiagramElement[]{
 					Prototypes.ACTOR, 
 					Prototypes.USE_CASE, 
@@ -124,17 +134,20 @@ public enum DiagramType
 	private final String aFileExtension; // The suffix that indicates the type of files
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final Function<Diagram, DiagramRenderer> aRendererFactory;
+	private final Function<Diagram, DiagramValidator> aValidatorFactory;
 	private final DiagramElement[] aPrototypes;
 	
 	
-	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
-			Function<Diagram, DiagramRenderer> pRendererFactory, DiagramElement[] pPrototypes)
+	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier,
+				Function<Diagram, DiagramRenderer> pRendererFactory,
+				Function<Diagram, DiagramValidator> pValidatorFactory, DiagramElement[] pPrototypes)
 	{
 		assert pName != null;
 		aName = pName;
 		aFileExtension = pFileExtension;
 		aBuilderSupplier = pBuilderSupplier;
 		aRendererFactory = pRendererFactory;
+		aValidatorFactory = pValidatorFactory;
 		aPrototypes = pPrototypes;
 	}
 	
@@ -207,6 +220,17 @@ public enum DiagramType
 		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
 		return pDiagram.getType().aRendererFactory.apply(pDiagram);
+	}
+
+	/**
+	 * @param pDiagram The diagram for which we want to build a validator.
+	 * @return A new instance of a validator for this diagram type.
+	 * @pre pDiagram != null
+	 */
+	public static DiagramValidator newValidatorInstanceFor(Diagram pDiagram)
+	{
+		assert pDiagram != null;
+		return pDiagram.getType().aValidatorFactory.apply(pDiagram);
 	}
 	
 	/**

@@ -27,13 +27,6 @@ import static org.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.io.File;
 import java.util.Optional;
-
-import org.jetuml.application.UserPreferences;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.builder.DiagramBuilder;
-import org.jetuml.geom.Point;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
@@ -43,6 +36,13 @@ import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import org.jetuml.application.UserPreferences;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.builder.DiagramBuilder;
+import org.jetuml.diagram.validator.DiagramValidator;
+import org.jetuml.geom.Point;
+import org.jetuml.persistence.DeserializationException;
 
 /**
  * A tab holding a single diagram.
@@ -61,12 +61,15 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	/**
      * Constructs a diagram tab initialized with pDiagram.
      * @param pDiagram The initial diagram
+	 * @throws DeserializationException If pDiagram does not pass semantic check, throws
+	 * DeserializationException
 	 */
-	public DiagramTab(Diagram pDiagram)
+	public DiagramTab(Diagram pDiagram) throws DeserializationException
 	{
+		DiagramValidator validator = DiagramType.newValidatorInstanceFor(pDiagram);
 		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
-		aDiagramCanvas = new DiagramCanvas(builder, sideBar, this);
+		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator,this);
 		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 		
