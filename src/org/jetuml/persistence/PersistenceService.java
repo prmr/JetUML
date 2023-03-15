@@ -29,8 +29,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.persistence.json.JsonException;
 import org.jetuml.persistence.json.JsonParser;
 
@@ -67,26 +67,18 @@ public final class PersistenceService
 	 * @param pFile The file to read the diagram from.
 	 * @return The diagram that is read in
 	 * @throws IOException if the diagram cannot be read.
-	 * @throws DeserializationException if there is a problem decoding the file OR the file
-	 * failed to pass the semantic validation check.
+	 * @throws DeserializationException if there is a problem decoding the file.
 	 * @pre pFile != null
 	 */
 	public static VersionedDiagram read(File pFile) throws IOException, DeserializationException
 	{
 		assert pFile != null;
-
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
 			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
 			// Replace VersionMigrator.migrate with JSonDecoder.decode
-			VersionedDiagram versionedDiagram = new VersionMigrator().migrate(JsonParser.parse(in.readLine()));
-			Diagram curDiagram = versionedDiagram.diagram();
-			if (!DiagramType.newValidatorInstanceFor(curDiagram).isDiagramValid())
-			{
-				throw new DeserializationException("Diagram file failed to pass semantic check");
-			}
-			return versionedDiagram;
+			return new VersionMigrator().migrate(JsonParser.parse(in.readLine())); 
 		}
 		catch( JsonException e )
 		{
