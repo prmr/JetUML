@@ -32,6 +32,7 @@ import org.jetuml.application.UserPreferences;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.builder.DiagramBuilder;
+import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Point;
 
 import javafx.beans.property.DoubleProperty;
@@ -64,9 +65,10 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public DiagramTab(Diagram pDiagram)
 	{
+		DiagramValidator validator = DiagramType.newValidatorInstanceFor(pDiagram);
 		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
-		aDiagramCanvas = new DiagramCanvas(builder, sideBar, this);
+		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this);
 		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 		

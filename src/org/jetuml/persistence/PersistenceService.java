@@ -31,6 +31,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.persistence.json.JsonException;
 import org.jetuml.persistence.json.JsonParser;
 
@@ -78,7 +79,13 @@ public final class PersistenceService
 		{
 			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
 			// Replace VersionMigrator.migrate with JSonDecoder.decode
-			return new VersionMigrator().migrate(JsonParser.parse(in.readLine())); 
+			VersionedDiagram versionedDiagram = new VersionMigrator().migrate(JsonParser.parse(in.readLine()));
+			Diagram curDiagram = versionedDiagram.diagram();
+			if (!DiagramType.newValidatorInstanceFor(curDiagram).isDiagramValid())
+			{
+				throw new DeserializationException("Diagram file failed to pass semantic check");
+			}
+			return versionedDiagram;
 		}
 		catch( JsonException e )
 		{
