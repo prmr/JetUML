@@ -175,7 +175,8 @@ public abstract class DiagramBuilder
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
-		assert canAdd(pNode, pRequestedPosition);
+		// Skip the condition check for add node
+		//assert canAdd(pNode, pRequestedPosition);
 		positionNode(pNode, pRequestedPosition);
 		return new SimpleOperation( ()-> aDiagramRenderer.diagram().addRootNode(pNode), 
 				()-> aDiagramRenderer.diagram().removeRootNode(pNode));
@@ -418,15 +419,13 @@ public abstract class DiagramBuilder
 	 */
 	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
-		assert canAdd(pEdge, pStart, pEnd);
+		//assert canAdd(pEdge, pStart, pEnd);
+		// this assertion is no longer needed because we do not want to check canAdd to be True
+		// before the operation gets executed
 		
 		Node node1 = aDiagramRenderer.nodeAt(pStart).get();
 		Optional<Node> node2in = aDiagramRenderer.nodeAt(pEnd);
-		Node node2 = null;
-		if( node2in.isPresent() )
-		{
-			node2 = node2in.get();
-		}
+		Node node2 = node2in.orElseGet(PointNode::new);
 		CompoundOperation result = new CompoundOperation();
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -436,7 +435,14 @@ public abstract class DiagramBuilder
 			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
 					()-> aDiagramRenderer.diagram().removeRootNode(end)));
 		}
-		assert node2 != null;
+		//assert node2 != null;
+		// new design: create a point node for handling rubber band release at canvas
+		if (node2 instanceof PointNode && !(pEdge instanceof NoteEdge))
+		{
+			Node end = node2;
+			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
+					() -> aDiagramRenderer.diagram().removeRootNode(end)));
+		}
 		completeEdgeAdditionOperation(result, pEdge, node1, node2, pStart, pEnd);
 		return result;
 	}

@@ -45,6 +45,7 @@ import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.PackageNode;
+import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -75,6 +76,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private final DiagramBuilder aDiagramBuilder;
+	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
 	
@@ -92,13 +94,17 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * Constructs the canvas, assigns the diagram to it.
 	 * 
 	 * @param pDiagramBuilder The builder wrapping the diagram to draw on this canvas.
+	 * @param pDiagramValidator The validator that checks the diagram's semantic validity.
 	 * @pre pDiagramBuilder != null;
 	 */
-	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
+	public DiagramCanvas(DiagramBuilder pDiagramBuilder,
+						 DiagramTabToolBar pToolBar,
+						 DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler)
 	{
-		assert pDiagramBuilder != null;
+		assert pDiagramBuilder != null && pDiagramValidator.isDiagramValid();
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
+		aDiagramValidator = pDiagramValidator;
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
 		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());
@@ -518,9 +524,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = Grid.snapped(getMousePoint(pEvent));
-		if(aDiagramBuilder.canAdd(newNode, point))
+		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
+		if (aDiagramValidator.isDiagramValid())
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			setSelection(newNode);
 			diagram().placeOnTop(newNode);
 			paintPanel();
@@ -529,8 +535,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				editSelected();
 			}
 		}
-		else // Special behavior, if we can't add a node, we select any element at the point
+
+		else
 		{
+			aProcessor.undoLastExecutedOperation();
 			handleSelection(pEvent);
 		}
 	}
@@ -631,14 +639,22 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		assert aToolBar.getCreationPrototype().isPresent();
 		Edge newEdge = ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
+		// Edging adding
 		{
-			if( aDiagramBuilder.canAdd(newEdge, aMouseDownPoint, pMousePoint))
+
+			aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, aMouseDownPoint, pMousePoint));
+
+			if (!aDiagramValidator.isDiagramValid())
 			{
-				aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, 
-						aMouseDownPoint, pMousePoint));
+				aProcessor.undoLastExecutedOperation();
+			}
+
+			else
+			{
 				setSelection(newEdge);
 				paintPanel();
 			}
+
 		}
 		deactivateRubberband();
 	}
