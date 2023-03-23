@@ -6,10 +6,9 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 
-public abstract class AbstractDiagramValidator implements DiagramValidator {
-
+public abstract class AbstractDiagramValidator implements DiagramValidator 
+{
   protected final Diagram aDiagram;
-
 
   /**
    * Creates a builder for the diagram wrapped by pDiagram, and an embedded renderer.
@@ -40,10 +39,9 @@ public abstract class AbstractDiagramValidator implements DiagramValidator {
 
   private boolean validElementName()
   {
-    return aDiagram.allNodes().stream().allMatch(node -> getValidNodeClasses().contains(node.getClass()))
-        && aDiagram.edges().stream().allMatch(edge -> getValidEdgeClasses().contains(edge.getClass()));
+	  return aDiagram.allNodes().stream().allMatch(node -> getValidNodeClasses().contains(node.getClass())) && 
+    		aDiagram.edges().stream().allMatch(edge -> getValidEdgeClasses().contains(edge.getClass()));
   }
-
 
   /**
    * Helper method to check whether the children/parent nodes

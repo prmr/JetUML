@@ -21,7 +21,8 @@ public class SemanticConstraintSet
   {
     for ( SemanticConstraint semanticConstraint : aSemanticConstraints )
     {
-      if ( ! semanticConstraint.satisfied(pEdge, pStart, pEnd, pDiagram) ) {
+      if ( !semanticConstraint.satisfied(pEdge, pStart, pEnd, pDiagram) ) 
+      {
         return false;
       }
     }

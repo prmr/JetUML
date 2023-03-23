@@ -57,12 +57,14 @@ public class StateDiagramValidator extends AbstractDiagramValidator
   }
 
   @Override
-  protected List<Class<? extends Node>> getValidNodeClasses() {
+  protected List<Class<? extends Node>> getValidNodeClasses() 
+  {
     return VALID_NODES;
   }
 
   @Override
-  protected List<Class<? extends Edge>> getValidEdgeClasses() {
+  protected List<Class<? extends Edge>> getValidEdgeClasses() 
+  {
     return VALID_EDGES;
   }
 

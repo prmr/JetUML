@@ -76,7 +76,7 @@ final class TipLoader
 	{
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024];
-		for (int length; (length = pStream.read(buffer)) != -1;)
+		for (int length; (length = pStream.read(buffer)) != -1; )
 		{
 			result.write(buffer, 0, length);
 		}

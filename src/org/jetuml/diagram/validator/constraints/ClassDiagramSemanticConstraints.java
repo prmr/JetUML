@@ -8,8 +8,8 @@ import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 
-public final class ClassDiagramSemanticConstraints {
-
+public final class ClassDiagramSemanticConstraints 
+{
   private ClassDiagramSemanticConstraints() {}
 
   /*

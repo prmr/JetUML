@@ -169,7 +169,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		Rectangle top = new Rectangle(0,0, DEFAULT_WIDTH, TOP_HEIGHT);
+		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
 		RenderingUtils.drawRectangle(canvas.getGraphicsContext2D(), top);
 		int xmid = DEFAULT_WIDTH/2;
 		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.getMaxY(), xmid, height, LineStyle.DOTTED);
