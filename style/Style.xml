@@ -189,7 +189,10 @@
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="OverloadMethodsDeclarationOrder"/>
+    <module name="OverloadMethodsDeclarationOrder">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="MissingOverride"/>
     <module name="AnnotationLocation"/>
     <module name="JavadocMissingWhitespaceAfterAsterisk"/>

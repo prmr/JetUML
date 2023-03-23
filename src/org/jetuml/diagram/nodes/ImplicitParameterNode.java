@@ -93,7 +93,7 @@ public final class ImplicitParameterNode extends NamedNode
 	}
 	
 	@Override
-	public final String toString()
+	public String toString()
 	{
 		return String.format("[ImplicitParameterNode: %s]", getName());
 	}

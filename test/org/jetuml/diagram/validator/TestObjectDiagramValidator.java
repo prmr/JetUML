@@ -1,8 +1,11 @@
 package org.jetuml.diagram.validator;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import org.jetuml.JavaFXLoader;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
@@ -10,11 +13,8 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class TestObjectDiagramValidator
 {

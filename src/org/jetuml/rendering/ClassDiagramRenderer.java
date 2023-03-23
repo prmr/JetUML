@@ -107,7 +107,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	@Override
-	public final Rectangle getBounds()
+	public Rectangle getBounds()
 	{
 		//When getBounds(pDiagram) is called to open an existing class diagram file,
 		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
@@ -781,7 +781,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Side attachedSideFromStorage(Edge pEdge, Node pNode)
 	{
-		assert aEdgeStorage.contains(pEdge);;
+		assert aEdgeStorage.contains(pEdge);
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
 		//Get the connection point of pEdge onto pNode
 		Point connectionPoint = getEdgePath(pEdge).getStartPoint();

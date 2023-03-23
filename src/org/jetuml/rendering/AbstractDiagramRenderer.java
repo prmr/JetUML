@@ -50,7 +50,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 {
 	private final IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = new IdentityHashMap<>();
 	private final Diagram aDiagram;
-
+	
 	/*
 	 * Add renderers for elements that are present in all diagrams. 
 	 */
@@ -61,28 +61,24 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		addElementRenderer(PointNode.class, new PointNodeRenderer(this));
 		addElementRenderer(NoteEdge.class, new NoteEdgeRenderer(this));
 	}
-
+	
+	// Recursively enlarge the current rectangle to include the selected DiagramElements
+	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
+	{
+		if( pElement instanceof Node && ((Node) pElement).hasParent())
+		{
+			return addBounds(pBounds, ((Node) pElement).getParent());
+		}
+		else
+		{
+			return pBounds.add(getBounds(pElement));
+		}
+	}
+	
 	protected void addElementRenderer(Class<? extends DiagramElement> pElementClass,
 			DiagramElementRenderer pElementRenderer)
 	{
 		aRenderers.put(pElementClass, pElementRenderer);
-	}
-	
-	@Override
-	public DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
-	{
-		assert aRenderers.containsKey(pClass);
-		return aRenderers.get(pClass);
-	}
-
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		assert pGraphics != null;
-		activateNodeStorages();
-		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
-		deactivateAndClearNodeStorages();
 	}
 
 	/**
@@ -108,33 +104,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		draw(pNode, pGraphics);
 		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
 	}
-
-	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
-	{
-		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
-	}
-
-	@Override
-	public Optional<Edge> edgeAt(Point pPoint)
-	{
-		assert pPoint != null;
-		return aDiagram.edges().stream()
-				.filter(edge -> contains(edge, pPoint))
-				.findFirst();
-	}
-
-	@Override
-	public Optional<Node> nodeAt(Point pPoint)
-	{
-		assert pPoint != null;
-		return aDiagram.rootNodes().stream()
-				.map(node -> deepFindNode(node, pPoint))
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.reduce((first, second) -> second);
-	}
-
+	
 	protected Optional<Node> deepFindNode(Node pNode, Point pPoint)
 	{
 		assert pNode != null && pPoint != null;
@@ -175,6 +145,49 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 		}
 	}
+	
+	@Override
+	public DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
+	{
+		assert aRenderers.containsKey(pClass);
+		return aRenderers.get(pClass);
+	}
+
+	@Override
+	public void draw(GraphicsContext pGraphics)
+	{
+		assert pGraphics != null;
+		activateNodeStorages();
+		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		deactivateAndClearNodeStorages();
+	}
+
+	@Override
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	{
+		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+	}
+
+	@Override
+	public Optional<Edge> edgeAt(Point pPoint)
+	{
+		assert pPoint != null;
+		return aDiagram.edges().stream()
+				.filter(edge -> contains(edge, pPoint))
+				.findFirst();
+	}
+
+	@Override
+	public Optional<Node> nodeAt(Point pPoint)
+	{
+		assert pPoint != null;
+		return aDiagram.rootNodes().stream()
+				.map(node -> deepFindNode(node, pPoint))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.reduce((first, second) -> second);
+	}
 
 	@Override
 	public boolean contains(DiagramElement pElement, Point pPoint)
@@ -194,13 +207,6 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	{
 		assert pElement != null && pGraphics != null;
 		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
-	}
-
-	@Override
-	public Rectangle getBounds(DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 
 	@Override
@@ -245,23 +251,17 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		return bounds;
 	}
 	
-	// Recursively enlarge the current rectangle to include the selected DiagramElements
-	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
-	{
-		if( pElement instanceof Node && ((Node) pElement).hasParent())
-		{
-			return addBounds(pBounds, ((Node) pElement).getParent());
-		}
-		else
-		{
-			return pBounds.add(getBounds(pElement));
-		}
-	}
-	
-	
 	@Override
 	public Dimension getDefaultDimension(Node pNode)
 	{
 		return ((NodeRenderer)rendererFor(pNode.getClass())).getDefaultDimension(pNode);
+	}
+	
+	// CSOFF: Not sure why it complains about the placement of this method
+	@Override
+	public Rectangle getBounds(DiagramElement pElement)
+	{
+		assert pElement != null;
+		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 }

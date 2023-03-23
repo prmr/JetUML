@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 public class TestClassDiagramSemanticConstraints
 {
   private Diagram aDiagram = new Diagram(DiagramType.CLASS);
-  private DiagramRenderer aRenderer = DiagramType.newRendererInstanceFor(aDiagram);
   private ClassNode aNode1 = new ClassNode();;
   private ClassNode aNode2 = new ClassNode();;
   private DependencyEdge aEdge1 = new DependencyEdge();

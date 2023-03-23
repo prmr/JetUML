@@ -117,7 +117,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	@Override
-	public final Rectangle getBounds()
+	public Rectangle getBounds()
 	{
 		//When getBounds(pDiagram) is called to open an existing class diagram file,
 		//the positions have not yet been computed and need to be.
