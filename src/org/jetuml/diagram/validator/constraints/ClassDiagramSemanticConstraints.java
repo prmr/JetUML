@@ -74,7 +74,7 @@ public final class ClassDiagramSemanticConstraints
 
   /**
    * Return a count of the number of association/aggregation edge between pStart and pEnd
-   * regardless of the direction of the edge
+   * regardless of the direction of the edge.
    *
    * @param pStart starting node
    * @param pEnd ending node
@@ -88,8 +88,8 @@ public final class ClassDiagramSemanticConstraints
             .filter(edge ->
                 (edge.getClass() == AssociationEdge.class ||
                 edge.getClass() == AggregationEdge.class) &&
-                    (edge.getStart() == pStart && edge.getEnd() == pEnd) &&
-                    (edge.getStart() == pEnd && edge.getEnd() == pStart)
+                    edge.getStart() == pStart && edge.getEnd() == pEnd &&
+                    edge.getStart() == pEnd && edge.getEnd() == pStart
             )
             .count();
   }

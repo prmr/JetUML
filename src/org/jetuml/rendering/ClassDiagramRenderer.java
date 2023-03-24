@@ -66,6 +66,9 @@ import javafx.scene.canvas.GraphicsContext;
 public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 {
 	private static final int TWENTY_PIXELS = 20;
+	private static final int TEN_PIXELS = 10;
+	
+	private final EdgeStorage aEdgeStorage = new EdgeStorage();
 	
 	public ClassDiagramRenderer(Diagram pDiagram)
 	{
@@ -117,10 +120,6 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		}
 		return super.getBounds();
 	}
-	
-	private static final int TEN_PIXELS = 10;
-	
-	private final EdgeStorage aEdgeStorage = new EdgeStorage();
 
 	/**
 	 * Uses positional information of nodes and stored edges to layout and store 

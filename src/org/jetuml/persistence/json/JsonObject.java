@@ -52,6 +52,11 @@ public class JsonObject
 	 */
 	private Map<String, Object> aProperties = new HashMap<>();
 
+	/**
+	 * Construct a JsonObject with no property.
+	 */
+	public JsonObject() {}
+	
 	private void validateProperty(String pName)
 	{
 		if( pName == null )
@@ -63,11 +68,6 @@ public class JsonObject
 			throw new JsonException("Property " + pName + " not found");
 		}
 	}
-
-	/**
-	 * Construct a JsonObject with no property.
-	 */
-	public JsonObject() {}
 
 	/**
 	 * Get the value associated with a name.

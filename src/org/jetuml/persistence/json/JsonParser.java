@@ -30,6 +30,8 @@ public final class JsonParser
 {
 	private static final JsonObjectParser PARSER = new JsonObjectParser();
 	
+	private JsonParser() {}
+	
     public static JsonObject parse(String pInput)
     {
     	return PARSER.parse(new ParsableCharacterBuffer(pInput));

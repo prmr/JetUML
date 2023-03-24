@@ -27,7 +27,7 @@ public final class SequenceDiagramSemanticConstraints
     };
   }
 
-  /*
+  /**
    * For a return edge, the end node has to be the caller, and return
    * edges on self-calls are not allowed.
    * - If pEdge is not ReturnEdge, then this constraint is true

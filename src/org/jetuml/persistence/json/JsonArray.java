@@ -37,18 +37,6 @@ public class JsonArray implements Iterable<Object>
 	public JsonArray() {}
 	
 	/**
-	 * Append an object value. This increases the array's length by one.
-	 *
-	 * @param pValue A valid Json value.
- 	 * @throws JsonException If value is null or not of a valid Json value.
-	 */
-	public void add(Object pValue)
-	{
-		JsonValueValidator.validateType(pValue);
-		aElements.add(pValue);
-	}
-
-	/**
 	 * Construct a JsonArray by adding each element from pList in sequence. 
 	 * 
 	 * @param pList A list of JSON values to store in the array.
@@ -61,6 +49,18 @@ public class JsonArray implements Iterable<Object>
 		{
 			aElements.add(element);
 		}
+	}
+	
+	/**
+	 * Append an object value. This increases the array's length by one.
+	 *
+	 * @param pValue A valid Json value.
+ 	 * @throws JsonException If value is null or not of a valid Json value.
+	 */
+	public void add(Object pValue)
+	{
+		JsonValueValidator.validateType(pValue);
+		aElements.add(pValue);
 	}
 	
 	@Override

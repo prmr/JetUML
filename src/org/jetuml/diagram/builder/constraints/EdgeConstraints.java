@@ -84,7 +84,8 @@ public final class EdgeConstraints
 	 */
 	public static Constraint noSelfEdge()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)-> { return pStart != pEnd; };
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)-> 
+			{ return pStart != pEnd; };
 	}
 
 	/*

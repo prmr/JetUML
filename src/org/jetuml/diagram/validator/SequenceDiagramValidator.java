@@ -58,7 +58,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
   }
 
   /**
-   * All children nodes of ImplicitParameterNode must be CallNode
+   * All children nodes of ImplicitParameterNode must be CallNode.
    */
   @Override
   public boolean validNodeHierarchy()

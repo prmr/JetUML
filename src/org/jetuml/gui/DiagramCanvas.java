@@ -73,6 +73,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
 	private static final int DIAGRAM_PADDING = 4;
+	private static final int CONNECT_THRESHOLD = 8;
 	
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private final DiagramBuilder aDiagramBuilder;
@@ -82,13 +83,15 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
-	
-	private static final int CONNECT_THRESHOLD = 8;
-	
+		
 	private final MoveTracker aMoveTracker;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
+	
+	private List<DiagramElement> aSelected = new ArrayList<>();
+	private Optional<Line> aRubberband = Optional.empty();
+	private Optional<Rectangle> aLasso = Optional.empty();
 	
 	/**
 	 * Constructs the canvas, assigns the diagram to it.
@@ -757,12 +760,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		canvas.snapshot(null, image);
 		return image;
 	}
-	
-	// ==================== Selection Model ==============================
-	
-	private List<DiagramElement> aSelected = new ArrayList<>();
-	private Optional<Line> aRubberband = Optional.empty();
-	private Optional<Rectangle> aLasso = Optional.empty();
 	
 	/**
 	 * @return A list of all the selected nodes. 

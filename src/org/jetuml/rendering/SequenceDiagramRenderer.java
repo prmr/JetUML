@@ -369,7 +369,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		Optional<Node> topRectangleSelected = diagram().rootNodes().stream()
 			.filter(node -> node.getClass() == ImplicitParameterNode.class)
-			.filter(node -> ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getTopRectangle(node).contains(pPoint))
+			.filter(node -> ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class))
+					.getTopRectangle(node).contains(pPoint))
 			.findFirst();
 		return topRectangleSelected.or(() -> super.selectableNodeAt(pPoint));				
 	}
@@ -427,7 +428,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		{
 			// We delete the start node of pEdge if it does not have any caller and only makes calls to the 
 			// object being constructed.
-			if ( getCaller(pEdge.getStart()).isEmpty() && onlyCallsToASingleImplicitParameterNode(pEdge.getStart(), pEdge.getEnd().getParent()) )
+			if ( getCaller(pEdge.getStart()).isEmpty() && 
+					onlyCallsToASingleImplicitParameterNode(pEdge.getStart(), pEdge.getEnd().getParent()) )
 			{
 				return Optional.of(pEdge.getStart());
 			}

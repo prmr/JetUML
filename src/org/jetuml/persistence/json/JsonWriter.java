@@ -39,6 +39,8 @@ public final class JsonWriter
 		WRITERS.put(JsonArray.class, JsonArrayParser::writeJsonArray);
 	}
 	
+	private JsonWriter() {}
+	
 	/**
 	 * @param pJsonValue A value to serialize.
 	 * @return A serialized version of the input.

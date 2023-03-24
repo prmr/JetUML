@@ -71,7 +71,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 
   /**
    * All children nodes of PackageNode must be either TypeNode (ClassNode, InterfaceNode) or
-   * AbstractPackageNode
+   * AbstractPackageNode.
    *
    */
   @Override

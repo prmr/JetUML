@@ -339,7 +339,8 @@ public abstract class DiagramBuilder
 				}
 				else 
 				{
-					return aDiagramRenderer.diagram().rootNodes().indexOf(parent2) - aDiagramRenderer.diagram().rootNodes().indexOf(parent1);
+					return aDiagramRenderer.diagram().rootNodes().indexOf(parent2) - 
+							aDiagramRenderer.diagram().rootNodes().indexOf(parent1);
 				}
 			}
 		});
