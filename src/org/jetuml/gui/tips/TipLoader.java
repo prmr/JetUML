@@ -37,11 +37,11 @@ import org.jetuml.persistence.json.JsonParser;
 final class TipLoader
 {
 	public static final int NUM_TIPS = Integer.parseInt(RESOURCES.getString("tips.quantity"));
+
+	private static final int BYTES_IN_KILOBYTE = 1024;
 	private static final String TIP_FILE_PATH_FORMAT = RESOURCES.getString("tips.jsons.directory") + "/tip-%d.json";
 
-	private TipLoader()
-	{
-	}
+	private TipLoader() {}
 
 	/**
 	 * Returns the tip associated with the given tip id.
@@ -75,7 +75,7 @@ final class TipLoader
 	private static String inputStreamToString(InputStream pStream) throws IOException
 	{
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024];
+		byte[] buffer = new byte[BYTES_IN_KILOBYTE];
 		for (int length; (length = pStream.read(buffer)) != -1; )
 		{
 			result.write(buffer, 0, length);

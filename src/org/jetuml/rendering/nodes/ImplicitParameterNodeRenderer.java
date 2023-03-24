@@ -49,6 +49,10 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 {
 	public static final int TOP_HEIGHT = 60;
 	
+	private static final int ICON_HEIGHT = 120;
+	private static final int ICON_WIDTH = 80;
+
+	
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
@@ -159,8 +163,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	@Override
 	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
-		int width = 80;
-		int height = 120;
+		int width = ICON_WIDTH;
+		int height = ICON_HEIGHT;
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
 		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
 		double scale = Math.min(scaleX, scaleY);

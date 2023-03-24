@@ -57,6 +57,13 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 { 
+	private static final int CALL_DROP = 10;
+
+	/*
+	 * Number of pixels to drop the contructor activation box from. 
+	 */
+	private static final int CONSTRUCTOR_DROP = 5;
+
 	/* Initial position of the lifeline of an object if it is not the target of a constructor call.  */
 	private static final int INITIAL_Y_POSITION = 80;
 	
@@ -295,7 +302,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 		else
 		{
-			return aCallNodeTopCoordinate.get(topNode.get()) - 5;
+			return aCallNodeTopCoordinate.get(topNode.get()) - CONSTRUCTOR_DROP;
 		}
 	}
 	
@@ -384,13 +391,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
 		// Only apply shift if necessary
-		if ( shift < 10 )
+		if ( shift < CALL_DROP )
 		{
 			return DROP_MIN;
 		}
 		else
 		{
-			return DROP_MIN + 10;
+			return DROP_MIN + CALL_DROP;
 		}
 	}
 	
