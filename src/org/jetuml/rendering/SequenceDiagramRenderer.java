@@ -88,6 +88,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
 	
+	/**
+	 * @param pDiagram The diagram being rendered.
+	 */
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
@@ -148,7 +151,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 				getTopRectangle(pNode).contains(pPoint);
 	}
 	
-	/*
+	/**
 	 * Returns the caller of a node, if it exists.
 	 * 
 	 * @param pNode The node to obtain the caller for.
@@ -285,7 +288,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	/**
-	 * @param pNode
+	 * @param pNode The node whose lifeline we're looking at.
 	 * @return The y-coordinate of the top of this node's lifeline
 	 */
 	public int getLifelineTop(ImplicitParameterNode pNode)
@@ -328,6 +331,10 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		return result;
 	}
 	
+	/**
+	 * @param pNode An implicit parameter node.
+	 * @return The x coordinate of the center of the node.
+	 */
 	public int getCenterXCoordinate(ImplicitParameterNode pNode)
 	{
 		return ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getCenterXCoordinate(pNode);

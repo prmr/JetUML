@@ -37,6 +37,9 @@ import org.jetuml.rendering.DiagramRenderer;
  */
 public final class PackageNodeRenderer extends AbstractPackageNodeRenderer
 {
+	/**
+	 * @param pParent Renderer of the parent diagram.
+	 */
 	public PackageNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

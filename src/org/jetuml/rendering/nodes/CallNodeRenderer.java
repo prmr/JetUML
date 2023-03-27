@@ -47,6 +47,9 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	/* Number of pixels to shift a call node that is nested within another call on the same object. */
 	private static final int NESTING_SHIFT_DISTANCE = 10;
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public CallNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

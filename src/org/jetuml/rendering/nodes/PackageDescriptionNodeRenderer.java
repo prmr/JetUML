@@ -43,6 +43,9 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 {
 	private static final StringRenderer CONTENTS_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent Renderer of the parent diagram.
+	 */
 	public PackageDescriptionNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

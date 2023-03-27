@@ -37,6 +37,9 @@ import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
  */
 public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 {
+	/**
+	 * @param pDiagram The diagram being rendered.
+	 */
 	public UseCaseDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);

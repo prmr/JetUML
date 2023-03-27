@@ -37,6 +37,9 @@ public final class PointNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int SELECTION_DISTANCE = 5;
 	
+	/**
+	 * @param pParent Renderer of the parent diagram.
+	 */
 	public PointNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

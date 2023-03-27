@@ -32,6 +32,12 @@ public final class JsonParser
 	
 	private JsonParser() {}
 	
+    /**
+     * Parses a string into a JsonObject.
+     * 
+     * @param pInput The input string, in JSON.
+     * @return The JsonObject represented by the string.
+     */
     public static JsonObject parse(String pInput)
     {
     	return PARSER.parse(new ParsableCharacterBuffer(pInput));

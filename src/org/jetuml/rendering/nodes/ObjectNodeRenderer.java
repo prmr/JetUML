@@ -49,6 +49,9 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, 
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public ObjectNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

@@ -51,6 +51,9 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
 	private static final StringRenderer EQUALS_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public FieldNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

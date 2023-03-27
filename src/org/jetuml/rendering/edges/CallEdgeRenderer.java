@@ -63,6 +63,9 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 
 	private static final int SHIFT = 5;
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public CallEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

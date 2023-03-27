@@ -70,6 +70,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	
 	private final EdgeStorage aEdgeStorage = new EdgeStorage();
 	
+	/**
+	 * @param pDiagram The diagram being rendered.
+	 */
 	public ClassDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
@@ -114,7 +117,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		//When getBounds(pDiagram) is called to open an existing class diagram file,
 		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
-		if (isEmpty())
+		if( aEdgeStorage.isEmpty() )
 		{
 			layout();
 		}
@@ -138,16 +141,6 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		layoutSegmentedEdges(EdgePriority.ASSOCIATION);
 		layoutDependencyEdges();
 		layoutSelfEdges();
-	}
-	
-	public boolean isEmpty()
-	{
-		return aEdgeStorage.isEmpty();
-	}
-	
-	public boolean contains(Edge pEdge)
-	{
-		return aEdgeStorage.contains(pEdge);
 	}
 	
 	/**
@@ -1344,7 +1337,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	/**
 	 * Gets the EdgePath of pEdge from storage.
 	 * @param pEdge the edge of interest
-	 * @return the stored EdgePAth of pEdge
+	 * @return the stored EdgePath of pEdge
 	 * @pre the diagram's EdgeStorage contains pEdge
 	 */
 	private EdgePath getEdgePath(Edge pEdge)
@@ -1353,6 +1346,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		return aEdgeStorage.getEdgePath(pEdge);
 	}
 	
+	/**
+	 * @param pEdge The edge to check for a path.
+	 * @return The path for the edge, or empty if there is none.
+	 */
 	public Optional<EdgePath> getStoredEdgePath(Edge pEdge)
 	{
 		if( aEdgeStorage.contains(pEdge) )

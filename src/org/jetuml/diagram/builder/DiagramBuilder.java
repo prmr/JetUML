@@ -85,6 +85,9 @@ public abstract class DiagramBuilder
 		return aDiagramRenderer.diagram();
 	}
 	
+	/**
+	 * @return The encapsulated renderer.
+	 */
 	public final DiagramRenderer renderer()
 	{
 		return aDiagramRenderer;

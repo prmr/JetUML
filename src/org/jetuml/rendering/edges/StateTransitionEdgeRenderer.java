@@ -68,6 +68,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public StateTransitionEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

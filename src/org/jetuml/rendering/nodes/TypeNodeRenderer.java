@@ -50,6 +50,9 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public TypeNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

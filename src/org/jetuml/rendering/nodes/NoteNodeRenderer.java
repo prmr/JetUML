@@ -48,6 +48,9 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
 	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent Renderer for the parent diagram.
+	 */
 	public NoteNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

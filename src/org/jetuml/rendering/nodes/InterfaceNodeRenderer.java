@@ -28,6 +28,9 @@ import org.jetuml.rendering.DiagramRenderer;
  */
 public final class InterfaceNodeRenderer extends TypeNodeRenderer
 {
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public InterfaceNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

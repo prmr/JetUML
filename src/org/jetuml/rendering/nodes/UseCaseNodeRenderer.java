@@ -47,6 +47,9 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int HORIZONTAL_NAME_PADDING = 30;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent Renderer for the parent diagram.
+	 */
 	public UseCaseNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

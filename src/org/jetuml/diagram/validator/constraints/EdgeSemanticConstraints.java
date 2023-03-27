@@ -7,6 +7,9 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 
+/**
+ * Constraints for edges.
+ */
 public final class EdgeSemanticConstraints
 {
 	private EdgeSemanticConstraints() {}
@@ -47,22 +50,19 @@ public final class EdgeSemanticConstraints
 		};
 	}
 
-	/*
+	/**
 	 * Only pNumber of edges of the same type are allowed in one direction
-	 * between two nodes
+	 * between two nodes.
 	 */
 	public static SemanticConstraint maxEdges(int pNumber)
 	{
 		assert pNumber > 0;
 		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			// TODO: Why pNumber needs to -1 in here?
-			// -> diff between "make it happen & undo" and "prevent it from
-			// happening"
 			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber;
 		};
 	}
 
-	/*
+	/**
 	 * Self-edges are not allowed.
 	 */
 	public static SemanticConstraint noSelfEdge()

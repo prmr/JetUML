@@ -351,6 +351,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		toolBar().setSelectedTool(toolIndex(pChar)-1); 
 	}
 	
+	/**
+	 * @return An image of this canvas.
+	 */
 	public Image createImage()
 	{
 		return aDiagramCanvas.createImage();

@@ -53,6 +53,9 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	private static final int WIDTH = ARMS_SIZE * 2;
 	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public ActorNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

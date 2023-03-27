@@ -34,6 +34,9 @@ import org.jetuml.rendering.nodes.StateNodeRenderer;
  */
 public final class StateDiagramRenderer extends AbstractDiagramRenderer
 {
+	/**
+	 * @param pDiagram The diagram being rendered.
+	 */
 	public StateDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);

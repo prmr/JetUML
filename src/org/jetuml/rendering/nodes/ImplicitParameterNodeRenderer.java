@@ -60,6 +60,9 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final StringRenderer NAME_VIEWER = 
 			StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public ImplicitParameterNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

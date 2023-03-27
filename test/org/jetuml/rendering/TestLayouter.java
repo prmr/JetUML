@@ -1999,15 +1999,6 @@ public class TestLayouter
 	}
 	
 	@Test
-	public void testContains()
-	{
-		setUpTwoConnectedNodes();
-		aDiagram.addEdge(aEdgeA);
-		store(aEdgeA,  new EdgePath(new Point(130, 60), new Point(130, 130), new Point(130, 130), new Point(130, 200)));
-		assertTrue(contains(aEdgeA));
-	}
-	
-	@Test
 	public void testBuildSegmentedEdgePath_verticalEdgeDirection()
 	{
 		EdgePath expectedResult_north = new EdgePath(new Point(100,300), new Point(100, 150), new Point(300, 150), new Point(300, 0));
@@ -2756,9 +2747,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("contains", Edge.class);
-			method.setAccessible(true);
-			return (boolean) method.invoke(aRenderer, pEdge);
+			Field field = ClassDiagramRenderer.class.getDeclaredField("aEdgeStorage");
+			field.setAccessible(true);
+			return ((EdgeStorage)field.get(aRenderer)).contains(pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{

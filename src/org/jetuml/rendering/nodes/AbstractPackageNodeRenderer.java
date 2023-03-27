@@ -52,6 +52,9 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	protected static final int NAME_GAP = 3;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
+	/**
+	 * @param pParent The rendere for the diagram that contains this package node.
+	 */
 	public AbstractPackageNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

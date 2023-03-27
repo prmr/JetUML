@@ -47,6 +47,9 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 {
 	private static final int ENDSIZE = 10;
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public ObjectReferenceEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

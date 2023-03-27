@@ -5,5 +5,9 @@ package org.jetuml.diagram.validator;
  */
 public interface DiagramValidator
 {
+	/**
+	 * @return True if the content of the diagram does not violate
+	 * any structural or semantic rules.
+	 */
 	boolean isDiagramValid();
 }

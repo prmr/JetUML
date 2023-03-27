@@ -35,6 +35,9 @@ import org.jetuml.rendering.nodes.ObjectNodeRenderer;
  */
 public final class ObjectDiagramRenderer extends AbstractDiagramRenderer
 {
+	/**
+	 * @param pDiagram Diagram being rendered.
+	 */
 	public ObjectDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);

@@ -17,6 +17,9 @@ import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
+/**
+ * Validator for sequence diagrams.
+ */
 public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
   private static final SemanticConstraintSet

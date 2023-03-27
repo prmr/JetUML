@@ -74,6 +74,9 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_180 = 180;
 	
+	/**
+	 * @param pParent The renderer for the parent diagram.
+	 */
 	public StoredEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);

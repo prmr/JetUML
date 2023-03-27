@@ -7,26 +7,40 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 
+/**
+ * A set of constraints.
+ */
 public class SemanticConstraintSet
 {
+	private final Set<SemanticConstraint> aSemanticConstraints = new HashSet<>();
 
-  private final Set<SemanticConstraint> aSemanticConstraints = new HashSet<>();
-  public SemanticConstraintSet( SemanticConstraint... pSemanticConstraints)
-  {
-    assert pSemanticConstraints != null;
-    aSemanticConstraints.addAll(Arrays.asList(pSemanticConstraints));
-  }
+	/**
+	 * @param pSemanticConstraints Constraints to add to the set.
+	 */
+	public SemanticConstraintSet(SemanticConstraint... pSemanticConstraints)
+	{
+		assert pSemanticConstraints != null;
+		aSemanticConstraints.addAll(Arrays.asList(pSemanticConstraints));
+	}
 
-  public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
-  {
-    for ( SemanticConstraint semanticConstraint : aSemanticConstraints )
-    {
-      if ( !semanticConstraint.satisfied(pEdge, pStart, pEnd, pDiagram) ) 
-      {
-        return false;
-      }
-    }
-
-    return true;
-  }
+	/**
+	 * Determines if all constraints in the set are satisfied.
+	 * 
+	 * @param pEdge The target edge.
+	 * @param pStart The start node.
+	 * @param pEnd The end node.
+	 * @param pDiagram The diagram containing the edge and nodes.
+	 * @return True if all constraints are satisfied.
+	 */
+	public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
+	{
+		for( SemanticConstraint semanticConstraint : aSemanticConstraints )
+		{
+			if( !semanticConstraint.satisfied(pEdge, pStart, pEnd, pDiagram) )
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 }
