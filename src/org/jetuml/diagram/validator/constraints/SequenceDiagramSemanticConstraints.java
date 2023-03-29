@@ -22,8 +22,8 @@ public final class SequenceDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint noEdgesFromParameterTop()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return pStart.getClass() != ImplicitParameterNode.class;
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return pEdge.getStart().getClass() != ImplicitParameterNode.class;
 		};
 	}
 
@@ -39,10 +39,11 @@ public final class SequenceDiagramSemanticConstraints
 	public static SemanticConstraint returnEdge()
 	{
 		// CSOFF:
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == ReturnEdge.class && (pStart.getClass() != CallNode.class ||
-					pEnd.getClass() != CallNode.class || getCaller(pStart, pDiagram).isEmpty() ||
-					pEnd != getCaller(pStart, pDiagram).get() || pStart.getParent() == pEnd.getParent()));
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return !(pEdge.getClass() == ReturnEdge.class && (pEdge.getStart().getClass() != CallNode.class ||
+					pEdge.getEnd().getClass() != CallNode.class || getCaller(pEdge.getStart(), pDiagram).isEmpty() ||
+					pEdge.getEnd() != getCaller(pEdge.getStart(), pDiagram).get() || 
+					pEdge.getStart().getParent() == pEdge.getEnd().getParent()));
 		}; // CSON:
 	}
 
@@ -52,10 +53,10 @@ public final class SequenceDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint callEdgeEnd()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
+		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == CallEdge.class &&
-					(pEnd.getClass() == ImplicitParameterNode.class || pEnd.getClass() == PointNode.class) &&
-					!canCreateConstructor(pStart, pEnd));
+					(pEdge.getEnd().getClass() == ImplicitParameterNode.class || pEdge.getEnd().getClass() == PointNode.class) &&
+					!canCreateConstructor(pEdge.getStart(), pEdge.getEnd()));
 		};
 	}
 
@@ -65,8 +66,8 @@ public final class SequenceDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint singleEntryPoint()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == CallEdge.class && pStart.getClass() == ImplicitParameterNode.class &&
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return !(pEdge.getClass() == CallEdge.class && pEdge.getStart().getClass() == ImplicitParameterNode.class &&
 					hasEntryPoint(pDiagram));
 		};
 	}

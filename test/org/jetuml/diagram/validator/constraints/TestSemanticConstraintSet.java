@@ -13,43 +13,56 @@ import org.junit.jupiter.api.Test;
 
 public class TestSemanticConstraintSet
 {
-  private DependencyEdge aEdge1 = new DependencyEdge();
-  private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private DependencyEdge aEdge1; 
+	private Diagram aDiagram;
+	
+	public TestSemanticConstraintSet()
+	{
+		aEdge1 = new DependencyEdge();
+		aDiagram = new Diagram(DiagramType.CLASS);
+		Node node1 = new ClassNode();
+		Node node2 = new ClassNode();
+		aEdge1.connect(node1, node2);
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+	}
+	
+	private SemanticConstraint createStubSemanticConstraint(boolean pReturn)
+	{
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return pReturn;
+		};
+	}
 
-  private SemanticConstraint createStubSemanticConstraint(boolean pReturn)
-  {
-    return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)->
-    {
-      return pReturn;
-    };
-  }
+	@Test
+	void testEmpty()
+	{
+		SemanticConstraintSet constraints = new SemanticConstraintSet();
+		assertTrue(constraints.satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testEmpty()
-  {
-    SemanticConstraintSet constraints = new SemanticConstraintSet();
-    assertTrue(constraints.satisfied(aEdge1, new ClassNode(), new ClassNode(), aDiagram));
-  }
+	@Test
+	void testSatisfiedAllFalse()
+	{
+		SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(false),
+				createStubSemanticConstraint(false), createStubSemanticConstraint(false));
+		assertFalse(set1.satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testSatisfiedAllFalse()
-  {
-    SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(false), createStubSemanticConstraint(false), createStubSemanticConstraint(false));
-    assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), aDiagram));
-  }
+	@Test
+	void testSatisfiedSomeFalse()
+	{
+		SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(true),
+				createStubSemanticConstraint(true), createStubSemanticConstraint(false));
+		assertFalse(set1.satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testSatisfiedSomeFalse()
-  {
-    SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(true), createStubSemanticConstraint(true), createStubSemanticConstraint(false));
-    assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), aDiagram));
-  }
+	@Test
+	void testSatisfiedTrue()
+	{
+		SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(true),
+				createStubSemanticConstraint(true), createStubSemanticConstraint(true));
+		assertTrue(set1.satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testSatisfiedTrue()
-  {
-    SemanticConstraintSet set1 = new SemanticConstraintSet(createStubSemanticConstraint(true), createStubSemanticConstraint(true), createStubSemanticConstraint(true));
-    assertTrue(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), aDiagram));
-  }
-  
 }

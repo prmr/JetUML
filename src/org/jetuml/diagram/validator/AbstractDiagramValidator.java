@@ -64,7 +64,7 @@ public abstract class AbstractDiagramValidator implements DiagramValidator
 	private boolean satisfyEdgeConstraints()
 	{
 		return aDiagram.edges().stream()
-				.allMatch(edge -> getEdgeConstraints().satisfied(edge, edge.getStart(), edge.getEnd(), aDiagram));
+				.allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
 
 	}
 

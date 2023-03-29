@@ -20,8 +20,8 @@ public final class ClassDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint noSelfGeneralization()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == GeneralizationEdge.class && pStart == pEnd);
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.getStart() == pEdge.getEnd());
 		};
 	}
 
@@ -30,8 +30,8 @@ public final class ClassDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint noSelfDependency()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == DependencyEdge.class && pStart == pEnd);
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return !(pEdge.getClass() == DependencyEdge.class && pEdge.getStart() == pEdge.getEnd());
 		};
 	}
 
@@ -41,14 +41,14 @@ public final class ClassDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
+		return (Edge pEdge, Diagram pDiagram) -> {
 			if( pEdge.getClass() != pEdgeType )
 			{
 				return true;
 			}
-			for( Edge edge : pDiagram.edgesConnectedTo(pStart) )
+			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.getStart()) )
 			{
-				if( edge.getClass() == pEdgeType && edge.getEnd() == pStart && edge.getStart() == pEnd )
+				if( edge.getClass() == pEdgeType && edge.getEnd() == pEdge.getStart() && edge.getStart() == pEdge.getEnd() )
 				{
 					return false;
 				}
@@ -63,8 +63,8 @@ public final class ClassDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint noCombinedAssociationAggregation()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			int count = getAssociationAggregationCount(pStart, pEnd, pDiagram);
+		return (Edge pEdge, Diagram pDiagram) -> {
+			int count = getAssociationAggregationCount(pEdge.getStart(), pEdge.getEnd(), pDiagram);
 			return count <= 1;
 		};
 	}

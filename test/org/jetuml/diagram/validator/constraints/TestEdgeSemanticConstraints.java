@@ -13,184 +13,205 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
 
-public class TestEdgeSemanticConstraints 
+public class TestEdgeSemanticConstraints
 {
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private ClassNode aNode1 = new ClassNode();
+	private ClassNode aNode2 = new ClassNode();
+	private PointNode aPointNode = new PointNode();
+	private DependencyEdge aEdge1 = new DependencyEdge();
+	private DependencyEdge aEdge2 = new DependencyEdge();
 
-  private Diagram aDiagram = new Diagram(DiagramType.CLASS);
-  private ClassNode aNode1 = new ClassNode();
-  private ClassNode aNode2 = new ClassNode();
-  private PointNode aPointNode = new PointNode();
-  private DependencyEdge aEdge1 = new DependencyEdge();
-  private DependencyEdge aEdge2 = new DependencyEdge();
+	private NoteEdge aNoteEdge = new NoteEdge();
+	private NoteNode aNote = new NoteNode();
 
-  private NoteEdge aNoteEdge = new NoteEdge();
-  private NoteNode aNote = new NoteNode();
+	private void createDiagram()
+	{
+		aNode2.moveTo(new Point(0, 100));
+		aNote.moveTo(new Point(100, 100));
+		aDiagram.addRootNode(aNode1);
+		aDiagram.addRootNode(aNode2);
+		aDiagram.addRootNode(aNote);
+		aPointNode.moveTo(new Point(200, 200));
+		aDiagram.addRootNode(aPointNode);
+	}
 
-  private void createDiagram()
-  {
-    aNode2.moveTo(new Point(0,100));
-    aNote.moveTo(new Point(100,100));
-    aDiagram.addRootNode(aNode1);
-    aDiagram.addRootNode(aNode2);
-    aDiagram.addRootNode(aNote);
-    aPointNode.moveTo(new Point(200,200));
-    aDiagram.addRootNode(aPointNode);
-  }
+	@Test
+	void testPointNodeToNoteEdge()
+	{
+		createDiagram();
+		aNoteEdge.connect(aNote, aPointNode);
+		assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aNoteEdge, aDiagram));
+		aEdge1.connect(aNote, aPointNode);
+		assertFalse(EdgeSemanticConstraints.pointNode().satisfied(aEdge1, aDiagram));
+		aEdge2.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aEdge2, aDiagram));
+	}
 
-  @Test
-  void testPointNodeToNoteEdge()
-  {
-    createDiagram();
-    aNoteEdge.connect(aNote, aPointNode);
-    assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aNoteEdge,aNote, aPointNode, aDiagram));
-    aEdge1.connect(aNote, aPointNode);
-    assertFalse(EdgeSemanticConstraints.pointNode().satisfied(aEdge1,aNote, aPointNode, aDiagram));
-    aEdge2.connect(aNode1,aNode2);
-    assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aEdge2, aNode1, aNode2, aDiagram));
-  }
+	@Test
+	void testNoteEdgeNotNoteEdge()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aEdge1, aDiagram));
+	}
 
+	@Test
+	void testNoteEdgeNodeNotePoint()
+	{
+		createDiagram();
+		aNoteEdge.connect(aNote, aPointNode);
+		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+	}
 
+	@Test
+	void testNoteEdgeNodeNoteNotPoint()
+	{
+		createDiagram();
+		aNoteEdge.connect(aNote, aNode1);
+		assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteEdgeNotNoteEdge()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aEdge1, aNode1, aNode2,aDiagram));
-  }
+	@Test
+	void testNoteEdgeNodeNoteNotePoint()
+	{
+		createDiagram();
+		aNoteEdge.connect(aNode1, aPointNode);
+		assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteEdgeNodeNotePoint()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aNote, aPointNode,aDiagram));
-  }
+	@Test
+	void testNoteEdgeNodeAnyNode()
+	{
+		createDiagram();
+		aNoteEdge.connect(aNode1, aNote);
+		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteEdgeNodeNoteNotPoint()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aNote, aNode1,aDiagram));
-  }
+	@Test
+	void testNoteNodeAnyAny()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testNoteEdgeNodeNoteNotePoint()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aNode1, aPointNode,aDiagram));
-  }
+	@Test
+	void testNoteNodeNoteAny()
+	{
+		createDiagram();
+		aEdge1.connect(aNote, aNode2);
+		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
+		aNoteEdge.connect(aNote, aNode2);
+		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteEdgeNodeAnyNode()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aNode1, aNote,aDiagram));
-  }
+	@Test
+	void testNoteNodeAnyNote()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNote);
+		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
+		aNoteEdge.connect(aNode1, aNote);
+		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteNodeAnyAny()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aNode1, aNode2,aDiagram));
-  }
+	@Test
+	void testNoteNodeNoteNote()
+	{
+		createDiagram();
+		aEdge1.connect(aNote, aNote);
+		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
+		aNoteEdge.connect(aNote, aNote);
+		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
+	}
 
-  @Test
-  void testNoteNodeNoteAny()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aNote, aNode2,aDiagram));
-    assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aNote, aNode2,aDiagram));
-  }
+	@Test
+	void testMaxEdgesOne()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(aEdge1, aDiagram));
+		aDiagram.addEdge(aEdge1);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testNoteNodeAnyNote()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aNode1, aNote, aDiagram));
-    assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aNode1, aNote,aDiagram));
-  }
+	@Test
+	void testMaxEdgesTwo()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		aDiagram.addEdge(aEdge1);
+		assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(aEdge1, aDiagram));
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(edge, aDiagram));
+		aDiagram.addEdge(edge);
+		assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testNoteNodeNoteNote()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aNote, aNote,aDiagram));
-    assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aNote, aNote,aDiagram));
-  }
+	@Test
+	void testMaxEdgesNodesMatchNoMatch()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		aDiagram.addEdge(aEdge1);
+		ClassNode node3 = new ClassNode();
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, node3);
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testMaxEdgesOne()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(aEdge1, aNode1, aNode2,aDiagram));
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, aNode2,aDiagram));
-  }
+	@Test
+	void testMaxEdgesNodesNoMatchMatch()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		aDiagram.addEdge(aEdge1);
+		ClassNode node3 = new ClassNode();
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node3, aNode2);
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testMaxEdgesTwo()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(aEdge1, aNode1, aNode2,aDiagram));
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2,aDiagram));
-    DependencyEdge edge = aEdge1;
-    edge.connect(aNode1, aNode2);
-    aDiagram.addEdge(edge);
-    assertTrue(EdgeSemanticConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2,aDiagram));
-  }
+	@Test
+	void testMaxEdgesNodesNoMatchNoMatch()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		aDiagram.addEdge(aEdge1);
+		ClassNode node3 = new ClassNode();
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node3, new ClassNode());
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testMaxEdgesNodesMatchNoMatch()
-  {
-    createDiagram();
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    ClassNode node3 = new ClassNode();
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, node3,aDiagram));
-  }
+	@Test
+	void testMaxEdgesNodesDifferentEdgeType()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		aDiagram.addEdge(aEdge1);
+		NoteEdge edge = new NoteEdge();
+		edge.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(edge, aDiagram));
+	}
 
-  @Test
-  void testMaxEdgesNodesNoMatchMatch()
-  {
-    createDiagram();
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    ClassNode node3 = new ClassNode();
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(aEdge1, node3, aNode2,aDiagram));
-  }
+	@Test
+	void testNodeSelfEdgeTrue()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode2);
+		assertTrue(EdgeSemanticConstraints.noSelfEdge().satisfied(aEdge1, aDiagram));
+	}
 
-  @Test
-  void testMaxEdgesNodesNoMatchNoMatch()
-  {
-    createDiagram();
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    ClassNode node3 = new ClassNode();
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(aEdge1, node3, new ClassNode(),aDiagram));
-  }
-
-  @Test
-  void testMaxEdgesNodesDifferentEdgeType()
-  {
-    createDiagram();
-    aEdge1.connect(aNode1, aNode2);
-    aDiagram.addEdge(aEdge1);
-    assertTrue(EdgeSemanticConstraints.maxEdges(1).satisfied(new NoteEdge(), aNode1, aNode2,aDiagram ));
-  }
-
-  @Test
-  void testNodeSelfEdgeTrue()
-  {
-    createDiagram();
-    assertTrue(EdgeSemanticConstraints.noSelfEdge().satisfied(aEdge1, aNode1, aNode2,aDiagram));
-  }
-
-  @Test
-  void testNodeSelfEdgeFalse()
-  {
-    createDiagram();
-    assertFalse(EdgeSemanticConstraints.noSelfEdge().satisfied(aEdge1, aNode1, aNode1,aDiagram));
-  }
+	@Test
+	void testNodeSelfEdgeFalse()
+	{
+		createDiagram();
+		aEdge1.connect(aNode1, aNode1);
+		assertFalse(EdgeSemanticConstraints.noSelfEdge().satisfied(aEdge1, aDiagram));
+	}
 }

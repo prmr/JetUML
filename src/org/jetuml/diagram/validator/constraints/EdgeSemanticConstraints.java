@@ -2,7 +2,6 @@ package org.jetuml.diagram.validator.constraints;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
@@ -19,8 +18,7 @@ public final class EdgeSemanticConstraints
 	 */
 	public static SemanticConstraint pointNode()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd,
-				Diagram pDiagram) -> !(pEnd.getClass() == PointNode.class && pEdge.getClass() != NoteEdge.class);
+		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getEnd().getClass() == PointNode.class && pEdge.getClass() != NoteEdge.class);
 
 	}
 
@@ -30,10 +28,9 @@ public final class EdgeSemanticConstraints
 	 */
 	public static SemanticConstraint noteEdge()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd,
-				Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
-					!(pStart.getClass() == NoteNode.class && pEnd.getClass() == PointNode.class || 
-							pEnd.getClass() == NoteNode.class));
+		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
+					!(pEdge.getStart().getClass() == NoteNode.class && pEdge.getEnd().getClass() == PointNode.class || 
+							pEdge.getEnd().getClass() == NoteNode.class));
 	}
 
 	/**
@@ -41,8 +38,8 @@ public final class EdgeSemanticConstraints
 	 */
 	public static SemanticConstraint noteNode()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			if( pStart.getClass() == NoteNode.class || pEnd.getClass() == NoteNode.class )
+		return (Edge pEdge, Diagram pDiagram) -> {
+			if( pEdge.getStart().getClass() == NoteNode.class || pEdge.getEnd().getClass() == NoteNode.class )
 			{
 				return pEdge.getClass() == NoteEdge.class;
 			}
@@ -57,8 +54,8 @@ public final class EdgeSemanticConstraints
 	public static SemanticConstraint maxEdges(int pNumber)
 	{
 		assert pNumber > 0;
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber;
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return numberOfEdges(pEdge, pDiagram) <= pNumber;
 		};
 	}
 
@@ -67,21 +64,21 @@ public final class EdgeSemanticConstraints
 	 */
 	public static SemanticConstraint noSelfEdge()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
-			return pStart != pEnd;
+		return (Edge pEdge, Diagram pDiagram) -> {
+			return pEdge.getStart() != pEdge.getEnd();
 		};
 	}
 
 	/*
 	 * Returns the number of edges of type pType between pStart and pEnd
 	 */
-	private static int numberOfEdges(Class<? extends Edge> pType, Node pStart, Node pEnd, Diagram pDiagram)
+	private static int numberOfEdges(Edge pEdge, Diagram pDiagram)
 	{
-		assert pType != null && pStart != null && pEnd != null && pDiagram != null;
+		assert pEdge != null && pDiagram != null;
 		int result = 0;
 		for( Edge edge : pDiagram.edges() )
 		{
-			if( edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd )
+			if( edge.getClass() == pEdge.getClass() && edge.getStart() == pEdge.getStart() && edge.getEnd() == pEdge.getEnd() )
 			{
 				result++;
 			}

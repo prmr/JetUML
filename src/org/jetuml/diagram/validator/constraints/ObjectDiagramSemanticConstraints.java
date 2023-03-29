@@ -2,7 +2,6 @@ package org.jetuml.diagram.validator.constraints;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
@@ -20,9 +19,9 @@ public final class ObjectDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint collaboration()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
+		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectCollaborationEdge.class &&
-				(pStart.getClass() != ObjectNode.class || pEnd.getClass() != ObjectNode.class));
+				(pEdge.getStart().getClass() != ObjectNode.class || pEdge.getEnd().getClass() != ObjectNode.class));
 		};
 	}
 
@@ -31,9 +30,9 @@ public final class ObjectDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint reference()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
+		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectReferenceEdge.class &&
-					(pStart.getClass() != FieldNode.class || pEnd.getClass() != ObjectNode.class));
+					(pEdge.getStart().getClass() != FieldNode.class || pEdge.getEnd().getClass() != ObjectNode.class));
 		};
 	}
 }
