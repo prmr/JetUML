@@ -26,7 +26,6 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.builder.constraints.ConstraintSet;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
@@ -48,12 +47,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 		super( pDiagram );
 		assert pDiagram.getType() == DiagramType.OBJECT;
 	}
-	
-	@Override
-	protected ConstraintSet getEdgeConstraints()
-	{
-		return CONSTRAINTS;
-	}
+
 	
 	@Override
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
@@ -67,17 +61,6 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			pOperation.add(new SimpleOperation(()-> node.setValue(""),
 					()-> node.setValue(oldValue)));
 		}
-	}
-	
-	@Override
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		boolean result = true;
-		if( pNode instanceof FieldNode && findObject((FieldNode)pNode, pRequestedPosition) == null )
-		{
-			result = false;
-		}
-		return result;
 	}
 	
 	/* Find if the node to be added can be added to an object. Returns null if not. 
@@ -129,7 +112,6 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
-		assert canAdd(pNode, pRequestedPosition);
 		DiagramOperation result = null;
 		if( pNode instanceof FieldNode )
 		{
