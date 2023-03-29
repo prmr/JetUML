@@ -30,13 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.builder.constraints.ConstraintSet;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -113,11 +111,11 @@ public abstract class DiagramBuilder
 		pNode.getChildren().forEach(node -> result.addAll(getNodeAndAllChildren(node)));
 		return result;
 	}
-	
+
 	/**
 	 * Returns whether adding pEdge between pStart and pEnd
-	 * is a valid operation on the diagram. 
-	 * 
+	 * is a valid operation on the diagram.
+	 *
 	 * @param pEdge The requested edge
 	 * @param pStart A requested start point
 	 * @param pEnd A requested end point
@@ -127,10 +125,10 @@ public abstract class DiagramBuilder
 	public final boolean canAdd(Edge pEdge, Point pStart, Point pEnd)
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
-		
+
 		Optional<Node> startNode = aDiagramRenderer.nodeAt(pStart);
 		Optional<Node> endNode = aDiagramRenderer.nodeAt(pEnd);
-		
+
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			return true; // Special case: we can always create a point node.
@@ -139,18 +137,18 @@ public abstract class DiagramBuilder
 		{
 			return false;
 		}
-		
+
 
 		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagramRenderer);
-		
+
 	}
-	
+
 	/**
 	 * Returns whether adding pNode at pRequestedPosition is a valid
-	 * operation on the diagram. True by default. 
+	 * operation on the diagram. True by default.
 	 * Override to provide cases where this should be false.
-	 * 
-	 * @param pNode The node to add if possible. 
+	 *
+	 * @param pNode The node to add if possible.
 	 * @param pRequestedPosition The requested position for the node.
 	 * @return True if it is possible to add pNode at position pRequestedPosition.
 	 * @pre pNode != null && pRequestedPosition != null
@@ -160,12 +158,7 @@ public abstract class DiagramBuilder
 		assert pNode != null && pRequestedPosition != null;
 		return true;
 	}
-	
-	/**
-	 * @return diagram type-specific constraints for adding edges.
-	 */
-	protected abstract ConstraintSet getEdgeConstraints();
-	
+
 	/** 
 	 * The default behavior is to position the node so it entirely fits in the diagram, then 
 	 * add it as a root node.

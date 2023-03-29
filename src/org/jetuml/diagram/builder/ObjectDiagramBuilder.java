@@ -22,14 +22,11 @@
 package org.jetuml.diagram.builder;
 
 import java.util.ArrayList;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.constraints.ConstraintSet;
-import org.jetuml.diagram.builder.constraints.EdgeConstraints;
-import org.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
@@ -39,14 +36,6 @@ import org.jetuml.geom.Point;
  */
 public class ObjectDiagramBuilder extends DiagramBuilder
 {
-	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
-			
-			EdgeConstraints.noteEdge(),
-			EdgeConstraints.noteNode(),
-			EdgeConstraints.maxEdges(1),
-			ObjectDiagramEdgeConstraints.collaboration(),
-			ObjectDiagramEdgeConstraints.reference()
-		);
 			
 	/**
 	 * Creates a new builder for object diagrams.
