@@ -112,53 +112,6 @@ public abstract class DiagramBuilder
 		return result;
 	}
 
-	/**
-	 * Returns whether adding pEdge between pStart and pEnd
-	 * is a valid operation on the diagram.
-	 *
-	 * @param pEdge The requested edge
-	 * @param pStart A requested start point
-	 * @param pEnd A requested end point
-	 * @return True if it's possible to add an edge of this type given the requested points.
-	 * @pre pEdge != null && pStart = null && pEnd != null
-	 */
-	public final boolean canAdd(Edge pEdge, Point pStart, Point pEnd)
-	{
-		assert pEdge != null && pStart != null && pEnd != null;
-
-		Optional<Node> startNode = aDiagramRenderer.nodeAt(pStart);
-		Optional<Node> endNode = aDiagramRenderer.nodeAt(pEnd);
-
-		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
-		{
-			return true; // Special case: we can always create a point node.
-		}
-		if(!startNode.isPresent() || !endNode.isPresent() )
-		{
-			return false;
-		}
-
-
-		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagramRenderer);
-
-	}
-
-	/**
-	 * Returns whether adding pNode at pRequestedPosition is a valid
-	 * operation on the diagram. True by default.
-	 * Override to provide cases where this should be false.
-	 *
-	 * @param pNode The node to add if possible.
-	 * @param pRequestedPosition The requested position for the node.
-	 * @return True if it is possible to add pNode at position pRequestedPosition.
-	 * @pre pNode != null && pRequestedPosition != null
-	 */
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		assert pNode != null && pRequestedPosition != null;
-		return true;
-	}
-
 	/** 
 	 * The default behavior is to position the node so it entirely fits in the diagram, then 
 	 * add it as a root node.

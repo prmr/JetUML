@@ -33,7 +33,6 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
@@ -61,28 +60,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
 	
-	/**
-	 * Check if the start node is either a CallNode or ImplicitParameterNode, and the end node is an ImplicitParameterNode
-	 * with no child nodes. The end point of the edge should land on the top rectangle of the end Node.
-	 * @param pStart the start position of the mouse.
-	 * @param pEnd the end position of the mouse.
-	 * @return True if the start node and the end node of the edge satisfy the conditions to create the constructor call.
-	 * @pre pStart!= null && pEnd != null
-	 */
-	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
-	{
-		assert pStart!= null && pEnd != null;
-		Optional<Node> end = aDiagramRenderer.nodeAt(pEnd);
-		Optional<Node> start = aDiagramRenderer.nodeAt(pStart);
-		if(start.isPresent() && end.isPresent())
-		{
-			Node startNode = start.get();
-			Node endNode = end.get();
-			return 	SequenceDiagramEdgeConstraints.canCreateConstructor(startNode, endNode, pEnd, renderer());
-		}
-		return false;
-	}
-	
 	@Override
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
@@ -106,17 +83,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		if (pElement instanceof ConstructorEdge) 
 		{
 			result.removeIf(element -> element instanceof ImplicitParameterNode);
-		}
-		return result;
-	}
-	
-	@Override
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		boolean result = true;
-		if(pNode instanceof CallNode && insideTargetArea(pRequestedPosition) == null)
-		{
-			result = false;
 		}
 		return result;
 	}
@@ -154,12 +120,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		pOperation.add(new SimpleOperation(()-> parent.addChild(end),
 				()-> parent.removeChild(end)));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
-		
-		// CSOFF: Needed for assigning to the final variable
-		final Edge edge = canCreateConstructorCall(pStartPoint, pEndPoint)?new ConstructorEdge():pEdge; // CSON:
-		edge.connect(start, end);
-		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, edge),
-				()-> aDiagramRenderer.diagram().removeEdge(edge)));
+
+		pEdge.connect(start, end);
+		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, pEdge),
+				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
