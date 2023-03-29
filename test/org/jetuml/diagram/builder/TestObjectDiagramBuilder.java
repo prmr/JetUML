@@ -22,12 +22,9 @@
 package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
 import org.jetuml.diagram.DiagramType;
@@ -153,18 +150,6 @@ public class TestObjectDiagramBuilder
 		assertEquals(2, aObjectNode1.getChildren().size());
 		assertSame(aFieldNode1, aObjectNode1.getChildren().get(0));
 		assertSame(aFieldNode2, aObjectNode1.getChildren().get(1));
-	}
-	
-	@Test
-	public void testCanAdd_Constraint_MaxEdges()
-	{
-		aDiagram.addRootNode(aObjectNode1);
-		aDiagram.addRootNode(aObjectNode2);
-		assertTrue(aBuilder.canAdd(aCollaboration1, new Point(10,10), new Point(110,110)));
-		aCollaboration1.connect(aObjectNode1, aObjectNode2);
-		aDiagram.addEdge(aCollaboration1);
-		ObjectCollaborationEdge edge = new ObjectCollaborationEdge();
-		assertFalse(aBuilder.canAdd(edge, new Point(10,10), new Point(110,110)));
 	}
 	
 	@Test

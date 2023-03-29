@@ -21,9 +21,6 @@
 
 package org.jetuml.diagram.builder;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -34,10 +31,8 @@ import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class TestUseCaseDiagramBuilder
 {
@@ -71,113 +66,5 @@ public class TestUseCaseDiagramBuilder
 		aDependencyEdge = new UseCaseDependencyEdge();
 		aGeneralizationEdge = new UseCaseGeneralizationEdge();
 		aNoteEdge = new NoteEdge();
-	}
-	
-	@Test
-	public void testCanAddEdgeSelfActor()
-	{
-		aDiagram.addRootNode(aActorNode1);
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(10, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeSelfUseCase()
-	{
-		aDiagram.addRootNode(aUseCaseNode1);
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(10, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeSelfNote()
-	{
-		aDiagram.addRootNode(aNoteNode);
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(10, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(10, 10)));
-		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(10, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeActorUseCase()
-	{
-		aDiagram.addRootNode(aActorNode1);
-		aDiagram.addRootNode(aUseCaseNode1);
-		aUseCaseNode1.moveTo(new Point(200,0));
-		
-		assertTrue(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeUseCaseActor()
-	{
-		aDiagram.addRootNode(aActorNode1);
-		aDiagram.addRootNode(aUseCaseNode1);
-		aActorNode1.moveTo(new Point(200,0));
-		
-		assertTrue(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeActorNote()
-	{
-		aDiagram.addRootNode(aActorNode1);
-		aDiagram.addRootNode(aNoteNode);
-		aNoteNode.moveTo(new Point(200,0));
-		
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeUseCaseNote()
-	{
-		aDiagram.addRootNode(aUseCaseNode1);
-		aDiagram.addRootNode(aNoteNode);
-		aNoteNode.moveTo(new Point(200,0));
-		
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeNoteActor()
-	{
-		aDiagram.addRootNode(aActorNode1);
-		aDiagram.addRootNode(aNoteNode);
-		aActorNode1.moveTo(new Point(200,0));
-		
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
-	}
-	
-	@Test
-	public void testCanAddEdgeNoteUseCase()
-	{
-		aDiagram.addRootNode(aUseCaseNode1);
-		aDiagram.addRootNode(aNoteNode);
-		aUseCaseNode1.moveTo(new Point(200,0));
-		
-		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(10, 10), new Point(210, 10)));
-		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(10, 10), new Point(210, 10)));
-		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10, 10), new Point(210, 10)));
 	}
 }

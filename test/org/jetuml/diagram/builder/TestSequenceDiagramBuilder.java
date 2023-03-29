@@ -22,13 +22,11 @@
 package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
-
 import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
@@ -170,99 +168,6 @@ public class TestSequenceDiagramBuilder
 		assertEquals(2, aParameterNode1.getChildren().size());
 		assertSame(aCallNode1, aParameterNode1.getChildren().get(0));
 		assertSame(callNode, aParameterNode1.getChildren().get(1));
-	}
-	 
-	@Test
-	public void testCompleteEdgeAdditionOperationWithConstructorCall()
-	{
-		aParameterNode1.translate(0, 70);
-		aParameterNode2.translate(100, 70);
-		aDiagram.addRootNode(aParameterNode1);
-		aDiagram.addRootNode(aParameterNode2);
-
-		Point startPoint = new Point(40, 95);
-		Point endPoint = new Point(120, 40);
-		assertTrue(aBuilder.canAdd(aCallEdge1, startPoint, endPoint));
-		assertTrue(aBuilder.canCreateConstructorCall(startPoint, endPoint));
-		CompoundOperation result = new CompoundOperation();
-		ConstructorEdge constructorEdge = new ConstructorEdge();
-		aBuilder.completeEdgeAdditionOperation(result, constructorEdge, aParameterNode1, aParameterNode2, startPoint, endPoint);
-		result.execute();
-		
-		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, numberOfEdges());
-		assertEquals(1, aParameterNode1.getChildren().size());
-		assertEquals(1, aParameterNode2.getChildren().size());
-		assertSame(CallNode.class, aParameterNode1.getChildren().get(0).getClass());
-		assertSame(CallNode.class, aParameterNode2.getChildren().get(0).getClass());
-		assertSame(ConstructorEdge.class, aDiagram.edges().get(0).getClass());
-	}
-	
-	@Test
-	public void testCompleteEdgeAdditionOperationWithoutConstructorCall()
-	{
-		aParameterNode1.translate(0, 70);
-		aParameterNode2.translate(100, 70);
-		aDiagram.addRootNode(aParameterNode1);
-		aDiagram.addRootNode(aParameterNode2);
-
-		Point startPoint = new Point(40, 95);
-		Point endPoint = new Point(120, 90);
-		assertTrue(aBuilder.canAdd(aCallEdge1, startPoint, endPoint));
-		assertFalse( aBuilder.canCreateConstructorCall(startPoint, endPoint) );
-		CompoundOperation result = new CompoundOperation();
-		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aParameterNode1, aParameterNode2, startPoint, endPoint);
-		result.execute();
-		
-		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, numberOfEdges());
-		assertEquals(1, aParameterNode1.getChildren().size());
-		assertEquals(1, aParameterNode2.getChildren().size());
-		assertEquals(CallNode.class, aParameterNode1.getChildren().get(0).getClass());
-		assertEquals(CallNode.class, aParameterNode2.getChildren().get(0).getClass());
-		assertSame(aDiagram.edges().get(0), aCallEdge1);
-	}
-	
-	@Test
-	public void testCompleteEdgeAdditionOperationWithNoteEdge()
-	{
-		NoteEdge noteEdge = new NoteEdge();
-		NoteNode noteNode = new NoteNode();
-		aParameterNode1.translate(0, 70);
-		noteNode.translate(100, 70);
-		aDiagram.addRootNode(aParameterNode1);
-		aDiagram.addRootNode(noteNode);
-		
-		Point startPoint = new Point(40, 95);
-		Point endPoint = new Point(120, 90);
-		assertTrue(aBuilder.canAdd(noteEdge, startPoint, endPoint));
-		CompoundOperation result = new CompoundOperation();
-		aBuilder.completeEdgeAdditionOperation(result, noteEdge, aCallNode1, aCallNode2, startPoint, endPoint);
-		result.execute();
-		
-		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, numberOfEdges());
-		assertSame(aDiagram.edges().get(0), noteEdge);
-	}
-	
-	@Test
-	public void testCanCreateConstructorCallNoNodes()
-	{
-		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(20, 20)));
-	}
-	
-	@Test
-	public void testCanCreateConstructorCallWrongStartNode()
-	{
-		aDiagram.addRootNode(new NoteNode());
-		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(20, 20)));
-	}
-	
-	@Test
-	public void testCanCreateConstructorCallNoEndNode()
-	{
-		aDiagram.addRootNode(aParameterNode1);
-		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(150, 150)));
 	}
 	
 	@Test

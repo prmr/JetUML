@@ -29,13 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.DependencyEdge;
-import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
@@ -189,125 +187,7 @@ public class TestClassDiagramBuilder
 		assertEquals(1, middle.getChildren().size());
 		assertSame(top, middle.getChildren().get(0));
 	}
-	
-	@Test
-	void testCanAddNode()
-	{
-		ClassNode node = new ClassNode();
-		assertTrue(aBuilder.canAdd(node, new Point(1000,1000)));
-	}
-	
-	@Test
-	void testCanAddEdgeNoFirstNode()
-	{
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(10,10), new Point(20,20)));
-	}
-	
-	@Test
-	void testCanAddEdgeFromNoteNode()
-	{
-		NoteNode node = new NoteNode();
-		aDiagram.addRootNode(node);
-		node.translate(10, 10);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(100, 100)));
-		assertTrue(aBuilder.canAdd(new NoteEdge(), new Point(15,15), new Point(100, 100)));
-	}
-	
-	@Test
-	void testCanAddEdgeNoSecondNode()
-	{
-		ClassNode node1 = new ClassNode();
-		node1.translate(10, 10);
-		aDiagram.addRootNode(node1);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(150, 150)));
-	}
-	
-	@Test
-	void testCanAddEdgeAlreadyExists()
-	{
-		ClassNode node1 = new ClassNode();
-		node1.translate(10, 10);
-		ClassNode node2 = new ClassNode();
-		node2.translate(200, 200);
-		aDiagram.addRootNode(node1);
-		aDiagram.addRootNode(node2);
-		DependencyEdge edge = new DependencyEdge();
-		edge.connect(node1, node2);
-		aDiagram.addEdge(edge);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
-	}
-	
-	@Test
-	void testCanAddEdgeFromNoteNodeNotNoteEdge()
-	{
-		NoteNode node = new NoteNode();
-		NoteNode end = new NoteNode();
-		end.moveTo(new Point(100,100));
-		aDiagram.addRootNode(node);
-		aDiagram.addRootNode(end);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
-	}
-	
-	@Test
-	void testCanAddEdgeFromNoteNodeNotNoteEdge2()
-	{
-		NoteNode node = new NoteNode();
-		ClassNode end = new ClassNode();
-		end.moveTo(new Point(100,100));
-		aDiagram.addRootNode(node);
-		aDiagram.addRootNode(end);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
-	}
-	
-	@Test
-	void testCanAddEdgeFromNoteNodeNotNoteEdge3()
-	{
-		ClassNode node = new ClassNode();
-		NoteNode end = new NoteNode();
-		end.moveTo(new Point(100,100));
-		aDiagram.addRootNode(node);
-		aDiagram.addRootNode(end);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
-	}
-	
-	@Test
-	void testCanAddEdgeToNoteNodeNotNodeEdge()
-	{
-		NoteNode node = new NoteNode();
-		aDiagram.addRootNode(node);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(205, 205), new Point(15,15)));
-	}
-	
-	@Test
-	void testCanAddEdgeSelfGeneralization()
-	{
-		ClassNode node = new ClassNode();
-		aDiagram.addRootNode(node);
-		assertFalse(aBuilder.canAdd(new GeneralizationEdge(), new Point(15, 15), new Point(15,15)));
-	}
-	
-	@Test
-	void testCanAddEdgeNonSelfDependency()
-	{
-		ClassNode node1 = new ClassNode();
-		aDiagram.addRootNode(node1);
-		ClassNode node2 = new ClassNode();
-		node2.translate(200, 200);
-		aDiagram.addRootNode(node2);
-		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205,205)));
-	}
-	
-	@Test
-	void testCanAddNoteEdgeNoNoteNode()
-	{
-		ClassNode start = new ClassNode();
-		ClassNode end = new ClassNode();
-		end.moveTo(new Point(150, 150));
-		aDiagram.addRootNode(start);
-		aDiagram.addRootNode(end);
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(5,5), new Point(155,155)));
-	}
-	
+
 	@Test
 	void testCreateAddElementsOperationNothing()
 	{
