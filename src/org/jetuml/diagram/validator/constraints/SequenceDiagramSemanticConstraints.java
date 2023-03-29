@@ -38,12 +38,12 @@ public final class SequenceDiagramSemanticConstraints
 	 */
 	public static SemanticConstraint returnEdge()
 	{
-		// ControlFlow flow = new ControlFlow(pDiagram);
+		// CSOFF:
 		return (Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ReturnEdge.class && (pStart.getClass() != CallNode.class ||
 					pEnd.getClass() != CallNode.class || getCaller(pStart, pDiagram).isEmpty() ||
 					pEnd != getCaller(pStart, pDiagram).get() || pStart.getParent() == pEnd.getParent()));
-		};
+		}; // CSON:
 	}
 
 	/**
