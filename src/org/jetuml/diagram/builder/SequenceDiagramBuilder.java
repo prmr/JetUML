@@ -28,14 +28,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.builder.constraints.ConstraintSet;
-import org.jetuml.diagram.builder.constraints.EdgeConstraints;
 import org.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
@@ -52,16 +49,6 @@ import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
-	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
-			EdgeConstraints.noteEdge(),
-			EdgeConstraints.noteNode(),
-			EdgeConstraints.maxEdges(1),
-			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(),
-			SequenceDiagramEdgeConstraints.returnEdge(),
-			SequenceDiagramEdgeConstraints.singleEntryPoint(),
-			SequenceDiagramEdgeConstraints.callEdgeEnd()
-	);
-	
 	/**
 	 * Creates a new builder for sequence diagrams.
 	 * 
@@ -72,13 +59,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		super( pDiagram );
 		assert pDiagram.getType() == DiagramType.SEQUENCE;
-	}
-	
-	@Override
-	protected ConstraintSet getEdgeConstraints()
-	{
-
-		return CONSTRAINTS;
 	}
 	
 	/**

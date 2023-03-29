@@ -24,17 +24,9 @@ package org.jetuml.diagram.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
-import org.jetuml.diagram.builder.constraints.ConstraintSet;
-import org.jetuml.diagram.builder.constraints.EdgeConstraints;
-import org.jetuml.diagram.edges.AggregationEdge;
-import org.jetuml.diagram.edges.AssociationEdge;
-import org.jetuml.diagram.edges.DependencyEdge;
-import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.TypeNode;
@@ -47,18 +39,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 {
 	private static final int PADDING = 10;
 	private static final int TOP_HEIGHT = 20;
-	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
-			EdgeConstraints.noteEdge(),
-			EdgeConstraints.noteNode(),
-			EdgeConstraints.maxEdges(1),
-			ClassDiagramEdgeConstraints.noSelfGeneralization(),
-			ClassDiagramEdgeConstraints.noSelfDependency(),
-			ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class),
-			ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class),
-			ClassDiagramEdgeConstraints.noDirectCycles(AggregationEdge.class),
-			ClassDiagramEdgeConstraints.noDirectCycles(AssociationEdge.class),
-			ClassDiagramEdgeConstraints.noCombinedAssociationAggregation()
-	);
 
 	/**
 	 * Creates a new builder for class diagrams.
@@ -101,12 +81,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		}
 		return result;
 	}
-	
-	@Override
-	protected ConstraintSet getEdgeConstraints()
-	{
-		return CONSTRAINTS;
-	}
+
 	
 	private static boolean validChild(Node pPotentialChild)
 	{

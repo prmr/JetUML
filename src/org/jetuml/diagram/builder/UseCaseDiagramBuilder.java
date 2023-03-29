@@ -23,8 +23,6 @@ package org.jetuml.diagram.builder;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.builder.constraints.ConstraintSet;
-import org.jetuml.diagram.builder.constraints.EdgeConstraints;
 
 
 /**
@@ -32,13 +30,6 @@ import org.jetuml.diagram.builder.constraints.EdgeConstraints;
  */
 public class UseCaseDiagramBuilder extends DiagramBuilder
 {
-	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
-			
-			EdgeConstraints.noteEdge(),
-			EdgeConstraints.noteNode(),
-			EdgeConstraints.maxEdges(1),
-			EdgeConstraints.noSelfEdge()
-	);
 	
 	/**
 	 * Creates a new builder for use case diagrams.
@@ -51,10 +42,5 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 		super( pDiagram );
 		assert pDiagram.getType() == DiagramType.USECASE;
 	}
-	
-	@Override
-	protected ConstraintSet getEdgeConstraints()
-	{
-		return CONSTRAINTS;
-	}
+
 }
