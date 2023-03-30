@@ -34,6 +34,7 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.diagram.validator.UseCaseDiagramValidator;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		super.setup();
 		aDiagram = new Diagram(DiagramType.USECASE);
 		aBuilder = new UseCaseDiagramBuilder(aDiagram);
+		aValidator = new UseCaseDiagramValidator(aDiagram);
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -136,9 +138,11 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(5, numberOfEdges());
 		
-		// connect nodes with NoteEdge (not allowed)
-		assertFalse(aBuilder.canAdd(new NoteEdge(),  new Point(80, 20), new Point(140, 20)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(),  new Point(20, 20), new Point(250, 20)));
+		// connect nodes with NoteEdge (invalid edges)
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(new NoteEdge(),  new Point(80, 20), new Point(140, 20));
+		addEdge(new NoteEdge(),  new Point(20, 20), new Point(250, 20));
+		assertFalse(aValidator.isDiagramValid());
 	}
 	
 	@Test
@@ -157,8 +161,11 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
-		
-		assertFalse(aBuilder.canAdd(noteEdge1, new Point(9, 9), new Point(209, 162)));
+
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(noteEdge1, new Point(9, 9), new Point(209, 162));
+		assertFalse(aValidator.isDiagramValid());
+
 		addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertTrue(aDiagram.contains(noteEdge1));
 		assertSame(noteEdge1.getStart(), aActorNode1);
