@@ -37,6 +37,7 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.diagram.validator.SequenceDiagramValidator;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +68,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		super.setup();
 		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aBuilder = new SequenceDiagramBuilder(aDiagram);
+		aValidator = new SequenceDiagramValidator(aDiagram);
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
 		aParameterNode3 = new ImplicitParameterNode();
@@ -112,10 +114,12 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(2, numberOfRootNodes());
 		assertEquals("client", aParameterNode1.getName());
 		assertEquals("platform", aParameterNode2.getName());
-		
-		assertFalse(aBuilder.canAdd(aCallEdge1, new Point(7, 0), new Point(26, 0))); 
-		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 0), new Point(26, 0)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 0), new Point(26, 0)));
+
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(aCallEdge1, new Point(7, 0), new Point(26, 0));
+		addEdge(aReturnEdge, new Point(7, 0), new Point(26, 0));
+		addEdge(aNoteEdge, new Point(7, 0), new Point(26, 0));
+		assertFalse(aValidator.isDiagramValid());
 	}
 	
 	@Test
@@ -126,11 +130,14 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		assertEquals(2, numberOfRootNodes());
 
-		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 75), new Point(26, 0)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 75), new Point(26, 0)));
+		assertTrue(aValidator.isDiagramValid());
+
+		addEdge(aReturnEdge, new Point(7, 75), new Point(26, 0));
+		addEdge(aNoteEdge, new Point(7, 75), new Point(26, 0));
 		
 		addEdge(aCallEdge1, new Point(43, 85), new Point(130, 85));
-		assertEquals(1, numberOfEdges());
+		assertEquals(3, numberOfEdges());
+		assertFalse(aValidator.isDiagramValid());
 	}
 	
 	/**
@@ -181,12 +188,15 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		assertEquals(6, numberOfEdges());
 		assertEquals(8, numberOfRootNodes());
-		
-		// from ParameterNode to NoteNode
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
-		// from CallNode to NoteNode 
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
-		assertEquals(8, numberOfRootNodes());
+
+		assertTrue(aValidator.isDiagramValid());
+		// from ParameterNode to NoteNode (invalid)
+		addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
+
+		// from CallNode to NoteNode (invalid)
+		addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
+		assertFalse(aValidator.isDiagramValid());
+		assertEquals(8, numberOfEdges());
 	}
 	
 	@Test
