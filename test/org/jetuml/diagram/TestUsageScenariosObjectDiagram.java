@@ -22,6 +22,7 @@ package org.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.diagram.builder.ObjectDiagramBuilder;
 import org.jetuml.diagram.edges.NoteEdge;
@@ -29,6 +30,7 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.diagram.validator.ObjectDiagramValidator;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		super.setup();
 		aDiagram = new Diagram(DiagramType.OBJECT);
 		aBuilder = new ObjectDiagramBuilder(aDiagram);
+		aValidator = new ObjectDiagramValidator(aDiagram);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -66,14 +69,17 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		setProperty(aObjectNode1.properties().get(PropertyName.NAME), "Car");
 		assertEquals(1, numberOfRootNodes());
 		assertEquals("Car", aObjectNode1.getName());
-		
-		assertFalse(aBuilder.canAdd(aFieldNode1, new Point(120, 80)));
-		
+
+		assertTrue(aValidator.isDiagramValid());
+		addNode(aFieldNode1, new Point(120, 80));
+		assertFalse(aValidator.isDiagramValid());
+
 		addNode(aFieldNode1, new Point(20, 40));
 		addNode(aFieldNode2, new Point(30, 40));
 		addNode(aFieldNode3, new Point(40, 30));
 		assertEquals(3, aObjectNode1.getChildren().size());
-		assertEquals(1, numberOfRootNodes());
+		// including the wrong FieldNode, which makes the diagram invalid
+		assertEquals(2, numberOfRootNodes());
 		
 	}
 	
@@ -87,21 +93,21 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addNode(aFieldNode3, new Point(40, 30));
 		addNode(aNoteNode, new Point(80, 80));
 		assertEquals(3, numberOfRootNodes());
-		
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(25, 25), new Point(55, 25)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(55, 25), new Point(155, 25)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(255, 25)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(55, 25)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(25, 25), new Point(255, 25)));
-		assertEquals(0, numberOfEdges());
+
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(new NoteEdge(), new Point(25, 25), new Point(55, 25));
+		assertFalse(aValidator.isDiagramValid());
+		assertEquals(1, numberOfEdges());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
 		addEdge(new NoteEdge(), new Point(80, 80), new Point(55, 25));
 		addEdge(new NoteEdge(), new Point(25, 25), new Point(80, 80));
-		assertEquals(2, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(60, 80), new Point(80, 80)));
+		addEdge(new NoteEdge(), new Point(60, 80), new Point(80, 80));
+		assertFalse(aValidator.isDiagramValid());
+		assertEquals(4, numberOfEdges());
 	}
 	
 	@Test
@@ -118,20 +124,23 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		assertEquals(1, numberOfEdges());
-		
-		assertFalse(aBuilder.canAdd(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80)));
-		assertFalse(aBuilder.canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
-		
+
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80));
+		addEdge(aReferenceEdge1, new Point(25, 20), new Point(80, 80));
+		assertFalse(aValidator.isDiagramValid());
+
+		assertEquals(3, numberOfEdges());
 		/* create an ObjectRefEdge to an ObjectNode itself. 
 		 * "value" text in field node will be erased and edge will be added.
 		 */
 		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
-		assertEquals(2, numberOfEdges());
+		assertEquals(4, numberOfEdges());
 		assertEquals("name", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
 		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
-		assertEquals(3, numberOfEdges());
+		assertEquals(5, numberOfEdges());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		
