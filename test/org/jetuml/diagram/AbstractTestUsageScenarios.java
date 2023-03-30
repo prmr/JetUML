@@ -37,6 +37,7 @@ import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.builder.SimpleOperation;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,6 +51,7 @@ public class AbstractTestUsageScenarios
 	private static int userDefinedFontSize;
 	protected Diagram aDiagram;
 	protected DiagramBuilder aBuilder;
+	protected DiagramValidator aValidator;
 	private DiagramOperationProcessor aProcessor;
 	protected NoteNode aNoteNode;
 	protected NoteEdge aNoteEdge;
