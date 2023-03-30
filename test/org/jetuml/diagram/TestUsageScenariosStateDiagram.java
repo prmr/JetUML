@@ -32,6 +32,7 @@ import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.diagram.validator.StateDiagramValidator;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		super.setup();
 		aDiagram = new Diagram(DiagramType.STATE);
 		aBuilder = new StateDiagramBuilder(aDiagram);
+		aValidator = new StateDiagramValidator(aDiagram);
 		aStateNode1 = new StateNode();
 		aStateNode2 = new StateNode();
 		aInitialNode = new InitialStateNode();
@@ -89,13 +91,12 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		aTransitionEdge4.setMiddleLabel("Edge 4");
 		addEdge(aTransitionEdge4, new Point(35, 105), new Point(32, 202));
 		assertEquals(4, numberOfEdges());
-		
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(6, 6), new Point(35, 35))); 
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 35), new Point(35, 105)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 105), new Point(35, 35)));
-		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 105), new Point(32, 202)));
-		assertEquals(4, numberOfEdges());
-		
+
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(aNoteEdge, new Point(6, 6), new Point(35, 35));
+		assertEquals(5, numberOfEdges());
+		assertFalse(aValidator.isDiagramValid());
+
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(new Point(30, 30), aStateNode1.position());
 		assertEquals("Node 1", aStateNode1.getName());
@@ -104,7 +105,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(new Point(5, 5), aInitialNode.position());
 		assertEquals(new Point(30, 200), aFinalNode.position());
 		
-		assertEquals(4, numberOfEdges());
+		assertEquals(5, numberOfEdges());
 		assertEquals("Edge 1", aTransitionEdge1.getMiddleLabel());
 		assertSame(aInitialNode, aTransitionEdge1.getStart());
 		assertSame(aStateNode1, aTransitionEdge1.getEnd());
@@ -170,15 +171,19 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(5, numberOfEdges());
-		
-		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
-		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
-		assertTrue(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
+
+		assertTrue(aValidator.isDiagramValid());
+		// invalid edge
+		addEdge(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20));
+		assertFalse(aValidator.isDiagramValid());
+
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
-		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
-		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
-		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
-		assertEquals(6, numberOfEdges());
+
+		// invalid edge
+		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
+		assertFalse(aValidator.isDiagramValid());
+
+		assertEquals(8, numberOfEdges());
 	}
 	
 	@Test
@@ -190,17 +195,10 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aFinalNode, new Point(250,20));
 		
 		NoteEdge noteEdge1 = new NoteEdge();
-		NoteEdge noteEdge2 = new NoteEdge();
-		NoteEdge noteEdge3 = new NoteEdge();
-		NoteEdge noteEdge4 = new NoteEdge();
-		NoteEdge noteEdge5 = new NoteEdge();
-		
-		assertFalse(aBuilder.canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
-		assertFalse(aBuilder.canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
-		assertFalse(aBuilder.canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
-		assertFalse(aBuilder.canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
-		assertFalse(aBuilder.canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
-		assertEquals(0, numberOfEdges());
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(noteEdge1, new Point(25, 25), new Point(55, 25));
+		assertFalse(aValidator.isDiagramValid());
+		assertEquals(1, numberOfEdges());
 	}
 	
 	@Test
@@ -247,10 +245,14 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
 		assertEquals(3, numberOfEdges());
 		// invalid operations, cannot connect any StateNode with NoteEdges
-		assertFalse(aBuilder.canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
-		assertFalse(aBuilder.canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
-		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
-		assertEquals(3, numberOfEdges());
+		// still allowing the edge to be added, but diagram will be invalid
+		assertTrue(aValidator.isDiagramValid());
+		addEdge(noteEdge4, new Point(20, 20), new Point(-20, 200));
+		addEdge(noteEdge5, new Point(150, 20), new Point(-50, 200));
+		addEdge(new NoteEdge(), new Point(20, 20), new Point(50, 49));
+		assertFalse(aValidator.isDiagramValid());
+
+		assertEquals(6, numberOfEdges());
 	}
 	
 	@Test
