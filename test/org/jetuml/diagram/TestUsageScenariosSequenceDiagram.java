@@ -116,9 +116,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals("platform", aParameterNode2.getName());
 
 		assertTrue(aValidator.isDiagramValid());
-		addEdge(aCallEdge1, new Point(7, 0), new Point(26, 0));
+		// testing one invalid case
 		addEdge(aReturnEdge, new Point(7, 0), new Point(26, 0));
-		addEdge(aNoteEdge, new Point(7, 0), new Point(26, 0));
 		assertFalse(aValidator.isDiagramValid());
 	}
 	
