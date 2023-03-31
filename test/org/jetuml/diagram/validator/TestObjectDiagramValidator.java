@@ -24,12 +24,6 @@ public class TestObjectDiagramValidator
   private ObjectNode aObjectNode;
   private NoteNode aNoteNode1;
 
-  //@BeforeAll
-  //public static void setupClass()
-  //{
-  //  JavaFXLoader.load();
-  //}
-
   @BeforeEach
   public void setUp()
   {
