@@ -66,7 +66,7 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	@Override
 	protected boolean validNodeHierarchy()
 	{
-		return aDiagram.rootNodes().stream().anyMatch(node -> !(node instanceof FieldNode)) && 
+		return aDiagram.rootNodes().stream().noneMatch(node -> node instanceof FieldNode) &&
 				aDiagram.rootNodes().stream().filter(node -> node instanceof ObjectNode).allMatch(
 						objectNode -> objectNode.getChildren().stream().allMatch(child -> child instanceof FieldNode));
 	}
