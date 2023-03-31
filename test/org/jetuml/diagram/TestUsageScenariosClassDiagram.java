@@ -235,7 +235,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge1, new Point(9, 9), new Point(209,162));
 		assertFalse(aValidator.isDiagramValid());
 		addEdge(noteEdge1, new Point(10, 10), new Point(139,142));
-		assertEquals(1, numberOfEdges());
+		assertEquals(2, numberOfEdges());
 		assertEquals(noteEdge1.getStart(), aClassNode1);
 		assertEquals(noteEdge1.getEnd(), aNoteNode);
 		
@@ -243,7 +243,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
 		assertEquals(noteEdge2.getStart(), aNoteNode);
 		assertEquals(noteEdge2.getEnd().getClass(), PointNode.class);
-		assertEquals(2, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 	}
 	
 	@Test
@@ -387,10 +387,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertTrue(aValidator.isDiagramValid());
 		
 		// new invalid edges appear in diagram
-		addEdge(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49));
-		addEdge(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49));
-		addEdge(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49));
-		addEdge(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49));
+		addEdge(aSecondAggregationEdge, new Point(5, 5), new Point(46, 49));
+		addEdge(aSecondAssociationEdge, new Point(5, 5), new Point(46, 49));
+		addEdge(aSecondDependencyEdge, new Point(5, 5), new Point(46, 49));
+		addEdge(aSecondGeneralizationEdge, new Point(5, 5), new Point(46, 49));
 		assertEquals(7, numberOfEdges());
 
 		assertTrue(aDiagram.contains(aSecondAggregationEdge));
