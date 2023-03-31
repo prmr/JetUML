@@ -37,8 +37,6 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			ClassDiagramSemanticConstraints.noSelfDependency(),
 			ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(GeneralizationEdge.class),
-			ClassDiagramSemanticConstraints.noDirectCycles(AggregationEdge.class),
-			ClassDiagramSemanticConstraints.noDirectCycles(AssociationEdge.class),
 			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation());
 
 	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
