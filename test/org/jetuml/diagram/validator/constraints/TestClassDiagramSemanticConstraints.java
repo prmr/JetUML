@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
@@ -83,4 +85,49 @@ public class TestClassDiagramSemanticConstraints
 		aEdge1.connect(aNode2, aNode1);
 		assertFalse(ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aDiagram));
 	}
+
+	@Test
+	void testNoSelfDependency_True_isDependencyEdge()
+	{
+		createDiagram();
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2);
+		aDiagram.addEdge(edge);
+		assertTrue(ClassDiagramSemanticConstraints.noSelfDependency().satisfied(edge, aDiagram));
+	}
+
+	@Test
+	void testNoSelfDependency_True_isGeneralizationEdge()
+	{
+		createDiagram();
+		GeneralizationEdge edge = new GeneralizationEdge();
+		edge.connect(aNode1, aNode2);
+		aDiagram.addEdge(edge);
+		assertTrue(ClassDiagramSemanticConstraints.noSelfDependency().satisfied(edge, aDiagram));
+	}
+
+	@Test
+	void testNoSelfDependency_False()
+	{
+		createDiagram();
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode1);
+		aDiagram.addEdge(edge);
+		assertFalse(ClassDiagramSemanticConstraints.noSelfDependency().satisfied(edge, aDiagram));
+	}
+
+	@Test
+	void testNoCombinedAssociationAggregation_FirstTrueThenFalse()
+	{
+		createDiagram();
+		AssociationEdge edge1 = new AssociationEdge();
+		AggregationEdge edge2 = new AggregationEdge();
+		edge1.connect(aNode1, aNode2);
+		edge2.connect(aNode1, aNode2);
+		aDiagram.addEdge(edge1);
+		assertTrue(ClassDiagramSemanticConstraints.noCombinedAssociationAggregation().satisfied(edge1, aDiagram));
+		aDiagram.addEdge(edge2);
+		assertFalse(ClassDiagramSemanticConstraints.noCombinedAssociationAggregation().satisfied(edge2, aDiagram));
+	}
+
 }
