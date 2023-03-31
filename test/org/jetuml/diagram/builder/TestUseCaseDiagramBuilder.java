@@ -21,6 +21,8 @@
 
 package org.jetuml.diagram.builder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -33,6 +35,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestUseCaseDiagramBuilder
 {
@@ -66,5 +69,11 @@ public class TestUseCaseDiagramBuilder
 		aDependencyEdge = new UseCaseDependencyEdge();
 		aGeneralizationEdge = new UseCaseGeneralizationEdge();
 		aNoteEdge = new NoteEdge();
+	}
+
+	@Test
+	public void testConstructor()
+	{
+		assertEquals(DiagramType.USECASE, aBuilder.diagram().getType());
 	}
 }

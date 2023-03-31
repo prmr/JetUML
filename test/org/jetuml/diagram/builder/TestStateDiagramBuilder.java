@@ -22,6 +22,7 @@
 package org.jetuml.diagram.builder;
 
 import org.jetuml.JavaFXLoader;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -34,6 +35,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestStateDiagramBuilder
 {
@@ -44,7 +46,7 @@ public class TestStateDiagramBuilder
 	private StateNode aStateNode2;
 	private FinalStateNode aFinal;
 	private NoteNode aNoteNode;
-	
+
 	private StateTransitionEdge aEdge1;
 	private StateTransitionEdge aEdge2;
 	private StateTransitionEdge aEdge3;
@@ -73,10 +75,10 @@ public class TestStateDiagramBuilder
 		aEdge3 = new StateTransitionEdge();
 		aNoteEdge = new NoteEdge();
 	}
-	
-	private void connectAndAdd(Edge pEdge, Node pStart, Node pEnd)
+
+	@Test
+	public void testConstructor()
 	{
-		pEdge.connect(pStart, pEnd);
-		aDiagram.addEdge(pEdge);
+		assertEquals(DiagramType.STATE, aBuilder.diagram().getType());
 	}
 }
