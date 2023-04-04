@@ -120,11 +120,6 @@ public class TestSequenceDiagramBuilder
 		return sum;
 	}
 	
-	private int numberOfEdges() 
-	{
-		return aDiagram.edges().size();
-	}
-	
 	@Test
 	public void testcreateAddNodeOperationOneImplicitParameterNode()
 	{

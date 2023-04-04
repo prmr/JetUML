@@ -21,18 +21,11 @@
 
 package org.jetuml.diagram.builder;
 
-import org.jetuml.JavaFXLoader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
-import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.edges.StateTransitionEdge;
-import org.jetuml.diagram.nodes.FinalStateNode;
-import org.jetuml.diagram.nodes.InitialStateNode;
-import org.jetuml.diagram.nodes.NoteNode;
-import org.jetuml.diagram.nodes.StateNode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,16 +34,6 @@ public class TestStateDiagramBuilder
 {
 	private Diagram aDiagram;
 	private StateDiagramBuilder aBuilder;
-	private InitialStateNode aInitial;
-	private StateNode aStateNode1;
-	private StateNode aStateNode2;
-	private FinalStateNode aFinal;
-	private NoteNode aNoteNode;
-
-	private StateTransitionEdge aEdge1;
-	private StateTransitionEdge aEdge2;
-	private StateTransitionEdge aEdge3;
-	private NoteEdge aNoteEdge;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -63,17 +46,6 @@ public class TestStateDiagramBuilder
 	{
 		aDiagram = new Diagram(DiagramType.STATE);
 		aBuilder = new StateDiagramBuilder(aDiagram);
-		
-		aInitial = new InitialStateNode();
-		aStateNode1 = new StateNode();
-		aStateNode2 = new StateNode();
-		aFinal = new FinalStateNode();
-		aNoteNode = new NoteNode();
-		
-		aEdge1 = new StateTransitionEdge();
-		aEdge2 = new StateTransitionEdge();
-		aEdge3 = new StateTransitionEdge();
-		aNoteEdge = new NoteEdge();
 	}
 
 	@Test

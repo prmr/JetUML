@@ -86,7 +86,8 @@ public final class ClassDiagramSemanticConstraints
 	{   // CSOFF:
 		return (int) pDiagram.edges().stream()
 				.filter(edge -> (edge.getClass() == AssociationEdge.class || edge.getClass() == AggregationEdge.class) &&
-						(edge.getStart() == pStart && edge.getEnd() == pEnd) || (edge.getStart() == pEnd && edge.getEnd() == pStart))
+						(edge.getStart() == pStart && edge.getEnd() == pEnd) || 
+						(edge.getStart() == pEnd && edge.getEnd() == pStart))
 				.count();
 		// CSON: 
 	}

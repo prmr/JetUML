@@ -25,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Arrays;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -49,7 +49,6 @@ public class TestObjectDiagramBuilder
 	private NoteNode aNote = new NoteNode();
 	private FieldNode aFieldNode1 = new FieldNode();
 	private FieldNode aFieldNode2 = new FieldNode();
-	private ObjectCollaborationEdge aCollaboration1 = new ObjectCollaborationEdge();
 	private ObjectReferenceEdge aReference1 = new ObjectReferenceEdge();
 	
 	@BeforeEach
