@@ -46,14 +46,17 @@ public final class ClassDiagramSemanticConstraints
 			{
 				return true;
 			}
+			
+			int sameDirectionCount = 0;
 			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.getStart()) )
 			{
 				if( edge.getClass() == pEdgeType && edge.getEnd() == pEdge.getStart() && edge.getStart() == pEdge.getEnd() )
 				{
-					return false;
+					sameDirectionCount += 1;
 				}
 			}
-			return true;
+			
+			return sameDirectionCount < 2;
 		};
 	}
 
