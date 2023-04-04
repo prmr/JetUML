@@ -37,12 +37,12 @@ public final class ClassDiagramSemanticConstraints
 
 	/**
 	 * There can't be two edges of a given type, one in each direction, between
-	 * two nodes.
+	 * two DIFFERENT nodes.
 	 */
 	public static SemanticConstraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			if( pEdge.getClass() != pEdgeType )
+			if( pEdge.getClass() != pEdgeType || pEdge.getStart() == pEdge.getEnd() )
 			{
 				return true;
 			}
@@ -56,7 +56,7 @@ public final class ClassDiagramSemanticConstraints
 				}
 			}
 			
-			return sameDirectionCount < 2;
+			return sameDirectionCount == 0;
 		};
 	}
 

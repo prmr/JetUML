@@ -83,6 +83,7 @@ public class TestClassDiagramSemanticConstraints
 		edge.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge);
 		aEdge1.connect(aNode2, aNode1);
+		aDiagram.addEdge(aEdge1);
 		assertFalse(ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aDiagram));
 	}
 

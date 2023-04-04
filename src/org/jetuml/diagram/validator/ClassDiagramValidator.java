@@ -29,7 +29,7 @@ import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 public class ClassDiagramValidator extends AbstractDiagramValidator
 {
 	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.pointNode(), 
+			EdgeSemanticConstraints.pointNode(),
 			EdgeSemanticConstraints.noteEdge(), 
 			EdgeSemanticConstraints.noteNode(),
 			EdgeSemanticConstraints.maxEdges(1), 
@@ -39,7 +39,8 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			ClassDiagramSemanticConstraints.noDirectCycles(GeneralizationEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(AggregationEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(AssociationEdge.class),
-			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation());
+			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation()
+			);
 
 	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
 			ClassNode.class, 

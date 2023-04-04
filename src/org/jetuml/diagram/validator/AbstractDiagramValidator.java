@@ -1,6 +1,7 @@
 package org.jetuml.diagram.validator;
 
 import java.util.List;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
