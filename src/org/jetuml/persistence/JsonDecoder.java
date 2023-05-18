@@ -39,9 +39,7 @@ public final class JsonDecoder
 	private static final String PREFIX_NODES = "org.jetuml.diagram.nodes.";
 	private static final String PREFIX_EDGES = "org.jetuml.diagram.edges.";
 
-	private JsonDecoder()
-	{
-	}
+	private JsonDecoder() {}
 
 	/**
 	 * @param pDiagram A JSON object that encodes the diagram.
@@ -89,7 +87,7 @@ public final class JsonDecoder
 				}
 				pContext.addNode(node, object.getInt("id"));
 			}
-			catch (ReflectiveOperationException exception)
+			catch(ReflectiveOperationException exception)
 			{
 				throw new DeserializationException(Category.STRUCTURAL, "Cannot instantiate serialized object", exception);
 			}

@@ -32,11 +32,6 @@ public class DeserializationException extends RuntimeException
 	public enum Category 
 	{ 
 		/**
-		 * There is a problem reading the file.
-		 */
-		IO, 
-		
-		/**
 		 * Syntactic errors are caused by malformed JSON text.
 		 */
 		SYNTACTIC, 

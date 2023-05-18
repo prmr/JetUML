@@ -99,9 +99,9 @@ public final class PersistenceService
 			
 			return diagram;
 		}
-		catch( JsonException e )
+		catch(JsonException exception)
 		{
-			throw new DeserializationException(Category.IO, "Cannot read the file", e);
+			throw new DeserializationException(Category.SYNTACTIC, "Cannot parse JSON text");
 		}
 	}
 }
