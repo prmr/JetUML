@@ -77,7 +77,14 @@ public final class PersistenceService
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
-			Diagram diagram = JsonDecoder.decode(JsonParser.parse(in.readLine()));
+			String inputLine = in.readLine();
+			// An empty buffer results in a null value from readLine: convert it back to a string
+			// to avoid a null dereference.
+			if( inputLine == null )
+			{
+				inputLine = "";
+			}
+			Diagram diagram = JsonDecoder.decode(JsonParser.parse(inputLine));
 			if (!DiagramType.newValidatorInstanceFor(diagram).isDiagramValid())
 			{
 				throw new DeserializationException("Diagram file failed to pass semantic check");
