@@ -40,7 +40,7 @@ public class TestClassDiagramValidator
   {
     aPackageNode1.addChild(aClassNode1);
     aDiagram.addRootNode(aPackageNode1);
-    assertTrue(aClassDiagramValidator.isDiagramValid());
+    assertTrue(aClassDiagramValidator.isValid());
   }
 
 
@@ -55,7 +55,7 @@ public class TestClassDiagramValidator
       packageNodes.add(aNoteNode1);
       aContainedNodes.set(aPackageNode1, packageNodes);
       aDiagram.addRootNode(aPackageNode1);
-      assertFalse(aClassDiagramValidator.isDiagramValid());
+      assertFalse(aClassDiagramValidator.isValid());
     }
 
     catch (NoSuchFieldException | IllegalAccessException e)
@@ -71,7 +71,7 @@ public class TestClassDiagramValidator
   {
     aDiagram.addRootNode(aClassNode1);
     aDiagram.addRootNode(aNoteNode1);
-    assertTrue(aClassDiagramValidator.isDiagramValid());
+    assertTrue(aClassDiagramValidator.isValid());
   }
 
   @Test
@@ -79,7 +79,7 @@ public class TestClassDiagramValidator
   {
     ObjectNode aObjectNode = new ObjectNode();
     aDiagram.addRootNode(aObjectNode);
-    assertFalse(aClassDiagramValidator.isDiagramValid());
+    assertFalse(aClassDiagramValidator.isValid());
   }
 
 }

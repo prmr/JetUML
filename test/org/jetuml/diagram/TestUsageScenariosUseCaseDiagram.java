@@ -139,10 +139,10 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertEquals(5, numberOfEdges());
 		
 		// connect nodes with NoteEdge (invalid edges)
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(new NoteEdge(),  new Point(80, 20), new Point(140, 20));
 		addEdge(new NoteEdge(),  new Point(20, 20), new Point(250, 20));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 	}
 	
 	@Test
@@ -162,10 +162,10 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		// adding wrong note edge between actor nodes
 		addEdge(noteEdge1, new Point(20, 20), new Point(250, 20));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertTrue(aDiagram.contains(noteEdge1));

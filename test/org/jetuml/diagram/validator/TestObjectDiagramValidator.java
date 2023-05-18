@@ -39,14 +39,14 @@ public class TestObjectDiagramValidator
   {
     aDiagram.addRootNode(aObjectNode);
     aDiagram.addRootNode(aNoteNode1);
-    assertTrue(aObjectDiagramValidator.isDiagramValid());
+    assertTrue(aObjectDiagramValidator.isValid());
   }
 
   @Test
   public void testValidNodeHierarchy_False()
   {
     aDiagram.addRootNode(aFieldNode);
-    assertFalse(aObjectDiagramValidator.isDiagramValid());
+    assertFalse(aObjectDiagramValidator.isValid());
     try
     {
       Field aFields = ObjectNode.class.getDeclaredField("aFields");
@@ -55,7 +55,7 @@ public class TestObjectDiagramValidator
       objectChildren.add(aNoteNode1);
       aFields.set(aObjectNode, objectChildren);
       aDiagram.addRootNode(aObjectNode);
-      assertFalse(aObjectDiagramValidator.isDiagramValid());
+      assertFalse(aObjectDiagramValidator.isValid());
     }
     catch (NoSuchFieldException | IllegalAccessException e)
     {
@@ -68,7 +68,7 @@ public class TestObjectDiagramValidator
   {
     aDiagram.addRootNode(aObjectNode);
     aDiagram.addRootNode(aNoteNode1);
-    assertTrue(aObjectDiagramValidator.isDiagramValid());
+    assertTrue(aObjectDiagramValidator.isValid());
   }
 
   @Test
@@ -76,7 +76,7 @@ public class TestObjectDiagramValidator
   {
     ClassNode aClassNode = new ClassNode();
     aDiagram.addRootNode(aClassNode);
-    assertFalse(aObjectDiagramValidator.isDiagramValid());
+    assertFalse(aObjectDiagramValidator.isValid());
 
   }
 }

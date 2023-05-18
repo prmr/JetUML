@@ -85,7 +85,7 @@ public final class PersistenceService
 				inputLine = "";
 			}
 			Diagram diagram = JsonDecoder.decode(JsonParser.parse(inputLine));
-			if (!DiagramType.newValidatorInstanceFor(diagram).isDiagramValid())
+			if (!DiagramType.newValidatorInstanceFor(diagram).isValid())
 			{
 				throw new DeserializationException("Diagram file failed to pass semantic check");
 			}

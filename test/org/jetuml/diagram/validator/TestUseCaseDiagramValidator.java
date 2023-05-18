@@ -36,7 +36,7 @@ public class TestUseCaseDiagramValidator
     aDiagram.addRootNode(aActorNode);
     aDiagram.addRootNode(aUseCaseNode);
     aDiagram.addRootNode(aNoteNode);
-    assertTrue(aUseCaseDiagramValidator.isDiagramValid());
+    assertTrue(aUseCaseDiagramValidator.isValid());
   }
 
   @Test
@@ -44,7 +44,7 @@ public class TestUseCaseDiagramValidator
   {
     ObjectNode aObjectNode = new ObjectNode();
     aDiagram.addRootNode(aObjectNode);
-    assertFalse(aUseCaseDiagramValidator.isDiagramValid());
+    assertFalse(aUseCaseDiagramValidator.isValid());
   }
 
 }

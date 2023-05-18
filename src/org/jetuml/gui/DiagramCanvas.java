@@ -104,7 +104,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 						 DiagramTabToolBar pToolBar,
 						 DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler)
 	{
-		assert pDiagramBuilder != null && pDiagramValidator.isDiagramValid();
+		assert pDiagramBuilder != null && pDiagramValidator.isValid();
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramValidator = pDiagramValidator;
@@ -528,7 +528,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = Grid.snapped(getMousePoint(pEvent));
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
-		if (aDiagramValidator.isDiagramValid())
+		if (aDiagramValidator.isValid())
 		{
 			setSelection(newNode);
 			diagram().placeOnTop(newNode);
@@ -647,7 +647,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, aMouseDownPoint, pMousePoint));
 
-			if (!aDiagramValidator.isDiagramValid())
+			if (!aDiagramValidator.isValid())
 			{
 				aProcessor.undoLastExecutedOperation();
 			}

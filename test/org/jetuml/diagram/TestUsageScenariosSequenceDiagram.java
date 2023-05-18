@@ -115,10 +115,10 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals("client", aParameterNode1.getName());
 		assertEquals("platform", aParameterNode2.getName());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		// testing one invalid case
 		addEdge(aReturnEdge, new Point(7, 0), new Point(26, 0));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 	}
 	
 	@Test
@@ -129,14 +129,14 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		assertEquals(2, numberOfRootNodes());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 
 		addEdge(aReturnEdge, new Point(7, 75), new Point(26, 0));
 		addEdge(aNoteEdge, new Point(7, 75), new Point(26, 0));
 		
 		addEdge(aCallEdge1, new Point(43, 85), new Point(130, 85));
 		assertEquals(3, numberOfEdges());
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 	}
 	
 	/**
@@ -188,13 +188,13 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(6, numberOfEdges());
 		assertEquals(8, numberOfRootNodes());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		// from ParameterNode to NoteNode (invalid)
 		addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
 
 		// from CallNode to NoteNode (invalid)
 		addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 		assertEquals(8, numberOfEdges());
 	}
 	

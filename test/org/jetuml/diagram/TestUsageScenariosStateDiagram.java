@@ -92,10 +92,10 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge4, new Point(35, 105), new Point(32, 202));
 		assertEquals(4, numberOfEdges());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(aNoteEdge, new Point(6, 6), new Point(35, 35));
 		assertEquals(5, numberOfEdges());
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(new Point(30, 30), aStateNode1.position());
@@ -172,16 +172,16 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(5, numberOfEdges());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		// invalid edge
 		addEdge(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
 
 		// invalid edge
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		assertEquals(8, numberOfEdges());
 	}
@@ -195,9 +195,9 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aFinalNode, new Point(250,20));
 		
 		NoteEdge noteEdge1 = new NoteEdge();
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(noteEdge1, new Point(25, 25), new Point(55, 25));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 		assertEquals(1, numberOfEdges());
 	}
 	
@@ -246,11 +246,11 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(3, numberOfEdges());
 		// invalid operations, cannot connect any StateNode with NoteEdges
 		// still allowing the edge to be added, but diagram will be invalid
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(noteEdge4, new Point(20, 20), new Point(-20, 200));
 		addEdge(noteEdge5, new Point(150, 20), new Point(-50, 200));
 		addEdge(new NoteEdge(), new Point(20, 20), new Point(50, 49));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		assertEquals(6, numberOfEdges());
 	}

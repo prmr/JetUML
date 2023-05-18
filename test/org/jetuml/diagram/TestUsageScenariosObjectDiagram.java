@@ -70,9 +70,9 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertEquals(1, numberOfRootNodes());
 		assertEquals("Car", aObjectNode1.getName());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addNode(aFieldNode1, new Point(120, 80));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		addNode(aFieldNode1, new Point(20, 40));
 		addNode(aFieldNode2, new Point(30, 40));
@@ -94,9 +94,9 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addNode(aNoteNode, new Point(80, 80));
 		assertEquals(3, numberOfRootNodes());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(new NoteEdge(), new Point(25, 25), new Point(55, 25));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 		assertEquals(1, numberOfEdges());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
@@ -106,7 +106,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
 		addEdge(new NoteEdge(), new Point(60, 80), new Point(80, 80));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 		assertEquals(4, numberOfEdges());
 	}
 	
@@ -125,10 +125,10 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		assertEquals(1, numberOfEdges());
 
-		assertTrue(aValidator.isDiagramValid());
+		assertTrue(aValidator.isValid());
 		addEdge(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80));
 		addEdge(aReferenceEdge1, new Point(25, 20), new Point(80, 80));
-		assertFalse(aValidator.isDiagramValid());
+		assertFalse(aValidator.isValid());
 
 		assertEquals(3, numberOfEdges());
 		/* create an ObjectRefEdge to an ObjectNode itself. 

@@ -28,9 +28,26 @@ public abstract class AbstractDiagramValidator implements DiagramValidator
 	}
 
 	@Override
-	public boolean isDiagramValid()
+	public final boolean isValid()
 	{
-		return validElementName() && validNodeHierarchy() && satisfyEdgeConstraints();
+		return hasValidStructure() && hasValidSemantics();
+	}
+	
+	@Override
+	public final boolean hasValidStructure()
+	{
+		return validElementName() && validNodeHierarchy();
+	}
+	
+	/**
+	 * @return True iff the diagram respects all required semantic validation rules.
+	 * @pre hasValidStructure()
+	 */
+	@Override
+	public final boolean hasValidSemantics()
+	{
+		return aDiagram.edges().stream()
+				.allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
 	}
 
 	/**
@@ -60,13 +77,6 @@ public abstract class AbstractDiagramValidator implements DiagramValidator
 	protected boolean validNodeHierarchy()
 	{
 		return true;
-	}
-
-	private boolean satisfyEdgeConstraints()
-	{
-		return aDiagram.edges().stream()
-				.allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
-
 	}
 
 	protected abstract SemanticConstraintSet getEdgeConstraints();

@@ -38,7 +38,7 @@ public class TestStateDiagramValidator
     aDiagram.addRootNode(aInitialStateNode);
     aDiagram.addRootNode(aFinalStateNode);
     aDiagram.addRootNode(aNoteNode);
-    assertTrue(aStateDiagramValidator.isDiagramValid());
+    assertTrue(aStateDiagramValidator.isValid());
   }
 
   @Test
@@ -46,7 +46,7 @@ public class TestStateDiagramValidator
   {
     ObjectNode aObjectNode = new ObjectNode();
     aDiagram.addRootNode(aObjectNode);
-    assertFalse(aStateDiagramValidator.isDiagramValid());
+    assertFalse(aStateDiagramValidator.isValid());
   }
 
 }

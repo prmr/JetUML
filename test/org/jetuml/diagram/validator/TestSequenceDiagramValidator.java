@@ -38,7 +38,7 @@ public class TestSequenceDiagramValidator
   {
     aImplicitParameterNode.addChild(aCallNode);
     aDiagram.addRootNode(aImplicitParameterNode);
-    assertTrue(aSequenceDiagramValidator.isDiagramValid());
+    assertTrue(aSequenceDiagramValidator.isValid());
   }
 
   @Test
@@ -52,7 +52,7 @@ public class TestSequenceDiagramValidator
       parameterNodeChildren.add(aNoteNode);
       aCallNodes.set(aImplicitParameterNode, parameterNodeChildren);
       aDiagram.addRootNode(aImplicitParameterNode);
-      assertFalse(aSequenceDiagramValidator.isDiagramValid());
+      assertFalse(aSequenceDiagramValidator.isValid());
     }
     catch (NoSuchFieldException | IllegalAccessException e)
     {
@@ -65,7 +65,7 @@ public class TestSequenceDiagramValidator
   {
     aDiagram.addRootNode(aImplicitParameterNode);
     aDiagram.addRootNode(aNoteNode);
-    assertTrue(aSequenceDiagramValidator.isDiagramValid());
+    assertTrue(aSequenceDiagramValidator.isValid());
   }
 
   @Test
@@ -73,6 +73,6 @@ public class TestSequenceDiagramValidator
   {
     ObjectNode aObjectNode = new ObjectNode();
     aDiagram.addRootNode(aObjectNode);
-    assertFalse(aSequenceDiagramValidator.isDiagramValid());
+    assertFalse(aSequenceDiagramValidator.isValid());
   }
 }
