@@ -71,21 +71,18 @@ public final class PersistenceService
 	 * @throws DeserializationException if there is a problem decoding the file.
 	 * @pre pFile != null
 	 */
-	public static VersionedDiagram read(File pFile) throws IOException, DeserializationException
+	public static Diagram read(File pFile) throws IOException, DeserializationException
 	{
 		assert pFile != null;
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
-			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
-			// Replace VersionMigrator.migrate with JSonDecoder.decode
-			VersionedDiagram versionedDiagram = new VersionMigrator().migrate(JsonParser.parse(in.readLine()));
-			Diagram curDiagram = versionedDiagram.diagram();
-			if (!DiagramType.newValidatorInstanceFor(curDiagram).isDiagramValid())
+			Diagram diagram = JsonDecoder.decode(JsonParser.parse(in.readLine()));
+			if (!DiagramType.newValidatorInstanceFor(diagram).isDiagramValid())
 			{
 				throw new DeserializationException("Diagram file failed to pass semantic check");
 			}
-			return versionedDiagram;
+			return diagram;
 		}
 		catch( JsonException e )
 		{

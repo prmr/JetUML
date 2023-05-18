@@ -52,7 +52,6 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
-import org.jetuml.persistence.VersionedDiagram;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -295,20 +294,10 @@ public class EditorFrame extends BorderPane
 		
 		try 
 		{
-			VersionedDiagram versionedDiagram = PersistenceService.read(pFile); 
-			DiagramTab frame = new DiagramTab(versionedDiagram.diagram());
+			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile));
 			frame.setFile(pFile.getAbsoluteFile());
 			addRecentFile(pFile.getPath());
 			insertGraphFrameIntoTabbedPane(frame);
-			if( versionedDiagram.wasMigrated())
-			{
-				String message = String.format(RESOURCES.getString("warning.version.message"), 
-						versionedDiagram.version().toString());
-				Alert alert = new Alert(AlertType.WARNING, message, ButtonType.OK);
-				alert.setTitle(RESOURCES.getString("warning.version.title"));
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
-			}
 		}
 		catch(IOException | DeserializationException exception) 
 		{

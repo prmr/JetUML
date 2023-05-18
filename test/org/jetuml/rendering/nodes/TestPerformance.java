@@ -48,7 +48,7 @@ import javafx.scene.canvas.GraphicsContext;
  	{
  		Canvas canvas = new Canvas();
  		GraphicsContext graphicContext = canvas.getGraphicsContext2D();
- 		Diagram diagram = PersistenceService.read(Path.of("testdata", "performanceDiagram.class.jet").toFile()).diagram();
+ 		Diagram diagram = PersistenceService.read(Path.of("testdata", "performanceDiagram.class.jet").toFile());
  		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 
  		double avgExecutionTime = 0.0;

@@ -78,7 +78,7 @@ public class TestPersistenceService
 							"testPersistenceService.usecase.jet"})
 	public void test( String pFileName ) throws Exception
 	{
-		final Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
+		final Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile());
 		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 		
 		Map<String, Rectangle> bounds = new HashMap<>();
@@ -91,7 +91,7 @@ public class TestPersistenceService
 		// Save the diagram in a new file, and re-load it
 		File temporaryFile = PATH_TEMPORARY_FILE.toFile();
 		PersistenceService.save(diagram, temporaryFile);
-		Diagram diagram2 = PersistenceService.read(temporaryFile).diagram();
+		Diagram diagram2 = PersistenceService.read(temporaryFile);
 		DiagramRenderer renderer2 = DiagramType.newRendererInstanceFor(diagram2);
 		renderer2.getBounds(); // Triggers a layout pass
 		
