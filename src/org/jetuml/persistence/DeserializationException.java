@@ -27,23 +27,63 @@ package org.jetuml.persistence;
 public class DeserializationException extends RuntimeException
 {
 	/**
+	 * A category for the error.
+	 */
+	public enum Category 
+	{ 
+		/**
+		 * There is a problem reading the file.
+		 */
+		IO, 
+		
+		/**
+		 * Syntactic errors are caused by malformed JSON text.
+		 */
+		SYNTACTIC, 
+		
+		
+		/**
+		 * Structural errors are caused by invalid arrangement of fields and values in the JSON.
+		 */
+		STRUCTURAL, 
+		
+		/**
+		 * Semantic errors represent the violation of diagram validation rules.
+		 */
+		SEMANTIC }
+	
+	private final Category aCategory;
+	
+	/**
 	 * Creates an exception with a message.
 	 * 
+	 * @param pCategory The category or error.
 	 * @param pMessage The message.
 	 */
-	public DeserializationException(String pMessage)
+	public DeserializationException(Category pCategory, String pMessage)
 	{
 		super(pMessage);
+		aCategory = pCategory;
 	}
 
 	/**
 	 * Creates an exception with a message and a wrapped exception.
 	 * 
+	 * @param pCategory The category or error.
 	 * @param pMessage The message.
 	 * @param pException The wrapped exception.
 	 */
-	public DeserializationException(String pMessage, Throwable pException)
+	public DeserializationException(Category pCategory, String pMessage, Throwable pException)
 	{
 		super(pMessage, pException);
+		aCategory = pCategory;
+	}
+	
+	/**
+	 * @return The error category.
+	 */
+	public Category category()
+	{
+		return aCategory;
 	}
 }

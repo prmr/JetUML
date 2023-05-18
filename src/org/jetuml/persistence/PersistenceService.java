@@ -32,6 +32,8 @@ import java.nio.charset.StandardCharsets;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.validator.DiagramValidator;
+import org.jetuml.persistence.DeserializationException.Category;
 import org.jetuml.persistence.json.JsonException;
 import org.jetuml.persistence.json.JsonParser;
 
@@ -85,15 +87,21 @@ public final class PersistenceService
 				inputLine = "";
 			}
 			Diagram diagram = JsonDecoder.decode(JsonParser.parse(inputLine));
-			if (!DiagramType.newValidatorInstanceFor(diagram).isValid())
+			DiagramValidator validator = DiagramType.newValidatorInstanceFor(diagram);
+			if(!validator.hasValidStructure())
 			{
-				throw new DeserializationException("Diagram file failed to pass semantic check");
+				throw new DeserializationException(Category.STRUCTURAL, "Diagram has invalid structure");
 			}
+			else if( !validator.hasValidSemantics() )
+			{
+				throw new DeserializationException(Category.SEMANTIC, "Diagram has invalid semantics");
+			}
+			
 			return diagram;
 		}
 		catch( JsonException e )
 		{
-			throw new DeserializationException("Cannot decode the file", e);
+			throw new DeserializationException(Category.IO, "Cannot read the file", e);
 		}
 	}
 }
