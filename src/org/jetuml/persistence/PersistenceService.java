@@ -86,7 +86,7 @@ public final class PersistenceService
 			{
 				inputLine = "";
 			}
-			Diagram diagram = JsonDecoder.decode(JsonParser.parse(inputLine));
+			Diagram diagram = new JsonDecoder(JsonParser.parse(inputLine)).decode();
 			DiagramValidator validator = DiagramType.newValidatorInstanceFor(diagram);
 			if(!validator.hasValidStructure())
 			{

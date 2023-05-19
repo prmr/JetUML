@@ -84,7 +84,7 @@ public class TestJsonEncodingClassDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		Diagram diagram = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram diagram = new JsonDecoder(JsonEncoder.encode(aGraph)).decode();
 		
 		Iterator<Node> iter = diagram.rootNodes().iterator();
 		iter.next();

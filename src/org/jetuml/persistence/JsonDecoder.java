@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.persistence;
 
+import org.jetuml.application.Version;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -32,7 +33,9 @@ import org.jetuml.persistence.json.JsonException;
 import org.jetuml.persistence.json.JsonObject;
 
 /**
- * Converts a JSONObject to a diagram.
+ * Converts a JSONObject to a diagram. Instances of this class are intended to be
+ * used as a single-use wrapper around a JSON object that is to be decoded, as such
+ * new JsonDecoder(pInputObject).decode()
  */
 public final class JsonDecoder
 {
@@ -44,8 +47,22 @@ public final class JsonDecoder
 	private static final String PROPERTY_EDGES = "edges";
 	private static final String PROPERTY_VERSION = "version";
 
-
-	private JsonDecoder() {}
+	/* 
+	 * The object that will be decoded.
+	 */
+	private final JsonObject aInputObject;
+	private Version aVersion;
+	private DeserializationContext aContext; // Wraps the diagram
+	
+	/**
+	 * @param pInputObject The object to decode into a diagram.
+	 * @pre pInputObject != null;
+	 */
+	public JsonDecoder(JsonObject pInputObject) 
+	{
+		assert pInputObject != null;
+		aInputObject = pInputObject;
+	}
 
 	/**
 	 * @param pDiagram A JSON object that encodes the diagram.
@@ -53,18 +70,17 @@ public final class JsonDecoder
 	 * @throws DeserializationException If it's not possible to decode the
 	 * object into a valid diagram.
 	 */
-	public static Diagram decode(JsonObject pDiagram)
+	public Diagram decode()
 	{
+		extractVersion();
+		extractDiagram();
 		try
 		{
-			assert pDiagram != null;
-			Diagram diagram = new Diagram(DiagramType.fromName(extractString(pDiagram, PROPERTY_DIAGRAM)));
-			DeserializationContext context = new DeserializationContext(diagram);
-			decodeNodes(context, pDiagram);
-			restoreChildren(context, pDiagram);
-			restoreRootNodes(context);
-			decodeEdges(context, pDiagram);
-			return diagram;
+			decodeNodes();
+			restoreChildren();
+			restoreRootNodes();
+			decodeEdges();
+			return aContext.pDiagram();
 		}
 		catch( JsonException exception )
 		{
@@ -72,16 +88,33 @@ public final class JsonDecoder
 		}
 	}
 	
+	private void extractVersion()
+	{
+		try
+		{
+			aVersion = Version.parse(extractString(PROPERTY_VERSION));
+		}
+		catch(IllegalArgumentException exception)
+		{
+			throw new DeserializationException(Category.STRUCTURAL, "Cannot parse version number");
+		}
+	}
+	
+	private void extractDiagram()
+	{
+		aContext = new DeserializationContext(new Diagram(DiagramType.fromName(extractString(PROPERTY_DIAGRAM))));
+	}
+	
 	/*
 	 * Extracts a string value for the given property name, and raises
 	 * a structural DeserializationException if the property is not found
 	 * or was not stored as a string.
 	 */
-	private static String extractString(JsonObject pObject, String pPropertyName)
+	private String extractString(String pPropertyName)
 	{
 		try
 		{
-			return pObject.getString(pPropertyName);
+			return aInputObject.getString(pPropertyName);
 		}
 		catch(JsonException exception)
 		{
@@ -94,11 +127,11 @@ public final class JsonDecoder
 	 * a structural DeserializationException if the property is not found
 	 * or was not stored as an array.
 	 */
-	private static JsonArray extractArray(JsonObject pObject, String pPropertyName)
+	private JsonArray extractArray(String pPropertyName)
 	{
 		try
 		{
-			return pObject.getJsonArray(pPropertyName);
+			return aInputObject.getJsonArray(pPropertyName);
 		}
 		catch(JsonException exception)
 		{
@@ -110,9 +143,9 @@ public final class JsonDecoder
 	 * Extracts information about nodes from pObject and creates new objects to
 	 * represent them. throws Deserialization Exception
 	 */
-	private static void decodeNodes(DeserializationContext pContext, JsonObject pObject)
+	private void decodeNodes()
 	{
-		JsonArray nodes = extractArray(pObject, PROPERTY_NODES);
+		JsonArray nodes = extractArray(PROPERTY_NODES);
 		for( int i = 0; i < nodes.size(); i++ )
 		{
 			try
@@ -125,7 +158,7 @@ public final class JsonDecoder
 				{
 					property.set(object.get(property.name().external()));
 				}
-				pContext.addNode(node, object.getInt("id"));
+				aContext.addNode(node, object.getInt("id"));
 			}
 			catch(ReflectiveOperationException exception)
 			{
@@ -137,13 +170,13 @@ public final class JsonDecoder
 	/*
 	 * Discovers the root nodes and stores them in the diagram.
 	 */
-	private static void restoreRootNodes(DeserializationContext pContext)
+	private void restoreRootNodes()
 	{
-		for( Node node : pContext )
+		for( Node node : aContext )
 		{
 			if( !node.hasParent() )
 			{
-				pContext.pDiagram().addRootNode(node);
+				aContext.pDiagram().addRootNode(node);
 			}
 		}
 	}
@@ -152,19 +185,19 @@ public final class JsonDecoder
 	 * Restores the parent-child hierarchy within the context's diagram. Assumes
 	 * the context has been initialized with all the nodes.
 	 */
-	private static void restoreChildren(DeserializationContext pContext, JsonObject pObject)
+	private void restoreChildren()
 	{
-		JsonArray nodes = extractArray(pObject, PROPERTY_NODES);
+		JsonArray nodes = extractArray(PROPERTY_NODES);
 		for( int i = 0; i < nodes.size(); i++ )
 		{
 			JsonObject object = nodes.getJsonObject(i);
 			if( object.hasProperty("children") )
 			{
-				Node node = pContext.getNode(object.getInt("id"));
+				Node node = aContext.getNode(object.getInt("id"));
 				JsonArray children = object.getJsonArray("children");
 				for( int j = 0; j < children.size(); j++ )
 				{
-					node.addChild(pContext.getNode(children.getInt(j)));
+					node.addChild(aContext.getNode(children.getInt(j)));
 				}
 			}
 		}
@@ -174,9 +207,9 @@ public final class JsonDecoder
 	 * Extracts information about nodes from pObject and creates new objects to
 	 * represent them. throws Deserialization Exception
 	 */
-	private static void decodeEdges(DeserializationContext pContext, JsonObject pObject)
+	private void decodeEdges()
 	{
-		JsonArray edges = extractArray(pObject, PROPERTY_EDGES);
+		JsonArray edges = extractArray(PROPERTY_EDGES);
 		for( int i = 0; i < edges.size(); i++ )
 		{
 			try
@@ -189,8 +222,8 @@ public final class JsonDecoder
 				{
 					property.set(object.get(property.name().external()));
 				}
-				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
-				pContext.pDiagram().addEdge(edge);
+				edge.connect(aContext.getNode(object.getInt("start")), aContext.getNode(object.getInt("end")));
+				aContext.pDiagram().addEdge(edge);
 			}
 			catch (ReflectiveOperationException exception)
 			{

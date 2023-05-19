@@ -152,7 +152,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecode1()
 	{
 		initDiagram1();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aDiagram));
+		Diagram graph = new JsonDecoder(JsonEncoder.encode(aDiagram)).decode();
 		
 		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build(PropertyName.NAME, "Mr. Bob"));
 		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Do it"));
@@ -166,7 +166,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecode2()
 	{
 		initDiagram();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aDiagram));
+		Diagram graph = new JsonDecoder(JsonEncoder.encode(aDiagram)).decode();
 		
 		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Node1"));
 		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Node2"));

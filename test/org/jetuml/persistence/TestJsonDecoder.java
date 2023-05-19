@@ -43,7 +43,7 @@ public class TestJsonDecoder
 	public void testEmptyJSONObject()
 	{
 		JsonObject object = new JsonObject();
-		assertThrows(DeserializationException.class, () -> JsonDecoder.decode(object));
+		assertThrows(DeserializationException.class, () -> new JsonDecoder(object).decode());
 	}
 	
 	/*
@@ -56,6 +56,6 @@ public class TestJsonDecoder
 		JsonObject object = new JsonObject();
 		object.put("version", "1.2");
 		object.put("diagram", "StateDiagram");
-		assertThrows(DeserializationException.class, () -> JsonDecoder.decode(object));
+		assertThrows(DeserializationException.class, () -> new JsonDecoder(object).decode());
 	}
 }

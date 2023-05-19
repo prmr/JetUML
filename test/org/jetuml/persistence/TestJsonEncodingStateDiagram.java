@@ -197,7 +197,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = new JsonDecoder(JsonEncoder.encode(aGraph)).decode();
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Start"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "End"));
@@ -219,7 +219,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph()
 	{
 		initiGraph();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = new JsonDecoder(JsonEncoder.encode(aGraph)).decode();
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "The Node"));
 		assertEquals(new Point(10,20), node1.position());
@@ -230,7 +230,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph3()
 	{
 		initiGraph3();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = new JsonDecoder(JsonEncoder.encode(aGraph)).decode();
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Node1"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Node2"));
