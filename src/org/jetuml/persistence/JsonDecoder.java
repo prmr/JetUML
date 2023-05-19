@@ -38,6 +38,12 @@ public final class JsonDecoder
 {
 	private static final String PREFIX_NODES = "org.jetuml.diagram.nodes.";
 	private static final String PREFIX_EDGES = "org.jetuml.diagram.edges.";
+	
+	private static final String PROPERTY_DIAGRAM = "diagram";
+	private static final String PROPERTY_NODES = "nodes";
+	private static final String PROPERTY_EDGES = "edges";
+	private static final String PROPERTY_VERSION = "version";
+
 
 	private JsonDecoder() {}
 
@@ -52,7 +58,7 @@ public final class JsonDecoder
 		try
 		{
 			assert pDiagram != null;
-			Diagram diagram = new Diagram(DiagramType.fromName(pDiagram.getString("diagram")));
+			Diagram diagram = new Diagram(DiagramType.fromName(extractString(pDiagram, PROPERTY_DIAGRAM)));
 			DeserializationContext context = new DeserializationContext(diagram);
 			decodeNodes(context, pDiagram);
 			restoreChildren(context, pDiagram);
@@ -65,14 +71,48 @@ public final class JsonDecoder
 			throw new DeserializationException(Category.SYNTACTIC, exception.getMessage());
 		}
 	}
-
+	
+	/*
+	 * Extracts a string value for the given property name, and raises
+	 * a structural DeserializationException if the property is not found
+	 * or was not stored as a string.
+	 */
+	private static String extractString(JsonObject pObject, String pPropertyName)
+	{
+		try
+		{
+			return pObject.getString(pPropertyName);
+		}
+		catch(JsonException exception)
+		{
+			throw new DeserializationException(Category.STRUCTURAL, String.format("Cannot obtain value of property '%s'", pPropertyName));
+		}
+	}
+	
+	/*
+	 * Extracts a JsonArray value for the given property name, and raises
+	 * a structural DeserializationException if the property is not found
+	 * or was not stored as an array.
+	 */
+	private static JsonArray extractArray(JsonObject pObject, String pPropertyName)
+	{
+		try
+		{
+			return pObject.getJsonArray(pPropertyName);
+		}
+		catch(JsonException exception)
+		{
+			throw new DeserializationException(Category.STRUCTURAL, String.format("Cannot obtain value of property '%s'", pPropertyName));
+		}
+	}
+	
 	/*
 	 * Extracts information about nodes from pObject and creates new objects to
 	 * represent them. throws Deserialization Exception
 	 */
 	private static void decodeNodes(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray nodes = pObject.getJsonArray("nodes");
+		JsonArray nodes = extractArray(pObject, PROPERTY_NODES);
 		for( int i = 0; i < nodes.size(); i++ )
 		{
 			try
@@ -114,7 +154,7 @@ public final class JsonDecoder
 	 */
 	private static void restoreChildren(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray nodes = pObject.getJsonArray("nodes");
+		JsonArray nodes = extractArray(pObject, PROPERTY_NODES);
 		for( int i = 0; i < nodes.size(); i++ )
 		{
 			JsonObject object = nodes.getJsonObject(i);
@@ -136,7 +176,7 @@ public final class JsonDecoder
 	 */
 	private static void decodeEdges(DeserializationContext pContext, JsonObject pObject)
 	{
-		JsonArray edges = pObject.getJsonArray("edges");
+		JsonArray edges = extractArray(pObject, PROPERTY_EDGES);
 		for( int i = 0; i < edges.size(); i++ )
 		{
 			try

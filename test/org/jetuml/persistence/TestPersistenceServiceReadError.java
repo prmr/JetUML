@@ -46,9 +46,15 @@ public class TestPersistenceServiceReadError
 	private static final Path PATH_TEST_FILES = Path.of("testdata");
 	private static final Path PATH_TEMPORARY_FILE = PATH_TEST_FILES.resolve("tmp");
 	
+	// Serialized diagrams with malformed JSON
 	private static final String SYNTACTIC_1 = "{";
+	private static final String SYNTACTIC_2 = "{\"diagram\":}";
+	private static final String SYNTACTIC_3 = "{\"diagram\":\"ClassDiagram\",}";
 	
+	// Serialized diagrams with malformed diagram structure
 	private static final String STRUCTURAL_1 = "{}";
+	private static final String STRUCTURAL_2 = "{\"diagram\":\"ClassDiagram\",\"edges\":[],\"version\":\"3.5\"}";
+	private static final String STRUCTURAL_3 = "{\"diagram\":\"ClassDiagram\",\"nodes\":\"edges\",\"edges\":[],\"version\":\"3.5\"}";
 	
 	@AfterEach
 	void tearDown()
@@ -70,14 +76,14 @@ public class TestPersistenceServiceReadError
 	}
 	
 	@ParameterizedTest
-	@ValueSource(strings = {SYNTACTIC_1})
+	@ValueSource(strings = {SYNTACTIC_1, SYNTACTIC_2, SYNTACTIC_3})
 	void testRead_SyntacticErrors(String pInput) throws Exception
 	{
 		assertThrowsWithCategory(Category.SYNTACTIC, () -> PersistenceService.read(createFile(pInput)));
 	}
 	
 	@ParameterizedTest
-	@ValueSource(strings = {STRUCTURAL_1})
+	@ValueSource(strings = {STRUCTURAL_1, STRUCTURAL_2, STRUCTURAL_3})
 	void testRead_StructuralErrors(String pInput) throws Exception
 	{
 		assertThrowsWithCategory(Category.STRUCTURAL, () -> PersistenceService.read(createFile(pInput)));
