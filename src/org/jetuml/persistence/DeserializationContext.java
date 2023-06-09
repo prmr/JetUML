@@ -58,10 +58,11 @@ public class DeserializationContext extends AbstractContext
 	/**
 	 * @param pId The identifier to search for.
 	 * @return The node associated with this identifier.
-	 * @pre pId exists as a value.
+	 * @pre idExists(pId)
 	 */
 	public Node getNode(int pId)
 	{
+		assert idExists(pId);
 		for( Node node : this )
 		{
 			if( aNodes.get(node) == pId )

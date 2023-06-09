@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2020-2023 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -21,52 +21,58 @@
 package org.jetuml.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestDeserializationContext
 {
-	private Diagram aGraph;
+	private Diagram aDiagram;
 	private DeserializationContext aContext;
 	private ClassNode aClassNode1; 
 	private ClassNode aClassNode2; 
 	private ClassNode aClassNode3; 
 
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
 	@BeforeEach
-	public void setup()
+	void setup()
 	{
-		aGraph = new Diagram(DiagramType.CLASS);
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aClassNode3 = new ClassNode();
 	}
 	
 	@Test
-	public void textInit()
+	void testIdExists()
 	{
-		aContext = new DeserializationContext(aGraph);
-		assertEquals(0, size());
-		assertSame(aGraph, aContext.pDiagram());
+		aContext = new DeserializationContext(aDiagram);
+		aContext.addNode(aClassNode1, 1);
+		aContext.addNode(aClassNode2, 2);
+		assertTrue(aContext.idExists(1));
+		assertTrue(aContext.idExists(2));
+		assertFalse(aContext.idExists(3));
+		assertFalse(aContext.idExists(4));
 	}
 	
 	@Test
-	public void testAddGet()
+	void textInit()
 	{
-		aContext = new DeserializationContext(aGraph);
+		aContext = new DeserializationContext(aDiagram);
+		assertEquals(0, size());
+		assertSame(aDiagram, aContext.pDiagram());
+	}
+	
+	@Test
+	void testAddGet()
+	{
+		aContext = new DeserializationContext(aDiagram);
 		aContext.addNode(aClassNode1, 0);
 		assertEquals(1, size());
 		assertSame(aClassNode1, aContext.getNode(0));

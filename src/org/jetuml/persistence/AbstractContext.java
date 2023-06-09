@@ -71,6 +71,15 @@ public abstract class AbstractContext implements Iterable<Node>
 		return aNodes.get(pNode);
 	}
 	
+	/**
+	 * @param pId The idea to check.
+	 * @return True if pId is the id of a node in the context, false otherwise.
+	 */
+	public boolean idExists(int pId)
+	{
+		return aNodes.containsValue(pId);
+	}
+	
 	@Override
 	public Iterator<Node> iterator()
 	{
