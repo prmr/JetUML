@@ -86,8 +86,8 @@ public interface Node extends DiagramElement
 	Node getParent();
 	
 	/**
-	 * Unlinks this node from it parent node.. This operation does 
-	 * NOT set the child node's parent as this node.
+	 * Unlinks this node from it parent node. This operation does 
+	 * NOT remove this note from the list of children in the parent's node.
 	 * 
 	 * @pre hasParent();
 	 */
@@ -95,12 +95,10 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * Links this node to a parent node This operation does 
-	 * NOT set the child node's parent as this node.
+	 * NOT add this node to the list of children of the parent's node.
 	 * 
-	 * By default this operation is not supported. It is the 
-	 * responsibility of the Builder class to ensure that nodes
-	 * can only be linked to a parent if it respects the semantics
-	 * of the diagram.
+	 * By default this operation is not supported. The method should
+	 * be overridden by classes that support being linked to a parent node.
 	 * 
 	 * @param pParentNode The node to set as parent of this node.
 	 * @pre pParentNode != null
@@ -117,10 +115,11 @@ public interface Node extends DiagramElement
 	List<Node> getChildren(); 
 	
 	/**
-	 * @return true if the type of node supports keeping track
-	 *     of children nodes.
+	 * @param pNode A prospective child node for this node.
+	 * @return true if it is semantically supported to have a node of pNode's 
+	 * 	type as a child of this node.
 	 */
-	boolean allowsChildren();
+	boolean allowsAsChild(Node pNode);
 	
 	/**
 	 * Insert a child at the end of the list of children.

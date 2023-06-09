@@ -94,10 +94,4 @@ public class TestCallNode
 		aNode.unlink();
 		assertFalse(aNode.hasParent());
 	}
-	
-	@Test
-	public void testAllowsChildren()
-	{
-		assertFalse(aNode.allowsChildren());
-	}
 }

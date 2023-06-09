@@ -92,8 +92,9 @@ public final class PackageNode extends AbstractPackageNode
 	}
 	
 	@Override
-	public boolean allowsChildren()
+	public boolean allowsAsChild(Node pNode)
 	{
-		return true;
+		return pNode instanceof AbstractPackageNode ||
+				pNode instanceof TypeNode;
 	}
 }

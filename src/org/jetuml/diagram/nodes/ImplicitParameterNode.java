@@ -87,9 +87,9 @@ public final class ImplicitParameterNode extends NamedNode
 	}
 	
 	@Override
-	public boolean allowsChildren()
+	public boolean allowsAsChild(Node pNode)
 	{
-		return true;
+		return pNode instanceof CallNode;
 	}
 	
 	@Override

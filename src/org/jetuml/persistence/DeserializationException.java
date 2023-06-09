@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2020-2023 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -21,7 +21,7 @@
 package org.jetuml.persistence;
 
 /**
- * Represents a problem retrieving a graph from serialized form.
+ * Represents a problem retrieving a diagram from serialized form.
  */
 @SuppressWarnings("serial")
 public class DeserializationException extends RuntimeException
@@ -50,7 +50,7 @@ public class DeserializationException extends RuntimeException
 	private final Category aCategory;
 	
 	/**
-	 * Creates an exception with a message.
+	 * Creates an exception with a category and a message.
 	 * 
 	 * @param pCategory The category or error.
 	 * @param pMessage The message.
@@ -60,9 +60,9 @@ public class DeserializationException extends RuntimeException
 		super(pMessage);
 		aCategory = pCategory;
 	}
-
+	
 	/**
-	 * Creates an exception with a message and a wrapped exception.
+	 * Creates an exception with a category, a message, and a wrapped exception.
 	 * 
 	 * @param pCategory The category or error.
 	 * @param pMessage The message.

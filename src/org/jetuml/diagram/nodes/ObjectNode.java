@@ -95,8 +95,8 @@ public final class ObjectNode extends NamedNode
 	}
 	
 	@Override
-	public boolean allowsChildren()
+	public boolean allowsAsChild(Node pNode)
 	{
-		return true;
+		return pNode instanceof FieldNode;
 	}
 }

@@ -105,7 +105,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public boolean allowsChildren()
+	public boolean allowsAsChild(Node pNode)
 	{
 		return false;
 	}
@@ -113,14 +113,14 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	@Override
 	public void addChild(Node pNode)
 	{
-		assert allowsChildren(); 
+		assert allowsAsChild(pNode); 
 		// Do nothing
 	}
 	
 	@Override
 	public void addChild(int pIndex, Node pNode)
 	{
-		assert allowsChildren(); 
+		assert allowsAsChild(pNode); 
 		// Do nothing
 	}
 	

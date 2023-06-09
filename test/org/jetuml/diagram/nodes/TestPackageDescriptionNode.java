@@ -66,12 +66,6 @@ public class TestPackageDescriptionNode
 	}
 	
 	@Test
-	public void testAllowsChildren()
-	{
-		assertFalse(aPackageDescriptionNode.allowsChildren());
-	}
-	
-	@Test
 	public void testSetName()
 	{
 		aPackageDescriptionNode.setName("Foo");

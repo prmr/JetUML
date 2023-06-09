@@ -36,6 +36,12 @@ import org.jetuml.persistence.json.JsonObject;
  * Converts a JSONObject to a diagram. Instances of this class are intended to be
  * used as a single-use wrapper around a JSON object that is to be decoded, as such
  * new JsonDecoder(pInputObject).decode()
+ * 
+ * The version information stored in a diagram file is purposefully discarded 
+ * as JetUML no longer migrates versions. Storing and handling version numbers
+ * is deemed not to be worth the complexity. In very rare cases were an decoding
+ * issue might be due to versioning, users can always look at the text of the 
+ * diagram file to recover the version number.
  */
 public final class JsonDecoder
 {
@@ -46,12 +52,18 @@ public final class JsonDecoder
 	private static final String PROPERTY_NODES = "nodes";
 	private static final String PROPERTY_EDGES = "edges";
 	private static final String PROPERTY_VERSION = "version";
+	private static final String PROPERTY_TYPE = "type";
+	private static final String PROPERTY_X = "x";
+	private static final String PROPERTY_Y = "y";
+	private static final String PROPERTY_ID = "id";
+	private static final String PROPERTY_CHILDREN = "children";
+	private static final String PROPERTY_START = "start";
+	private static final String PROPERTY_END = "end";
 
 	/* 
 	 * The object that will be decoded.
 	 */
 	private final JsonObject aInputObject;
-	private Version aVersion;
 	private DeserializationContext aContext; // Wraps the diagram
 	
 	/**
@@ -84,7 +96,9 @@ public final class JsonDecoder
 		}
 		catch( JsonException exception )
 		{
-			throw new DeserializationException(Category.SYNTACTIC, exception.getMessage());
+			// Just to be extra safe, but normally all exceptions should be 
+			// handled in the individual methods of the algorithm.
+			throw new DeserializationException(Category.STRUCTURAL, exception.getMessage());
 		}
 	}
 	
@@ -92,7 +106,9 @@ public final class JsonDecoder
 	{
 		try
 		{
-			aVersion = Version.parse(extractString(PROPERTY_VERSION));
+			// We make sure that the version number can be parse as an integrity check on the 
+			// diagram file, but we do not store the information.
+			Version.parse(extractString(PROPERTY_VERSION));
 		}
 		catch(IllegalArgumentException exception)
 		{
@@ -102,7 +118,14 @@ public final class JsonDecoder
 	
 	private void extractDiagram()
 	{
-		aContext = new DeserializationContext(new Diagram(DiagramType.fromName(extractString(PROPERTY_DIAGRAM))));
+		try
+		{
+			aContext = new DeserializationContext(new Diagram(DiagramType.fromName(extractString(PROPERTY_DIAGRAM))));
+		}
+		catch(IllegalArgumentException exception)
+		{
+			throw new DeserializationException(Category.STRUCTURAL, "Invalid diagram type: " + extractString(PROPERTY_DIAGRAM));
+		}
 	}
 	
 	/*
@@ -151,16 +174,16 @@ public final class JsonDecoder
 			try
 			{
 				JsonObject object = nodes.getJsonObject(i);
-				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
+				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString(PROPERTY_TYPE));
 				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
-				node.moveTo(new Point(object.getInt("x"), object.getInt("y")));
+				node.moveTo(new Point(object.getInt(PROPERTY_X), object.getInt(PROPERTY_Y)));
 				for( Property property : node.properties() )
 				{
 					property.set(object.get(property.name().external()));
 				}
-				aContext.addNode(node, object.getInt("id"));
+				aContext.addNode(node, object.getInt(PROPERTY_ID));
 			}
-			catch(ReflectiveOperationException exception)
+			catch(ReflectiveOperationException | JsonException exception)
 			{
 				throw new DeserializationException(Category.STRUCTURAL, "Cannot instantiate serialized object", exception);
 			}
@@ -191,13 +214,23 @@ public final class JsonDecoder
 		for( int i = 0; i < nodes.size(); i++ )
 		{
 			JsonObject object = nodes.getJsonObject(i);
-			if( object.hasProperty("children") )
+			if( object.hasProperty(PROPERTY_CHILDREN) )
 			{
-				Node node = aContext.getNode(object.getInt("id"));
-				JsonArray children = object.getJsonArray("children");
+				Node node = aContext.getNode(object.getInt(PROPERTY_ID));
+				JsonArray children = object.getJsonArray(PROPERTY_CHILDREN);
 				for( int j = 0; j < children.size(); j++ )
 				{
-					node.addChild(aContext.getNode(children.getInt(j)));
+					int childNodeId = children.getInt(j);
+					if( !aContext.idExists(childNodeId))
+					{
+						throw new DeserializationException(Category.STRUCTURAL, "Invalid node id found in children nodes");
+					}
+					Node childNode = aContext.getNode(childNodeId);
+					if( !node.allowsAsChild(childNode) )
+					{
+						throw new DeserializationException(Category.STRUCTURAL, "Invalid parent-child relation");
+					}
+					node.addChild(aContext.getNode(childNodeId));
 				}
 			}
 		}
@@ -215,14 +248,20 @@ public final class JsonDecoder
 			try
 			{
 				JsonObject object = edges.getJsonObject(i);
-				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
+				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString(PROPERTY_TYPE));
 				Edge edge = (Edge) edgeClass.getDeclaredConstructor().newInstance();
 
 				for( Property property : edge.properties() )
 				{
 					property.set(object.get(property.name().external()));
 				}
-				edge.connect(aContext.getNode(object.getInt("start")), aContext.getNode(object.getInt("end")));
+				int startNodeId = object.getInt(PROPERTY_START);
+				int endNodeId = object.getInt(PROPERTY_END);
+				if( !aContext.idExists(startNodeId) || !aContext.idExists(endNodeId))
+				{
+					throw new DeserializationException(Category.STRUCTURAL, "At least one edge vertex cannot be found");
+				}
+				edge.connect(aContext.getNode(startNodeId), aContext.getNode(endNodeId));
 				aContext.pDiagram().addEdge(edge);
 			}
 			catch (ReflectiveOperationException exception)

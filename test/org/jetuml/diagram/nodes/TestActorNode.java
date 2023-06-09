@@ -126,10 +126,4 @@ public class TestActorNode
 	{
 		assertTrue(aNode.getChildren().isEmpty());
 	}
-	
-	@Test
-	public void allowsChildren()
-	{
-		assertFalse(aNode.allowsChildren());
-	}
 }
