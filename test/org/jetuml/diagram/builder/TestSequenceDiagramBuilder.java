@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
-import org.jetuml.JavaFXLoader;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
 import org.jetuml.diagram.DiagramElement;
@@ -41,58 +41,28 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramBuilder
 {
-	private Diagram aDiagram;
-	private SequenceDiagramBuilder aBuilder;
-	private ImplicitParameterNode aParameterNode1;
-	private ImplicitParameterNode aParameterNode2;
-	private ImplicitParameterNode aParameterNode3;
-	private CallNode aCallNode1;
-	private CallNode aCallNode2;
-	private CallNode aCallNode3;
-	private CallNode aCallNode4;
-	private CallNode aCallNode5;
-	private CallEdge aCallEdge1;
-	private CallEdge aCallEdge2;
-	private CallEdge aCallEdge3;
-	private CallEdge aCallEdge4;
-	private ReturnEdge aReturnEdge;
-	private ConstructorEdge aConstructorEdge;
-	private DiagramAccessor aDiagramAccessor;
+	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
+	private SequenceDiagramBuilder aBuilder = new SequenceDiagramBuilder(aDiagram);
+	private ImplicitParameterNode aParameterNode1 = new ImplicitParameterNode();
+	private ImplicitParameterNode aParameterNode2 = new ImplicitParameterNode();
+	private ImplicitParameterNode aParameterNode3 = new ImplicitParameterNode();
+	private CallNode aCallNode1 = new CallNode();
+	private CallNode aCallNode2 = new CallNode();
+	private CallNode aCallNode3 = new CallNode();
+	private CallNode aCallNode4 = new CallNode();
+	private CallNode aCallNode5 = new CallNode();
+	private CallEdge aCallEdge1 = new CallEdge();
+	private CallEdge aCallEdge2 = new CallEdge();
+	private CallEdge aCallEdge3 = new CallEdge();
+	private CallEdge aCallEdge4 = new CallEdge();
+	private ReturnEdge aReturnEdge = new ReturnEdge();
+	private ConstructorEdge aConstructorEdge = new ConstructorEdge();
+	private DiagramAccessor aDiagramAccessor = new DiagramAccessor(aDiagram);
 
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.SEQUENCE);
-		aBuilder = new SequenceDiagramBuilder(aDiagram);
-		aParameterNode1 = new ImplicitParameterNode();
-		aParameterNode2 = new ImplicitParameterNode();
-		aParameterNode3 = new ImplicitParameterNode();
-		aCallNode1 = new CallNode();
-		aCallNode2 = new CallNode();
-		aCallNode3 = new CallNode();
-		aCallNode4 = new CallNode();
-		aCallNode5 = new CallNode();
-		aCallEdge1 = new CallEdge();
-		aCallEdge2 = new CallEdge();
-		aCallEdge3 = new CallEdge();
-		aCallEdge4 = new CallEdge();
-		aReturnEdge = new ReturnEdge();
-		aConstructorEdge = new ConstructorEdge();
-		aDiagramAccessor = new DiagramAccessor(aDiagram);
-	}
-	
 	private void createSampleDiagram()
 	{
 		aDiagram.addRootNode(aParameterNode1);
@@ -121,7 +91,23 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationOneImplicitParameterNode()
+	void testCreateAddEdgeOperation_ConstructorEdge_Simplest()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.moveTo(new Point(100,0));
+		aBuilder.createAddEdgeOperation(aConstructorEdge, new Point(40,60), new Point(120,20)).execute();
+		assertTrue(aDiagram.edges().contains(aConstructorEdge));
+		assertTrue(aParameterNode1.getChildren().size() == 1);
+		CallNode caller = (CallNode)aParameterNode1.getChildren().get(0);
+		assertTrue(aParameterNode2.getChildren().size() == 1);
+		CallNode callee = (CallNode)aParameterNode2.getChildren().get(0);
+		assertSame(caller, aConstructorEdge.getStart());
+		assertSame(callee, aConstructorEdge.getEnd());
+	}
+	
+	@Test
+	void testcreateAddNodeOperationOneImplicitParameterNode()
 	{
 		DiagramOperation operation = aBuilder.createAddNodeOperation(aParameterNode1, new Point(10,10));
 		operation.execute();
@@ -133,7 +119,7 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationOneCallNode()
+	void testcreateAddNodeOperationOneCallNode()
 	{
 		DiagramOperation operation = aBuilder.createAddNodeOperation(aCallNode1, new Point(10,10));
 		operation.execute();
@@ -145,7 +131,7 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationSecondCallNode()
+	void testcreateAddNodeOperationSecondCallNode()
 	{
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
@@ -166,7 +152,7 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testGetCoRemovalsCallEdge()
+	void testGetCoRemovalsCallEdge()
 	{
 		aCallEdge1.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge1);
@@ -233,7 +219,7 @@ public class TestSequenceDiagramBuilder
 	}
 
 	@Test
-	public void testGetCoRemovalsConstructorEdge()
+	void testGetCoRemovalsConstructorEdge()
 	{
 		aConstructorEdge.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aConstructorEdge);
@@ -308,5 +294,4 @@ public class TestSequenceDiagramBuilder
 		assertTrue(downstreams.contains(aCallNode4));
 		assertTrue(downstreams.contains(aCallEdge2));
 	}
-	
 }
