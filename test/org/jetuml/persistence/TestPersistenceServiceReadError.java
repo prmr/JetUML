@@ -190,6 +190,12 @@ public class TestPersistenceServiceReadError
 			+ "{\"name\":\"\",\"x\":1000,\"y\":190,\"id\":1,\"type\":\"NoteNode\"}],"
 			+ "\"edges\":[],\"version\":\"3.5\"}";
 	
+	// Structural validation problem: Note node child of class node (which does allow children)
+	private static final String SEMANTIC_1 = "{\"diagram\":\"ClassDiagram\","
+			+ "\"nodes\":[{\"methods\":\"\",\"name\":\"\",\"x\":670,\"y\":150,\"attributes\":\"\",\"id\":0,\"type\":\"ClassNode\"}],"
+			+ "\"edges\":[{\"middleLabel\":\"\",\"start\":0,\"directionality\":\"Unidirectional\",\"end\":0,\"type\":\"DependencyEdge\"}],"
+			+ "\"version\":\"3.5\"}";
+		
 	@AfterEach
 	void tearDown()
 	{
@@ -234,12 +240,12 @@ public class TestPersistenceServiceReadError
 		assertThrowsWithCategory(Category.STRUCTURAL, () -> PersistenceService.read(createFile(pInput)));
 	}
 	
-//	@ParameterizedTest
-//	@ValueSource(strings = {SEMANTIC_1})
-//	void testRead_SemanticErrors(String pInput)
-//	{
-//		assertThrowsWithCategory(Category.SEMANTIC, () -> PersistenceService.read(createFile(pInput)));
-//	}
+	@ParameterizedTest
+	@ValueSource(strings = {SEMANTIC_1})
+	void testRead_SemanticErrors(String pInput)
+	{
+		assertThrowsWithCategory(Category.SEMANTIC, () -> PersistenceService.read(createFile(pInput)));
+	}
 	
 	private static void assertThrowsWithCategory(Category pCategory, Executable pExecutable)
 	{
