@@ -301,7 +301,8 @@ public class EditorFrame extends BorderPane
 		}
 		catch(IOException | DeserializationException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
+//			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
+			Alert alert = new DeserializationErrorAlert(exception);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
@@ -369,6 +370,7 @@ public class EditorFrame extends BorderPane
 		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 
 		File selectedFile = fileChooser.showOpenDialog(aMainStage);
+		
 		if(selectedFile != null) 
 		{
 			open(selectedFile);

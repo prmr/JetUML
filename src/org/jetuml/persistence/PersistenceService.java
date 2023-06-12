@@ -101,7 +101,7 @@ public final class PersistenceService
 		}
 		catch(JsonException exception)
 		{
-			throw new DeserializationException(Category.SYNTACTIC, "Cannot parse JSON text");
+			throw new DeserializationException(Category.SYNTACTIC, exception.getMessage());
 		}
 	}
 }
