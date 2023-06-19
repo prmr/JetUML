@@ -138,7 +138,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertTrue(getRootNode(2) instanceof PointNode);
 		assertEquals(1, numberOfEdges());
 		
-		// Note edge with a point node not overlapping any nodes
+		// Note edge with a point node overlapping a nodes
 		NoteEdge edge2 = new NoteEdge();
 		addEdge(edge2, new Point(135,135), new Point(40,40));
 		assertEquals(4, numberOfRootNodes());

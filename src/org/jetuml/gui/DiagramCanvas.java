@@ -577,11 +577,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 
 	private void mouseReleased(MouseEvent pEvent)
 	{
-		if (aDragMode == DragMode.DRAG_RUBBERBAND)
+		if( aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
 			releaseRubberband(getMousePoint(pEvent));
 		}
-		else if(aDragMode == DragMode.DRAG_MOVE)
+		else if( aDragMode == DragMode.DRAG_MOVE)
 		{
 			alignMoveToGrid();
 			releaseMove();
@@ -642,22 +642,18 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		assert aToolBar.getCreationPrototype().isPresent();
 		Edge newEdge = ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
-		// Edging adding
 		{
-
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, aMouseDownPoint, pMousePoint));
 
-			if (!aDiagramValidator.isValid())
+			if( !aDiagramValidator.isValid() )
 			{
 				aProcessor.undoLastExecutedOperation();
 			}
-
 			else
 			{
 				setSelection(newEdge);
 				paintPanel();
 			}
-
 		}
 		deactivateRubberband();
 	}

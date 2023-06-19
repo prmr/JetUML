@@ -360,7 +360,9 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Create an operation to add and edge.
+	 * Create an operation to add and edge. By default an edge is create between
+	 * the start and end point of the rubberband. The special cases are handled
+	 * by overriding the method.
 	 * 
 	 * @param pEdge The edge to add.
 	 * @param pStart The starting point.
@@ -369,32 +371,54 @@ public abstract class DiagramBuilder
 	 */
 	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
-		//assert canAdd(pEdge, pStart, pEnd);
-		// this assertion is no longer needed because we do not want to check canAdd to be True
-		// before the operation gets executed
+		assert pEdge != null && pStart != null && pEnd != null;
 		
-		Node node1 = aDiagramRenderer.nodeAt(pStart).get();
-		Optional<Node> node2in = aDiagramRenderer.nodeAt(pEnd);
-		Node node2 = node2in.orElseGet(PointNode::new);
-		CompoundOperation result = new CompoundOperation();
-		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		Node startNode = detectStartNode(pStart); // Must exist
+		Node endNode = detectEndNode(pEdge, startNode, pEnd);       // Can be created as a result of the method call
+		
+		CompoundOperation addEdgeOperation = new CompoundOperation();
+		if(!aDiagramRenderer.diagram().contains(endNode))
 		{
-			node2 = new PointNode();
-			node2.translate(pEnd.getX(), pEnd.getY());
-			Node end = node2; // Effectively final to include in closure
-			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
-					()-> aDiagramRenderer.diagram().removeRootNode(end)));
+			addEdgeOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(endNode),
+					() -> aDiagramRenderer.diagram().removeRootNode(endNode)));
 		}
-		//assert node2 != null;
-		// new design: create a point node for handling rubber band release at canvas
-		if (node2 instanceof PointNode && !(pEdge instanceof NoteEdge))
+		completeEdgeAdditionOperation(addEdgeOperation, pEdge, startNode, endNode, pStart, pEnd);
+		return addEdgeOperation;
+	}
+	
+	/*
+	 * Returns the node under pStartPoint. Using this method assumes that
+	 * there is one. This constraint must be enforced externally.
+	 */
+	private Node detectStartNode(Point pStartPoint)
+	{
+		Optional<Node> maybeNode1 = aDiagramRenderer.nodeAt(pStartPoint);
+		// Because we should only reach here if the edge creation gesture was started from a node
+		assert maybeNode1.isPresent(); 
+ 		return maybeNode1.get();
+	}
+	
+	/*
+	 * Returns the node under pEndPoint. If there is no such node, this 
+	 * method creates a PointNode at pEndPoint. If the edge is a note 
+	 * edge, a PointNode is created if the end node is not an note node
+	 */
+	private Node detectEndNode(Edge pEdge, Node pStartNode, Point pEndPoint)
+	{
+		Optional<Node> optionalEndNode = aDiagramRenderer.nodeAt(pEndPoint);
+
+		if( pStartNode.getClass() == NoteNode.class && pEdge.getClass() == NoteEdge.class || 
+				optionalEndNode.isEmpty() )
 		{
-			Node end = node2;
-			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
-					() -> aDiagramRenderer.diagram().removeRootNode(end)));
+			Node endNode = new PointNode();
+			endNode.translate(pEndPoint.getX(), pEndPoint.getY());
+			aDiagramRenderer.diagram().addRootNode(endNode);
+			return endNode;
 		}
-		completeEdgeAdditionOperation(result, pEdge, node1, node2, pStart, pEnd);
-		return result;
+		else
+		{
+			return optionalEndNode.get();
+		}
 	}
 	
 	/**
