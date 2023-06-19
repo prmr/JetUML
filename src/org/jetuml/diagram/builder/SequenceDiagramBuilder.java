@@ -439,7 +439,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	@Override
 	protected Edge obtainEdge(Edge pOriginalEdge, Point pStart, Point pEnd)
 	{
-		if( pOriginalEdge.getClass() == CallEdge.class &&  canCreateConstructorCall(pStart, pEnd) ) 
+		if( pOriginalEdge.getClass() == CallEdge.class && canCreateConstructorCall(pStart, pEnd) ) 
 		{
 			return new ConstructorEdge();
 		}
@@ -465,8 +465,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			return false;
 		}
 		
-		if(start.get().getClass() != ImplicitParameterNode.class &&
-			start.get().getClass() != CallNode.class)
+		if(start.get().getClass() != ImplicitParameterNode.class && 
+				start.get().getClass() != CallNode.class)
 		{
 			return false;
 		}

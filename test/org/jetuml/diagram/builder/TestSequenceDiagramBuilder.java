@@ -22,9 +22,12 @@
 package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -32,6 +35,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
@@ -43,6 +47,11 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
 
+/**
+ * For testing any functionality that required bounds calculations, 
+ * call aBuilder.renderer().getBounds() before the assertions
+ * to ensure a layouting pass is done.
+ */
 public class TestSequenceDiagramBuilder
 {
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
@@ -50,6 +59,7 @@ public class TestSequenceDiagramBuilder
 	private ImplicitParameterNode aParameterNode1 = new ImplicitParameterNode();
 	private ImplicitParameterNode aParameterNode2 = new ImplicitParameterNode();
 	private ImplicitParameterNode aParameterNode3 = new ImplicitParameterNode();
+	private NoteNode aNoteNode = new NoteNode();
 	private CallNode aCallNode1 = new CallNode();
 	private CallNode aCallNode2 = new CallNode();
 	private CallNode aCallNode3 = new CallNode();
@@ -62,6 +72,22 @@ public class TestSequenceDiagramBuilder
 	private ReturnEdge aReturnEdge = new ReturnEdge();
 	private ConstructorEdge aConstructorEdge = new ConstructorEdge();
 	private DiagramAccessor aDiagramAccessor = new DiagramAccessor(aDiagram);
+	
+	private boolean callCanCreateConstructorCall(Point pStart, Point pEnd)
+	{
+		try
+		{
+			Method method = SequenceDiagramBuilder.class.getDeclaredMethod("canCreateConstructorCall", Point.class, Point.class);
+			method.setAccessible(true);
+			return (boolean) method.invoke(aBuilder, pStart, pEnd);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+			return false;
+		}
+		
+	}
 
 	private void createSampleDiagram()
 	{
@@ -293,5 +319,101 @@ public class TestSequenceDiagramBuilder
 		assertEquals(2, downstreams.size());
 		assertTrue(downstreams.contains(aCallNode4));
 		assertTrue(downstreams.contains(aCallEdge2));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_MissingBothNodes()
+	{
+		assertFalse(callCanCreateConstructorCall(new Point(0,0), new Point(20,20)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_MissingStartNode()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		assertFalse(callCanCreateConstructorCall(new Point(200,200), new Point(10,10)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_MissingEndNode()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		assertFalse(callCanCreateConstructorCall(new Point(10,10), new Point(200,200)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_StartNodeNotValid()
+	{
+		aDiagram.addRootNode(aNoteNode);
+		assertFalse(callCanCreateConstructorCall(new Point(10,10), new Point(10,10)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_EndNodeNotImplicitParameter()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aNoteNode);
+		aNoteNode.translate(200, 200);
+		assertFalse(callCanCreateConstructorCall(new Point(10,10), new Point(205,205)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_EndNodeNotInTopRectangle()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode1.addChild(aCallNode1);
+		aCallNode1.translate(10, 20);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.translate(100, 0);
+		aParameterNode2.addChild(aCallNode2);
+		aDiagramAccessor.connectAndAdd(aCallEdge1, aCallNode1, aCallNode2);
+		aBuilder.renderer().getBounds();
+		assertFalse(callCanCreateConstructorCall(new Point(15,25), new Point(105,80)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_EndNodeNotEmpty()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode1.addChild(aCallNode1);
+		aCallNode1.translate(10, 20);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.translate(100, 0);
+		aParameterNode2.addChild(aCallNode2);
+		aDiagramAccessor.connectAndAdd(aCallEdge1, aCallNode1, aCallNode2);
+		aBuilder.renderer().getBounds();
+		assertFalse(callCanCreateConstructorCall(new Point(15,25), new Point(105,20)));
+	}
+	
+	@Test
+	void testCanCreateConstructorCall_EndNodeEmpty()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.translate(100, 0);
+		assertTrue(callCanCreateConstructorCall(new Point(15,25), new Point(105,20)));
+	}
+	
+	@Test
+	void testObtainEdge_NotCallEdge()
+	{
+		Edge edge = new ReturnEdge();
+		assertSame(edge, aBuilder.obtainEdge(edge, new Point(0,0), new Point(10,10)));
+	}
+	
+	@Test
+	void testObtainEdge_CannotCreateConstructorCall()
+	{
+		Edge edge = new CallEdge();
+		assertSame(edge, aBuilder.obtainEdge(edge, new Point(0,0), new Point(200,200)));
+	}
+	
+	@Test
+	void testObtainEdge_True()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.translate(100, 0);
+		assertSame(ConstructorEdge.class, aBuilder.obtainEdge(new CallEdge(), new Point(15,25), new Point(105,20)).getClass());
 	}
 }
