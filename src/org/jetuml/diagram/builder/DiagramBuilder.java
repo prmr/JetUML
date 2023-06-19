@@ -373,8 +373,9 @@ public abstract class DiagramBuilder
 	{ 
 		assert pEdge != null && pStart != null && pEnd != null;
 		
-		Node startNode = detectStartNode(pStart); // Must exist
-		Node endNode = detectEndNode(pEdge, startNode, pEnd);       // Can be created as a result of the method call
+		Node startNode = detectStartNode(pStart); 				// Must exist
+		Node endNode = detectEndNode(pEdge, startNode, pEnd);   // Can be created as a result of the method call
+		Edge edge = obtainEdge(pEdge, pStart, pEnd);
 		
 		CompoundOperation addEdgeOperation = new CompoundOperation();
 		if(!aDiagramRenderer.diagram().contains(endNode))
@@ -382,8 +383,23 @@ public abstract class DiagramBuilder
 			addEdgeOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(endNode),
 					() -> aDiagramRenderer.diagram().removeRootNode(endNode)));
 		}
-		completeEdgeAdditionOperation(addEdgeOperation, pEdge, startNode, endNode, pStart, pEnd);
+		completeEdgeAdditionOperation(addEdgeOperation, edge, startNode, endNode, pStart, pEnd);
 		return addEdgeOperation;
+	}
+	
+	/**
+	 * Allows subclasses to overried the edge used by the user to create an edge.
+	 * To support special cases where a different edge is more appropriate given the 
+	 * start and end points than the one chosen by the user. By default this method returns pOriginalEdge.
+	 * 
+	 * @param pOriginalEdge The edge originally selected by the user.
+	 * @param pStart The start point for the edge.
+	 * @param pEnd The end point for the edge.
+	 * @return An edge object to add to the diagram.
+	 */
+	protected Edge obtainEdge(Edge pOriginalEdge, Point pStart, Point pEnd)
+	{
+		return pOriginalEdge;
 	}
 	
 	/*

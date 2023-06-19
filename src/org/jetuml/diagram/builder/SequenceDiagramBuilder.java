@@ -431,4 +431,49 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		return downstreamElements;
 	}
+ 
+	/*
+	 * If the edge can be a constructor edge, we replace the original call edge
+	 * with a constructor edge.
+	 */
+	@Override
+	protected Edge obtainEdge(Edge pOriginalEdge, Point pStart, Point pEnd)
+	{
+		if( pOriginalEdge.getClass() == CallEdge.class &&  canCreateConstructorCall(pStart, pEnd) ) 
+		{
+			return new ConstructorEdge();
+		}
+		return super.obtainEdge(pOriginalEdge, pStart, pEnd);
+	}
+	
+	/**
+	 * Check if the start node is either a CallNode or ImplicitParameterNode, and the end node is an ImplicitParameterNode
+	 * with no child nodes. The end point of the edge should land on the top rectangle of the end Node.
+	 * @param pStart the start position of the mouse.
+	 * @param pEnd the end position of the mouse.
+	 * @return True if the start node and the end node of the edge satisfy the conditions to create the constructor call.
+	 * @pre pStart!= null && pEnd != null
+	 */
+	private boolean canCreateConstructorCall(Point pStart, Point pEnd)
+	{
+		assert pStart!= null && pEnd != null;
+		Optional<Node> end = aDiagramRenderer.nodeAt(pEnd);
+		Optional<Node> start = aDiagramRenderer.nodeAt(pStart);
+		if(start.isPresent() && end.isPresent())
+		{
+			return 	canCreateConstructor(start.get(), end.get(), pEnd);
+		}
+		return false;
+	}
+	
+	private boolean canCreateConstructor(Node pStartNode, Node pEndNode, Point pEndPoint)
+	{
+		if( !(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) )
+		{
+			return false;
+		}
+		return pEndNode instanceof ImplicitParameterNode && 
+				((SequenceDiagramRenderer)aDiagramRenderer).topRectangleContains(pEndNode, pEndPoint) && 
+				pEndNode.getChildren().isEmpty();
+	}
 }
