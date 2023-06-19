@@ -459,21 +459,20 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		assert pStart!= null && pEnd != null;
 		Optional<Node> end = aDiagramRenderer.nodeAt(pEnd);
 		Optional<Node> start = aDiagramRenderer.nodeAt(pStart);
-		if(start.isPresent() && end.isPresent())
-		{
-			return 	canCreateConstructor(start.get(), end.get(), pEnd);
-		}
-		return false;
-	}
-	
-	private boolean canCreateConstructor(Node pStartNode, Node pEndNode, Point pEndPoint)
-	{
-		if( !(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) )
+		
+		if(!start.isPresent() || !end.isPresent())
 		{
 			return false;
 		}
-		return pEndNode instanceof ImplicitParameterNode && 
-				((SequenceDiagramRenderer)aDiagramRenderer).topRectangleContains(pEndNode, pEndPoint) && 
-				pEndNode.getChildren().isEmpty();
+		
+		if(start.get().getClass() != ImplicitParameterNode.class &&
+			start.get().getClass() != CallNode.class)
+		{
+			return false;
+		}
+			
+		return end.get().getClass() == ImplicitParameterNode.class && 
+					((SequenceDiagramRenderer)aDiagramRenderer).topRectangleContains(end.get(), pEnd) && 
+					end.get().getChildren().isEmpty();
 	}
 }
