@@ -146,4 +146,30 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 		return pEdge.start().getClass() != PointNode.class && pEdge.start().getClass() != NoteNode.class &&
 				pEdge.end().getClass() == NoteNode.class;
 	}
+	
+	/**
+	 * Only pNumber of edges of the same type are allowed in one direction
+	 * between two nodes.
+	 */
+	public static boolean constraintMaxOneEdgeOfGivenTypeBetweenNodes(Edge pEdge, Diagram pDiagram)
+	{
+		return numberOfEdges(pEdge, pDiagram) <= 1;
+	}
+	
+	/*
+	 * Returns the number of edges of type pType between pStart and pEnd
+	 */
+	private static int numberOfEdges(Edge pEdge, Diagram pDiagram)
+	{
+		assert pEdge != null && pDiagram != null;
+		int result = 0;
+		for( Edge edge : pDiagram.edges() )
+		{
+			if( edge.getClass() == pEdge.getClass() && edge.start() == pEdge.start() && edge.end() == pEdge.end() )
+			{
+				result++;
+			}
+		}
+		return result;
+	}
 }

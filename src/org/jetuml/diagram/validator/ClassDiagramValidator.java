@@ -22,7 +22,8 @@ import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
 public class ClassDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			ClassDiagramSemanticConstraints.noSelfGeneralization(),
+			AbstractDiagramValidator::constraintMaxOneEdgeOfGivenTypeBetweenNodes,
+			ClassDiagramValidator::constraintNoSelfGeneralization,
 			ClassDiagramSemanticConstraints.noSelfDependency(),
 			ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(GeneralizationEdge.class),
@@ -52,5 +53,13 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	{
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.CLASS;
+	}
+	
+	/*
+	 * Generalization edges cannot have the same start and end node
+	 */
+	private static boolean constraintNoSelfGeneralization(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.start() == pEdge.end());
 	}
 }

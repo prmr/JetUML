@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
  * this class should not be used to hold test specific to class
  * diagrams.
  */
-public class TestGeneralValidation
+public class TestAbstractDiagramValidator
 {
 	private final ClassDiagramValidator aValidator =
 			new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
