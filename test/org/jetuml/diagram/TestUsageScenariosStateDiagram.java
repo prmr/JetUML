@@ -107,20 +107,20 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(5, numberOfEdges());
 		assertEquals("Edge 1", aTransitionEdge1.getMiddleLabel());
-		assertSame(aInitialNode, aTransitionEdge1.getStart());
-		assertSame(aStateNode1, aTransitionEdge1.getEnd());
+		assertSame(aInitialNode, aTransitionEdge1.start());
+		assertSame(aStateNode1, aTransitionEdge1.end());
 		
 		assertEquals("Edge 2", aTransitionEdge2.getMiddleLabel());
-		assertSame(aStateNode1, aTransitionEdge2.getStart());
-		assertSame(aStateNode2, aTransitionEdge2.getEnd());
+		assertSame(aStateNode1, aTransitionEdge2.start());
+		assertSame(aStateNode2, aTransitionEdge2.end());
 		
 		assertEquals("Edge 3", aTransitionEdge3.getMiddleLabel());
-		assertSame(aStateNode2, aTransitionEdge3.getStart());
-		assertSame(aStateNode1, aTransitionEdge3.getEnd());
+		assertSame(aStateNode2, aTransitionEdge3.start());
+		assertSame(aStateNode1, aTransitionEdge3.end());
 		
 		assertEquals("Edge 4", aTransitionEdge4.getMiddleLabel());
-		assertSame(aStateNode2, aTransitionEdge4.getStart());
-		assertSame(aFinalNode, aTransitionEdge4.getEnd());
+		assertSame(aStateNode2, aTransitionEdge4.start());
+		assertSame(aFinalNode, aTransitionEdge4.end());
 	}
 	
 	@Test
@@ -150,8 +150,8 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(edge3, new Point(35,35), new Point(135,135));
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(3, numberOfEdges());
-		assertEquals(aStateNode1, edge3.getStart());
-		assertEquals(aNoteNode, edge3.getEnd());
+		assertEquals(aStateNode1, edge3.start());
+		assertEquals(aNoteNode, edge3.end());
 	}
 	
 	@Test

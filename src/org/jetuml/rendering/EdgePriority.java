@@ -45,7 +45,7 @@ public enum EdgePriority
 	public static EdgePriority priorityOf(Edge pEdge)
 	{
 		assert pEdge != null;
-		if (pEdge.getStart()!= null && pEdge.getEnd() != null && pEdge.getStart().equals(pEdge.getEnd()))
+		if (pEdge.start()!= null && pEdge.end() != null && pEdge.start().equals(pEdge.end()))
 		{
 			return EdgePriority.SELF_EDGE;
 		}

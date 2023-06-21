@@ -156,13 +156,13 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert EdgePriority.isSegmented(pEdgePriority);
 		List<Edge> edgesToProcess = diagram().edges().stream()
 				.filter(edge -> priorityOf(edge) == pEdgePriority)
-				.sorted(Comparator.comparing(edge -> edge.getStart().position().getX()))
+				.sorted(Comparator.comparing(edge -> edge.start().position().getX()))
 				.collect(toList());
 				
 		while (!edgesToProcess.isEmpty())
 		{
 			Edge currentEdge = edgesToProcess.get(0);
-			Side edgeDirection = attachedSide(currentEdge, currentEdge.getStart());
+			Side edgeDirection = attachedSide(currentEdge, currentEdge.start());
 			//Get all the edges which will merge with the start or end of currentEdge
 			List<Edge> edgesToMergeStart = getEdgesToMergeStart(currentEdge, edgesToProcess);
 			List<Edge> edgesToMergeEnd = getEdgesToMergeEnd(currentEdge, edgesToProcess);	
@@ -193,9 +193,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		{
 			if (priorityOf(edge)==EdgePriority.DEPENDENCY)
 			{   //Determine the start and end connection points
-				Side attachedEndSide = attachedSide(edge, edge.getEnd());
-				Point startPoint = getConnectionPoint(edge.getStart(), edge, attachedEndSide.mirrored());
-				Point endPoint = getConnectionPoint(edge.getEnd(), edge, attachedEndSide);
+				Side attachedEndSide = attachedSide(edge, edge.end());
+				Point startPoint = getConnectionPoint(edge.start(), edge, attachedEndSide.mirrored());
+				Point endPoint = getConnectionPoint(edge.end(), edge, attachedEndSide);
 				//Store an EdgePath from startPoint to endPoint
 				aEdgeStorage.store(edge, new EdgePath(startPoint, endPoint));
 			}
@@ -231,7 +231,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert priorityOf(pEdge) == EdgePriority.SELF_EDGE;
 		for (NodeCorner corner : NodeCorner.values())
 		{	//Get a 2D array of [startPoint, endPoint] for a self edge at the corner
-			Point[] points = toPoints(corner, pEdge.getEnd());
+			Point[] points = toPoints(corner, pEdge.end());
 			//Return the first corner with available start and end points
 			if(aEdgeStorage.connectionPointIsAvailable(points[0]) && 
 					aEdgeStorage.connectionPointIsAvailable(points[1]))
@@ -255,7 +255,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert priorityOf(pEdge) == EdgePriority.SELF_EDGE;
 		assert pCorner != null;
-		Point[] connectionPoints = toPoints(pCorner, pEdge.getEnd());
+		Point[] connectionPoints = toPoints(pCorner, pEdge.end());
 		Point startPoint = connectionPoints[0];
 		Point endPoint = connectionPoints[1];
 		Point firstBend;
@@ -297,12 +297,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdgesToMergeEnd.size() > 0;
 		//Merged edges will share a common end point
-		Point sharedEndPoint = getConnectionPoint(pEdgesToMergeEnd.get(0).getEnd(), pEdgesToMergeEnd.get(0), pDirection.mirrored());
+		Point sharedEndPoint = getConnectionPoint(pEdgesToMergeEnd.get(0).end(), pEdgesToMergeEnd.get(0), pDirection.mirrored());
 		//get the individual start points for each edge
 		Map<Edge, Point> startPoints = new HashMap<Edge, Point>();
 		for (Edge e : pEdgesToMergeEnd)
 		{
-			startPoints.put(e, getConnectionPoint(e.getStart(), e, pDirection));
+			startPoints.put(e, getConnectionPoint(e.start(), e, pDirection));
 		}
 		//Determine the position of the shared middle segment
 		Point closestStartPoint = getClosestPoint(startPoints.values(), pDirection);
@@ -334,12 +334,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdgesToMergeStart.size() > 0;
 		//Get the shared start point for all pEdgesToMerge
-		Point startPoint = getConnectionPoint(pEdgesToMergeStart.get(0).getStart(), pEdgesToMergeStart.get(0), pDirection);
+		Point startPoint = getConnectionPoint(pEdgesToMergeStart.get(0).start(), pEdgesToMergeStart.get(0), pDirection);
 		//Get the individual end points for each edge
 		Map<Edge, Point> endPoints = new HashMap<Edge, Point>();
 		for (Edge edge : pEdgesToMergeStart)
 		{
-			endPoints.put(edge, getConnectionPoint(edge.getEnd(), edge, pDirection.mirrored()));
+			endPoints.put(edge, getConnectionPoint(edge.end(), edge, pDirection.mirrored()));
 		}
 		//Determine the X or Y coordinate of the middle segment for the edges:
 		//The default position of the merged middle segment is halfway between startPoint and closestEndPoint:
@@ -408,11 +408,11 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdge != null && pEdges != null;
 		return pEdges.stream()
-				.filter(edge -> edge.getEnd() == pEdge.getEnd())
+				.filter(edge -> edge.end() == pEdge.end())
 				.filter(edge -> priorityOf(edge) == priorityOf(pEdge))
-				.filter(edge -> attachedSide(edge, edge.getEnd()) == attachedSide(pEdge, pEdge.getEnd())) 
+				.filter(edge -> attachedSide(edge, edge.end()) == attachedSide(pEdge, pEdge.end())) 
 				.filter(edge -> noConflictingEndLabels(edge, pEdge))
-				.filter(edge -> noOtherEdgesBetween(edge, pEdge, pEdge.getEnd()))
+				.filter(edge -> noOtherEdgesBetween(edge, pEdge, pEdge.end()))
 				.filter(edge -> !edge.equals(pEdge))
 				.collect(toList());		
 	}
@@ -429,10 +429,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdge != null && pEdges != null;
 		return pEdges.stream()
-			.filter(edge -> edge.getStart().equals(pEdge.getStart()))
+			.filter(edge -> edge.start().equals(pEdge.start()))
 			.filter(edge -> priorityOf(edge) == priorityOf(pEdge))
-			.filter(edge -> attachedSide(edge, edge.getStart()) == attachedSide(pEdge, pEdge.getStart()))
-			.filter(edge -> noOtherEdgesBetween(edge, pEdge, pEdge.getStart()))
+			.filter(edge -> attachedSide(edge, edge.start()) == attachedSide(pEdge, pEdge.start()))
+			.filter(edge -> noOtherEdgesBetween(edge, pEdge, pEdge.start()))
 			.filter(edge -> noConflictingStartLabels(edge, pEdge))
 			.filter(edge -> !edge.equals(pEdge))
 			.collect(toList());
@@ -524,8 +524,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Side pEdgeDirection)
 	{
 		assert aEdgeStorage.contains(pEdgeWithSameNodes);
-		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
-		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
+		assert pEdgeWithSameNodes.start() == pNewEdge.start() || pEdgeWithSameNodes.start() == pNewEdge.end();
+		assert pEdgeWithSameNodes.end() == pNewEdge.start() || pEdgeWithSameNodes.end() == pNewEdge.end();
 		assert pEdgeDirection.isHorizontal();
 		if(pEdgeDirection == Side.TOP)
 		{	
@@ -551,8 +551,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Side pEdgeDirection) 
 	{
 		assert aEdgeStorage.contains(pEdgeWithSameNodes);
-		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
-		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
+		assert pEdgeWithSameNodes.start() == pNewEdge.start() || pEdgeWithSameNodes.start() == pNewEdge.end();
+		assert pEdgeWithSameNodes.end() == pNewEdge.start() || pEdgeWithSameNodes.end() == pNewEdge.end();
 		assert pEdgeDirection.isVertical();
 		if(pEdgeDirection == Side.LEFT)
 		{
@@ -578,9 +578,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdgeDirection.isHorizontal();
 		//Consider all edges connected to pEdge.getEnd() which are in the way of pEdge
-		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.getEnd(), pEdge);	
+		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.end(), pEdge);	
 		//also consider edges which are connected to pEdge.getStart() which are in the way of pEdge
-		conflictingEdges.addAll(storedConflictingEdges(pEdgeDirection, pEdge.getStart(), pEdge));
+		conflictingEdges.addAll(storedConflictingEdges(pEdgeDirection, pEdge.start(), pEdge));
 		if (conflictingEdges.isEmpty())
 		{
 			return Optional.empty();
@@ -590,12 +590,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 			if (pEdge instanceof AggregationEdge)
 			{
 				return conflictingEdges.stream()
-						.min(Comparator.comparing(edge -> verticalDistanceToNode(pEdge.getStart(), edge, pEdgeDirection)));
+						.min(Comparator.comparing(edge -> verticalDistanceToNode(pEdge.start(), edge, pEdgeDirection)));
 			}
 			else
 			{  //For all other segmented edges: return the Edge with the middle segment which is closest to pEdge's end node
 				return conflictingEdges.stream()
-						.min(Comparator.comparing(edge -> verticalDistanceToNode(pEdge.getEnd(), edge, pEdgeDirection)));
+						.min(Comparator.comparing(edge -> verticalDistanceToNode(pEdge.end(), edge, pEdgeDirection)));
 			}
 		}
 	}
@@ -615,9 +615,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdgeDirection.isVertical();
 		assert EdgePriority.isSegmented(pEdge);
 		//Get all edges connected to pEdge's end node which could conflict with pEdge's middle segment position
-		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.getEnd(), pEdge);	
+		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.end(), pEdge);	
 		//Also consider edges connected to pEdge's start node which could conflict with pEdge's middle segment
-		conflictingEdges.addAll(storedConflictingEdges(pEdgeDirection, pEdge.getStart(), pEdge));
+		conflictingEdges.addAll(storedConflictingEdges(pEdgeDirection, pEdge.start(), pEdge));
 		if (conflictingEdges.isEmpty())
 		{
 			return Optional.empty();
@@ -627,12 +627,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 			if (pEdge instanceof AggregationEdge)
 			{
 				return conflictingEdges.stream()
-						.min(Comparator.comparing(edge -> horizontalDistanceToNode(pEdge.getStart(), edge, pEdgeDirection)));
+						.min(Comparator.comparing(edge -> horizontalDistanceToNode(pEdge.start(), edge, pEdgeDirection)));
 			}
 			else
 			{	//For all other edges: return the Edge with the middle segment which is closest to pEdge.getEnd()
 				return conflictingEdges.stream()
-						.min(Comparator.comparing(edge -> horizontalDistanceToNode(pEdge.getEnd(), edge, pEdgeDirection)));
+						.min(Comparator.comparing(edge -> horizontalDistanceToNode(pEdge.end(), edge, pEdgeDirection)));
 			}
 		}
 	}
@@ -730,15 +730,15 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Node getSharedNode(Edge pEdgeA, Edge pEdgeB)
 	{
-		assert pEdgeA.getStart() == pEdgeB.getStart() || pEdgeA.getStart() == pEdgeB.getEnd() ||
-				pEdgeA.getEnd() == pEdgeB.getStart() || pEdgeA.getEnd() == pEdgeB.getEnd();
-		if (pEdgeA.getStart().equals(pEdgeB.getStart()) || pEdgeA.getStart().equals(pEdgeB.getEnd()))
+		assert pEdgeA.start() == pEdgeB.start() || pEdgeA.start() == pEdgeB.end() ||
+				pEdgeA.end() == pEdgeB.start() || pEdgeA.end() == pEdgeB.end();
+		if (pEdgeA.start().equals(pEdgeB.start()) || pEdgeA.start().equals(pEdgeB.end()))
 		{
-			return pEdgeA.getStart();
+			return pEdgeA.start();
 		}
 		else
 		{			
-			return pEdgeA.getEnd();
+			return pEdgeA.end();
 		}
 	}
 	
@@ -754,7 +754,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private List<Edge> storedConflictingEdges(Side pNodeSide, Node pNode, Edge pEdge)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		return aEdgeStorage.edgesConnectedTo(pNode).stream()
 			.filter(edge -> attachedSideFromStorage(edge, pNode) == pNodeSide)
 			.filter(edge -> EdgePriority.isSegmented(edge))
@@ -774,7 +774,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private Side attachedSideFromStorage(Edge pEdge, Node pNode)
 	{
 		assert aEdgeStorage.contains(pEdge);
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		//Get the connection point of pEdge onto pNode
 		Point connectionPoint = getEdgePath(pEdge).getStartPoint();
 		if (!isOutgoingEdge(pEdge, pNode))
@@ -924,8 +924,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private boolean noOtherEdgesBetween(Edge pEdge1, Edge pEdge2, Node pNode)
 	{
-		assert pEdge1.getStart() == pNode || pEdge1.getEnd() == pNode;
-		assert pEdge2.getStart() == pNode || pEdge2.getEnd() == pNode;
+		assert pEdge1.start() == pNode || pEdge1.end() == pNode;
+		assert pEdge2.start() == pNode || pEdge2.end() == pNode;
 		assert attachedSide(pEdge1, pNode) == attachedSide(pEdge2, pNode);
 		if (pEdge1.equals(pEdge2))
 		{
@@ -983,7 +983,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Point getConnectionPoint(Node pNode, Edge pEdge, Side pAttachmentSide)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;	
+		assert pEdge.start() == pNode || pEdge.end() == pNode;	
 		Line faceOfNode = getFace(pNode, pAttachmentSide);
 		//North and South node sides have connection points: -4 ...0... +4
 		//East and West node sides have connection points: -2 ...0... +2
@@ -1023,14 +1023,14 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdge!=null;
 		assert pNode!=null;
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		if (pEdge.getStart() == pNode)
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
+		if (pEdge.start() == pNode)
 		{
-			return pEdge.getEnd();
+			return pEdge.end();
 		}
 		else
 		{
-			return pEdge.getStart();
+			return pEdge.start();
 		}
 	}
 	
@@ -1052,12 +1052,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private int getIndexSign(Edge pEdge, Node pNode, Side pSideOfNode)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		//Check whether there are any stored edges which are connected to both pEdge.getStart() and pEdge.getEnd()
 		List<Edge> edgesWithSameNodes = aEdgeStorage.getEdgesWithSameNodes(pEdge);
 		if (!edgesWithSameNodes.isEmpty()) 
 		{	//For shared-nod edge: index sign on start node should always be same as end node index sign
-			return indexSignOnNode(pEdge, pEdge.getEnd(), pEdge.getStart(), attachedSide(pEdge, pEdge.getEnd()));
+			return indexSignOnNode(pEdge, pEdge.end(), pEdge.start(), attachedSide(pEdge, pEdge.end()));
 		}
 		else
 		{
@@ -1078,7 +1078,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, Side pSideOfNode)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
 		if( pSideOfNode.isHorizontal() ) //then compare X-coordinates
 		{
@@ -1115,7 +1115,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private boolean isOutgoingEdge(Edge pEdge, Node pNode)
 	{
 		assert pEdge!=null && pNode!=null;
-		return pEdge.getStart() == pNode;
+		return pEdge.start() == pNode;
 	}
 	
 	/**
@@ -1127,7 +1127,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Side attachedSide(Edge pEdge, Node pNode)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		Side startAttachedSide;
 		/* If there is an Edge in storage which is also attached to pEdge.getStart() and pEdge.getEnd()
 		  then the attachment side of pEdge onto pNode must be the same as the attachment side of the 
@@ -1170,8 +1170,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private Side attachedSidePreferringEastWest(Edge pEdge)
 	{
 		assert pEdge != null;
-		Rectangle startNodeBounds = getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = getBounds(pEdge.start());
+		Rectangle endNodeBounds = getBounds(pEdge.end());
 		//if the start node is above or below the end node (+- 20 px) then determine whether it belongs on the N or S side
 		if (startNodeBounds.getMaxX() > endNodeBounds.getX() - (2 * TEN_PIXELS) &&
 				startNodeBounds.getX() < endNodeBounds.getMaxX() + (2 * TEN_PIXELS))
@@ -1193,8 +1193,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private Side attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		assert pEdge!= null;
-		Rectangle startNodeBounds = getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = getBounds(pEdge.start());
+		Rectangle endNodeBounds = getBounds(pEdge.end());
 		//if the start node is beside the end node (+- 20 px) then compute whether it belongs on the E or W side
 		if (startNodeBounds.getMaxY() > endNodeBounds.getY() - (2 * TEN_PIXELS) && 
 				startNodeBounds.getY() < endNodeBounds.getMaxY() + (2 * TEN_PIXELS))
@@ -1215,12 +1215,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Side northSouthSideUnlessTooClose(Edge pEdge)
 	{
-		Side preferredSide = northOrSouthSide(getBounds(pEdge.getStart()), 
-				getBounds(pEdge.getEnd()));
-		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
-				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
+		Side preferredSide = northOrSouthSide(getBounds(pEdge.start()), 
+				getBounds(pEdge.end()));
+		if(nodeIsCloserThanSegment(pEdge, pEdge.end(), preferredSide) || 
+				nodeIsCloserThanSegment(pEdge, pEdge.start(), preferredSide.mirrored()))
 		{
-			return eastOrWestSide(getBounds(pEdge.getStart()), getBounds(pEdge.getEnd()));
+			return eastOrWestSide(getBounds(pEdge.start()), getBounds(pEdge.end()));
 		}
 		else
 		{
@@ -1236,12 +1236,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private Side eastWestSideUnlessTooClose(Edge pEdge)
 	{
-		Side preferredSide = eastOrWestSide(getBounds(pEdge.getStart()), 
-				getBounds(pEdge.getEnd()));
-		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
-				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
+		Side preferredSide = eastOrWestSide(getBounds(pEdge.start()), 
+				getBounds(pEdge.end()));
+		if(nodeIsCloserThanSegment(pEdge, pEdge.end(), preferredSide) || 
+				nodeIsCloserThanSegment(pEdge, pEdge.start(), preferredSide.mirrored()))
 		{
-			return northOrSouthSide(getBounds(pEdge.getStart()), getBounds(pEdge.getEnd()));
+			return northOrSouthSide(getBounds(pEdge.start()), getBounds(pEdge.end()));
 		}
 		else
 		{
@@ -1302,7 +1302,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, Side pAttachedSide)
 	{
-		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
+		assert pEdge.start() == pNode || pEdge.end() == pNode;
 		Rectangle otherNodeBounds = getBounds(getOtherNode(pEdge, pNode));
 		if(pAttachedSide == Side.TOP)
 		{ //Consider the middle segments of edges attached to pNode

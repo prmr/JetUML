@@ -19,7 +19,7 @@ public final class StateDiagramSemanticConstraints
 	public static SemanticConstraint noEdgeToInitialNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return pEdge.getEnd().getClass() != InitialStateNode.class;
+			return pEdge.end().getClass() != InitialStateNode.class;
 		};
 	}
 
@@ -29,7 +29,7 @@ public final class StateDiagramSemanticConstraints
 	public static SemanticConstraint noEdgeFromFinalNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getStart().getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class);
+			return !(pEdge.start().getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class);
 		};
 	}
 }

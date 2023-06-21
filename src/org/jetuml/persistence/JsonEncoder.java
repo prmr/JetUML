@@ -95,8 +95,8 @@ public final class JsonEncoder
 		{
 			JsonObject object = toJSONObject(edge.properties());
 			object.put("type", edge.getClass().getSimpleName());
-			object.put("start", pContext.getId(edge.getStart()));
-			object.put("end", pContext.getId(edge.getEnd()));
+			object.put("start", pContext.getId(edge.start()));
+			object.put("end", pContext.getId(edge.end()));
 			
 			edges.add(object);
 		}

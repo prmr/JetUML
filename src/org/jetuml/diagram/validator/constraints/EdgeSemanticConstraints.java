@@ -19,7 +19,7 @@ public final class EdgeSemanticConstraints
 	public static SemanticConstraint noteEdgeDoesNotConnectTwoNoteNodes()
 	{
 		return (edge, diagram) -> !(edge.getClass() == NoteEdge.class && 
-				edge.getStart().getClass() == NoteNode.class && edge.getEnd().getClass() == NoteNode.class);
+				edge.start().getClass() == NoteNode.class && edge.end().getClass() == NoteNode.class);
 	}
 
 	/**
@@ -28,8 +28,8 @@ public final class EdgeSemanticConstraints
 	public static SemanticConstraint noteEdgeToPointMustStartWithNote()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
-					!(pEdge.getStart().getClass() == NoteNode.class && pEdge.getEnd().getClass() == PointNode.class || 
-							pEdge.getEnd().getClass() == NoteNode.class));
+					!(pEdge.start().getClass() == NoteNode.class && pEdge.end().getClass() == PointNode.class || 
+							pEdge.end().getClass() == NoteNode.class));
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public final class EdgeSemanticConstraints
 	public static SemanticConstraint noteNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			if( pEdge.getStart().getClass() == NoteNode.class || pEdge.getEnd().getClass() == NoteNode.class )
+			if( pEdge.start().getClass() == NoteNode.class || pEdge.end().getClass() == NoteNode.class )
 			{
 				return pEdge.getClass() == NoteEdge.class;
 			}
@@ -64,7 +64,7 @@ public final class EdgeSemanticConstraints
 	public static SemanticConstraint noSelfEdge()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return pEdge.getStart() != pEdge.getEnd();
+			return pEdge.start() != pEdge.end();
 		};
 	}
 
@@ -77,7 +77,7 @@ public final class EdgeSemanticConstraints
 		int result = 0;
 		for( Edge edge : pDiagram.edges() )
 		{
-			if( edge.getClass() == pEdge.getClass() && edge.getStart() == pEdge.getStart() && edge.getEnd() == pEdge.getEnd() )
+			if( edge.getClass() == pEdge.getClass() && edge.start() == pEdge.start() && edge.end() == pEdge.end() )
 			{
 				result++;
 			}

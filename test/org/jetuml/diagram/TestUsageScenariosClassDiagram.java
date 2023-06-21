@@ -80,8 +80,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode2, new Point(30, 30));
 		moveNode(aClassNode2, 100, 0);
 		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
-		assertSame( aClassNode1, aDependencyEdge.getStart());
-		assertSame( aClassNode2, aDependencyEdge.getEnd());
+		assertSame( aClassNode1, aDependencyEdge.start());
+		assertSame( aClassNode2, aDependencyEdge.end());
 		
 		select(aClassNode1, aClassNode2, aDependencyEdge);
 		copy();
@@ -95,8 +95,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		Node node1 = nodes.next();
 		Node node2 = nodes.next();
 		Edge edge = diagram2.edges().iterator().next();
-		assertSame(node1, edge.getStart());
-		assertSame(node2, edge.getEnd());
+		assertSame(node1, edge.start());
+		assertSame(node2, edge.end());
 	}
 	
 	@Test
@@ -110,8 +110,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
-		assertSame(aClassNode1, aDependencyEdge.getStart());
-		assertSame(aClassNode2, aDependencyEdge.getEnd());
+		assertSame(aClassNode1, aDependencyEdge.start());
+		assertSame(aClassNode2, aDependencyEdge.end());
 		
 		select(aClassNode1, aClassNode2, aDependencyEdge);
 		copy();
@@ -133,8 +133,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
 		assertEquals(1, numberOfEdges());
-		assertSame(aClassNode1, aDependencyEdge.getStart());
-		assertSame(aClassNode2, aDependencyEdge.getEnd());
+		assertSame(aClassNode1, aDependencyEdge.start());
+		assertSame(aClassNode2, aDependencyEdge.end());
 
 		// Does nothing
 		select(aDependencyEdge);
@@ -209,8 +209,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAssociationEdge, new Point(47, 49), new Point(50, 49));
 		assertEquals(1, numberOfEdges());
-		assertSame(aInterfaceNode, aAssociationEdge.getStart());
-		assertSame(aInterfaceNode, aAssociationEdge.getEnd());
+		assertSame(aInterfaceNode, aAssociationEdge.start());
+		assertSame(aInterfaceNode, aAssociationEdge.end());
 
 		assertTrue(aValidator.isValid());
 		addEdge(aGeneralizationEdge, new Point(47, 49), new Point(50, 49));
@@ -236,13 +236,13 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertFalse(aValidator.isValid());
 		addEdge(noteEdge1, new Point(10, 10), new Point(139,142));
 		assertEquals(2, numberOfEdges());
-		assertEquals(noteEdge1.getStart(), aClassNode1);
-		assertEquals(noteEdge1.getEnd(), aNoteNode);
+		assertEquals(noteEdge1.start(), aClassNode1);
+		assertEquals(noteEdge1.end(), aNoteNode);
 		
 		// if begin with a NoteNode, the end point can be anywhere
 		addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
-		assertEquals(noteEdge2.getStart(), aNoteNode);
-		assertEquals(noteEdge2.getEnd().getClass(), PointNode.class);
+		assertEquals(noteEdge2.start(), aNoteNode);
+		assertEquals(noteEdge2.end().getClass(), PointNode.class);
 		assertEquals(3, numberOfEdges());
 	}
 	
@@ -281,8 +281,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		moveSelection(10, 10);
 		assertEquals(new Point(15, 15), aClassNode1.position());
 		assertEquals(new Point(54, 54), aInterfaceNode.position());
-		assertSame(aClassNode1, aAggregationEdge.getStart());
-		assertSame(aInterfaceNode, aAggregationEdge.getEnd());
+		assertSame(aClassNode1, aAggregationEdge.start());
+		assertSame(aInterfaceNode, aAggregationEdge.end());
 	}
 	
 	@Test
@@ -293,8 +293,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		moveNode(aClassNode1, 10, 10);
 		
 		assertEquals(new Point(15, 17), aClassNode1.position());
-		assertSame(aClassNode1, aAggregationEdge.getStart());
-		assertSame(aClassNode1, aAggregationEdge.getEnd());
+		assertSame(aClassNode1, aAggregationEdge.start());
+		assertSame(aClassNode1, aAggregationEdge.end());
 	}
 	
 	@Test
@@ -308,12 +308,12 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
 		moveNode(aClassNode1, 20, 20);
-		assertSame(aClassNode1, aAggregationEdge.getStart());
-		assertSame(aInterfaceNode, aAggregationEdge.getEnd());
+		assertSame(aClassNode1, aAggregationEdge.start());
+		assertSame(aInterfaceNode, aAggregationEdge.end());
 
 		moveNode(aInterfaceNode, -19, 45);
-		assertSame(aPackageNode, aDependencyEdge.getStart());
-		assertSame(aInterfaceNode, aDependencyEdge.getEnd());
+		assertSame(aPackageNode, aDependencyEdge.start());
+		assertSame(aInterfaceNode, aDependencyEdge.end());
 	}
 	
 	@Test

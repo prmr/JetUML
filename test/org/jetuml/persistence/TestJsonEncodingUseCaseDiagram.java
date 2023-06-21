@@ -158,8 +158,8 @@ public class TestJsonEncodingUseCaseDiagram
 		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Do it"));
 		UseCaseAssociationEdge edge = (UseCaseAssociationEdge) findEdge(graph, UseCaseAssociationEdge.class, build());
 		
-		assertSame(edge.getStart(), actor);
-		assertSame(edge.getEnd(), useCase);
+		assertSame(edge.start(), actor);
+		assertSame(edge.end(), useCase);
 	}
 	
 	@Test
@@ -173,8 +173,8 @@ public class TestJsonEncodingUseCaseDiagram
 
 		UseCaseDependencyEdge edge = (UseCaseDependencyEdge) findEdge(graph, UseCaseDependencyEdge.class, build(PropertyName.USE_CASE_DEPENDENCY_TYPE, UseCaseDependencyEdge.Type.Extend));
 		
-		assertSame(edge.getStart(), node1);
-		assertSame(edge.getEnd(), node2);
+		assertSame(edge.start(), node1);
+		assertSame(edge.end(), node2);
 	}
 	
 

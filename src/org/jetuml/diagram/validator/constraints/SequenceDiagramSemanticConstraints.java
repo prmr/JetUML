@@ -31,10 +31,10 @@ public final class SequenceDiagramSemanticConstraints
 	{
 		// CSOFF:
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == ReturnEdge.class && (pEdge.getStart().getClass() != CallNode.class ||
-					pEdge.getEnd().getClass() != CallNode.class || getCaller(pEdge.getStart(), pDiagram).isEmpty() ||
-					pEdge.getEnd() != getCaller(pEdge.getStart(), pDiagram).get() || 
-					pEdge.getStart().getParent() == pEdge.getEnd().getParent()));
+			return !(pEdge.getClass() == ReturnEdge.class && (pEdge.start().getClass() != CallNode.class ||
+					pEdge.end().getClass() != CallNode.class || getCaller(pEdge.start(), pDiagram).isEmpty() ||
+					pEdge.end() != getCaller(pEdge.start(), pDiagram).get() || 
+					pEdge.start().getParent() == pEdge.end().getParent()));
 		}; // CSON:
 	}
 
@@ -75,8 +75,8 @@ public final class SequenceDiagramSemanticConstraints
 	private static Optional<CallNode> getCaller(Node pNode, Diagram pDiagram)
 	{
 		assert pNode != null && pDiagram.contains(pNode);
-		return pDiagram.edges().stream().filter(CallEdge.class::isInstance).filter(edge -> edge.getEnd() == pNode)
-				.map(Edge::getStart).map(CallNode.class::cast).findFirst();
+		return pDiagram.edges().stream().filter(CallEdge.class::isInstance).filter(edge -> edge.end() == pNode)
+				.map(Edge::start).map(CallNode.class::cast).findFirst();
 	}
 
 }

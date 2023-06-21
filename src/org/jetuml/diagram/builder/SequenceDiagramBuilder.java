@@ -224,8 +224,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		return renderer().diagram().edges().stream()
 			.filter(ReturnEdge.class::isInstance)
-			.filter(edge -> edge.getStart() == pEdge.getEnd())
-			.filter(edge -> edge.getEnd() == pEdge.getStart())
+			.filter(edge -> edge.start() == pEdge.end())
+			.filter(edge -> edge.end() == pEdge.start())
 			.findFirst();
 	}
 	
@@ -242,7 +242,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		for( Edge edge : diagram().edges() )
 		{
-			if ( edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
+			if ( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
 				return true;
 			}
@@ -267,13 +267,13 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			{
 				CallNode callerNode = caller.get();
 				// If the caller is only connected to one call
-				if( getCalls(callerNode).size() == 1 && getCalls(callerNode).get(0).getEnd() == pNode )
+				if( getCalls(callerNode).size() == 1 && getCalls(callerNode).get(0).end() == pNode )
 				{
 					elements.add(callerNode);
 				}
 				else if( isConstructorExecution(pNode) )
 				{
-					getCalls(callerNode).stream().filter(e -> e.getEnd().getParent() == pNode.getParent())
+					getCalls(callerNode).stream().filter(e -> e.end().getParent() == pNode.getParent())
 												 .forEach(e -> elements.add(e));
 					if( onlyCallsToASingleImplicitParameterNode(callerNode, pNode.getParent()) )
 					{
@@ -301,7 +301,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
 	{
 		assert pCaller!= null && pParentNode != null;
-		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
+		return getCalls(pCaller).stream().allMatch(edge -> edge.end().getParent() == pParentNode);
 	}
 	
 	private static Node firstChildOf(Node pNode)
@@ -321,7 +321,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return diagram().edges().stream()
 				.filter(CallEdge.class::isInstance)
 				.map(CallEdge.class::cast)
-				.filter(edge -> edge.getStart() == pCaller)
+				.filter(edge -> edge.start() == pCaller)
 				.collect(toList());
 	}
 	
@@ -346,7 +346,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		for( Edge edge : diagram().edges() )
 		{
-			if ( edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
+			if ( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
 				return Optional.of(edge);
 			}
@@ -368,7 +368,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		downstreamElements.add(pEdge);
 		if( pEdge.getClass() == ConstructorEdge.class )
 		{
-			Node endParent = pEdge.getEnd().getParent();
+			Node endParent = pEdge.end().getParent();
 			downstreamElements.add(endParent);
 			downstreamElements.addAll(endParent.getChildren());
 			
@@ -383,7 +383,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				// Add upstream edges of the child nodes
 				for( Edge edge: diagram().edges() )
 				{
-					if( edge.getEnd() == child )
+					if( edge.end() == child )
 					{
 						downstreamElements.add(edge);
 					}
@@ -392,7 +392,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		else if( pEdge.getClass() == CallEdge.class )
 		{
-			CallNode endNode = (CallNode)pEdge.getEnd();
+			CallNode endNode = (CallNode)pEdge.end();
 			downstreamElements.add(endNode);
 			for( Edge e: getCalls(endNode) )
 			{

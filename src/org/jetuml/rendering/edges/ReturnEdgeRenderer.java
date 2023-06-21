@@ -56,10 +56,10 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle start = parent().getBounds(pEdge.getStart());
-		Rectangle end = parent().getBounds(pEdge.getEnd());
+		Rectangle start = parent().getBounds(pEdge.start());
+		Rectangle end = parent().getBounds(pEdge.end());
 		
-		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
+		if(pEdge.end() instanceof PointNode) // show nicely in tool bar
 		{
 			return new Line(new Point(end.getX(), end.getY()), new Point(start.getMaxX(), end.getY()));
 		}      

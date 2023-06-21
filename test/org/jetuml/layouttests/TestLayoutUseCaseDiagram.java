@@ -106,7 +106,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node actorNode = nodeByName("Actor");
 		Edge associationEdge = edgesByType(UseCaseAssociationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(actorNode) || edge.getStart().equals(actorNode))
+				.filter(edge -> edge.end().equals(actorNode) || edge.start().equals(actorNode))
 				.findFirst()
 				.get();
 		Rectangle actorNodeBounds = aRenderer.getBounds(actorNode);
@@ -125,7 +125,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node useCase4Node = nodeByName("Use case 4");
 		Edge associationEdge = edgesByType(UseCaseAssociationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(useCase4Node) || edge.getStart().equals(useCase4Node))
+				.filter(edge -> edge.end().equals(useCase4Node) || edge.start().equals(useCase4Node))
 				.findFirst()
 				.get();
 		Rectangle useCase1NodeBounds = aRenderer.getBounds(nodeByName("Use case 1"));
@@ -144,7 +144,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node useCase2Node = nodeByName("Use case 2");
 		Edge associationEdge = edgesByType(UseCaseAssociationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(useCase2Node) || edge.getStart().equals(useCase2Node))
+				.filter(edge -> edge.end().equals(useCase2Node) || edge.start().equals(useCase2Node))
 				.findFirst()
 				.get();
 		Rectangle actor2NodeBounds = aRenderer.getBounds(nodeByName("Actor2"));
@@ -163,7 +163,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node useCase3Node = nodeByName("Use case 3");
 		Edge associationEdge = edgesByType(UseCaseAssociationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(useCase3Node) || edge.getStart().equals(useCase3Node))
+				.filter(edge -> edge.end().equals(useCase3Node) || edge.start().equals(useCase3Node))
 				.findFirst()
 				.get();
 		Rectangle actor2NodeBounds = aRenderer.getBounds(nodeByName("Actor2"));
@@ -184,7 +184,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.stream()
 				.map(edge -> (UseCaseDependencyEdge)edge)
 				.filter(edge -> edge.getType() == UseCaseDependencyEdge.Type.Extend)
-				.filter(edge -> edge.getEnd().equals(actor2Node))
+				.filter(edge -> edge.end().equals(actor2Node))
 				.findFirst()
 				.get();
 		Rectangle actor3NodeBounds = aRenderer.getBounds(nodeByName("Actor3"));
@@ -205,7 +205,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.stream()
 				.map(edge -> (UseCaseDependencyEdge)edge)
 				.filter(edge -> edge.getType() == UseCaseDependencyEdge.Type.Extend)
-				.filter(edge -> edge.getEnd().equals(useCase4Node))
+				.filter(edge -> edge.end().equals(useCase4Node))
 				.findFirst()
 				.get();
 		Rectangle useCase2NodeBounds = aRenderer.getBounds(nodeByName("Use case 2"));
@@ -226,7 +226,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.stream()
 				.map(edge -> (UseCaseDependencyEdge)edge)
 				.filter(edge -> edge.getType() == UseCaseDependencyEdge.Type.Include)
-				.filter(edge -> edge.getEnd().equals(useCase3Node))
+				.filter(edge -> edge.end().equals(useCase3Node))
 				.findFirst()
 				.get();
 		Rectangle useCase2NodeBounds = aRenderer.getBounds(nodeByName("Use case 2"));
@@ -245,7 +245,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node actorNode = nodeByName("Actor");
 		Edge generalizationEdge = edgesByType(UseCaseGeneralizationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(actorNode))
+				.filter(edge -> edge.end().equals(actorNode))
 				.findFirst()
 				.get();
 		Rectangle actor3NodeBounds = aRenderer.getBounds(nodeByName("Actor3"));
@@ -264,7 +264,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 		Node useCase1Node = nodeByName("Use case 1");
 		Edge generalizationEdge = edgesByType(UseCaseGeneralizationEdge.class)
 				.stream()
-				.filter(edge -> edge.getEnd().equals(useCase1Node))
+				.filter(edge -> edge.end().equals(useCase1Node))
 				.findFirst()
 				.get();
 		Rectangle useCase2NodeBounds = aRenderer.getBounds(nodeByName("Use case 2"));

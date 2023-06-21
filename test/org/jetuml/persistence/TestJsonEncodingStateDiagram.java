@@ -207,12 +207,12 @@ public class TestJsonEncodingStateDiagram
 		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge2"));
 		StateTransitionEdge edge3 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge3"));
 		
-		assertSame(edge1.getStart(), start);
-		assertSame(edge1.getEnd(), node1);
-		assertSame(edge2.getStart(), node1);
-		assertSame(edge2.getEnd(), node2);
-		assertSame(edge3.getStart(), node2);
-		assertSame(edge3.getEnd(), end);
+		assertSame(edge1.start(), start);
+		assertSame(edge1.end(), node1);
+		assertSame(edge2.start(), node1);
+		assertSame(edge2.end(), node2);
+		assertSame(edge3.start(), node2);
+		assertSame(edge3.end(), end);
 	}
 	
 	@Test
@@ -239,13 +239,13 @@ public class TestJsonEncodingStateDiagram
 		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge1"));
 		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge2"));
 
-		assertSame(self1.getStart(), node1);
-		assertSame(self1.getEnd(), node1);
-		assertSame(self2.getStart(), node1);
-		assertSame(self2.getEnd(), node1);
-		assertSame(edge1.getStart(), node1);
-		assertSame(edge1.getEnd(), node2);
-		assertSame(edge2.getStart(), node1);
-		assertSame(edge2.getEnd(), node2);
+		assertSame(self1.start(), node1);
+		assertSame(self1.end(), node1);
+		assertSame(self2.start(), node1);
+		assertSame(self2.end(), node1);
+		assertSame(edge1.start(), node1);
+		assertSame(edge1.end(), node2);
+		assertSame(edge2.start(), node1);
+		assertSame(edge2.end(), node2);
 	}
 }

@@ -175,12 +175,12 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	private Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
-		Node endNode = pEdge.getEnd();
+		Node endNode = pEdge.end();
 		if( pEdge.getClass() == ConstructorEdge.class )
 		{
-			endNode = pEdge.getEnd().getParent();
+			endNode = pEdge.end().getParent();
 		}
-		Rectangle start = parent().getBounds(pEdge.getStart());	
+		Rectangle start = parent().getBounds(pEdge.start());	
 		Rectangle end = parent().getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{

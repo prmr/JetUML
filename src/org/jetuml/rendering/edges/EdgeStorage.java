@@ -100,7 +100,7 @@ public class EdgeStorage
 		List<Edge> result = new ArrayList<>();
 		for( Edge edge : aEdgePaths.keySet() )
 		{
-			if( edge.getStart() == pNode || edge.getEnd() == pNode )
+			if( edge.start() == pNode || edge.end() == pNode )
 			{
 				result.add(edge);
 			}
@@ -136,8 +136,8 @@ public class EdgeStorage
 	public List<Edge> getEdgesWithSameNodes(Edge pEdge)
 	{
 		return aEdgePaths.keySet().stream()
-				.filter(edge -> edge.getStart() == pEdge.getStart() || edge.getStart() == pEdge.getEnd())
-				.filter(edge -> edge.getEnd() == pEdge.getStart() || edge.getEnd() == pEdge.getEnd())
+				.filter(edge -> edge.start() == pEdge.start() || edge.start() == pEdge.end())
+				.filter(edge -> edge.end() == pEdge.start() || edge.end() == pEdge.end())
 				.filter(edge -> !edge.equals(pEdge))
 				.collect(Collectors.toList());
 	}

@@ -118,8 +118,8 @@ public class TestPersistenceService
 		// start and end nodes
 		if( pElement instanceof Edge )
 		{
-			result.add(hash(pDiagram, ((Edge)pElement).getStart()));
-			result.add(hash(pDiagram, ((Edge)pElement).getEnd()));
+			result.add(hash(pDiagram, ((Edge)pElement).start()));
+			result.add(hash(pDiagram, ((Edge)pElement).end()));
 		}
 		
 		// Call nodes don't have any properties, so we add their order in the control flow
@@ -133,20 +133,20 @@ public class TestPersistenceService
 		if( pElement instanceof PointNode )
 		{
 			Edge edge = pDiagram.edgesConnectedTo(((Node)pElement)).iterator().next();
-			Node note = edge.getStart();
+			Node note = edge.start();
 			if( note == pElement )
 			{
-				note = edge.getEnd();
+				note = edge.end();
 			}
 			note.properties().forEach( property -> result.add(property.get().toString()));
 		}
 		// NoteEdges don't have any properties, so we add their node nodes properties
 		if( pElement instanceof NoteEdge )
 		{
-			Node node = ((NoteEdge)pElement).getStart();
+			Node node = ((NoteEdge)pElement).start();
 			if( !(node instanceof NoteNode ))
 			{
-				node = ((NoteEdge)pElement).getEnd();
+				node = ((NoteEdge)pElement).end();
 			}
 			result.add(hash(pDiagram, node));
 		}

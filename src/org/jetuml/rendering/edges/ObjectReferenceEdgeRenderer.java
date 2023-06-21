@@ -113,8 +113,8 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private boolean isSShaped(Edge pEdge)
 	{
-		Rectangle b = parent().getBounds(pEdge.getEnd());
-		Point p = parent().getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Rectangle b = parent().getBounds(pEdge.end());
+		Point p = parent().getConnectionPoints(pEdge.start(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
@@ -142,14 +142,14 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Point point = parent().getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Point point = parent().getConnectionPoints(pEdge.start(), Direction.EAST);
 		if (isSShaped(pEdge))
 		{
-			return new Line(point, parent().getConnectionPoints(pEdge.getEnd(), Direction.WEST));
+			return new Line(point, parent().getConnectionPoints(pEdge.end(), Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, parent().getConnectionPoints(pEdge.getEnd(), Direction.EAST));
+			return new Line(point, parent().getConnectionPoints(pEdge.end(), Direction.EAST));
 		}
 	}
 	

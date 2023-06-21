@@ -69,11 +69,11 @@ public class TestNoteEdgeViewer
 	public void testBasicConnection()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode);
-		assertTrue( aNoteEdge.getStart() == aNoteNode );
-		assertTrue( aNoteEdge.getEnd() == aPointNode );
+		assertTrue( aNoteEdge.start() == aNoteNode );
+		assertTrue( aNoteEdge.end() == aPointNode );
 		aNoteEdge.connect(aPointNode, aNoteNode);
-		assertTrue( aNoteEdge.getStart() == aPointNode );
-		assertTrue( aNoteEdge.getEnd() == aNoteNode );
+		assertTrue( aNoteEdge.start() == aPointNode );
+		assertTrue( aNoteEdge.end() == aNoteNode );
 	}
 	
 	@Test

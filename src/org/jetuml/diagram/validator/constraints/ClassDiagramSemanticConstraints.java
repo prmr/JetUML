@@ -21,7 +21,7 @@ public final class ClassDiagramSemanticConstraints
 	public static SemanticConstraint noSelfGeneralization()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.getStart() == pEdge.getEnd());
+			return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.start() == pEdge.end());
 		};
 	}
 
@@ -31,7 +31,7 @@ public final class ClassDiagramSemanticConstraints
 	public static SemanticConstraint noSelfDependency()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == DependencyEdge.class && pEdge.getStart() == pEdge.getEnd());
+			return !(pEdge.getClass() == DependencyEdge.class && pEdge.start() == pEdge.end());
 		};
 	}
 
@@ -42,15 +42,15 @@ public final class ClassDiagramSemanticConstraints
 	public static SemanticConstraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			if( pEdge.getClass() != pEdgeType || pEdge.getStart() == pEdge.getEnd() )
+			if( pEdge.getClass() != pEdgeType || pEdge.start() == pEdge.end() )
 			{
 				return true;
 			}
 			
 			int sameDirectionCount = 0;
-			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.getStart()) )
+			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.start()) )
 			{
-				if( edge.getClass() == pEdgeType && edge.getEnd() == pEdge.getStart() && edge.getStart() == pEdge.getEnd() )
+				if( edge.getClass() == pEdgeType && edge.end() == pEdge.start() && edge.start() == pEdge.end() )
 				{
 					sameDirectionCount += 1;
 				}
@@ -67,7 +67,7 @@ public final class ClassDiagramSemanticConstraints
 	public static SemanticConstraint noCombinedAssociationAggregation()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
-			int count = getAssociationAggregationCount(pEdge.getStart(), pEdge.getEnd(), pDiagram);
+			int count = getAssociationAggregationCount(pEdge.start(), pEdge.end(), pDiagram);
 			return count <= 1;
 		};
 	}
@@ -86,8 +86,8 @@ public final class ClassDiagramSemanticConstraints
 	{   // CSOFF:
 		return (int) pDiagram.edges().stream()
 				.filter(edge -> (edge.getClass() == AssociationEdge.class || edge.getClass() == AggregationEdge.class) &&
-						(edge.getStart() == pStart && edge.getEnd() == pEnd) || 
-						(edge.getStart() == pEnd && edge.getEnd() == pStart))
+						(edge.start() == pStart && edge.end() == pEnd) || 
+						(edge.start() == pEnd && edge.end() == pStart))
 				.count();
 		// CSON: 
 	}

@@ -89,7 +89,7 @@ public class TestClassDiagramBuilder
 		NoteEdge edge = new NoteEdge();
 		aBuilder.createAddEdgeOperation(edge, new Point(11,11), new Point(100,100)).execute();
 		assertEquals(1, aDiagram.edges().size());
-		assertSame(node, edge.getStart());
+		assertSame(node, edge.start());
 	}
 	
 	@Test

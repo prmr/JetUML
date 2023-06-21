@@ -21,7 +21,7 @@ public final class ObjectDiagramSemanticConstraints
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectCollaborationEdge.class &&
-				(pEdge.getStart().getClass() != ObjectNode.class || pEdge.getEnd().getClass() != ObjectNode.class));
+				(pEdge.start().getClass() != ObjectNode.class || pEdge.end().getClass() != ObjectNode.class));
 		};
 	}
 
@@ -32,7 +32,7 @@ public final class ObjectDiagramSemanticConstraints
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectReferenceEdge.class &&
-					(pEdge.getStart().getClass() != FieldNode.class || pEdge.getEnd().getClass() != ObjectNode.class));
+					(pEdge.start().getClass() != FieldNode.class || pEdge.end().getClass() != ObjectNode.class));
 		};
 	}
 }

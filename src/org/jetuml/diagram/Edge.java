@@ -36,12 +36,12 @@ public interface Edge extends DiagramElement
    	/**
      * @return The start node for this edge.
      */
-   	Node getStart();
+   	Node start();
 
    	/**
      * @return The end node for this edge.
    	 */
-   	Node getEnd();
+   	Node end();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning

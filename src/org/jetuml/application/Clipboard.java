@@ -180,7 +180,7 @@ public final class Clipboard
 		List<Edge> toDelete = new ArrayList<>();
 		for( Edge edge : aEdges )
 		{
-			if( !recursivelyContains(edge.getStart()) || !recursivelyContains(edge.getEnd()))
+			if( !recursivelyContains(edge.start()) || !recursivelyContains(edge.end()))
 			{
 				toDelete.add(edge);
 			}
@@ -227,13 +227,13 @@ public final class Clipboard
 	{
 		for( Edge edge : pEdges )
 		{
-			if( edge.getStart() == pOld )
+			if( edge.start() == pOld )
 			{
-				edge.connect(pNew, edge.getEnd());
+				edge.connect(pNew, edge.end());
 			}
-			if( edge.getEnd() == pOld)
+			if( edge.end() == pOld)
 			{
-				edge.connect(edge.getStart(), pNew);
+				edge.connect(edge.start(), pNew);
 			}
 		}
 		List<Node> oldChildren = pOld.getChildren();

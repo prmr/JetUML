@@ -41,13 +41,13 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	}
 
 	@Override
-	public Node getStart()
+	public Node start()
 	{
 		return aStart;
 	}
 
 	@Override
-	public Node getEnd()
+	public Node end()
 	{
 		return aEnd;
 	}
@@ -63,9 +63,9 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	public String toString()
 	{
 		String result = getClass().getSimpleName();
-		if( getStart() != null && getEnd() != null )
+		if( start() != null && end() != null )
 		{
-			result += " " + getStart() + " -> " + getEnd();
+			result += " " + start() + " -> " + end();
 		}
 		return result;
 	}

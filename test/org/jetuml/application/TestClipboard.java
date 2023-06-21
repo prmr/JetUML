@@ -137,11 +137,11 @@ public class TestClipboard
 		List<Edge> copies = copyEdges(List.of(aNode1, edge1, aNode2, edge2));
 		assertNotSame(edge1, copies.get(0));
 		assertSame(DependencyEdge.class, copies.get(0).getClass());
-		assertSame(aNode1, copies.get(0).getStart());
-		assertSame(aNode2, copies.get(0).getEnd());
+		assertSame(aNode1, copies.get(0).start());
+		assertSame(aNode2, copies.get(0).end());
 		assertNotSame(edge2, copies.get(1));
-		assertSame(aNode2, copies.get(1).getStart());
-		assertSame(aNode1, copies.get(1).getEnd());
+		assertSame(aNode2, copies.get(1).start());
+		assertSame(aNode1, copies.get(1).end());
 	}
 	
 	@Test
@@ -176,8 +176,8 @@ public class TestClipboard
 		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(10,10), new Point(200,200));
 
 		List<Edge> edges = getClipboardEdges();
-		assertThat(extract(edges, Edge::getStart), hasElementsSameAs, nodes.get(0));
-		assertThat(extract(edges, Edge::getEnd), hasElementsSameAs, nodes.get(1));
+		assertThat(extract(edges, Edge::start), hasElementsSameAs, nodes.get(0));
+		assertThat(extract(edges, Edge::end), hasElementsSameAs, nodes.get(1));
 	}
 	
 	@Test

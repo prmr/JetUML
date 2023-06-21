@@ -111,30 +111,30 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		
 		addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20)); // aActorNode1 -> aUseCaseNode2
 		assertTrue(aDiagram.contains(aAssociationEdge));
-		assertSame(aActorNode1, aAssociationEdge.getStart());
-		assertSame(aUseCaseNode2, aAssociationEdge.getEnd());
+		assertSame(aActorNode1, aAssociationEdge.start());
+		assertSame(aUseCaseNode2, aAssociationEdge.end());
 		
 		addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20)); // aUseCaseNode1 -> aUseCaseNode2
 		assertTrue(aDiagram.contains(aDependencyEdge));
-		assertSame(aUseCaseNode1, aDependencyEdge.getStart());
-		assertSame(aUseCaseNode2, aDependencyEdge.getEnd());
+		assertSame(aUseCaseNode1, aDependencyEdge.start());
+		assertSame(aUseCaseNode2, aDependencyEdge.end());
 		
 		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20)); // aActorNode1 -> aUseCaseNode2
 		assertTrue(aDiagram.contains(aGeneralEdge));
-		assertSame(aActorNode1, aGeneralEdge.getStart());
-		assertSame(aUseCaseNode2, aGeneralEdge.getEnd());
+		assertSame(aActorNode1, aGeneralEdge.start());
+		assertSame(aUseCaseNode2, aGeneralEdge.end());
 		
 		UseCaseAssociationEdge useCaseAssociationEdge2 = new UseCaseAssociationEdge();
 		addEdge(useCaseAssociationEdge2,  new Point(80, 20), new Point(140, 20)); // aUseCaseNode1 -> aUseCaseNode2
 		assertTrue(aDiagram.contains(useCaseAssociationEdge2));
-		assertSame(aUseCaseNode1, useCaseAssociationEdge2.getStart());
-		assertSame(aUseCaseNode2, useCaseAssociationEdge2.getEnd());
+		assertSame(aUseCaseNode1, useCaseAssociationEdge2.start());
+		assertSame(aUseCaseNode2, useCaseAssociationEdge2.end());
 		
 		UseCaseDependencyEdge useCaseDependencyEdge2 = new UseCaseDependencyEdge();
 		addEdge(useCaseDependencyEdge2,  new Point(20, 20), new Point(250, 20)); // aActorNode1 -> aUseCaseNode2
 		assertTrue(aDiagram.contains(useCaseDependencyEdge2));
-		assertSame(aActorNode1, useCaseDependencyEdge2.getStart());
-		assertSame(aUseCaseNode2, useCaseDependencyEdge2.getEnd());
+		assertSame(aActorNode1, useCaseDependencyEdge2.start());
+		assertSame(aUseCaseNode2, useCaseDependencyEdge2.end());
 		
 		assertEquals(5, numberOfEdges());
 		
@@ -169,19 +169,19 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 
 		addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertTrue(aDiagram.contains(noteEdge1));
-		assertSame(noteEdge1.getStart(), aActorNode1);
-		assertSame(noteEdge1.getEnd(), noteNode);
+		assertSame(noteEdge1.start(), aActorNode1);
+		assertSame(noteEdge1.end(), noteNode);
 
 		addEdge(noteEdge2, new Point(85, 25), new Point(110, 110));
 		assertTrue(aDiagram.contains(noteEdge2));
-		assertSame(noteEdge2.getStart(), aUseCaseNode1);
-		assertSame(noteEdge2.getEnd(), noteNode);
+		assertSame(noteEdge2.start(), aUseCaseNode1);
+		assertSame(noteEdge2.end(), noteNode);
 		
 		// if begin with a NoteNode, the end point can be anywhere
 		addEdge(noteEdge3, new Point(100, 100), new Point(9,9));
 		assertTrue(aDiagram.contains(noteEdge3));
-		assertSame(noteEdge3.getStart(), noteNode);
-		Node end = noteEdge3.getEnd();
+		assertSame(noteEdge3.start(), noteNode);
+		Node end = noteEdge3.end();
 		assertEquals(PointNode.class, end.getClass());
 		assertEquals(new Point(9,9), end.position());
 	}

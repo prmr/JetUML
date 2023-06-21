@@ -128,8 +128,8 @@ public class TestSequenceDiagramBuilder
 		CallNode caller = (CallNode)aParameterNode1.getChildren().get(0);
 		assertTrue(aParameterNode2.getChildren().size() == 1);
 		CallNode callee = (CallNode)aParameterNode2.getChildren().get(0);
-		assertSame(caller, aConstructorEdge.getStart());
-		assertSame(callee, aConstructorEdge.getEnd());
+		assertSame(caller, aConstructorEdge.start());
+		assertSame(callee, aConstructorEdge.end());
 	}
 	
 	@Test

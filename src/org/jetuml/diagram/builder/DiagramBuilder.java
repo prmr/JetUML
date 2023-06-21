@@ -161,7 +161,7 @@ public abstract class DiagramBuilder
 						{ 
 							Edge edge = (Edge) element;
 							aDiagramRenderer.diagram().addEdge(edge); 
-							edge.connect(edge.getStart(), edge.getEnd());	
+							edge.connect(edge.start(), edge.end());	
 						},
 						()-> aDiagramRenderer.diagram().removeEdge((Edge)element)));
 			}
@@ -193,13 +193,13 @@ public abstract class DiagramBuilder
 		if( pElement.getClass() == NoteEdge.class )
 		{
 			Edge edge = (Edge)pElement;
-			if( edge.getStart().getClass() == PointNode.class )
+			if( edge.start().getClass() == PointNode.class )
 			{
-				result.add(edge.getStart());
+				result.add(edge.start());
 			}
-			if( edge.getEnd().getClass() == PointNode.class )
+			if( edge.end().getClass() == PointNode.class )
 			{
-				result.add(edge.getEnd());
+				result.add(edge.end());
 			}
 		}
 		if( pElement instanceof Node )
@@ -207,7 +207,7 @@ public abstract class DiagramBuilder
 			List<Node> descendants = getNodeAndAllChildren((Node)pElement);
 			for(Edge edge : aDiagramRenderer.diagram().edges())
 			{
-				if(descendants.contains(edge.getStart() ) || descendants.contains(edge.getEnd()))
+				if(descendants.contains(edge.start() ) || descendants.contains(edge.end()))
 				{
 					result.add(edge);
 				}

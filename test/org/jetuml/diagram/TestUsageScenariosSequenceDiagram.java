@@ -546,8 +546,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aCallEdge1.connect(aCallNode1, aCallNode2);
 		aDiagram.addEdge(aCallEdge1);
 		
-		assertSame(aCallNode1, aCallEdge1.getStart());
-		assertSame(aCallNode2, aCallEdge1.getEnd());
+		assertSame(aCallNode1, aCallEdge1.start());
+		assertSame(aCallNode2, aCallEdge1.end());
 		
 		select(aParameterNode1, aParameterNode2, aCallEdge1);
 		copy();

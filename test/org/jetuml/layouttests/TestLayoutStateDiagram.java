@@ -177,7 +177,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(nodeByName("S3")))
+				.filter(edge -> edge.end().equals(nodeByName("S3")))
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
@@ -194,7 +194,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Rectangle boundsFinalState = aRenderer.getBounds(nodesByType(FinalStateNode.class).get(0));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(nodesByType(FinalStateNode.class).get(0)))
+				.filter(edge -> edge.end().equals(nodesByType(FinalStateNode.class).get(0)))
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);

@@ -164,8 +164,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		assert pNode != null && diagram().contains(pNode);
 		return diagram().edges().stream()
 			.filter(CallEdge.class::isInstance)
-			.filter(edge -> edge.getEnd() == pNode)
-			.map(Edge::getStart)
+			.filter(edge -> edge.end() == pNode)
+			.map(Edge::start)
 			.map(CallNode.class::cast)
 			.findFirst();
 	}
@@ -283,7 +283,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pNode.getClass() == CallNode.class;
 		return diagram().edges().stream()
-			.filter(edge -> edge.getEnd() == pNode)
+			.filter(edge -> edge.end() == pNode)
 			.findFirst();
 	}
 	
@@ -316,7 +316,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		Set<Node> calledNodes = diagram().edges().stream()
 				.filter(edge -> CallEdge.class.isAssignableFrom(edge.getClass())) // Includes subclasses, such as constructor edges
-				.map(Edge::getEnd)
+				.map(Edge::end)
 				.collect(Collectors.toSet());
 		List<Node> rootNode = diagram().allNodes().stream()
 				.filter(node -> node.getClass() == CallNode.class)
@@ -369,8 +369,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		assert pNode != null && diagram().contains(pNode);
 		return diagram().edges().stream()
 				.filter(CallEdge.class::isInstance)
-				.filter(edge -> edge.getStart() == pNode)
-				.map(Edge::getEnd)
+				.filter(edge -> edge.start() == pNode)
+				.map(Edge::end)
 				.collect(toList());
 	}
 	
@@ -436,16 +436,16 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdge != null;
 		if( startNodeOnlyCalls(pEdge) )
 		{
-			return Optional.of(pEdge.getStart());
+			return Optional.of(pEdge.start());
 		}
 		else if( pEdge.getClass() == ConstructorEdge.class )
 		{
 			// We delete the start node of pEdge if it does not have any caller and only makes calls to the 
 			// object being constructed.
-			if ( getCaller(pEdge.getStart()).isEmpty() && 
-					onlyCallsToASingleImplicitParameterNode(pEdge.getStart(), pEdge.getEnd().getParent()) )
+			if ( getCaller(pEdge.start()).isEmpty() && 
+					onlyCallsToASingleImplicitParameterNode(pEdge.start(), pEdge.end().getParent()) )
 			{
-				return Optional.of(pEdge.getStart());
+				return Optional.of(pEdge.start());
 			}
 		}
 		return Optional.empty();
@@ -456,9 +456,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private boolean startNodeOnlyCalls(Edge pEdge)
 	{
-		assert pEdge != null && pEdge.getStart() != null;
-		List<CallEdge> calls = getCalls(pEdge.getStart());
-		return  getCaller(pEdge.getStart()).isEmpty() &&
+		assert pEdge != null && pEdge.start() != null;
+		List<CallEdge> calls = getCalls(pEdge.start());
+		return  getCaller(pEdge.start()).isEmpty() &&
 				calls.size() == 1 &&
 				calls.contains(pEdge);
 	}
@@ -466,7 +466,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
 	{
 		assert pCaller!= null && pParentNode != null;
-		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
+		return getCalls(pCaller).stream().allMatch(edge -> edge.end().getParent() == pParentNode);
 	}
 	
 	/**
@@ -480,7 +480,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		return diagram().edges().stream()
 				.filter(CallEdge.class::isInstance)
 				.map(CallEdge.class::cast)
-				.filter(edge -> edge.getStart() == pCaller)
+				.filter(edge -> edge.start() == pCaller)
 				.collect(toList());
 	}
 }

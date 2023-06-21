@@ -161,8 +161,8 @@ public class TestObjectDiagramBuilder
 		operation.execute();
 		assertEquals(1, aAccessor.getEdges().size());
 		assertSame(edge, aAccessor.getEdges().get(0));
-		assertSame(aObjectNode1, edge.getStart());
-		assertSame(aNote, edge.getEnd());
+		assertSame(aObjectNode1, edge.start());
+		assertSame(aNote, edge.end());
 	}
 	
 	@Test
@@ -176,8 +176,8 @@ public class TestObjectDiagramBuilder
 		assertEquals(1, aAccessor.getEdges().size());
 		assertSame(aReference1, aAccessor.getEdges().get(0));
 		assertEquals("", aFieldNode1.getValue());
-		assertSame(aFieldNode1, aReference1.getStart());
-		assertSame(aObjectNode2, aReference1.getEnd());
+		assertSame(aFieldNode1, aReference1.start());
+		assertSame(aObjectNode2, aReference1.end());
 		
 		operation.undo();
 		assertEquals(0, aAccessor.getEdges().size());

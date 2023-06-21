@@ -112,12 +112,12 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
 		Rectangle boundsNoteNode = aRenderer.getBounds(noteNode);
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
-				.filter(edge -> boundsType1Node.contains(edge.getStart().position()) ||
-						boundsType1Node.contains(edge.getEnd().position()))
+				.filter(edge -> boundsType1Node.contains(edge.start().position()) ||
+						boundsType1Node.contains(edge.end().position()))
 				.collect(toList()).get(0);
 		Rectangle boundsNoteEdge = aRenderer.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getY(), boundsNoteEdge.getMaxY());
-		assertTrue(boundsType1Node.contains(noteEdge.getStart().position()));
+		assertTrue(boundsType1Node.contains(noteEdge.start().position()));
 	}
 	
 	/**
@@ -132,12 +132,12 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
 		Rectangle boundsNoteNode = aRenderer.getBounds(noteNode);
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
-				.filter(edge -> boundsType4Node.contains(edge.getStart().position()) ||
-						boundsType4Node.contains(edge.getEnd().position()))
+				.filter(edge -> boundsType4Node.contains(edge.start().position()) ||
+						boundsType4Node.contains(edge.end().position()))
 				.collect(toList()).get(0);
 		Rectangle boundsNoteEdge = aRenderer.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getMaxX(), boundsNoteEdge.getX());
-		assertTrue(boundsType4Node.contains(noteEdge.getEnd().position()));
+		assertTrue(boundsType4Node.contains(noteEdge.end().position()));
 	}
 	
 	/**
@@ -149,11 +149,11 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	{
 		Node type1Node = nodeByName(":Type1");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(type1Node))
+				.filter(edge -> edge.end().equals(type1Node))
 				.collect(toList()).get(0);
 		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
-		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.getEnd().position().getX());
-		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
+		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.end().position().getX());
+		assertTrue(boundsType1Node.contains(referenceEdge.start().position()));
 	}
 	
 	/**
@@ -166,14 +166,14 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Node type1Node = nodeByName(":Type1");
 		Node type4Node = nodeByName(":Type4");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(type4Node))
+				.filter(edge -> edge.end().equals(type4Node))
 				.collect(toList())
 				.get(0);
 		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
 		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
 		Rectangle boundsReferenceEdge = aRenderer.getBounds(referenceEdge);
 		assertWithDefaultTolerance(boundsType4Node.getX(), boundsReferenceEdge.getMaxX());
-		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
+		assertTrue(boundsType1Node.contains(referenceEdge.start().position()));
 	}
 	
 	/**
@@ -186,12 +186,12 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Node type4Node = nodeByName(":Type4");
 		Node type3Node = nodeByName(":Type3");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(type3Node))
+				.filter(edge -> edge.end().equals(type3Node))
 				.collect(toList()).get(0);
 		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
 		Rectangle boundsType3Node = aRenderer.getBounds(type3Node);
 		Rectangle boundsReferenceEdge = aRenderer.getBounds(referenceEdge);
 		assertWithDefaultTolerance(boundsType3Node.getX(), boundsReferenceEdge.getMaxX());
-		assertTrue(boundsType4Node.contains(referenceEdge.getStart().position()));
+		assertTrue(boundsType4Node.contains(referenceEdge.start().position()));
 	}
 }

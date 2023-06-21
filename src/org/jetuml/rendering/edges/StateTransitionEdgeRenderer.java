@@ -255,10 +255,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		int distanceInX = Math.abs(parent().getBounds(pEdge.getStart()).getCenter().getX() -
-				parent().getBounds(pEdge.getEnd()).getCenter().getX());
-		int distanceInY = Math.abs(parent().getBounds(pEdge.getStart()).getCenter().getY() -
-				parent().getBounds(pEdge.getEnd()).getCenter().getY());
+		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).getCenter().getX() -
+				parent().getBounds(pEdge.end()).getCenter().getX());
+		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).getCenter().getY() -
+				parent().getBounds(pEdge.end()).getCenter().getY());
 		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
@@ -277,7 +277,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	
 	private static boolean isSelfEdge(Edge pEdge)
 	{
-		return pEdge.getStart() == pEdge.getEnd();
+		return pEdge.start() == pEdge.end();
 	}
 	
 	private Shape getSelfEdgeShape(Edge pEdge)
@@ -325,9 +325,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private int getPosition(Edge pEdge)
 	{
 		int lReturn = 0;
-		for( Edge edge : parent().diagram().edgesConnectedTo(pEdge.getStart()))
+		for( Edge edge : parent().diagram().edgesConnectedTo(pEdge.start()))
 		{
-			if( edge.getStart() == pEdge.getStart() && edge.getEnd() == pEdge.getEnd())
+			if( edge.start() == pEdge.start() && edge.end() == pEdge.end())
 			{
 				lReturn++;
 			}
@@ -348,18 +348,18 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
-					parent().getBounds(pEdge.getStart()).getY());
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.getStart()).getMaxX(), 
-					parent().getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).getMaxX() - SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.start()).getY());
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).getMaxX(), 
+					parent().getBounds(pEdge.start()).getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.getStart()).getX(), 
-					parent().getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
-					parent().getBounds(pEdge.getStart()).getY());
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).getX(), 
+					parent().getBounds(pEdge.start()).getY() + SELF_EDGE_OFFSET);
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).getX() + SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.start()).getY());
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 	}
@@ -418,8 +418,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private Line getNormalEdgeConnectionsPoints(Edge pEdge)
 	{
-		Rectangle start = parent().getBounds(pEdge.getStart());
-		Rectangle end = parent().getBounds(pEdge.getEnd());
+		Rectangle start = parent().getBounds(pEdge.start());
+		Rectangle end = parent().getBounds(pEdge.end());
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;
@@ -429,8 +429,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 		Direction d1 = Direction.fromLine(startCenter, endCenter).rotatedBy(-turn);
 		Direction d2 = Direction.fromLine(endCenter, startCenter).rotatedBy(turn);
-		return new Line(parent().getConnectionPoints(pEdge.getStart(), d1), 
-				parent().getConnectionPoints(pEdge.getEnd(), d2));
+		return new Line(parent().getConnectionPoints(pEdge.start(), d1), 
+				parent().getConnectionPoints(pEdge.end(), d2));
 	}
 	
 	@Override

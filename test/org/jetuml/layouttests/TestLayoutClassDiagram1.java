@@ -205,6 +205,6 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.get();
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode6.getY(), edgeBounds.getMaxY());
-		assertTrue(boundsNode4.contains(edge.getEnd().position()));
+		assertTrue(boundsNode4.contains(edge.end().position()));
 	}
 }

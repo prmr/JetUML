@@ -73,13 +73,13 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node largerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getStart()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
 				.findFirst()
 				.get();
 		Node smallerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
 				.findFirst()
 				.get();
 		verifyPosition(largerCallNode, 202, 77);
@@ -125,13 +125,13 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node largerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getStart()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
 				.findFirst()
 				.get();
 		Node smallerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
 				.findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -179,13 +179,13 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node largerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getStart()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
 				.findFirst()
 				.get();
 		Node smallerCallNode = nodeByName("object1:Type1")
 				.getChildren()
 				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
 				.findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -222,12 +222,12 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Edge call1Edge = edgeByMiddleLabel("call1()");
 		Node startNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(call1Edge.getStart()))
+				.filter(node -> node.equals(call1Edge.start()))
 				.findFirst()
 				.get();
 		Node endNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(call1Edge.getEnd()))
+				.filter(node -> node.equals(call1Edge.end()))
 				.findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -247,12 +247,12 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Edge r1ReturnEdge = edgeByMiddleLabel("r1");
 		Node startNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(r1ReturnEdge.getStart()))
+				.filter(node -> node.equals(r1ReturnEdge.start()))
 				.findFirst()
 				.get();
 		Node endNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(r1ReturnEdge.getEnd()))
+				.filter(node -> node.equals(r1ReturnEdge.end()))
 				.findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
@@ -276,12 +276,12 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.get();
 		Node startNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(returnEdge.getStart()))
+				.filter(node -> node.equals(returnEdge.start()))
 				.findFirst()
 				.get();
 		Node endNode = nodesByType(CallNode.class)
 				.stream()
-				.filter(node -> node.equals(returnEdge.getEnd()))
+				.filter(node -> node.equals(returnEdge.end()))
 				.findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
