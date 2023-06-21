@@ -96,6 +96,13 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
 			return;
 		}
+		if( !validCallEdgeSemantics(pStartNode, pEndNode))
+		{
+			pEdge.connect(pStartNode, pEndNode);
+			pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(pEdge),
+					()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
+			return;
+		}
 		Node start = pStartNode;
 		if( start.getClass() == ImplicitParameterNode.class )
 		{
@@ -124,6 +131,15 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		pEdge.connect(start, end);
 		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, pEdge),
 				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
+	}
+	
+	/**
+	 * @return True if the start end node can support the addition of a call edge.
+	 */
+	private static boolean validCallEdgeSemantics(Node pStartNode, Node pEndNode )
+	{
+		return (pStartNode.getClass() == ImplicitParameterNode.class || pStartNode.getClass() == CallNode.class) &&
+				(pEndNode.getClass() == ImplicitParameterNode.class || pEndNode.getClass() == CallNode.class);
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)

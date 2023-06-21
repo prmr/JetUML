@@ -65,31 +65,6 @@ public class TestSequenceDiagramSemanticConstraints
 	}
 
 	@Test
-	void testNoEdgeFromParameterTopNotParameterNode()
-	{
-		aCallEdge.connect(aCallNode1, aCallNode2);
-		assertTrue(SequenceDiagramSemanticConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testNoEdgeFromParameterTopParameterFalse()
-	{
-		aDiagram.addRootNode(aParameter1);
-		aCallEdge.connect(aParameter1, aParameter1);
-		assertFalse(SequenceDiagramSemanticConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testNoEdgeFromParameterTopParameterTrue()
-	{
-		aDiagram.addRootNode(aParameter1);
-		aCallEdge.connect(aCallNode1, aCallNode2);
-		aParameter1.addChild(aCallNode1);
-		aParameter1.addChild(aCallNode2);
-		assertTrue(SequenceDiagramSemanticConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
 	void testreturnEdgeNotReturnEdge()
 	{
 		createDiagram();
@@ -150,38 +125,6 @@ public class TestSequenceDiagramSemanticConstraints
 		aDiagram.addEdge(aCallEdge);
 		aReturnEdge.connect(aCallNode2, aCallNode1);
 		assertTrue(SequenceDiagramSemanticConstraints.returnEdge().satisfied(aReturnEdge, aDiagram));
-	}
-
-	@Test
-	void testCallEdgeEndNotCallEdge()
-	{
-		createDiagram();
-		aReturnEdge.connect(aCallNode2, aCallNode1);
-		assertTrue(SequenceDiagramSemanticConstraints.callEdgeEnd().satisfied(aReturnEdge, aDiagram));
-	}
-
-	@Test
-	void testCallEdgeEndEndNotParameter()
-	{
-		createDiagram();
-		aCallEdge.connect(aCallNode2, aCallNode1);
-		assertTrue(SequenceDiagramSemanticConstraints.callEdgeEnd().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testCallEdgeEndEndOnLifeLine()
-	{
-		createDiagram();
-		aCallEdge.connect(aParameter2, aCallNode1);
-		assertTrue(SequenceDiagramSemanticConstraints.callEdgeEnd().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testCallEdgeEndEndOnTopRectangle()
-	{
-		createDiagram();
-		aCallEdge.connect(aParameter2, aCallNode1);
-		assertTrue(SequenceDiagramSemanticConstraints.callEdgeEnd().satisfied(aCallEdge, aDiagram));
 	}
 
 	@Test

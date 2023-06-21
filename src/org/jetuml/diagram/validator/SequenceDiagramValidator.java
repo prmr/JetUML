@@ -1,4 +1,5 @@
 package org.jetuml.diagram.validator;
+
 import java.util.Arrays;
 import java.util.List;
 import org.jetuml.diagram.Diagram;
@@ -22,84 +23,73 @@ import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstrain
  */
 public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
-  private static final SemanticConstraintSet
-      SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-      EdgeSemanticConstraints.pointNode(),
-      EdgeSemanticConstraints.noteEdge(),
-      EdgeSemanticConstraints.noteNode(),
-      EdgeSemanticConstraints.maxEdges(1),
-      SequenceDiagramSemanticConstraints.noEdgesFromParameterTop(),
-      SequenceDiagramSemanticConstraints.returnEdge(),
-      SequenceDiagramSemanticConstraints.singleEntryPoint(),
-      SequenceDiagramSemanticConstraints.callEdgeEnd()
-  );
+	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
+			EdgeSemanticConstraints.pointNode(), 
+			EdgeSemanticConstraints.noteEdge(), 
+			EdgeSemanticConstraints.noteNode(),
+			EdgeSemanticConstraints.maxEdges(1), 
+			SequenceDiagramSemanticConstraints.returnEdge(), 
+			SequenceDiagramSemanticConstraints.singleEntryPoint());
 
-  private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
-      ImplicitParameterNode.class,
-      CallNode.class,
-      NoteNode.class,
-      PointNode.class
-  );
+	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ImplicitParameterNode.class,
+			CallNode.class, NoteNode.class, PointNode.class);
 
-  private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
-      ConstructorEdge.class,
-      CallEdge.class,
-      ReturnEdge.class,
-      NoteEdge.class
-  );
+	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(ConstructorEdge.class, CallEdge.class,
+			ReturnEdge.class, NoteEdge.class);
 
-  /**
-   * Creates a new validator for one sequence diagram.
-   *
-   * @param pDiagram The diagram to do semantic validity check on.
-   * @pre pDiagram != null && pDiagram.getType() == DiagramType.SEQUENCE
-   */
-  public SequenceDiagramValidator(Diagram pDiagram)
-  {
-    super( pDiagram );
-    assert pDiagram.getType() == DiagramType.SEQUENCE;
-  }
+	/**
+	 * Creates a new validator for one sequence diagram.
+	 *
+	 * @param pDiagram The diagram to do semantic validity check on.
+	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.SEQUENCE
+	 */
+	public SequenceDiagramValidator(Diagram pDiagram)
+	{
+		super(pDiagram);
+		assert pDiagram.getType() == DiagramType.SEQUENCE;
+	}
 
-  /**
-   * All children nodes of ImplicitParameterNode must be CallNode.
-   */
-  @Override
-  public boolean validNodeHierarchy()
-  {
-    boolean result = true;
+	/**
+	 * All children nodes of ImplicitParameterNode must be CallNode.
+	 */
+	@Override
+	public boolean validNodeHierarchy()
+	{
+		boolean result = true;
 
-    for (Node node : this.aDiagram.allNodes())
-    {
-      if (node instanceof ImplicitParameterNode container)
-      {
-        // if any of the child is not a valid child node, should return false
-        result = container.getChildren().stream().allMatch(this::validChild);
-      }
-    }
-    return result;
-  }
+		for( Node node : this.aDiagram.allNodes() )
+		{
+			if( node instanceof ImplicitParameterNode container )
+			{
+				// if any of the child is not a valid child node, should return
+				// false
+				result = container.getChildren().stream().allMatch(this::validChild);
+			}
+		}
+		return result;
+	}
 
-  private boolean validChild(Node pPotentialChild)
-  {
-    return pPotentialChild instanceof CallNode;
-  }
+	private boolean validChild(Node pPotentialChild)
+	{
+		return pPotentialChild instanceof CallNode;
+	}
 
-  @Override
-  protected SemanticConstraintSet getEdgeConstraints()
-  {
-    return SEMANTIC_CONSTRAINT_SET;
-  }
+	@Override
+	protected SemanticConstraintSet getEdgeConstraints()
+	{
+		return SEMANTIC_CONSTRAINT_SET;
+	}
 
-  @Override
-  protected List<Class<? extends Node>> getValidNodeClasses() 
-  {
-    return VALID_NODES;
-  }
+	@Override
+	protected List<Class<? extends Node>> getValidNodeClasses()
+	{
+		return VALID_NODES;
+	}
 
-  @Override
-  protected List<Class<? extends Edge>> getValidEdgeClasses() 
-  {
-    return VALID_EDGES;
-  }
+	@Override
+	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	{
+		return VALID_EDGES;
+	}
 
 }

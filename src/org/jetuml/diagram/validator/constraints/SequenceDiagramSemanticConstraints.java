@@ -1,6 +1,7 @@
 package org.jetuml.diagram.validator.constraints;
 
 import java.util.Optional;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
@@ -8,7 +9,6 @@ import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.diagram.nodes.PointNode;
 
 /**
  * Constraints for sequence diagrams.
@@ -16,16 +16,6 @@ import org.jetuml.diagram.nodes.PointNode;
 public final class SequenceDiagramSemanticConstraints
 {
 	private SequenceDiagramSemanticConstraints() {}
-
-	/**
-	 * No edge is allowed to start in a parameter node.
-	 */
-	public static SemanticConstraint noEdgesFromParameterTop()
-	{
-		return (Edge pEdge, Diagram pDiagram) -> {
-			return pEdge.getStart().getClass() != ImplicitParameterNode.class;
-		};
-	}
 
 	/**
 	 * For a return edge, the end node has to be the caller, and return edges on
@@ -45,19 +35,6 @@ public final class SequenceDiagramSemanticConstraints
 					pEdge.getEnd() != getCaller(pEdge.getStart(), pDiagram).get() || 
 					pEdge.getStart().getParent() == pEdge.getEnd().getParent()));
 		}; // CSON:
-	}
-
-	/**
-	 * Call edges that land on a parameter node must land on the lifeline part,
-	 * except if it is allowed to create a constructor.
-	 */
-	public static SemanticConstraint callEdgeEnd()
-	{
-		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == CallEdge.class &&
-					(pEdge.getEnd().getClass() == ImplicitParameterNode.class || pEdge.getEnd().getClass() == PointNode.class) &&
-					!canCreateConstructor(pEdge.getStart(), pEdge.getEnd()));
-		};
 	}
 
 	/**
