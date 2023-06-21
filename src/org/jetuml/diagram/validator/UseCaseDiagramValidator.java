@@ -23,8 +23,7 @@ import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 public class UseCaseDiagramValidator extends AbstractDiagramValidator
 {
 	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.pointNode(), 
-			EdgeSemanticConstraints.noteEdge(), 
+			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
 			EdgeSemanticConstraints.noteNode(),
 			EdgeSemanticConstraints.maxEdges(1), 
 			EdgeSemanticConstraints.noSelfEdge());

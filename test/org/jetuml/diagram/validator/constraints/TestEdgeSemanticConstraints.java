@@ -20,7 +20,6 @@ public class TestEdgeSemanticConstraints
 	private ClassNode aNode2 = new ClassNode();
 	private PointNode aPointNode = new PointNode();
 	private DependencyEdge aEdge1 = new DependencyEdge();
-	private DependencyEdge aEdge2 = new DependencyEdge();
 
 	private NoteEdge aNoteEdge = new NoteEdge();
 	private NoteNode aNote = new NoteNode();
@@ -37,23 +36,11 @@ public class TestEdgeSemanticConstraints
 	}
 
 	@Test
-	void testPointNodeToNoteEdge()
-	{
-		createDiagram();
-		aNoteEdge.connect(aNote, aPointNode);
-		assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aNoteEdge, aDiagram));
-		aEdge1.connect(aNote, aPointNode);
-		assertFalse(EdgeSemanticConstraints.pointNode().satisfied(aEdge1, aDiagram));
-		aEdge2.connect(aNode1, aNode2);
-		assertTrue(EdgeSemanticConstraints.pointNode().satisfied(aEdge2, aDiagram));
-	}
-
-	@Test
 	void testNoteEdgeNotNoteEdge()
 	{
 		createDiagram();
 		aEdge1.connect(aNode1, aNode2);
-		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aEdge1, aDiagram));
+		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aEdge1, aDiagram));
 	}
 
 	@Test
@@ -61,7 +48,7 @@ public class TestEdgeSemanticConstraints
 	{
 		createDiagram();
 		aNoteEdge.connect(aNote, aPointNode);
-		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
 	}
 
 	@Test
@@ -69,7 +56,7 @@ public class TestEdgeSemanticConstraints
 	{
 		createDiagram();
 		aNoteEdge.connect(aNote, aNode1);
-		assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+		assertFalse(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
 	}
 
 	@Test
@@ -77,7 +64,7 @@ public class TestEdgeSemanticConstraints
 	{
 		createDiagram();
 		aNoteEdge.connect(aNode1, aPointNode);
-		assertFalse(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+		assertFalse(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
 	}
 
 	@Test
@@ -85,7 +72,7 @@ public class TestEdgeSemanticConstraints
 	{
 		createDiagram();
 		aNoteEdge.connect(aNode1, aNote);
-		assertTrue(EdgeSemanticConstraints.noteEdge().satisfied(aNoteEdge, aDiagram));
+		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
 	}
 
 	@Test

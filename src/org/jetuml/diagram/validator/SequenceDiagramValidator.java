@@ -24,10 +24,10 @@ import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstrain
 public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
 	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.pointNode(), 
-			EdgeSemanticConstraints.noteEdge(), 
+			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
 			EdgeSemanticConstraints.noteNode(),
 			EdgeSemanticConstraints.maxEdges(1), 
+			EdgeSemanticConstraints.noteEdgeDoesNotConnectTwoNoteNodes(),
 			SequenceDiagramSemanticConstraints.returnEdge());
 
 	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ImplicitParameterNode.class,
@@ -49,28 +49,17 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	}
 
 	/**
-	 * All children nodes of ImplicitParameterNode must be CallNode.
+	 * Root nodes contain no call nodes.
+	 * Point nodes are connected
 	 */
 	@Override
 	public boolean validNodeHierarchy()
 	{
-		boolean result = true;
-
-		for( Node node : this.aDiagram.allNodes() )
-		{
-			if( node instanceof ImplicitParameterNode container )
-			{
-				// if any of the child is not a valid child node, should return
-				// false
-				result = container.getChildren().stream().allMatch(this::validChild);
-			}
-		}
-		return result;
-	}
-
-	private boolean validChild(Node pPotentialChild)
-	{
-		return pPotentialChild instanceof CallNode;
+		return aDiagram.rootNodes().stream()
+				.allMatch(node -> node.getClass() != CallNode.class) &&
+				aDiagram.rootNodes().stream()
+				.filter(PointNode.class::isInstance)
+				.allMatch(node -> aDiagram.edgesConnectedTo(node).iterator().hasNext());
 	}
 
 	@Override

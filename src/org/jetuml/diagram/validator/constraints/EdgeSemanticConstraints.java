@@ -12,27 +12,25 @@ import org.jetuml.diagram.nodes.PointNode;
 public final class EdgeSemanticConstraints
 {
 	private EdgeSemanticConstraints() {}
-
+	
 	/**
-	 * An ending point node can only exist if it's connected to note edge.
+	 * A note edge cannot connect two notes.
 	 */
-	public static SemanticConstraint pointNode()
+	public static SemanticConstraint noteEdgeDoesNotConnectTwoNoteNodes()
 	{
-		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getEnd().getClass() == PointNode.class && pEdge.getClass() != NoteEdge.class);
-
+		return (edge, diagram) -> !(edge.getClass() == NoteEdge.class && 
+				edge.getStart().getClass() == NoteNode.class && edge.getEnd().getClass() == NoteNode.class);
 	}
 
 	/**
-	 * A note edge can only be added between: - Any node and a note node. - A
-	 * note node and a point node.
+	 * A note edge that ends in a point must start with a note.
 	 */
-	public static SemanticConstraint noteEdge()
+	public static SemanticConstraint noteEdgeToPointMustStartWithNote()
 	{
-		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
-					!(pEdge.getStart().getClass() == NoteNode.class && pEdge.getEnd().getClass() == PointNode.class || 
-							pEdge.getEnd().getClass() == NoteNode.class));
+		return (edge, diagram) -> !(edge.getClass() == NoteEdge.class && 
+				edge.getEnd().getClass() == PointNode.class && edge.getStart().getClass() != NoteNode.class);
 	}
-
+	
 	/**
 	 * An edge can only be added to or from a note node if it is a note edge.
 	 */

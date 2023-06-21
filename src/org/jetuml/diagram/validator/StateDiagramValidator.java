@@ -23,8 +23,7 @@ import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 public class StateDiagramValidator extends AbstractDiagramValidator
 {
 	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.pointNode(), 
-			EdgeSemanticConstraints.noteEdge(), 
+			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
 			EdgeSemanticConstraints.noteNode(),
 			EdgeSemanticConstraints.maxEdges(2), 
 			StateDiagramSemanticConstraints.noEdgeFromFinalNode(),
