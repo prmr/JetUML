@@ -10,7 +10,6 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.AssociationEdge;
-import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
@@ -52,8 +51,6 @@ public class TestSequenceDiagramValidation
 	private final ImplicitParameterNode aImplicitParameterNode = new ImplicitParameterNode();
 	private final CallNode aCallNode = new CallNode();
 	private final NoteNode aNoteNode = new NoteNode();
-	private final PointNode aPointNode = new PointNode();
-	private final CallEdge aCallEdge = new CallEdge();
 
 	private Diagram diagram()
 	{

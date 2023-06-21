@@ -10,16 +10,15 @@ import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 /**
  * Implementation of the general scaffolding for validating a diagram.
  */
-public abstract class AbstractDiagramValidator implements DiagramValidator
+abstract class AbstractDiagramValidator implements DiagramValidator
 {
-	protected final Diagram aDiagram;
+	private final Diagram aDiagram;
 
 	/**
-	 * Creates a builder for the diagram wrapped by pDiagram, and an embedded
-	 * renderer.
+	 * Creates a validator for pDiagram.
 	 *
-	 * @param pDiagram The diagram that we want to check semantic validity on
-	 * @pre pDiagramBuilder != null;
+	 * @param pDiagram The diagram that we want to validate
+	 * @pre pDiagram != null;
 	 */
 	protected AbstractDiagramValidator(Diagram pDiagram)
 	{
@@ -32,22 +31,22 @@ public abstract class AbstractDiagramValidator implements DiagramValidator
 	{
 		return hasValidStructure() && hasValidSemantics();
 	}
-	
+
 	@Override
 	public final boolean hasValidStructure()
 	{
 		return validElementName() && validNodeHierarchy();
 	}
-	
+
 	/**
-	 * @return True iff the diagram respects all required semantic validation rules.
+	 * @return True iff the diagram respects all required semantic validation
+	 * rules.
 	 * @pre hasValidStructure()
 	 */
 	@Override
 	public final boolean hasValidSemantics()
 	{
-		return aDiagram.edges().stream()
-				.allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
+		return aDiagram.edges().stream().allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
 	}
 
 	/**

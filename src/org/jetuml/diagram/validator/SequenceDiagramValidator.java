@@ -55,11 +55,11 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	@Override
 	public boolean validNodeHierarchy()
 	{
-		return aDiagram.rootNodes().stream()
+		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class) &&
-				aDiagram.rootNodes().stream()
+				diagram().rootNodes().stream()
 				.filter(PointNode.class::isInstance)
-				.allMatch(node -> aDiagram.edgesConnectedTo(node).iterator().hasNext());
+				.allMatch(node -> diagram().edgesConnectedTo(node).iterator().hasNext());
 	}
 
 	@Override

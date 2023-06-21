@@ -2,6 +2,7 @@ package org.jetuml.diagram.validator;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -23,22 +24,15 @@ import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 public class ObjectDiagramValidator extends AbstractDiagramValidator
 {
 	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-			EdgeSemanticConstraints.noteNode(),
-			EdgeSemanticConstraints.maxEdges(1), 
-			ObjectDiagramSemanticConstraints.collaboration(),
+			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), EdgeSemanticConstraints.noteNode(),
+			EdgeSemanticConstraints.maxEdges(1), ObjectDiagramSemanticConstraints.collaboration(),
 			ObjectDiagramSemanticConstraints.reference());
 
-	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
-			ObjectNode.class, 
-			FieldNode.class,
-			NoteNode.class, 
-			PointNode.class);
+	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ObjectNode.class, FieldNode.class,
+			NoteNode.class, PointNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
-			ObjectReferenceEdge.class,
-			ObjectCollaborationEdge.class, 
-			NoteEdge.class);
+	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(ObjectReferenceEdge.class,
+			ObjectCollaborationEdge.class, NoteEdge.class);
 
 	/**
 	 * Creates a new validator for one object diagram.
@@ -65,8 +59,8 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	@Override
 	protected boolean validNodeHierarchy()
 	{
-		return aDiagram.rootNodes().stream().noneMatch(node -> node instanceof FieldNode) &&
-				aDiagram.rootNodes().stream().filter(node -> node instanceof ObjectNode).allMatch(
+		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode) &&
+				diagram().rootNodes().stream().filter(node -> node instanceof ObjectNode).allMatch(
 						objectNode -> objectNode.getChildren().stream().allMatch(child -> child instanceof FieldNode));
 	}
 
@@ -81,5 +75,4 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	{
 		return VALID_EDGES;
 	}
-
 }

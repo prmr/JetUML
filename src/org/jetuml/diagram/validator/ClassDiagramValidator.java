@@ -78,7 +78,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	{
 		boolean result = true;
 
-		for( Node node : aDiagram.allNodes() )
+		for( Node node : diagram().allNodes() )
 		{
 			if( node instanceof PackageNode container )
 			{
