@@ -27,7 +27,7 @@ public class TestSemanticConstraintSet
 		aDiagram.addRootNode(node2);
 	}
 	
-	private SemanticConstraint createStubSemanticConstraint(boolean pReturn)
+	private EdgeConnectionConstraint createStubSemanticConstraint(boolean pReturn)
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return pReturn;

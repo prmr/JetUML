@@ -12,12 +12,12 @@ import org.jetuml.diagram.Edge;
  */
 public class SemanticConstraintSet
 {
-	private final Set<SemanticConstraint> aSemanticConstraints = new HashSet<>();
+	private final Set<EdgeConnectionConstraint> aSemanticConstraints = new HashSet<>();
 
 	/**
 	 * @param pSemanticConstraints Constraints to add to the set.
 	 */
-	public SemanticConstraintSet(SemanticConstraint... pSemanticConstraints)
+	public SemanticConstraintSet(EdgeConnectionConstraint... pSemanticConstraints)
 	{
 		assert pSemanticConstraints != null;
 		aSemanticConstraints.addAll(Arrays.asList(pSemanticConstraints));
@@ -32,7 +32,7 @@ public class SemanticConstraintSet
 	 */
 	public boolean satisfied(Edge pEdge, Diagram pDiagram)
 	{
-		for( SemanticConstraint semanticConstraint : aSemanticConstraints )
+		for( EdgeConnectionConstraint semanticConstraint : aSemanticConstraints )
 		{
 			if( !semanticConstraint.satisfied(pEdge, pDiagram) )
 			{

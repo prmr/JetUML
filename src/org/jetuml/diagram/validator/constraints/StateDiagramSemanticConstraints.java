@@ -16,7 +16,7 @@ public final class StateDiagramSemanticConstraints
 	/**
 	 * No edges are allowed into an Initial Node.
 	 */
-	public static SemanticConstraint noEdgeToInitialNode()
+	public static EdgeConnectionConstraint noEdgeToInitialNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return pEdge.end().getClass() != InitialStateNode.class;
@@ -26,7 +26,7 @@ public final class StateDiagramSemanticConstraints
 	/**
 	 * The only edge allowed out of a FinalNode is a NoteEdge.
 	 */
-	public static SemanticConstraint noEdgeFromFinalNode()
+	public static EdgeConnectionConstraint noEdgeFromFinalNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.start().getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class);

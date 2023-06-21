@@ -27,7 +27,7 @@ public final class SequenceDiagramSemanticConstraints
 	 * 		  long as the caller invoked it has some CallNodes) 
 	 *      - pStart and pEnd cannot have same parent node
 	 */
-	public static SemanticConstraint returnEdge()
+	public static EdgeConnectionConstraint returnEdge()
 	{
 		// CSOFF:
 		return (Edge pEdge, Diagram pDiagram) -> {
