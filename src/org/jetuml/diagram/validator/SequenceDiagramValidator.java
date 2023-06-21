@@ -28,8 +28,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.noteEdge(), 
 			EdgeSemanticConstraints.noteNode(),
 			EdgeSemanticConstraints.maxEdges(1), 
-			SequenceDiagramSemanticConstraints.returnEdge(), 
-			SequenceDiagramSemanticConstraints.singleEntryPoint());
+			SequenceDiagramSemanticConstraints.returnEdge());
 
 	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ImplicitParameterNode.class,
 			CallNode.class, NoteNode.class, PointNode.class);

@@ -19,12 +19,13 @@ public final class SequenceDiagramSemanticConstraints
 
 	/**
 	 * For a return edge, the end node has to be the caller, and return edges on
-	 * self-calls are not allowed. - If pEdge is not ReturnEdge, then this
-	 * constraint is true - If pEdge is ReturnEdge, then we need to make sure
-	 * all followings hold: - pStart is CallNode - pEnd is CallNode - Caller
-	 * ImplicitParameterNode has some children existing (a return can happen as
-	 * long as the caller invoked it has some CallNodes) - pStart and pEnd can
-	 * not have same parent node
+	 * self-calls are not allowed. 
+	 * 	- If pEdge is not ReturnEdge, then this constraint is true 
+	 *  - If pEdge is ReturnEdge, then we need to make sure all followings hold: 
+	 *      - pStart is CallNode - pEnd is CallNode 
+	 *      - Caller's ImplicitParameterNode has some children existing (a return can happen as
+	 * 		  long as the caller invoked it has some CallNodes) 
+	 *      - pStart and pEnd cannot have same parent node
 	 */
 	public static SemanticConstraint returnEdge()
 	{
@@ -35,28 +36,6 @@ public final class SequenceDiagramSemanticConstraints
 					pEdge.getEnd() != getCaller(pEdge.getStart(), pDiagram).get() || 
 					pEdge.getStart().getParent() == pEdge.getEnd().getParent()));
 		}; // CSON:
-	}
-
-	/**
-	 * It's only legal to start an interaction on a parameter node if there are
-	 * no existing activations in the diagram.
-	 */
-	public static SemanticConstraint singleEntryPoint()
-	{
-		return (Edge pEdge, Diagram pDiagram) -> {
-			return !(pEdge.getClass() == CallEdge.class && pEdge.getStart().getClass() == ImplicitParameterNode.class &&
-					hasEntryPoint(pDiagram));
-		};
-	}
-
-	private static boolean hasEntryPoint(Diagram pDiagram)
-	{
-		return pDiagram.rootNodes().stream().anyMatch(SequenceDiagramSemanticConstraints::hasCallNode);
-	}
-
-	private static boolean hasCallNode(Node pNode)
-	{
-		return pNode.getClass() == ImplicitParameterNode.class && !pNode.getChildren().isEmpty();
 	}
 
 	/**

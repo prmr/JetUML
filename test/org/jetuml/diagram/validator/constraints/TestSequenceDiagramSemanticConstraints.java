@@ -126,36 +126,4 @@ public class TestSequenceDiagramSemanticConstraints
 		aReturnEdge.connect(aCallNode2, aCallNode1);
 		assertTrue(SequenceDiagramSemanticConstraints.returnEdge().satisfied(aReturnEdge, aDiagram));
 	}
-
-	@Test
-	void testSingleEntryPointNotACallEdge()
-	{
-		createDiagram();
-		aReturnEdge.connect(aParameter1, aParameter1);
-		assertTrue(SequenceDiagramSemanticConstraints.singleEntryPoint().satisfied(aReturnEdge, aDiagram));
-	}
-
-	@Test
-	void testSingleEntryPointNotStartingOnAParameterNode()
-	{
-		createDiagram();
-		aCallEdge.connect(aCallNode1, aCallNode1);
-		assertTrue(SequenceDiagramSemanticConstraints.singleEntryPoint().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testSingleEntryPointStartingOnParameterNodeNotSatisfied()
-	{
-		createDiagram();
-		aCallEdge.connect(aParameter1, aParameter1);
-		assertFalse(SequenceDiagramSemanticConstraints.singleEntryPoint().satisfied(aCallEdge, aDiagram));
-	}
-
-	@Test
-	void testSingleEntryPointStartingOnParameterNodeSatisfied()
-	{
-		aDiagram.addRootNode(aParameter1);
-		aCallEdge.connect(aParameter1, aParameter1);
-		assertTrue(SequenceDiagramSemanticConstraints.singleEntryPoint().satisfied(aCallEdge, aDiagram));
-	}
 }
