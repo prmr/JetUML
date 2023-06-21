@@ -15,7 +15,6 @@ import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 
 /**
  * Validator for class diagrams.

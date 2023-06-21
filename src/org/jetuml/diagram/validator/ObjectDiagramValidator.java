@@ -10,7 +10,6 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.ObjectDiagramSemanticConstraints;
 
@@ -49,7 +48,7 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	 * children nodes it contains must only contain FieldNode
 	 */
 	@Override
-	protected boolean hasValidNodes()
+	protected boolean hasValidDiagramNodes()
 	{
 		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode);
 	}

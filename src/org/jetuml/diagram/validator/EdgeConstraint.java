@@ -1,4 +1,4 @@
-package org.jetuml.diagram.validator.constraints;
+package org.jetuml.diagram.validator;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
@@ -15,6 +15,7 @@ public interface EdgeConstraint
 	 * @param pDiagram The diagram containing the edge.
 	 * @return True if the edge is satisfied.
 	 * @pre pEdge != null && pDiagram != null && pDiagram.contains(pEdge)
+	 * @pre pEdge.start() != null && pEdge.end() != null;
 	 */
 	boolean satisfied(Edge pEdge, Diagram pDiagram);
 }

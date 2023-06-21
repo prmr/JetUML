@@ -7,6 +7,7 @@ import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
+import org.jetuml.diagram.validator.EdgeConstraint;
 
 /**
  * Constraint implementations for class diagrams.

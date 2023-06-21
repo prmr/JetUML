@@ -12,7 +12,6 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.PointNode;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
@@ -23,7 +22,6 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			EdgeSemanticConstraints.maxEdges(1), 
-			EdgeSemanticConstraints.noteEdgeDoesNotConnectTwoNoteNodes(),
 			SequenceDiagramSemanticConstraints.returnEdge());
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
@@ -52,7 +50,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 * Point nodes are connected
 	 */
 	@Override
-	protected boolean hasValidNodes()
+	protected boolean hasValidDiagramNodes()
 	{
 		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class) &&

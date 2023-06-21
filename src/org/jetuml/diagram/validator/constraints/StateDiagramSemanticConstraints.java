@@ -5,6 +5,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
+import org.jetuml.diagram.validator.EdgeConstraint;
 
 /**
  * Validator for state diagrams.

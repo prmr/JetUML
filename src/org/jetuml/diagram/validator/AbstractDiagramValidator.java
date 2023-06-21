@@ -10,8 +10,6 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
-import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 
 /**
  * Implementation of the general scaffolding for validating a diagram.
@@ -23,9 +21,7 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	private static final Set<Class<? extends Edge>> UNIVERSAL_EDGES_TYPES = 
 			Set.of(NoteEdge.class);
 	private static final Set<EdgeConstraint> UNIVERSAL_CONSTRAINTS =
-			Set.of(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-					EdgeSemanticConstraints.noteNode(),
-					EdgeSemanticConstraints.maxEdges(1));
+			Set.of(AbstractDiagramValidator::constraintValidNoteEdge);
 	
 	private final Diagram aDiagram;
 	private final Set<Class<? extends Node>> aValidNodeTypes = new HashSet<>();
@@ -98,11 +94,27 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 			   		.allMatch(edge -> aValidEdgeTypes.contains(edge.getClass()));
 	}
 
+	@TemplateMethod
+	private boolean hasValidNodes()
+	{
+		return hasValidPointNodes() && hasValidDiagramNodes();
+	}
+	
 	/**
-	 * Helper method to check whether any additional constraint on nodes (besides
-	 * their type being allowed) is respected.
+	 * @return Point nodes must be connected to an edge
 	 */
-	protected boolean hasValidNodes()
+	private boolean hasValidPointNodes()
+	{
+		return diagram().rootNodes().stream()
+			.filter(PointNode.class::isInstance)
+			.allMatch(node -> diagram().edgesConnectedTo(node).iterator().hasNext());
+	}
+	
+	/**
+	 * Step method in the template method design pattern to allow 
+	 * processing diagram-specific node validation.
+	 */
+	protected boolean hasValidDiagramNodes()
 	{
 		return true;
 	}
@@ -113,5 +125,25 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	public final Diagram diagram()
 	{
 		return aDiagram;
+	}
+	
+	/*
+	 * Validates that a note edge is semantically correct. A note edge can come in 
+	 * two flavors:
+	 * 1. From a note node to a point node
+	 * 2. From any node except a note node or a point node to a note node
+	 */
+	private static boolean constraintValidNoteEdge(Edge pEdge, Diagram pDiagram)
+	{
+		if( pEdge.getClass() != NoteEdge.class )
+		{
+			return true;
+		}
+		if( pEdge.end().getClass() == PointNode.class )
+		{
+			return pEdge.start().getClass() == NoteNode.class;
+		}
+		return pEdge.start().getClass() != PointNode.class && pEdge.start().getClass() != NoteNode.class &&
+				pEdge.end().getClass() == NoteNode.class;
 	}
 }

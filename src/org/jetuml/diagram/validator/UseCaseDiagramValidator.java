@@ -11,7 +11,6 @@ import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 
 /**

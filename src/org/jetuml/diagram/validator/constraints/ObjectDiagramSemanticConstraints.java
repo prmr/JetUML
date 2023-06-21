@@ -6,6 +6,7 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.diagram.validator.EdgeConstraint;
 
 /**
  * Semantic constraints for object diagrams.

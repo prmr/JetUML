@@ -9,6 +9,7 @@ import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
+import org.jetuml.diagram.validator.EdgeConstraint;
 
 /**
  * Constraints for sequence diagrams.

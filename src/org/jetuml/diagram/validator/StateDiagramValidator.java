@@ -10,7 +10,6 @@ import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 

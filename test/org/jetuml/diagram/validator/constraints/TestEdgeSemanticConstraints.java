@@ -21,7 +21,6 @@ public class TestEdgeSemanticConstraints
 	private PointNode aPointNode = new PointNode();
 	private DependencyEdge aEdge1 = new DependencyEdge();
 
-	private NoteEdge aNoteEdge = new NoteEdge();
 	private NoteNode aNote = new NoteNode();
 
 	private void createDiagram()
@@ -33,84 +32,6 @@ public class TestEdgeSemanticConstraints
 		aDiagram.addRootNode(aNote);
 		aPointNode.moveTo(new Point(200, 200));
 		aDiagram.addRootNode(aPointNode);
-	}
-
-	@Test
-	void testNoteEdgeNotNoteEdge()
-	{
-		createDiagram();
-		aEdge1.connect(aNode1, aNode2);
-		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aEdge1, aDiagram));
-	}
-
-	@Test
-	void testNoteEdgeNodeNotePoint()
-	{
-		createDiagram();
-		aNoteEdge.connect(aNote, aPointNode);
-		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteEdgeNodeNoteNotPoint()
-	{
-		createDiagram();
-		aNoteEdge.connect(aNote, aNode1);
-		assertFalse(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteEdgeNodeNoteNotePoint()
-	{
-		createDiagram();
-		aNoteEdge.connect(aNode1, aPointNode);
-		assertFalse(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteEdgeNodeAnyNode()
-	{
-		createDiagram();
-		aNoteEdge.connect(aNode1, aNote);
-		assertTrue(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteNodeAnyAny()
-	{
-		createDiagram();
-		aEdge1.connect(aNode1, aNode2);
-		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
-	}
-
-	@Test
-	void testNoteNodeNoteAny()
-	{
-		createDiagram();
-		aEdge1.connect(aNote, aNode2);
-		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
-		aNoteEdge.connect(aNote, aNode2);
-		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteNodeAnyNote()
-	{
-		createDiagram();
-		aEdge1.connect(aNode1, aNote);
-		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
-		aNoteEdge.connect(aNode1, aNote);
-		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
-	}
-
-	@Test
-	void testNoteNodeNoteNote()
-	{
-		createDiagram();
-		aEdge1.connect(aNote, aNote);
-		assertFalse(EdgeSemanticConstraints.noteNode().satisfied(aEdge1, aDiagram));
-		aNoteEdge.connect(aNote, aNote);
-		assertTrue(EdgeSemanticConstraints.noteNode().satisfied(aNoteEdge, aDiagram));
 	}
 
 	@Test
