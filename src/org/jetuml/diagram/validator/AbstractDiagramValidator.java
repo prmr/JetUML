@@ -2,6 +2,7 @@ package org.jetuml.diagram.validator;
 
 import java.util.List;
 
+import org.jetuml.annotations.TemplateMethod;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
@@ -33,9 +34,10 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	}
 
 	@Override
+	@TemplateMethod
 	public final boolean hasValidStructure()
 	{
-		return validElementName() && validNodeHierarchy();
+		return hasValidElementTypes() && hasValidNodes();
 	}
 
 	/**
@@ -46,39 +48,38 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	@Override
 	public final boolean hasValidSemantics()
 	{
-		return aDiagram.edges().stream().allMatch(edge -> getEdgeConstraints().satisfied(edge, aDiagram));
+		return aDiagram.edges().stream()
+				.allMatch(edge -> edgeConstraints().satisfied(edge, aDiagram));
 	}
 
 	/**
 	 * @return The list of all node classes allowed for this diagram.
 	 */
-	protected abstract List<Class<? extends Node>> getValidNodeClasses();
+	protected abstract List<Class<? extends Node>> validNodeTypes();
 
 	/**
 	 * @return The list of all edge classes allowed for this diagram.
 	 */
-	protected abstract List<Class<? extends Edge>> getValidEdgeClasses();
+	protected abstract List<Class<? extends Edge>> validEdgesTypes();
 
-	private boolean validElementName()
+	private boolean hasValidElementTypes()
 	{
-		return aDiagram.allNodes().stream().allMatch(node -> getValidNodeClasses().contains(node.getClass())) &&
-				aDiagram.edges().stream().allMatch(edge -> getValidEdgeClasses().contains(edge.getClass()));
+		return aDiagram.allNodes().stream()
+					.allMatch(node -> validNodeTypes().contains(node.getClass())) &&
+			   aDiagram.edges().stream()
+			   		.allMatch(edge -> validEdgesTypes().contains(edge.getClass()));
 	}
 
 	/**
-	 * Helper method to check whether the children/parent nodes hierarchy
-	 * relationship holds true for class,object and sequence diagram.
-	 *
-	 * @return always true for diagrams except (class,object and sequence
-	 * diagram). for class,object and sequence diagram, it might fail due to
-	 * invalid node hierarchy.
+	 * Helper method to check whether any additional constraint on nodes (besides
+	 * their type being allowed) is respected.
 	 */
-	protected boolean validNodeHierarchy()
+	protected boolean hasValidNodes()
 	{
 		return true;
 	}
 
-	protected abstract SemanticConstraintSet getEdgeConstraints();
+	protected abstract SemanticConstraintSet edgeConstraints();
 
 	/**
 	 * @return The diagram wrapped by this validator.

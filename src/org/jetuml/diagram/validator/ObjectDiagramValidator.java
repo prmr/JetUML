@@ -47,7 +47,7 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	protected SemanticConstraintSet getEdgeConstraints()
+	protected SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
 	}
@@ -57,7 +57,7 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	 * children nodes it contains must only contain FieldNode
 	 */
 	@Override
-	protected boolean validNodeHierarchy()
+	protected boolean hasValidNodes()
 	{
 		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode) &&
 				diagram().rootNodes().stream().filter(node -> node instanceof ObjectNode).allMatch(
@@ -65,13 +65,13 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	protected List<Class<? extends Node>> getValidNodeClasses()
+	protected List<Class<? extends Node>> validNodeTypes()
 	{
 		return VALID_NODES;
 	}
 
 	@Override
-	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
 		return VALID_EDGES;
 	}

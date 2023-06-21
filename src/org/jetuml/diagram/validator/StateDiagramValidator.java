@@ -53,19 +53,19 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	protected List<Class<? extends Node>> getValidNodeClasses()
+	protected List<Class<? extends Node>> validNodeTypes()
 	{
 		return VALID_NODES;
 	}
 
 	@Override
-	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
 		return VALID_EDGES;
 	}
 
 	@Override
-	protected SemanticConstraintSet getEdgeConstraints()
+	protected SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
 	}

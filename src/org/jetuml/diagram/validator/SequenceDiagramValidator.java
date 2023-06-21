@@ -53,7 +53,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 * Point nodes are connected
 	 */
 	@Override
-	public boolean validNodeHierarchy()
+	public boolean hasValidNodes()
 	{
 		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class) &&
@@ -63,19 +63,19 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	protected SemanticConstraintSet getEdgeConstraints()
+	protected SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
 	}
 
 	@Override
-	protected List<Class<? extends Node>> getValidNodeClasses()
+	protected List<Class<? extends Node>> validNodeTypes()
 	{
 		return VALID_NODES;
 	}
 
 	@Override
-	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
 		return VALID_EDGES;
 	}

@@ -74,7 +74,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	 *
 	 */
 	@Override
-	protected boolean validNodeHierarchy()
+	protected boolean hasValidNodes()
 	{
 		boolean result = true;
 
@@ -96,19 +96,19 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	public SemanticConstraintSet getEdgeConstraints()
+	public SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
 	}
 
 	@Override
-	protected List<Class<? extends Node>> getValidNodeClasses()
+	protected List<Class<? extends Node>> validNodeTypes()
 	{
 		return VALID_NODES;
 	}
 
 	@Override
-	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
 		return VALID_EDGES;
 	}

@@ -54,19 +54,19 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 	}
 
 	@Override
-	protected List<Class<? extends Node>> getValidNodeClasses()
+	protected List<Class<? extends Node>> validNodeTypes()
 	{
 		return VALID_NODES;
 	}
 
 	@Override
-	protected List<Class<? extends Edge>> getValidEdgeClasses()
+	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
 		return VALID_EDGES;
 	}
 
 	@Override
-	public SemanticConstraintSet getEdgeConstraints()
+	public SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
 	}
