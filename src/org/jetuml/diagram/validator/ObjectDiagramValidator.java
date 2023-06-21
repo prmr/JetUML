@@ -10,18 +10,18 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.ObjectDiagramSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 
 /**
  * Validator for object diagrams.
  */
 public class ObjectDiagramValidator extends AbstractDiagramValidator
 {
-	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), EdgeSemanticConstraints.noteNode(),
-			EdgeSemanticConstraints.maxEdges(1), ObjectDiagramSemanticConstraints.collaboration(),
+	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
+			EdgeSemanticConstraints.maxEdges(1), 
+			ObjectDiagramSemanticConstraints.collaboration(),
 			ObjectDiagramSemanticConstraints.reference());
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
@@ -40,14 +40,8 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	 */
 	public ObjectDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.OBJECT;
-	}
-
-	@Override
-	protected SemanticConstraintSet edgeConstraints()
-	{
-		return SEMANTIC_CONSTRAINT_SET;
 	}
 
 	/**

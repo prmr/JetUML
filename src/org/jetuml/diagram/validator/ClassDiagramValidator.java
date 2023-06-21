@@ -15,26 +15,21 @@ import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 
 /**
  * Validator for class diagrams.
  */
 public class ClassDiagramValidator extends AbstractDiagramValidator
 {
-	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-			EdgeSemanticConstraints.noteNode(),
-			EdgeSemanticConstraints.maxEdges(1), 
+	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			ClassDiagramSemanticConstraints.noSelfGeneralization(),
 			ClassDiagramSemanticConstraints.noSelfDependency(),
 			ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(GeneralizationEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(AggregationEdge.class),
 			ClassDiagramSemanticConstraints.noDirectCycles(AssociationEdge.class),
-			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation()
-			);
+			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation());
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ClassNode.class, 
@@ -56,13 +51,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	 */
 	public ClassDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.CLASS;
-	}
-
-	@Override
-	public SemanticConstraintSet edgeConstraints()
-	{
-		return SEMANTIC_CONSTRAINT_SET;
 	}
 }

@@ -17,7 +17,7 @@ public final class ObjectDiagramSemanticConstraints
 	/**
 	 * A collaboration edge can only be between two object nodes.
 	 */
-	public static EdgeConnectionConstraint collaboration()
+	public static EdgeConstraint collaboration()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectCollaborationEdge.class &&
@@ -28,7 +28,7 @@ public final class ObjectDiagramSemanticConstraints
 	/**
 	 * A reference edge can only be between an object node and a field node.
 	 */
-	public static EdgeConnectionConstraint reference()
+	public static EdgeConstraint reference()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == ObjectReferenceEdge.class &&

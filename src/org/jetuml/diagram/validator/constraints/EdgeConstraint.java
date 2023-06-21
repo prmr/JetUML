@@ -6,7 +6,7 @@ import org.jetuml.diagram.Edge;
 /**
  * Constraint on how an edge is connected to nodes in a diagram.
  */
-public interface EdgeConnectionConstraint 
+public interface EdgeConstraint 
 {
 	/**
 	 * Determines if a constraint is satisfied.

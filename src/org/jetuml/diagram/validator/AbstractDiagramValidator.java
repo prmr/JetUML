@@ -10,7 +10,8 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
+import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 
 /**
  * Implementation of the general scaffolding for validating a diagram.
@@ -21,10 +22,15 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 			Set.of(PointNode.class, NoteNode.class);
 	private static final Set<Class<? extends Edge>> UNIVERSAL_EDGES_TYPES = 
 			Set.of(NoteEdge.class);
+	private static final Set<EdgeConstraint> UNIVERSAL_CONSTRAINTS =
+			Set.of(EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
+					EdgeSemanticConstraints.noteNode(),
+					EdgeSemanticConstraints.maxEdges(1));
 	
 	private final Diagram aDiagram;
 	private final Set<Class<? extends Node>> aValidNodeTypes = new HashSet<>();
 	private final Set<Class<? extends Edge>> aValidEdgeTypes = new HashSet<>();
+	private final Set<EdgeConstraint> aConstraints = new HashSet<>();
 
 	/**
 	 * Creates a validator for pDiagram.
@@ -37,14 +43,20 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	 * @pre pDiagram != null && pValidNodeTypes != null && pValidEdgeTypes != null;
 	 */
 	protected AbstractDiagramValidator(Diagram pDiagram, Set<Class<? extends Node>> pValidNodeTypes, 
-			Set<Class<? extends Edge>> pValidEdgeTypes)
+			Set<Class<? extends Edge>> pValidEdgeTypes, Set<EdgeConstraint> pEdgeConstraints)
 	{
 		assert pDiagram != null && pValidNodeTypes != null && pValidEdgeTypes != null;
+		
 		aDiagram = pDiagram;
+		
 		aValidNodeTypes.addAll(UNIVERSAL_NODES_TYPES);
 		aValidNodeTypes.addAll(pValidNodeTypes);
+		
 		aValidEdgeTypes.addAll(UNIVERSAL_EDGES_TYPES);
 		aValidEdgeTypes.addAll(pValidEdgeTypes);
+		
+		aConstraints.addAll(UNIVERSAL_CONSTRAINTS);
+		aConstraints.addAll(pEdgeConstraints);
 	}
 
 	@Override
@@ -69,7 +81,13 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	public final boolean hasValidSemantics()
 	{
 		return aDiagram.edges().stream()
-				.allMatch(edge -> edgeConstraints().satisfied(edge, aDiagram));
+				.allMatch(edge -> allConstraintsSatistifed(edge));
+	}
+	
+	private boolean allConstraintsSatistifed(Edge pEdge)
+	{
+		return aConstraints.stream()
+				.allMatch(constraint -> constraint.satisfied(pEdge, aDiagram));
 	}
 
 	private boolean hasValidElementTypes()
@@ -88,8 +106,6 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	{
 		return true;
 	}
-
-	protected abstract SemanticConstraintSet edgeConstraints();
 
 	/**
 	 * @return The diagram wrapped by this validator.

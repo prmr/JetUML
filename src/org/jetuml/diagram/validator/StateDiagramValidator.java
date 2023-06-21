@@ -10,8 +10,8 @@ import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 
 /**
@@ -19,9 +19,7 @@ import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
  */
 public class StateDiagramValidator extends AbstractDiagramValidator
 {
-	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-			EdgeSemanticConstraints.noteNode(),
+	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			EdgeSemanticConstraints.maxEdges(2), 
 			StateDiagramSemanticConstraints.noEdgeFromFinalNode(),
 			StateDiagramSemanticConstraints.noEdgeToInitialNode());
@@ -42,13 +40,7 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 	 */
 	public StateDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.STATE;
-	}
-
-	@Override
-	protected SemanticConstraintSet edgeConstraints()
-	{
-		return SEMANTIC_CONSTRAINT_SET;
 	}
 }

@@ -12,8 +12,8 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.PointNode;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
 /**
@@ -21,9 +21,7 @@ import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstrain
  */
 public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
-	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-			EdgeSemanticConstraints.noteNode(),
+	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			EdgeSemanticConstraints.maxEdges(1), 
 			EdgeSemanticConstraints.noteEdgeDoesNotConnectTwoNoteNodes(),
 			SequenceDiagramSemanticConstraints.returnEdge());
@@ -45,7 +43,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 */
 	public SequenceDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
 
@@ -61,11 +59,5 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 				diagram().rootNodes().stream()
 				.filter(PointNode.class::isInstance)
 				.allMatch(node -> diagram().edgesConnectedTo(node).iterator().hasNext());
-	}
-
-	@Override
-	protected SemanticConstraintSet edgeConstraints()
-	{
-		return SEMANTIC_CONSTRAINT_SET;
 	}
 }

@@ -18,7 +18,7 @@ public final class ClassDiagramSemanticConstraints
 	/**
 	 * Self edges are not allowed for Generalization edges.
 	 */
-	public static EdgeConnectionConstraint noSelfGeneralization()
+	public static EdgeConstraint noSelfGeneralization()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.start() == pEdge.end());
@@ -28,7 +28,7 @@ public final class ClassDiagramSemanticConstraints
 	/**
 	 * Self edges are not allowed for Dependency edges.
 	 */
-	public static EdgeConnectionConstraint noSelfDependency()
+	public static EdgeConstraint noSelfDependency()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return !(pEdge.getClass() == DependencyEdge.class && pEdge.start() == pEdge.end());
@@ -39,7 +39,7 @@ public final class ClassDiagramSemanticConstraints
 	 * There can't be two edges of a given type, one in each direction, between
 	 * two DIFFERENT nodes.
 	 */
-	public static EdgeConnectionConstraint noDirectCycles(Class<? extends Edge> pEdgeType)
+	public static EdgeConstraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			if( pEdge.getClass() != pEdgeType || pEdge.start() == pEdge.end() )
@@ -64,7 +64,7 @@ public final class ClassDiagramSemanticConstraints
 	 * There can't be both an association and an aggregation edge between two
 	 * nodes.
 	 */
-	public static EdgeConnectionConstraint noCombinedAssociationAggregation()
+	public static EdgeConstraint noCombinedAssociationAggregation()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			int count = getAssociationAggregationCount(pEdge.start(), pEdge.end(), pDiagram);

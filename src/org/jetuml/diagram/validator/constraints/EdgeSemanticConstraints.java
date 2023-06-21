@@ -16,7 +16,7 @@ public final class EdgeSemanticConstraints
 	/**
 	 * A note edge cannot connect two notes.
 	 */
-	public static EdgeConnectionConstraint noteEdgeDoesNotConnectTwoNoteNodes()
+	public static EdgeConstraint noteEdgeDoesNotConnectTwoNoteNodes()
 	{
 		return (edge, diagram) -> !(edge.getClass() == NoteEdge.class && 
 				edge.start().getClass() == NoteNode.class && edge.end().getClass() == NoteNode.class);
@@ -25,7 +25,7 @@ public final class EdgeSemanticConstraints
 	/**
 	 * A note edge that ends in a point must start with a note.
 	 */
-	public static EdgeConnectionConstraint noteEdgeToPointMustStartWithNote()
+	public static EdgeConstraint noteEdgeToPointMustStartWithNote()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
 					!(pEdge.start().getClass() == NoteNode.class && pEdge.end().getClass() == PointNode.class || 
@@ -35,7 +35,7 @@ public final class EdgeSemanticConstraints
 	/**
 	 * An edge can only be added to or from a note node if it is a note edge.
 	 */
-	public static EdgeConnectionConstraint noteNode()
+	public static EdgeConstraint noteNode()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			if( pEdge.start().getClass() == NoteNode.class || pEdge.end().getClass() == NoteNode.class )
@@ -50,7 +50,7 @@ public final class EdgeSemanticConstraints
 	 * Only pNumber of edges of the same type are allowed in one direction
 	 * between two nodes.
 	 */
-	public static EdgeConnectionConstraint maxEdges(int pNumber)
+	public static EdgeConstraint maxEdges(int pNumber)
 	{
 		assert pNumber > 0;
 		return (Edge pEdge, Diagram pDiagram) -> {
@@ -61,7 +61,7 @@ public final class EdgeSemanticConstraints
 	/**
 	 * Self-edges are not allowed.
 	 */
-	public static EdgeConnectionConstraint noSelfEdge()
+	public static EdgeConstraint noSelfEdge()
 	{
 		return (Edge pEdge, Diagram pDiagram) -> {
 			return pEdge.start() != pEdge.end();

@@ -11,17 +11,15 @@ import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.diagram.validator.constraints.EdgeConstraint;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
-import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
 
 /**
  * Validator for use case diagrams.
  */
 public class UseCaseDiagramValidator extends AbstractDiagramValidator
 {
-	private static final SemanticConstraintSet SEMANTIC_CONSTRAINT_SET = new SemanticConstraintSet(
-			EdgeSemanticConstraints.noteEdgeToPointMustStartWithNote(), 
-			EdgeSemanticConstraints.noteNode(),
+	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			EdgeSemanticConstraints.maxEdges(1), 
 			EdgeSemanticConstraints.noSelfEdge());
 
@@ -43,13 +41,7 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 
 	public UseCaseDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.USECASE;
-	}
-
-	@Override
-	public SemanticConstraintSet edgeConstraints()
-	{
-		return SEMANTIC_CONSTRAINT_SET;
 	}
 }
