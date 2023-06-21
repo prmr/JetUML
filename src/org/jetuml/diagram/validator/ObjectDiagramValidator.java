@@ -28,11 +28,16 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.maxEdges(1), ObjectDiagramSemanticConstraints.collaboration(),
 			ObjectDiagramSemanticConstraints.reference());
 
-	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ObjectNode.class, FieldNode.class,
-			NoteNode.class, PointNode.class);
+	private static final List<Class<? extends Node>> VALID_NODES_TYPES = Arrays.asList(
+			ObjectNode.class, 
+			FieldNode.class,
+			NoteNode.class, 
+			PointNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(ObjectReferenceEdge.class,
-			ObjectCollaborationEdge.class, NoteEdge.class);
+	private static final List<Class<? extends Edge>> VALID_EDGES_TYPES = Arrays.asList(
+			ObjectReferenceEdge.class,
+			ObjectCollaborationEdge.class, 
+			NoteEdge.class);
 
 	/**
 	 * Creates a new validator for one object diagram.
@@ -59,20 +64,18 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	@Override
 	protected boolean hasValidNodes()
 	{
-		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode) &&
-				diagram().rootNodes().stream().filter(node -> node instanceof ObjectNode).allMatch(
-						objectNode -> objectNode.getChildren().stream().allMatch(child -> child instanceof FieldNode));
+		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode);
 	}
 
 	@Override
 	protected List<Class<? extends Node>> validNodeTypes()
 	{
-		return VALID_NODES;
+		return VALID_NODES_TYPES;
 	}
 
 	@Override
 	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
-		return VALID_EDGES;
+		return VALID_EDGES_TYPES;
 	}
 }

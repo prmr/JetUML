@@ -30,11 +30,17 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.noteEdgeDoesNotConnectTwoNoteNodes(),
 			SequenceDiagramSemanticConstraints.returnEdge());
 
-	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(ImplicitParameterNode.class,
-			CallNode.class, NoteNode.class, PointNode.class);
+	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
+			ImplicitParameterNode.class,
+			CallNode.class, 
+			NoteNode.class, 
+			PointNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(ConstructorEdge.class, CallEdge.class,
-			ReturnEdge.class, NoteEdge.class);
+	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
+			ConstructorEdge.class, 
+			CallEdge.class,
+			ReturnEdge.class, 
+			NoteEdge.class);
 
 	/**
 	 * Creates a new validator for one sequence diagram.
@@ -53,7 +59,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 * Point nodes are connected
 	 */
 	@Override
-	public boolean hasValidNodes()
+	protected boolean hasValidNodes()
 	{
 		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class) &&

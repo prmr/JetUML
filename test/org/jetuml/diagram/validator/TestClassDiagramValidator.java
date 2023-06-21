@@ -1,13 +1,10 @@
 package org.jetuml.diagram.validator;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
@@ -42,29 +39,6 @@ public class TestClassDiagramValidator
     aDiagram.addRootNode(aPackageNode1);
     assertTrue(aClassDiagramValidator.isValid());
   }
-
-
-  @Test
-  public void testValidNodeHierarchy_False()
-  {
-    try
-    {
-      Field aContainedNodes = PackageNode.class.getDeclaredField("aContainedNodes");
-      aContainedNodes.setAccessible(true);
-      ArrayList<Node> packageNodes = new ArrayList<>();
-      packageNodes.add(aNoteNode1);
-      aContainedNodes.set(aPackageNode1, packageNodes);
-      aDiagram.addRootNode(aPackageNode1);
-      assertFalse(aClassDiagramValidator.isValid());
-    }
-
-    catch (NoSuchFieldException | IllegalAccessException e)
-    {
-      e.printStackTrace();
-    }
-
-  }
-
 
   @Test
   public void testValidElementName_True()

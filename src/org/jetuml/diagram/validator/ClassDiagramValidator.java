@@ -2,6 +2,7 @@ package org.jetuml.diagram.validator;
 
 import java.util.Arrays;
 import java.util.List;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -11,14 +12,12 @@ import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
-import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
@@ -41,7 +40,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation()
 			);
 
-	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
+	private static final List<Class<? extends Node>> VALID_NODES_TYPES = Arrays.asList(
 			ClassNode.class, 
 			InterfaceNode.class,
 			PackageNode.class, 
@@ -49,7 +48,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			NoteNode.class, 
 			PointNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
+	private static final List<Class<? extends Edge>> VALID_EDGES_TYPES = Arrays.asList(
 			DependencyEdge.class,
 			GeneralizationEdge.class, 
 			AssociationEdge.class, 
@@ -57,42 +56,15 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			NoteEdge.class);
 
 	/**
-	 * Creates a new validator for one class diagram.
+	 * Creates a new validator for a class diagram.
 	 *
-	 * @param pDiagram The diagram to do semantic validity check on.
+	 * @param pDiagram The diagram to validate
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.CLASS
 	 */
 	public ClassDiagramValidator(Diagram pDiagram)
 	{
 		super(pDiagram);
 		assert pDiagram.getType() == DiagramType.CLASS;
-	}
-
-	/**
-	 * All children nodes of PackageNode must be either TypeNode (ClassNode,
-	 * InterfaceNode) or AbstractPackageNode.
-	 *
-	 */
-	@Override
-	protected boolean hasValidNodes()
-	{
-		boolean result = true;
-
-		for( Node node : diagram().allNodes() )
-		{
-			if( node instanceof PackageNode container )
-			{
-				// if any of the child is not a valid child node, should return
-				// false
-				result = container.getChildren().stream().allMatch(this::validChild);
-			}
-		}
-		return result;
-	}
-
-	private boolean validChild(Node pChild)
-	{
-		return pChild instanceof TypeNode || pChild instanceof AbstractPackageNode;
 	}
 
 	@Override
@@ -104,12 +76,12 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	@Override
 	protected List<Class<? extends Node>> validNodeTypes()
 	{
-		return VALID_NODES;
+		return VALID_NODES_TYPES;
 	}
 
 	@Override
 	protected List<Class<? extends Edge>> validEdgesTypes()
 	{
-		return VALID_EDGES;
+		return VALID_EDGES_TYPES;
 	}
 }
