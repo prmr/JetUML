@@ -27,8 +27,9 @@ public final class EdgeSemanticConstraints
 	 */
 	public static SemanticConstraint noteEdgeToPointMustStartWithNote()
 	{
-		return (edge, diagram) -> !(edge.getClass() == NoteEdge.class && 
-				edge.getEnd().getClass() == PointNode.class && edge.getStart().getClass() != NoteNode.class);
+		return (Edge pEdge, Diagram pDiagram) -> !(pEdge.getClass() == NoteEdge.class && 
+					!(pEdge.getStart().getClass() == NoteNode.class && pEdge.getEnd().getClass() == PointNode.class || 
+							pEdge.getEnd().getClass() == NoteNode.class));
 	}
 	
 	/**

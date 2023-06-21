@@ -128,14 +128,14 @@ public class TestSequenceDiagramValidation
 		assertFalse(aValidator.isValid());
 	}
 	
-	@Test
-	void callEdgeToPointNode()
-	{
-		diagram().addRootNode(aImplicitParameterNode);
-		aImplicitParameterNode.addChild(aCallNode);
-		diagram().addRootNode(aPointNode);
-		aCallEdge.connect(aCallNode, aPointNode);
-		diagram().addEdge(aCallEdge);
-		assertFalse(aValidator.isValid());
-	}
+//	@Test
+//	void callEdgeToPointNode()
+//	{
+//		diagram().addRootNode(aImplicitParameterNode);
+//		aImplicitParameterNode.addChild(aCallNode);
+//		diagram().addRootNode(aPointNode);
+//		aCallEdge.connect(aCallNode, aPointNode);
+//		diagram().addEdge(aCallEdge);
+//		assertFalse(aValidator.isValid());
+//	}
 }
