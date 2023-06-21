@@ -1,14 +1,11 @@
 package org.jetuml.diagram.validator;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
@@ -29,14 +26,13 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 			StateDiagramSemanticConstraints.noEdgeFromFinalNode(),
 			StateDiagramSemanticConstraints.noEdgeToInitialNode());
 
-	private static final Set<Class<? extends Node>> VALID_NODES_TYPES = Set.of(
+	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			StateNode.class,
 			InitialStateNode.class, 
 			FinalStateNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
-			StateTransitionEdge.class,
-			NoteEdge.class);
+	private static final Set<Class<? extends Edge>> VALID_EDGE_TYPES = Set.of(
+			StateTransitionEdge.class);
 
 	/**
 	 * Creates a new validator for one state diagram.
@@ -46,14 +42,8 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 	 */
 	public StateDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODES_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
 		assert pDiagram.getType() == DiagramType.STATE;
-	}
-
-	@Override
-	protected List<Class<? extends Edge>> validEdgesTypes()
-	{
-		return VALID_EDGES;
 	}
 
 	@Override

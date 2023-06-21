@@ -1,7 +1,5 @@
 package org.jetuml.diagram.validator;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
@@ -10,7 +8,6 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
-import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -31,15 +28,14 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.noteEdgeDoesNotConnectTwoNoteNodes(),
 			SequenceDiagramSemanticConstraints.returnEdge());
 
-	private static final Set<Class<? extends Node>> VALID_NODES_TYPES = Set.of(
+	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ImplicitParameterNode.class,
 			CallNode.class);
 
-	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
+	private static final Set<Class<? extends Edge>> VALID_EDGE_TYPES = Set.of(
 			ConstructorEdge.class, 
 			CallEdge.class,
-			ReturnEdge.class, 
-			NoteEdge.class);
+			ReturnEdge.class);
 
 	/**
 	 * Creates a new validator for one sequence diagram.
@@ -49,7 +45,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 */
 	public SequenceDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram, VALID_NODES_TYPES);
+		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES);
 		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
 
@@ -71,11 +67,5 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	protected SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
-	}
-
-	@Override
-	protected List<Class<? extends Edge>> validEdgesTypes()
-	{
-		return VALID_EDGES;
 	}
 }
