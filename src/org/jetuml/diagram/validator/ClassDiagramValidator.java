@@ -2,6 +2,7 @@ package org.jetuml.diagram.validator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -14,10 +15,8 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
-import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
@@ -40,13 +39,11 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation()
 			);
 
-	private static final List<Class<? extends Node>> VALID_NODES_TYPES = Arrays.asList(
+	private static final Set<Class<? extends Node>> VALID_NODES_TYPES = Set.of(
 			ClassNode.class, 
 			InterfaceNode.class,
 			PackageNode.class, 
-			PackageDescriptionNode.class, 
-			NoteNode.class, 
-			PointNode.class);
+			PackageDescriptionNode.class);
 
 	private static final List<Class<? extends Edge>> VALID_EDGES_TYPES = Arrays.asList(
 			DependencyEdge.class,
@@ -63,7 +60,7 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	 */
 	public ClassDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram);
+		super(pDiagram, VALID_NODES_TYPES);
 		assert pDiagram.getType() == DiagramType.CLASS;
 	}
 
@@ -71,12 +68,6 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 	public SemanticConstraintSet edgeConstraints()
 	{
 		return SEMANTIC_CONSTRAINT_SET;
-	}
-
-	@Override
-	protected List<Class<? extends Node>> validNodeTypes()
-	{
-		return VALID_NODES_TYPES;
 	}
 
 	@Override

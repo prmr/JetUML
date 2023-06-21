@@ -2,6 +2,8 @@ package org.jetuml.diagram.validator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -11,8 +13,6 @@ import org.jetuml.diagram.edges.UseCaseAssociationEdge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
-import org.jetuml.diagram.nodes.NoteNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
@@ -28,11 +28,9 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.maxEdges(1), 
 			EdgeSemanticConstraints.noSelfEdge());
 
-	private static final List<Class<? extends Node>> VALID_NODES = Arrays.asList(
+	private static final Set<Class<? extends Node>> VALID_NODES_TYPES = Set.of(
 			ActorNode.class, 
-			UseCaseNode.class,
-			NoteNode.class, 
-			PointNode.class);
+			UseCaseNode.class);
 
 	private static final List<Class<? extends Edge>> VALID_EDGES = Arrays.asList(
 			UseCaseAssociationEdge.class,
@@ -49,14 +47,8 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 
 	public UseCaseDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram);
+		super(pDiagram, VALID_NODES_TYPES);
 		assert pDiagram.getType() == DiagramType.USECASE;
-	}
-
-	@Override
-	protected List<Class<? extends Node>> validNodeTypes()
-	{
-		return VALID_NODES;
 	}
 
 	@Override

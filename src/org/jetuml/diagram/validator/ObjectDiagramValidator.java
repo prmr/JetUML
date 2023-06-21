@@ -2,6 +2,7 @@ package org.jetuml.diagram.validator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -11,9 +12,7 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
-import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.ObjectDiagramSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SemanticConstraintSet;
@@ -28,12 +27,10 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 			EdgeSemanticConstraints.maxEdges(1), ObjectDiagramSemanticConstraints.collaboration(),
 			ObjectDiagramSemanticConstraints.reference());
 
-	private static final List<Class<? extends Node>> VALID_NODES_TYPES = Arrays.asList(
+	private static final Set<Class<? extends Node>> VALID_NODES_TYPES = Set.of(
 			ObjectNode.class, 
-			FieldNode.class,
-			NoteNode.class, 
-			PointNode.class);
-
+			FieldNode.class);
+	
 	private static final List<Class<? extends Edge>> VALID_EDGES_TYPES = Arrays.asList(
 			ObjectReferenceEdge.class,
 			ObjectCollaborationEdge.class, 
@@ -47,7 +44,7 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	 */
 	public ObjectDiagramValidator(Diagram pDiagram)
 	{
-		super(pDiagram);
+		super(pDiagram, VALID_NODES_TYPES);
 		assert pDiagram.getType() == DiagramType.OBJECT;
 	}
 
@@ -65,12 +62,6 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	protected boolean hasValidNodes()
 	{
 		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode);
-	}
-
-	@Override
-	protected List<Class<? extends Node>> validNodeTypes()
-	{
-		return VALID_NODES_TYPES;
 	}
 
 	@Override
