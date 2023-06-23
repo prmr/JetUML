@@ -147,13 +147,9 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 				pEdge.end().getClass() == NoteNode.class;
 	}
 	
-	/**
-	 * Only pNumber of edges of the same type are allowed in one direction
-	 * between two nodes.
-	 */
-	public static boolean constraintMaxOneEdgeOfGivenTypeBetweenNodes(Edge pEdge, Diagram pDiagram)
+	public static EdgeConstraint createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(int pMaxNumberOfEdges)
 	{
-		return numberOfEdges(pEdge, pDiagram) <= 1;
+		return (edge, diagram) -> numberOfEdges(edge, diagram) <= pMaxNumberOfEdges;
 	}
 	
 	/*
@@ -171,5 +167,35 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 			}
 		}
 		return result;
+	}
+	
+	public static EdgeConstraint createConstraintNoSelfEdgeForEdgeType(Class<? extends Edge> pEdgeType)
+	{
+		return (edge, diagram) -> !(edge.getClass() == pEdgeType && edge.start() == edge.end());
+	}
+	
+	/**
+	 * There can't be two edges of a given type, one in each direction, between
+	 * two DIFFERENT nodes.
+	 */
+	public static EdgeConstraint createConstraintNoDirectCyclesForEdgeType(Class<? extends Edge> pEdgeType)
+	{
+		return (Edge pEdge, Diagram pDiagram) -> {
+			if( pEdge.getClass() != pEdgeType || pEdge.start() == pEdge.end() )
+			{
+				return true;
+			}
+			
+			int sameDirectionCount = 0;
+			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.start()) )
+			{
+				if( edge.getClass() == pEdgeType && edge.end() == pEdge.start() && edge.start() == pEdge.end() )
+				{
+					sameDirectionCount += 1;
+				}
+			}
+			
+			return sameDirectionCount == 0;
+		};
 	}
 }

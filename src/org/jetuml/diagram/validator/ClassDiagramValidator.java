@@ -14,7 +14,6 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
 
 /**
  * Validator for class diagrams.
@@ -22,14 +21,14 @@ import org.jetuml.diagram.validator.constraints.ClassDiagramSemanticConstraints;
 public class ClassDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			AbstractDiagramValidator::constraintMaxOneEdgeOfGivenTypeBetweenNodes,
-			ClassDiagramValidator::constraintNoSelfGeneralization,
-			ClassDiagramSemanticConstraints.noSelfDependency(),
-			ClassDiagramSemanticConstraints.noDirectCycles(DependencyEdge.class),
-			ClassDiagramSemanticConstraints.noDirectCycles(GeneralizationEdge.class),
-			ClassDiagramSemanticConstraints.noDirectCycles(AggregationEdge.class),
-			ClassDiagramSemanticConstraints.noDirectCycles(AssociationEdge.class),
-			ClassDiagramSemanticConstraints.noCombinedAssociationAggregation());
+			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
+			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(GeneralizationEdge.class),
+			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(DependencyEdge.class),
+			AbstractDiagramValidator.createConstraintNoDirectCyclesForEdgeType(DependencyEdge.class),
+			AbstractDiagramValidator.createConstraintNoDirectCyclesForEdgeType(GeneralizationEdge.class),
+			AbstractDiagramValidator.createConstraintNoDirectCyclesForEdgeType(AggregationEdge.class),
+			AbstractDiagramValidator.createConstraintNoDirectCyclesForEdgeType(AssociationEdge.class),
+			ClassDiagramValidator::constraintNoCombinedAssociationAggregation);
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ClassNode.class, 
@@ -55,11 +54,32 @@ public class ClassDiagramValidator extends AbstractDiagramValidator
 		assert pDiagram.getType() == DiagramType.CLASS;
 	}
 	
-	/*
-	 * Generalization edges cannot have the same start and end node
+	/**
+	 * There can't be both an association and an aggregation edge between two
+	 * nodes.
 	 */
-	private static boolean constraintNoSelfGeneralization(Edge pEdge, Diagram pDiagram)
+	public static boolean constraintNoCombinedAssociationAggregation(Edge pEdge, Diagram pDiagram)
 	{
-		return !(pEdge.getClass() == GeneralizationEdge.class && pEdge.start() == pEdge.end());
+		return pDiagram.edges().stream()
+				.filter(ClassDiagramValidator::isAssociationOrAggregation)
+				.filter(edge -> isBetweenSameNodes(edge, pEdge))
+				.count() <= 1;
+	}
+	
+	/*
+	 * Aggregation edges and association edges are in the same category
+	 */
+	private static boolean isAssociationOrAggregation(Edge pEdge)
+	{
+		return pEdge.getClass() == AssociationEdge.class || pEdge.getClass() == AggregationEdge.class;
+	}
+	
+	/*
+	 * Irrespective of direction
+	 */
+	private static boolean isBetweenSameNodes(Edge pEdge1, Edge pEdge2)
+	{
+		return pEdge1.start() == pEdge2.start() && pEdge1.end() == pEdge2.end() ||
+				pEdge1.start() == pEdge2.end() && pEdge1.end() == pEdge2.start();
 	}
 }

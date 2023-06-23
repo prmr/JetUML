@@ -9,8 +9,11 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
+import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
@@ -113,6 +116,138 @@ public class TestClassDiagramValidator
 		aDependencyEdge2.connect(aClassNode1, aClassNode3);
 		diagram().addEdge(aDependencyEdge1);
 		diagram().addEdge(aDependencyEdge2);
+		assertTrue(aValidator.isValid());
+	}
+	
+	@Test
+	void testSelfGeneralization()
+	{
+		GeneralizationEdge edge = new GeneralizationEdge();
+		diagram().addRootNode(aClassNode1);
+		edge.connect(aClassNode1, aClassNode1);
+		diagram().addEdge(edge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testNoSelfDependency()
+	{
+		DependencyEdge edge = new DependencyEdge();
+		diagram().addRootNode(aClassNode1);
+		edge.connect(aClassNode1, aClassNode1);
+		diagram().addEdge(edge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDirectCycleGeneralizationEdge()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new GeneralizationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		Edge edge2 = new GeneralizationEdge();
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDirectCycleDependencyEdge()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new DependencyEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		Edge edge2 = new DependencyEdge();
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDirectCycleAggregationEdge()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new AggregationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		Edge edge2 = new AggregationEdge();
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDirectCycleAssociationEdge()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new AssociationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		Edge edge2 = new AssociationEdge();
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testNoDirectCycle()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new DependencyEdge();
+		Edge edge2 = new GeneralizationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge1);
+		diagram().addEdge(edge2);
+		assertTrue(aValidator.isValid());
+	}
+	
+	@Test
+	void testCombinedAssociationAggregationSameDirection()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new AggregationEdge();
+		Edge edge2 = new AssociationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		edge2.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testCombinedAssociationAggregationDifferentDirection()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new AggregationEdge();
+		Edge edge2 = new AssociationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		edge2.connect(aClassNode2, aClassNode1);
+		diagram().addEdge(edge1);
+		diagram().addEdge(edge2);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testNoCombinedAssociationAggregationDirection()
+	{
+		diagram().addRootNode(aClassNode1);
+		diagram().addRootNode(aClassNode2);
+		Edge edge1 = new GeneralizationEdge();
+		Edge edge2 = new AssociationEdge();
+		edge1.connect(aClassNode1, aClassNode2);
+		edge2.connect(aClassNode1, aClassNode2);
+		diagram().addEdge(edge1);
+		diagram().addEdge(edge2);
 		assertTrue(aValidator.isValid());
 	}
 }
