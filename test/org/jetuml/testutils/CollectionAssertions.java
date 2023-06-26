@@ -72,7 +72,7 @@ public enum CollectionAssertions
 	}
 	
 	/**
-	 * Checks that pAssertion holds for pArguments. If it does, nothing happends
+	 * Checks that pAssertion holds for pArguments. If it does, nothing happens
 	 * If the assertion does not hold, throws an AssertionError.
 	 * 
 	 * @param pCollection The collection to test.

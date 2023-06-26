@@ -244,6 +244,24 @@ public final class Diagram implements DiagramData
 		}
 		return lReturn;
 	}
+	
+	/**
+	 * Returns all the edges in the diagram of a type assignable to pType,
+	 * and that have pNode as end node.
+	 * 
+	 * @param pNode The desired end node.
+	 * @param pOfType The desired edge type. Use Edge.class to get edges of any type.
+	 * @return An unmodifiable list of edges of type pOfType (or a subtype) that
+	 * have pNode as end node.
+	 */
+	public List<Edge> edgesTo(Node pNode, Class<? extends Edge> pOfType)
+	{
+		assert pNode != null && pOfType != null;
+		return aEdges.stream()
+				.filter(pOfType::isInstance)
+				.filter(edge -> edge.end() == pNode)
+				.toList();
+	}
 
 	/**
 	 * Adds pNode as a root node in this diagram. Callers of this method must ensure that the addition respects the
