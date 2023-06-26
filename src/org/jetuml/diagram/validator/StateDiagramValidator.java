@@ -30,7 +30,6 @@ import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 
 /**
@@ -39,7 +38,7 @@ import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 public class StateDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			EdgeSemanticConstraints.maxEdges(2), 
+			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(2),
 			StateDiagramSemanticConstraints.noEdgeFromFinalNode(),
 			StateDiagramSemanticConstraints.noEdgeToInitialNode());
 
