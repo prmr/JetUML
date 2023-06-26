@@ -54,6 +54,7 @@ public class TestSequenceDiagramValidation
 	private final CallNode aCallNode = new CallNode();
 	private final NoteNode aNoteNode = new NoteNode();
 	private final CallEdge aCallEdge = new CallEdge();
+	private final ReturnEdge aReturnEdge = new ReturnEdge();
 	private final CallEdge aConstructor = new ConstructorEdge();
 
 	private Diagram diagram()
@@ -229,6 +230,109 @@ public class TestSequenceDiagramValidation
 		callEdge3.connect(call1, call3);
 		diagram().addEdge(callEdge3);
 		
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testMultipleRoots()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		aImplicitParameterNode.addChild(aCallNode);
+		aImplicitParameterNode.addChild(new CallNode());
+		assertFalse(aValidator.isValid());
+	}
+	
+	/// -------------- 
+	
+	@Test
+	void testReturnCallNodeToNoteNode()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		aImplicitParameterNode.addChild(aCallNode);
+		diagram().addRootNode(aNoteNode);
+		aReturnEdge.connect(aCallNode, aNoteNode);
+		diagram().addEdge(aReturnEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testReturnNodeToNoteNode()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		aImplicitParameterNode.addChild(aCallNode);
+		diagram().addRootNode(aNoteNode);
+		aReturnEdge.connect(aCallNode, aNoteNode);
+		diagram().addEdge(aReturnEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testReturnImplicitParameterToCall()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aReturnEdge.connect(aImplicitParameterNode, aCallNode);
+		diagram().addEdge(aReturnEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testReturnToImplicitParameter()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aReturnEdge.connect(aCallNode, aImplicitParameterNode);
+		diagram().addEdge(aReturnEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testReturnToNonCaller()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		Node node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		Node node3 = new ImplicitParameterNode();
+		diagram().addRootNode(node3);
+		CallNode callNode1 = new CallNode();
+		CallNode callNode2 = new CallNode();
+		CallNode callNode3 = new CallNode();
+		aImplicitParameterNode.addChild(callNode1);
+		node2.addChild(callNode2);
+		node3.addChild(callNode3);
+		Edge edge1 = new CallEdge();
+		edge1.connect(callNode1, callNode2);
+		diagram().addEdge(edge1);
+		Edge edge2 = new CallEdge();
+		edge2.connect(callNode2, callNode3);
+		diagram().addEdge(edge2);
+		
+		Edge returnEdge = new ReturnEdge();
+		returnEdge.connect(callNode3, callNode1);
+		diagram().addEdge(returnEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testReturnFromSelfCall()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		CallNode callNode1 = new CallNode();
+		CallNode callNode2 = new CallNode();
+		aImplicitParameterNode.addChild(callNode1);
+		aImplicitParameterNode.addChild(callNode2);
+		
+		Edge edge1 = new CallEdge();
+		edge1.connect(callNode1, callNode2);
+		diagram().addEdge(edge1);
+				
+		Edge returnEdge = new ReturnEdge();
+		returnEdge.connect(callNode2, callNode1);
+		diagram().addEdge(returnEdge);
 		assertFalse(aValidator.isValid());
 	}
 }

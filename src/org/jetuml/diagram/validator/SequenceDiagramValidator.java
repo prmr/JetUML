@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.diagram.validator;
 
+import java.util.List;
 import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
@@ -31,7 +32,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
 /**
  * Validator for sequence diagrams.
@@ -41,7 +41,9 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
 			SequenceDiagramValidator::constraintCallEdgeBetweenCallNodes,
-			SequenceDiagramSemanticConstraints.returnEdge());
+			SequenceDiagramValidator::constraintMaxOneCaller,
+			SequenceDiagramValidator::constraintReturnEdgeBetweenCallNodes,
+			SequenceDiagramValidator::constraintReturnsToCaller );
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ImplicitParameterNode.class,
@@ -71,7 +73,20 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	protected boolean hasValidDiagramNodes()
 	{
 		return diagram().rootNodes().stream()
-				.allMatch(node -> node.getClass() != CallNode.class);
+				.allMatch(node -> node.getClass() != CallNode.class) && maxOneRoot();
+	}
+	
+	/*
+	 * There can be at most one call node without a caller
+	 */
+	private boolean maxOneRoot()
+	{
+		return diagram().allNodes().stream()							// Nodes
+				.filter(CallNode.class::isInstance)						// Call nodes
+				.map(node -> diagram().edgesTo(node, CallEdge.class))	// Lists of callers to call nodes
+				.mapToInt(List::size)									// Size of such lists
+				.filter(nbOfCalleers -> nbOfCalleers == 0)				// Number of cases call nodes with no callers
+				.count() <= 1;
 	}
 	
 	/*
@@ -83,13 +98,41 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 				pEdge.end().getClass() != CallNode.class));
 	}
 	
-//	/*
-//	 * There can be at most one caller to a call node. 
-//	 */
-//	private static boolean constraintMaxOneCaller(Edge pEdge, Diagram pDiagram)
-//	{
-//		pDiagram.edges().stream()
-//			.map(edge -> pDiagram.
-//			
-//	}
+	/*
+	 * A return can only be between call nodes
+	 */
+	private static boolean constraintReturnEdgeBetweenCallNodes(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge instanceof ReturnEdge && (pEdge.start().getClass() != CallNode.class ||
+				pEdge.end().getClass() != CallNode.class));
+	}
+	
+	/*
+	 * There can be at most one caller to a call node. 
+	 */
+	private static boolean constraintMaxOneCaller(Edge pEdge, Diagram pDiagram)
+	{
+		return pDiagram.allNodes().stream()								// Nodes
+				.filter(CallNode.class::isInstance)						// Call nodes
+				.map(node -> pDiagram.edgesTo(node, CallEdge.class))	// Lists of callers to call nodes
+				.mapToInt(List::size)									// Size of such lists
+				.allMatch(size -> size <= 1);
+	}
+	
+	/*
+	 * A return edge must return to its caller, which must be a different node.
+	 */
+	private static boolean constraintReturnsToCaller(Edge pEdge, Diagram pDiagram)
+	{
+		if( pEdge.getClass() != ReturnEdge.class )
+		{
+			return true;
+		}
+		List<Edge> calls = pDiagram.edgesTo(pEdge.start(), CallEdge.class);
+		if(calls.size() != 1) 
+		{
+			return false;
+		}
+		return pEdge.end() == calls.get(0).start() && pEdge.end().getParent() != pEdge.start().getParent();
+	}
 }
