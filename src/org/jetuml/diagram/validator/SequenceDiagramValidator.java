@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2023 by McGill University.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.diagram.validator;
 
 import java.util.Set;
@@ -11,7 +31,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
@@ -47,15 +66,11 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 
 	/**
 	 * Root nodes contain no call nodes.
-	 * Point nodes are connected
 	 */
 	@Override
 	protected boolean hasValidDiagramNodes()
 	{
 		return diagram().rootNodes().stream()
-				.allMatch(node -> node.getClass() != CallNode.class) &&
-				diagram().rootNodes().stream()
-				.filter(PointNode.class::isInstance)
-				.allMatch(node -> diagram().edgesConnectedTo(node).iterator().hasNext());
+				.allMatch(node -> node.getClass() != CallNode.class);
 	}
 }
