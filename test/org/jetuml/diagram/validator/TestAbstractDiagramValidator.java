@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -118,5 +119,18 @@ public class TestAbstractDiagramValidator
 		aNoteEdge.connect(aClassNode, aClassNode );
 		diagram().addEdge(aNoteEdge);
 		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDuplicatedNoteEdge()
+	{
+		diagram().addRootNode(aClassNode);
+		diagram().addRootNode(aNoteNode1);
+		Edge edge1 = new NoteEdge();
+		Edge edge2 = new NoteEdge();
+		edge1.connect(aClassNode, aNoteNode1);
+		edge2.connect(aClassNode, aNoteNode1);
+		diagram().addEdge(edge1);
+		diagram().addEdge(edge2);
 	}
 }
