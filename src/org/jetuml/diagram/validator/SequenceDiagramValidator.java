@@ -31,7 +31,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.diagram.validator.constraints.EdgeSemanticConstraints;
 import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstraints;
 
 /**
@@ -40,7 +39,8 @@ import org.jetuml.diagram.validator.constraints.SequenceDiagramSemanticConstrain
 public class SequenceDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			EdgeSemanticConstraints.maxEdges(1), 
+			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
+			SequenceDiagramValidator::constraintCallEdgeBetweenCallNodes,
 			SequenceDiagramSemanticConstraints.returnEdge());
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
@@ -73,4 +73,23 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class);
 	}
+	
+	/*
+	 * A call or constructor edge (subtype of CallEdge) can only be between call nodes
+	 */
+	private static boolean constraintCallEdgeBetweenCallNodes(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge instanceof CallEdge && (pEdge.start().getClass() != CallNode.class ||
+				pEdge.end().getClass() != CallNode.class));
+	}
+	
+//	/*
+//	 * There can be at most one caller to a call node. 
+//	 */
+//	private static boolean constraintMaxOneCaller(Edge pEdge, Diagram pDiagram)
+//	{
+//		pDiagram.edges().stream()
+//			.map(edge -> pDiagram.
+//			
+//	}
 }

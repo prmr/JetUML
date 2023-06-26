@@ -10,6 +10,8 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.AssociationEdge;
+import org.jetuml.diagram.edges.CallEdge;
+import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
@@ -51,6 +53,8 @@ public class TestSequenceDiagramValidation
 	private final ImplicitParameterNode aImplicitParameterNode = new ImplicitParameterNode();
 	private final CallNode aCallNode = new CallNode();
 	private final NoteNode aNoteNode = new NoteNode();
+	private final CallEdge aCallEdge = new CallEdge();
+	private final CallEdge aConstructor = new ConstructorEdge();
 
 	private Diagram diagram()
 	{
@@ -125,14 +129,106 @@ public class TestSequenceDiagramValidation
 		assertFalse(aValidator.isValid());
 	}
 	
-//	@Test
-//	void callEdgeToPointNode()
-//	{
-//		diagram().addRootNode(aImplicitParameterNode);
-//		aImplicitParameterNode.addChild(aCallNode);
-//		diagram().addRootNode(aPointNode);
-//		aCallEdge.connect(aCallNode, aPointNode);
-//		diagram().addEdge(aCallEdge);
-//		assertFalse(aValidator.isValid());
-//	}
+	@Test
+	void testCallNodeToNoteNode()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		aImplicitParameterNode.addChild(aCallNode);
+		diagram().addRootNode(aNoteNode);
+		aCallEdge.connect(aCallNode, aNoteNode);
+		diagram().addEdge(aCallEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testConstructorNodeToNoteNode()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		aImplicitParameterNode.addChild(aCallNode);
+		diagram().addRootNode(aNoteNode);
+		aConstructor.connect(aCallNode, aNoteNode);
+		diagram().addEdge(aConstructor);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testImplicitParameterToCall()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aCallEdge.connect(aImplicitParameterNode, aCallNode);
+		diagram().addEdge(aCallEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testImplicitParameterToCall2()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aConstructor.connect(aImplicitParameterNode, aCallNode);
+		diagram().addEdge(aConstructor);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testCallToImplicitParameter()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aCallEdge.connect(aCallNode, aImplicitParameterNode);
+		diagram().addEdge(aCallEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testCallToImplicitParameter2()
+	{
+		diagram().addRootNode(aImplicitParameterNode);
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		diagram().addRootNode(node2);
+		node2.addChild(aCallNode);
+		aConstructor.connect(aCallNode, aImplicitParameterNode);
+		diagram().addEdge(aConstructor);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testMultipleCallers()
+	{
+		ImplicitParameterNode object1 = new ImplicitParameterNode();
+		CallNode call1 = new CallNode();
+		diagram().addRootNode(object1);
+		object1.addChild(call1);
+		
+		ImplicitParameterNode object2 = new ImplicitParameterNode();
+		CallNode call2 = new CallNode();
+		diagram().addRootNode(object2);
+		object1.addChild(call2);
+		
+		ImplicitParameterNode object3 = new ImplicitParameterNode();
+		CallNode call3 = new CallNode();
+		diagram().addRootNode(object3);
+		object1.addChild(call3);
+		
+		Edge callEdge1 = new CallEdge();
+		callEdge1.connect(call1, call2);
+		diagram().addEdge(callEdge1);
+		
+		Edge callEdge2 = new CallEdge();
+		callEdge2.connect(call2, call3);
+		diagram().addEdge(callEdge2);
+		
+		Edge callEdge3 = new CallEdge();
+		callEdge3.connect(call1, call3);
+		diagram().addEdge(callEdge3);
+		
+		assertFalse(aValidator.isValid());
+	}
 }
