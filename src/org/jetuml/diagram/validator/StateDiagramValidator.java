@@ -30,7 +30,6 @@ import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.diagram.validator.constraints.StateDiagramSemanticConstraints;
 
 /**
  * Validator for state diagrams.
@@ -39,8 +38,8 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(2),
-			StateDiagramSemanticConstraints.noEdgeFromFinalNode(),
-			StateDiagramSemanticConstraints.noEdgeToInitialNode());
+			StateDiagramValidator::constraintValidTransitionEdgeStartNode,
+			StateDiagramValidator::constraintValidTransitionEdgeEndNode);
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			StateNode.class,
@@ -60,5 +59,25 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 	{
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.STATE;
+	}
+	
+	/*
+	 * A transition can only start in an initial node or a state node
+	 */
+	private static boolean constraintValidTransitionEdgeStartNode(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge.getClass() == StateTransitionEdge.class && 
+				pEdge.start().getClass() != InitialStateNode.class &&
+				 pEdge.start().getClass() != StateNode.class);
+	}
+	
+	/*
+	 * A transition can only end in an final node or a state node or a note node
+	 */
+	private static boolean constraintValidTransitionEdgeEndNode(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge.getClass() == StateTransitionEdge.class && 
+				 pEdge.end().getClass() != FinalStateNode.class && 
+				 pEdge.end().getClass() != StateNode.class);
 	}
 }
