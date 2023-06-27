@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2020-2023 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -24,76 +24,55 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSerializationContext
 {
 	private SerializationContext aContext;
-	private Diagram aGraph;
-	private PackageNode aPackage1; // Root
-	private PackageNode aPackage2; // Child of aPackage1
-	private ClassNode aClassNode1; // Root
-	private ClassNode aClassNode2; // Child of aPackage1
-	private ClassNode aClassNode3; // Child of aPackage2
-	private NoteNode aNoteNode; // Root
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private PackageNode aPackage1 = new PackageNode(); // Root
+	private PackageNode aPackage2 = new PackageNode(); // Child of aPackage1
+	private ClassNode aClassNode1= new ClassNode(); // Root
+	private ClassNode aClassNode2 = new ClassNode(); // Child of aPackage1
+	private ClassNode aClassNode3 = new ClassNode(); // Child of aPackage2
+	private NoteNode aNoteNode = new NoteNode(); // Root
 	
-	@BeforeAll
-	public static void setupClass()
+	private void loadNodes()
 	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		aGraph = new Diagram(DiagramType.CLASS);
-		aPackage1 = new PackageNode();
-		aPackage2 = new PackageNode();
-		aClassNode1 = new ClassNode();
-		aClassNode2 = new ClassNode();
-		aClassNode3 = new ClassNode();
-		aNoteNode = new NoteNode();
+		aDiagram.addRootNode(aPackage1);
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aNoteNode);
 		aPackage1.addChild(aPackage2);
 		aPackage1.addChild(aClassNode2);
 		aPackage2.addChild(aClassNode3);
 	}
 	
-	private void loadNodes()
-	{
-		aGraph.addRootNode(aPackage1);
-		aGraph.addRootNode(aClassNode1);
-		aGraph.addRootNode(aNoteNode);
-	}
-	
 	@Test
-	public void textInit()
+	void textInit()
 	{
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext(aDiagram);
 		assertEquals(0, size());
-		assertSame(aGraph, aContext.diagram());
+		assertSame(aDiagram, aContext.diagram());
 	}
 	
 	@Test 
-	public void testMultipleInsertions()
+	void testMultipleInsertions()
 	{
 		loadNodes();
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext(aDiagram);
 	}
 	
 	@Test 
-	public void testBasicRetrieval()
+	void testBasicRetrieval()
 	{
 		loadNodes();
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext(aDiagram);
 		assertEquals(6, size());
 		boolean[] slots = new boolean[6];
 		for( Node node : aContext )
@@ -119,5 +98,4 @@ public class TestSerializationContext
 		}
 		return size;
 	}
-	
 }
