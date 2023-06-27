@@ -21,7 +21,6 @@
 package org.jetuml.persistence;
 
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.Node;
 
 /**
  * A serialization context automatically finds all the nodes
@@ -40,46 +39,7 @@ public class SerializationContext extends AbstractContext
 	public SerializationContext(Diagram pDiagram)
 	{
 		super(pDiagram);
-		getAllNodes(pDiagram);
-	}
-	
-	/**
-	 * Adds a node to the context if it is not already there. Its identifier
-	 * is automatically defined. If the node is already in the 
-	 * context, it is not added.
-	 * 
-	 * @param pNode The node to add.
-	 * @pre pNode != null;
-	 * @pre !aNodes.containsKey(pNode)
-	 */
-	private void addNode(Node pNode)
-	{
-		assert pNode != null;
-		assert !aNodes.containsKey(pNode);
-		aNodes.put(pNode, aNodes.size());
-	}
-	
-	private void getAllNodes(Diagram pDiagram)
-	{
-		for( Node node : pDiagram.rootNodes() )
-		{
-			addNode(node);
-			if( node.getChildren().size() > 0 )
-			{
-				addChildren(node);
-			}
-		}
-	}
-	
-	private void addChildren(Node pParent)
-	{
-		for( Node node : pParent.getChildren() )
-		{
-			addNode(node);
-			if( node.getChildren().size() > 0  )
-			{
-				addChildren(node);
-			}
-		}
+		pDiagram.allNodes()
+				.forEach(node -> aNodes.put(node, aNodes.size()));
 	}
 }

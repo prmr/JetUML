@@ -53,7 +53,7 @@ public abstract class AbstractContext implements Iterable<Node>
 	/**
 	 * @return The diagram associated with this context. Never null.
 	 */
-	public Diagram pDiagram()
+	public Diagram diagram()
 	{
 		return aDiagram;
 	}

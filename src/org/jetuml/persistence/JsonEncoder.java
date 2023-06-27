@@ -91,7 +91,7 @@ public final class JsonEncoder
 	private static JsonArray encodeEdges(AbstractContext pContext)
 	{
 		JsonArray edges = new JsonArray();
-		for( Edge edge : pContext.pDiagram().edges() ) 
+		for( Edge edge : pContext.diagram().edges() ) 
 		{
 			JsonObject object = toJSONObject(edge.properties());
 			object.put("type", edge.getClass().getSimpleName());

@@ -79,7 +79,7 @@ public class TestSerializationContext
 	{
 		aContext = new SerializationContext(aGraph);
 		assertEquals(0, size());
-		assertSame(aGraph, aContext.pDiagram());
+		assertSame(aGraph, aContext.diagram());
 	}
 	
 	@Test 

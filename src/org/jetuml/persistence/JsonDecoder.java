@@ -92,7 +92,7 @@ public final class JsonDecoder
 			restoreChildren();
 			restoreRootNodes();
 			decodeEdges();
-			return aContext.pDiagram();
+			return aContext.diagram();
 		}
 		catch( JsonException exception )
 		{
@@ -199,7 +199,7 @@ public final class JsonDecoder
 		{
 			if( !node.hasParent() )
 			{
-				aContext.pDiagram().addRootNode(node);
+				aContext.diagram().addRootNode(node);
 			}
 		}
 	}
@@ -262,7 +262,7 @@ public final class JsonDecoder
 					throw new DeserializationException(Category.STRUCTURAL, "At least one edge vertex cannot be found");
 				}
 				edge.connect(aContext.getNode(startNodeId), aContext.getNode(endNodeId));
-				aContext.pDiagram().addEdge(edge);
+				aContext.diagram().addEdge(edge);
 			}
 			catch (ReflectiveOperationException exception)
 			{

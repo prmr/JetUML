@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.persistence;
 
+import java.util.Map;
+
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Node;
 
@@ -63,14 +65,10 @@ public class DeserializationContext extends AbstractContext
 	public Node getNode(int pId)
 	{
 		assert idExists(pId);
-		for( Node node : this )
-		{
-			if( aNodes.get(node) == pId )
-			{
-				return node;
-			}
-		}
-		assert false;
-		return null;
+		return aNodes.entrySet().stream()
+			.filter(entry -> entry.getValue() == pId)
+			.map(Map.Entry::getKey)
+			.findFirst()
+			.get();
 	}
 }

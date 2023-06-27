@@ -66,7 +66,7 @@ public class TestDeserializationContext
 	{
 		aContext = new DeserializationContext(aDiagram);
 		assertEquals(0, size());
-		assertSame(aDiagram, aContext.pDiagram());
+		assertSame(aDiagram, aContext.diagram());
 	}
 	
 	@Test
