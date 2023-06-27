@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.jetuml.persistence;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jetuml.diagram.Diagram;
@@ -35,7 +35,7 @@ import org.jetuml.diagram.Node;
  */
 public abstract class AbstractContext implements Iterable<Node>
 {
-	protected final Map<Node, Integer> aNodes = new HashMap<>();
+	protected final Map<Node, Integer> aNodes = new LinkedHashMap<>();
 	private final Diagram aDiagram;
 	
 	/**

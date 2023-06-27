@@ -20,9 +20,14 @@
  *******************************************************************************/
 package org.jetuml.persistence;
 
+import static org.jetuml.testutils.CollectionAssertions.assertThat;
+import static org.jetuml.testutils.CollectionAssertions.hasElementsSameAs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -88,6 +93,32 @@ public class TestSerializationContext
 			}
 		}
 	}
+	
+	@Test
+	void testMaintainNodeOrder()
+	{
+		loadNodes();
+		aContext = new SerializationContext(aDiagram);
+		assertThat(nodesInsideContext(), hasElementsSameAs, 
+				aPackage1, aPackage2, aClassNode3, aClassNode2, aClassNode1, aNoteNode);
+	}
+	
+	@Test
+	void testMaintainNodeOrder2()
+	{
+		Node node1 = new NoteNode();
+		Node node2 = new NoteNode();
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aDiagram.addRootNode(aClassNode3);
+		aDiagram.addRootNode(aNoteNode);
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+
+		aContext = new SerializationContext(aDiagram);
+		assertThat(nodesInsideContext(), hasElementsSameAs, 
+				aClassNode1, aClassNode2, aClassNode3, aNoteNode, node1, node2);
+	}
 
 	private int size()
 	{
@@ -97,5 +128,12 @@ public class TestSerializationContext
 			size++;
 		}
 		return size;
+	}
+	
+	private List<Node> nodesInsideContext()
+	{
+		List<Node> result = new ArrayList<>();
+		aContext.forEach(node -> result.add(node));
+		return result;
 	}
 }
