@@ -672,14 +672,16 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private void mouseDragged(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		Point lastMousePoint = aLastMousePoint;
+		
+		// The second condition in the if is necessary in the case where a single 
+		// element is selected with the Ctrl button is down, which immediately deselects it.
 		if(aDragMode == DragMode.DRAG_MOVE && !aSelected.isEmpty() ) 
-		{
-			// The second condition in the if is necessary in the case where a single 
-			// element is selected with the Ctrl button is down, which immediately deselects it.
-			Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
+		{	
+			// The local variable dragDirection cannot be inlined 
+			// because moveSelection changes aLastMousePoint
+			Direction dragDirection = Direction.fromLine(aLastMousePoint, mousePoint);
 			moveSelection(mousePoint);
-			aHandler.interactionTo(bounds, Direction.fromLine(lastMousePoint, mousePoint));
+			aHandler.interactionTo(aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected), dragDirection);
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
