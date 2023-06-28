@@ -121,10 +121,14 @@ public final class Direction
 	}
 	
 	/**
-	 * @param pStart The start angle (inclusive)
-	 * @param pEnd The end angle (exclusive)
+	 * Determines if this direction is strictly between the start and end directions.
+	 * pStart and pEnd must be different. If they are at 180 degrees of each other
+	 * this method returns false;
+	 * 
+	 * @param pStart The start direction (exclusive)
+	 * @param pEnd The end direction (exclusive)
 	 * @return True if this direction represents an angle between pStart (inclusive) and pEnd (exclusive).
-	 * @pre pStart != null && pEnd != null
+	 * @pre pStart != null && pEnd != null && pStart != pEnd.
 	 */
 	public boolean isBetween( Direction pStart, Direction pEnd)
 	{
@@ -137,6 +141,38 @@ public final class Direction
 			return false;
 		}
 		return Math.abs(start - end) < DEGREES_IN_HALF_CIRCLE;			
+	}
+		
+	/**
+	 * @return true if this direction has any value in the west cardinal direction
+	 */
+	public boolean isWesterly()
+	{
+		return aAngleInDegrees > DEGREES_IN_HALF_CIRCLE && aAngleInDegrees < DEGREES_IN_CIRCLE;
+	}
+	
+	/**
+	 * @return true if this direction has any value in the east cardinal direction
+	 */
+	public boolean isEasterly()
+	{   
+		return aAngleInDegrees > 0 && aAngleInDegrees < DEGREES_IN_HALF_CIRCLE;
+	}  
+	
+	/**
+	 * @return true if this direction has any value in the north cardinal direction
+	 */
+	public boolean isNortherly()
+	{
+		return aAngleInDegrees > DEGREES_IN_CIRCLE * 3 / 4 || aAngleInDegrees < DEGREES_IN_HALF_CIRCLE / 2;
+	}
+	
+	/**
+	 * @return true if this direction has any value in the south cardinal direction
+	 */
+	public boolean isSoutherly()
+	{
+		return aAngleInDegrees > DEGREES_IN_HALF_CIRCLE / 2 && aAngleInDegrees < DEGREES_IN_CIRCLE * 3 / 4;
 	}
 	
 	/*

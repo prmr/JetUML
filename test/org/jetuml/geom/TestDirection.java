@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class TestDirection
 {	
@@ -121,6 +122,86 @@ public class TestDirection
 		assertTrue(Direction.fromAngle(pTarget)
 				.isBetween(Direction.fromAngle(pStart), Direction.fromAngle(pEnd)));
 	}
+	
+	@Test
+	void testIsBetween_FromOpposites()
+	{
+		assertFalse(Direction.fromAngle(270).isBetween(Direction.NORTH, Direction.SOUTH));
+		assertFalse(Direction.fromAngle(270).isBetween(Direction.SOUTH, Direction.NORTH));
+		assertFalse(Direction.fromAngle(270).isBetween(Direction.EAST, Direction.WEST));
+		assertFalse(Direction.fromAngle(270).isBetween(Direction.WEST, Direction.EAST));
+		for( int i =0; i < 360; i++ )
+		{
+			assertFalse(Direction.fromAngle((i+45)%360).isBetween(Direction.fromAngle(i), Direction.fromAngle((i+180)%360)));
+
+		}
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {181,182,183,190,200,210,220,230,240,250,260,270,280,
+			290,300,310,320,330,340,350,355,356,357,358,359})
+	void testIsWesterly_True(int pAngle)
+	{
+		assertTrue(Direction.fromAngle(pAngle).isWesterly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {0, 1,2,3,5,10,20,30,40,50,60,70,80,90,100,110,120,130,
+			140,150,160,170,175,176,177,178,179,180})
+	void testIsWesterly_False(int pAngle)
+	{
+		assertFalse(Direction.fromAngle(pAngle).isWesterly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {271,272,273,275,280,290,300,310,320,330,340,350,355,
+			359,0,1,2,3,5,10,20,30,40,50,60,70,80,85,87,88,89})
+	void testIsNortherly_True(int pAngle)
+	{
+		assertTrue(Direction.fromAngle(pAngle).isNortherly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {90, 91,92,100,110,120,130,140,150,160,170,180,190,200,
+			210,220,230,240,250,260,265,268,269, 270})
+	void testIsNortherly_False(int pAngle)
+	{
+		assertFalse(Direction.fromAngle(pAngle).isNortherly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {1,2,3,5,10,20,30,40,50,60,70,80,90,100,110,120,130,
+			140,150,160,17,175,178,179})
+	void testIsEasterly_True(int pAngle)
+	{
+		assertTrue(Direction.fromAngle(pAngle).isEasterly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {180,181,190,200,210,220,230,240,250,260,270,280,290,
+			300,310,320,330,340,350,355,356,358,359,0})
+	void testIsEaterly_False(int pAngle)
+	{
+		assertFalse(Direction.fromAngle(pAngle).isEasterly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {91,92,100,110,120,130,140,150,160,170,180,190,200,
+			210,220,230,240,250,260,265,266,267,268,269})
+	void testIsSoutherly_True(int pAngle)
+	{
+		assertTrue(Direction.fromAngle(pAngle).isSoutherly());
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = {270,271,280,290,300,310,320,330,340,350,0,10,20,30,
+			40,50,60,70,80,85,87,88,89,90})
+	void testIsSoutherly_False(int pAngle)
+	{
+		assertFalse(Direction.fromAngle(pAngle).isSoutherly());
+	}
+	
+	
 	
 	@ParameterizedTest
 	@CsvSource({"0,10,5", 		// Quadrant 1 clockwise 
