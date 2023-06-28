@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class TestDirection
@@ -89,25 +90,68 @@ public class TestDirection
 				.filter(angle -> angle % 25 == 0);
 	}
 	
-	@Test
-	void testIsBetween_Boundaries()
+	@ParameterizedTest
+	@CsvSource({"0,5,10", 		// Quadrant 1 clockwise 
+				"10,5,0", 		// Quadrant 1 counter clockwise
+				"50,60,70", 	// Q2C
+				"70,60,40", 	// Q2CC
+				"100,101,102", 	// Q3C
+				"102,101,100", 	// Q3CC
+				"280,290,300", 	// Q4C
+				"300,290,280", 	// Q4CC
+				"5,45,80", 		// Crossing Q1Q2 C
+				"80,45,5", 		// Crossing Q1Q2 CC
+				"45,90,100", 	// Crossing Q2Q3 C
+				"100,90,45", 	// Crossing Q2Q3 CC
+				"100,180,270", 	// Crossing Q3Q4 C
+				"270,180,100", 	// Crossing Q3Q4 CC
+				"290,5,45", 	// Crossing Q4Q1 C
+				"45,5,290",		// Crossing Q4Q1 CC
+				"44,45,46",	    // Q1Q2 boundary C
+				"46,45,44",	    // Q1Q2 boundary CC
+				"89,90,91",	    // Q2Q3 boundary C
+				"91,90,89",	    // Q2Q3 boundary CC
+				"179,180,181",	// Q3Q4 boundary C
+				"181,180,179",	// Q3Q4 boundary CC
+				"359,0,1",	    // Q4Q1 boundary C
+				"1,0,359",	    // Q4Q1 boundary CC
+	})
+	void testIsBetween_True(int pStart, int pTarget, int pEnd)
 	{
-		assertTrue(Direction.fromAngle(0).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
-		assertFalse(Direction.fromAngle(5).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
+		assertTrue(Direction.fromAngle(pTarget)
+				.isBetween(Direction.fromAngle(pStart), Direction.fromAngle(pEnd)));
 	}
 	
-	@Test
-	void testIsBetween_True()
+	@ParameterizedTest
+	@CsvSource({"0,10,5", 		// Quadrant 1 clockwise 
+				"5,10,0", 		// Quadrant 1 counter clockwise
+				"50,70,60", 	// Q2C
+				"60,70,40", 	// Q2CC
+				"100,102,101", 	// Q3C
+				"101,102,100", 	// Q3CC
+				"280,300,290", 	// Q4C
+				"290,300,280", 	// Q4CC
+				"5,80,45", 		// Crossing Q1Q2 C
+				"45,80,5", 		// Crossing Q1Q2 CC
+				"45,100,90", 	// Crossing Q2Q3 C
+				"90,100,45", 	// Crossing Q2Q3 CC
+				"100,270,180", 	// Crossing Q3Q4 C
+				"180,270,100", 	// Crossing Q3Q4 CC
+				"290,45,5", 	// Crossing Q4Q1 C
+				"5,45,290",		// Crossing Q4Q1 CC
+				"44,46,45",	    // Q1Q2 boundary C
+				"45,46,44",	    // Q1Q2 boundary CC
+				"89,91,90",	    // Q2Q3 boundary C
+				"90,91,89",	    // Q2Q3 boundary CC
+				"179,181,180",	// Q3Q4 boundary C
+				"180,181,179",	// Q3Q4 boundary CC
+				"359,1,0",	    // Q4Q1 boundary C
+				"0,1,359",	    // Q4Q1 boundary CC
+	})
+	void testIsBetween_False(int pStart, int pTarget, int pEnd)
 	{
-		assertTrue(Direction.fromAngle(5).isBetween(Direction.fromAngle(0), Direction.fromAngle(10)));
-		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
-	}
-	
-	@Test
-	void testIsBetween_False()
-	{
-		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
-		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(30), Direction.fromAngle(35)));
+		assertFalse(Direction.fromAngle(pTarget)
+				.isBetween(Direction.fromAngle(pStart), Direction.fromAngle(pEnd)));
 	}
 	
 	@Test

@@ -49,6 +49,7 @@ public final class Direction
 	// CSON:
 
 	private static final int DEGREES_IN_CIRCLE = 360;
+	private static final int DEGREES_IN_HALF_CIRCLE = DEGREES_IN_CIRCLE / 2;
 
 	private final int aAngleInDegrees;
 
@@ -127,9 +128,33 @@ public final class Direction
 	 */
 	public boolean isBetween( Direction pStart, Direction pEnd)
 	{
-		return aAngleInDegrees >= pStart.aAngleInDegrees && aAngleInDegrees < pEnd.aAngleInDegrees;
+		// Adapted to Java from a solution by iforce2d 
+		// https://stackoverflow.com/a/23550032
+		int start = normalize(pStart.aAngleInDegrees - aAngleInDegrees);
+		int end = normalize(pEnd.aAngleInDegrees - aAngleInDegrees);
+		if( start * end >= 0 )
+		{
+			return false;
+		}
+		return Math.abs(start - end) < DEGREES_IN_HALF_CIRCLE;			
 	}
-
+	
+	/*
+	 * Shifts the angle to the ]-180,180] range.
+	 */
+	private static int normalize(int pAngle)
+	{
+		if( pAngle > DEGREES_IN_HALF_CIRCLE )
+		{
+			return pAngle - DEGREES_IN_CIRCLE;
+		}
+		if( pAngle <= -DEGREES_IN_HALF_CIRCLE )
+		{
+			return pAngle + DEGREES_IN_CIRCLE;
+		}
+		return pAngle;
+	}
+	
 	/**
 	 * @return The direction as an angle between 0 (north) and 359.
 	 */
