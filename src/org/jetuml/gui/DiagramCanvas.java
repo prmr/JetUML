@@ -681,7 +681,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			// because moveSelection changes aLastMousePoint
 			Direction dragDirection = Direction.fromLine(aLastMousePoint, mousePoint);
 			moveSelection(mousePoint);
-			aHandler.interactionTo(aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected), dragDirection);
+			aHandler.interactionTo(aDiagramBuilder.renderer().getBoundsNotIncludingParents(aSelected), dragDirection);
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{

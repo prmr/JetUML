@@ -180,6 +180,15 @@ public interface DiagramRenderer
 	 */
 	Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements);
 	
+   	/**
+	 * @param pElements The elements whose bounds we are interested in. 
+	 * @return A rectangle that represents the bounding box of the 
+	 *     entire selection but exclusing the bounds of their parent nodes.
+	 * @pre pElements != null
+	 * @pre pElements.iterator().hasNext()
+	 */
+	Rectangle getBoundsNotIncludingParents(Iterable<DiagramElement> pElements);
+	
 	/**
 	 * @param pNode The node of interest.
 	 * @return The dimensions of the default version of this node, when it's just been

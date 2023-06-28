@@ -252,6 +252,21 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 	
 	@Override
+	public final Rectangle getBoundsNotIncludingParents(Iterable<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		assert pElements.iterator().hasNext();
+		Iterator<DiagramElement> elements = pElements.iterator();
+		DiagramElement next = elements.next();
+		Rectangle bounds = getBounds(next);
+		while( elements.hasNext() )
+		{
+			bounds = bounds.add(getBounds(elements.next()));
+		}
+		return bounds;
+	}
+	
+	@Override
 	public Dimension getDefaultDimension(Node pNode)
 	{
 		return ((NodeRenderer)rendererFor(pNode.getClass())).getDefaultDimension(pNode);

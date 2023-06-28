@@ -302,9 +302,18 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 			y = pBounds.getY(); 
 		}
 		
+		// Special case: if the viewport is not large enough for the entire
+		// selection, the use will experience unsettling jitter. 
+		// We prevent this by not auto-scrolling
 		ViewportProjection projection = getViewportProjection();
-		scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(x));
-		scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(y));
+		if( pBounds.getWidth() <= projection.width() )
+		{
+			scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(x));
+		}
+		if( pBounds.getHeight() <= projection.height() )
+		{
+			scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(y));
+		}
 	}
 	
 	/*

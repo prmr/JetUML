@@ -212,6 +212,22 @@ public final class ViewportProjection
 		}
 	}
 	
+	/**
+	 * @return The height of the viewport in pixels
+	 */
+	public int height()
+	{
+		return aViewportHeight;
+	}
+	
+	/**
+	 * @return The width of the viewport in pixels
+	 */
+	public int width()
+	{
+		return aViewportWidth;
+	}
+	
 	@Override
 	public String toString()
 	{
