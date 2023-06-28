@@ -34,6 +34,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -286,11 +287,24 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	}
 
 	@Override
-	public void interactionTo(Point pTo)
+	public void interactionTo(Point pTo, Rectangle pBounds, int pDeltaX, int pDeltaY)
 	{
+		// Compute point to reveal
+		int x = pBounds.getMaxX();
+		int y = pBounds.getMaxY();
+		
+		if( pDeltaX < 0 ) 	 // Going left, reverse coordinate
+		{
+			x = pBounds.getX(); 
+		}
+		if( pDeltaY < 0)	// Going up, reverse coordinate
+		{
+			y = pBounds.getY(); 
+		}
+		
 		ViewportProjection projection = getViewportProjection();
-		scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(pTo.getX()));
-		scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(pTo.getY()));
+		scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(x));
+		scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(y));
 	}
 	
 	/*

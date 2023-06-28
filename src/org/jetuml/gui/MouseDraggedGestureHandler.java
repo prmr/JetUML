@@ -21,6 +21,7 @@
 package org.jetuml.gui;
 
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
 
 /**
  * An object that can respond to the mouse being dragged.
@@ -31,6 +32,7 @@ public interface MouseDraggedGestureHandler
 	 * Indicates that a gesture moves to a point pTo.
 	 * 
 	 * @param pTo The point dragged to by the gesture.
+	 * @param pBounds Bounding box of the objects being dragged, before they are moved
 	 */
-	void interactionTo(Point pTo);
+	void interactionTo(Point pTo, Rectangle pBounds, int pDeltaX, int pDeltaY);
 }
