@@ -289,8 +289,16 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	public void interactionTo(Point pTo)
 	{
 		ViewportProjection projection = getViewportProjection();
-		((ScrollPane)((BorderPane)getContent()).getCenter()).setHvalue(projection.getAdjustedHValueToRevealX(pTo.getX()));
-		((ScrollPane)((BorderPane)getContent()).getCenter()).setVvalue(projection.getAdjustedVValueToRevealY(pTo.getY()));
+		scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(pTo.getX()));
+		scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(pTo.getY()));
+	}
+	
+	/*
+	 * Fetches the ScrollPane component that wraps the canvas from the scene graph
+	 */
+	private ScrollPane scrollPane()
+	{
+		return (ScrollPane)((BorderPane)getContent()).getCenter();
 	}
 	
 	private ViewportProjection getViewportProjection()

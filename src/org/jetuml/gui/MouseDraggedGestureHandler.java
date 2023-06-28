@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2020-2023 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -23,16 +23,14 @@ package org.jetuml.gui;
 import org.jetuml.geom.Point;
 
 /**
- * An object that can respond to the mouse being moved 
- * in a certain direction on the canvas.
+ * An object that can respond to the mouse being dragged.
  */
 public interface MouseDraggedGestureHandler
 {
 	/**
-	 * Indicates that a gesture from direction pFrom moves
-	 * a point pTo in the direction of pFrom.
+	 * Indicates that a gesture moves to a point pTo.
 	 * 
-	 * @param pTo The point revealed by the gesture.
+	 * @param pTo The point dragged to by the gesture.
 	 */
 	void interactionTo(Point pTo);
 }
