@@ -47,6 +47,7 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -676,11 +677,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			// The second condition in the if is necessary in the case where a single 
 			// element is selected with the Ctrl button is down, which immediately deselects it.
-			Point pointToReveal = computePointToReveal(mousePoint);
 			Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
 			moveSelection(mousePoint);
-			aHandler.interactionTo(pointToReveal, bounds, mousePoint.getX() - lastMousePoint.getX(),
-					mousePoint.getY() - lastMousePoint.getY());
+			aHandler.interactionTo(bounds, Direction.fromLine(lastMousePoint, mousePoint));
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
@@ -696,24 +695,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			aLastMousePoint = mousePoint;
 			activateRubberband(computeRubberband());
 		}
-	}
-	
-	// finds the point to reveal based on the entire selection
-	private Point computePointToReveal(Point pMousePoint)
-	{
-		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
-		int x = bounds.getMaxX();
-		int y = bounds.getMaxY();
-		
-		if( pMousePoint.getX() < aLastMousePoint.getX()) 	 // Going left, reverse coordinate
-		{
-			x = bounds.getX(); 
-		}
-		if( pMousePoint.getY() < aLastMousePoint.getY())	// Going up, reverse coordinate
-		{
-			y = bounds.getY(); 
-		}
-		return new Point(x, y);
 	}
 	
 	// TODO, include edges between selected nodes in the bounds check.

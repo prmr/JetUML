@@ -33,7 +33,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.validator.DiagramValidator;
-import org.jetuml.geom.Point;
+import org.jetuml.geom.Direction;
 import org.jetuml.geom.Rectangle;
 
 import javafx.beans.property.DoubleProperty;
@@ -287,17 +287,17 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	}
 
 	@Override
-	public void interactionTo(Point pTo, Rectangle pBounds, int pDeltaX, int pDeltaY)
+	public void interactionTo(Rectangle pBounds, Direction pDirection)
 	{
 		// Compute point to reveal
 		int x = pBounds.getMaxX();
 		int y = pBounds.getMaxY();
 		
-		if( pDeltaX < 0 ) 	 // Going left, reverse coordinate
+		if( pDirection.isWesterly() ) // Going left, reverse coordinate
 		{
 			x = pBounds.getX(); 
 		}
-		if( pDeltaY < 0)	// Going up, reverse coordinate
+		if( pDirection.isNortherly() )	// Going up, reverse coordinate
 		{
 			y = pBounds.getY(); 
 		}
