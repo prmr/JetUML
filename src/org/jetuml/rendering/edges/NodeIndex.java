@@ -76,7 +76,7 @@ public enum NodeIndex
 	 * @return the spacing in between connection points on pNodeFace. 
 	 * @pre pNodeFace != null && pAttachmentSide != null
 	 */
-	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
+	private static int spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
 	{
 		assert pNodeFace != null && pAttachmentSide != null;
 		if(pAttachmentSide.isHorizontal())

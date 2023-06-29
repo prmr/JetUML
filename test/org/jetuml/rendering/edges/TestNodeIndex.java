@@ -89,8 +89,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Side.TOP));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Side.TOP));
+		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.TOP));
+		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.TOP));
 	}
 	
 	@Test
@@ -98,8 +98,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Side.BOTTOM));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Side.BOTTOM));
+		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.BOTTOM));
+		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.BOTTOM));
 	}
 	
 	@Test
@@ -107,8 +107,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Side.RIGHT));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Side.RIGHT));
+		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.RIGHT));
+		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.RIGHT));
 	}
 	
 	@Test
@@ -116,8 +116,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Side.LEFT));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Side.LEFT));
+		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.LEFT));
+		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.LEFT));
 	}
 	
 	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
@@ -126,7 +126,7 @@ public class TestNodeIndex
 		{
 			Method method = NodeIndex.class.getDeclaredMethod("spaceBetweenConnectionPoints", Line.class, Side.class);
 			method.setAccessible(true);
-			return (float) method.invoke(null, pNodeFace, pAttachmentSide);
+			return (int) method.invoke(null, pNodeFace, pAttachmentSide);
 		}
 		catch(ReflectiveOperationException e)
 		{
