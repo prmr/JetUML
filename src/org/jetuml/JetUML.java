@@ -24,19 +24,25 @@ package org.jetuml;
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.Version;
+import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.DeserializationErrorAlert;
 import org.jetuml.gui.EditorFrame;
 import org.jetuml.gui.GuiUtils;
 import org.jetuml.gui.tips.TipDialog;
+import org.jetuml.persistence.DeserializationException;
+import org.jetuml.persistence.PersistenceService;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -68,7 +74,35 @@ public final class JetUML extends Application
 		pStage.setTitle(RESOURCES.getString("application.name"));
 		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 
-		pStage.setScene(new Scene(new EditorFrame(pStage, openWith())));
+		Optional<Diagram> diagramToOpen = Optional.empty();
+		Optional<File> fileToOpen = getFileToOpenIfPresent();
+		
+		/* For simplicity, the code below does not set up a stage just to serve
+		 * as a parent for the Alert dialog. The only consequence is that if
+		 * this dialog appears, a default "Java" icon will be shown in the OS
+		 * taskbar instead of the JetUML-branded icon. To show the JetUML
+		 * icon, the code needs to be extended to create an empty stage
+		 * and ensure the dialog shows up in the middle of the screen, before
+		 * exiting.
+		 */
+		try
+		{
+			if( fileToOpen.isPresent())
+			{
+				diagramToOpen = Optional.of(PersistenceService.read(fileToOpen.get()));
+			}
+		}
+		catch( IOException | DeserializationException exception )
+		{
+			Alert alert = new DeserializationErrorAlert(exception);
+			alert.showAndWait();
+			System.exit(0);
+		}
+		
+		EditorFrame editor = new EditorFrame(pStage);
+		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
+		pStage.setScene(new Scene(editor));
+		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
 		pStage.setOnCloseRequest(pWindowEvent -> 
@@ -84,8 +118,8 @@ public final class JetUML extends Application
 		}
 	}
 	
-	// If the first argument passed to the application is a valid file, open it.
-	private Optional<File> openWith()
+	// If the first argument passed to the application is a valid file
+	private Optional<File> getFileToOpenIfPresent()
 	{
 		List<String> parameters = getParameters().getUnnamed();
 		if( parameters.isEmpty() )

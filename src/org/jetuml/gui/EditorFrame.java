@@ -93,9 +93,9 @@ public class EditorFrame extends BorderPane
 	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
 	 * @param pMainStage The main stage used by the UMLEditor
-	 * @param pOpenWith An optional file to open the application with.
+	 * @param pOpenWith An optional diagram to open the application with.
 	 */
-	public EditorFrame(Stage pMainStage, Optional<File> pOpenWith) 
+	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
@@ -117,8 +117,6 @@ public class EditorFrame extends BorderPane
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTabIfNecessary();
-		
-		pOpenWith.ifPresent(this::open);
 		
 		setOnKeyPressed(e -> 
 		{
@@ -294,18 +292,30 @@ public class EditorFrame extends BorderPane
 		
 		try 
 		{
-			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile));
-			frame.setFile(pFile.getAbsoluteFile());
-			addRecentFile(pFile.getPath());
-			insertGraphFrameIntoTabbedPane(frame);
+			Diagram diagram = PersistenceService.read(pFile);
+			setOpenFileAsDiagram(pFile, diagram);
 		}
 		catch(IOException | DeserializationException exception) 
 		{
-//			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
 			Alert alert = new DeserializationErrorAlert(exception);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
+	}
+	
+	/**
+	 * Given a valid file and the diagram loaded from this file,
+	 * opens a new tab in the editor with this combination.
+	 * 
+	 * @param pFile A valid diagram file.
+	 * @param pDiagram The diagram loaded from the file.
+	 */
+	public void setOpenFileAsDiagram(File pFile, Diagram pDiagram)
+	{
+		DiagramTab frame = new DiagramTab(pDiagram);
+		frame.setFile(pFile.getAbsoluteFile());
+		addRecentFile(pFile.getPath());
+		insertGraphFrameIntoTabbedPane(frame);
 	}
 	
 	private List<NamedHandler> getOpenFileHandlers()

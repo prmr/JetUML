@@ -42,7 +42,7 @@ public class DeserializationErrorAlert extends Alert
 	/**
 	 * @param pException The exception received when opening a file.
 	 */
-	DeserializationErrorAlert(Exception pException)
+	public DeserializationErrorAlert(Exception pException)
 	{
 		super(AlertType.ERROR, "", ButtonType.OK);
 		assert pException instanceof IOException || pException instanceof DeserializationException;
