@@ -92,8 +92,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	/**
 	 * Draws pDiagram onto pGraphics.
 	 * 
-	 * @param pGraphics the graphics context where the
-	 *     diagram should be drawn.
+	 * @param pGraphics the graphics context where the diagram should be drawn.
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
@@ -115,8 +114,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	@Override
 	public Rectangle getBounds()
 	{
-		//When getBounds(pDiagram) is called to open an existing class diagram file,
-		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
+		// When getBounds(pDiagram) is called to open an existing class diagram
+		// file, aEdgeStorage is initially empty and needs to be filled to
+		// compute the diagram bounds.
 		if( aEdgeStorage.isEmpty() )
 		{
 			layout();
@@ -125,8 +125,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 
 	/**
-	 * Uses positional information of nodes and stored edges to layout and store 
-	 * the EdgePaths of edges in pDiagram.
+	 * Uses positional information of nodes and stored edges to layout and 
+	 * store the EdgePaths of edges in pDiagram.
 	 * @param pDiagram the diagram of interest
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
@@ -144,8 +144,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	/**
-	 * Plans the EdgePaths for all segmented edges in pDiagram with EdgePriority pEdgePriority.
-	 * @param pDiagram the diagram to layout
+	 * Plans the EdgePaths for all segmented edges with EdgePriority 
+	 * pEdgePriority.
 	 * @param pEdgePriority the edge priority level 
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 * @pre EdgePriority.isSegmented(pEdgePriority)
@@ -159,7 +159,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 				.sorted(Comparator.comparing(edge -> edge.start().position().getX()))
 				.collect(toList());
 				
-		while (!edgesToProcess.isEmpty())
+		while( !edgesToProcess.isEmpty() )
 		{
 			Edge currentEdge = edgesToProcess.get(0);
 			Side edgeDirection = attachedSide(currentEdge, currentEdge.start());
@@ -167,7 +167,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 			List<Edge> edgesToMergeStart = getEdgesToMergeStart(currentEdge, edgesToProcess);
 			List<Edge> edgesToMergeEnd = getEdgesToMergeEnd(currentEdge, edgesToProcess);	
 			//Determine if currendEdge should merge with other edges at its start node or end node
-			if (!edgesToMergeStart.isEmpty())
+			if( !edgesToMergeStart.isEmpty() )
 			{ 	
 				edgesToMergeStart.add(currentEdge);
 				edgesToProcess.removeAll(edgesToMergeStart);
@@ -974,8 +974,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	/**
-	 * Gets the connection point for pEdge on the pAttachmentSide of pNode. Checks with the diagram's EdgeStorage to find the
-	 * closest available connection point to the center point (NodeIndex ZERO). 
+	 * Gets the connection point for pEdge on the pAttachmentSide of pNode. 
+	 * Checks with the diagram's EdgeStorage to find the closest available 
+	 * connection point to the center point (NodeIndex ZERO). 
 	 * @param pNode the node of interest
 	 * @param pEdge the edge of interest
 	 * @return the Point where pEdge connects to pNode
@@ -999,10 +1000,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		{
 			int ordinal = 4 + (indexSign * offset);
 			NodeIndex index = NodeIndex.values()[ordinal];
-			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide); 
-			if(aEdgeStorage.connectionPointIsAvailable(indexPoint))
+			Point connectionPoint = index.toPoint(faceOfNode, pAttachmentSide); 
+			if(aEdgeStorage.connectionPointIsAvailable(connectionPoint))
 			{
-				return indexPoint;
+				return connectionPoint;
 			}
 		}
 		//If no connection point was available, return the point at NodeIndex MINUS_FOUR or PLUS_FOUR	
