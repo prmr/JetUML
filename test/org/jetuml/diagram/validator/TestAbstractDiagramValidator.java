@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
+import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -118,6 +120,39 @@ public class TestAbstractDiagramValidator
 		diagram().addRootNode(aClassNode);
 		aNoteEdge.connect(aClassNode, aClassNode );
 		diagram().addEdge(aNoteEdge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testDependencyEdgeToPointNode()
+	{
+		diagram().addRootNode(aClassNode);
+		diagram().addRootNode(aPointNode);
+		Edge edge = new DependencyEdge();
+		edge.connect(aClassNode, aPointNode);
+		diagram().addEdge(edge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testAggregationEdgeToPointNode()
+	{
+		diagram().addRootNode(aClassNode);
+		diagram().addRootNode(aPointNode);
+		Edge edge = new AggregationEdge();
+		edge.connect(aClassNode, aPointNode);
+		diagram().addEdge(edge);
+		assertFalse(aValidator.isValid());
+	}
+	
+	@Test
+	void testGeneralizationEdgeToPointNode()
+	{
+		diagram().addRootNode(aClassNode);
+		diagram().addRootNode(aPointNode);
+		Edge edge = new AggregationEdge();
+		edge.connect(aClassNode, aPointNode);
+		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
 	

@@ -41,7 +41,8 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	private static final Set<Class<? extends Edge>> UNIVERSAL_EDGES_TYPES = 
 			Set.of(NoteEdge.class);
 	private static final Set<EdgeConstraint> UNIVERSAL_CONSTRAINTS =
-			Set.of(AbstractDiagramValidator::constraintValidNoteEdge);
+			Set.of(AbstractDiagramValidator::constraintValidNoteEdge,
+					AbstractDiagramValidator::constraintNoEdgeToPointExceptNoteEdge);
 	
 	private final Diagram aDiagram;
 	private final Set<Class<? extends Node>> aValidNodeTypes = new HashSet<>();
@@ -165,6 +166,15 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 		}
 		return pEdge.start().getClass() != PointNode.class && pEdge.start().getClass() != NoteNode.class &&
 				pEdge.end().getClass() == NoteNode.class;
+	}
+	
+	/*
+	 * Validates that only note edges can point to point nodes
+	 */
+	private static boolean constraintNoEdgeToPointExceptNoteEdge(Edge pEdge, Diagram pDiagram)
+	{
+		return !(pEdge.getClass() != NoteEdge.class && 
+				(pEdge.start().getClass() == PointNode.class || pEdge.end().getClass() == PointNode.class));
 	}
 	
 	public static EdgeConstraint createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(int pMaxNumberOfEdges)
