@@ -378,7 +378,7 @@ public abstract class DiagramBuilder
 		Edge edge = obtainEdge(pEdge, pStart, pEnd);
 		
 		CompoundOperation addEdgeOperation = new CompoundOperation();
-		if(!diagram().rootNodes().contains(endNode))
+		if(!diagram().allNodes().contains(endNode))
 		{
 			addEdgeOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(endNode),
 					() -> aDiagramRenderer.diagram().removeRootNode(endNode)));
