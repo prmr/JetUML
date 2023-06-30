@@ -35,8 +35,15 @@ public enum NodeIndex
 	MINUS_FOUR, MINUS_THREE, MINUS_TWO, MINUS_ONE, ZERO,
 	PLUS_ONE, PLUS_TWO, PLUS_THREE, PLUS_FOUR;
 	
-	private static final int NUM_SPACES_NS = 10;
-	private static final int NUM_SPACES_EW = 6;
+	private static final int NUM_SPACES_NS = 9; // Number of attachments spaces for north and south sides
+	private static final int NUM_SPACES_EW = 5; // Number of attachments spaces for east and west sides
+	
+	// Space between attachment points are increments of this number
+	private static final int SPACE_INCREMENT = 10;
+	
+	// We leave an extra marging at the end of the face when spacing out nodes
+	// so the general look is a bit concentrated in the middle: purely esthetic
+	private static final int MARGIN = 10;
 	
 	/**
 	 * Returns a point on pNodeFace at the position represented by this index.
@@ -67,10 +74,13 @@ public enum NodeIndex
 		}
 	}
 	
-	/**
+	/*
 	 * Determines the number of pixels in between edge connection points on 
 	 * pNode. This allows the space between NodeIndex connection points
 	 * to increase proportionally with the width or height of the node. 
+	 * 
+	 * Algorithm: at least 10, then any greater multiple of 5 if possible. 
+	 * 
 	 * @param pNodeFace a line representing the pAttachmentSide of a node
 	 * @param pAttachmentSide A side of a node. 
 	 * @return the spacing in between connection points on pNodeFace. 
@@ -79,13 +89,21 @@ public enum NodeIndex
 	private static int spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
 	{
 		assert pNodeFace != null && pAttachmentSide != null;
-		if(pAttachmentSide.isHorizontal())
+		
+		// Default for horizontal
+		int lengthOfSide = Math.abs(pNodeFace.getX2() - pNodeFace.getX1());
+		int numberOfSpaces = NUM_SPACES_NS;
+		
+		// Adjust if vertical
+		if(pAttachmentSide.isVertical())
 		{
-			return Math.abs((pNodeFace.getX2() - pNodeFace.getX1()) / NUM_SPACES_NS);
+			lengthOfSide = Math.abs(pNodeFace.getY2() - pNodeFace.getY1());
+			numberOfSpaces = NUM_SPACES_EW;
 		}
-		else
-		{
-			return Math.abs((pNodeFace.getY2() - pNodeFace.getY1()) / NUM_SPACES_EW);
-		}
+		
+		int unadjustedSpace = Math.round((lengthOfSide - MARGIN * 2) / (float) numberOfSpaces);
+		// Closest further multiple of 10 at least 10
+		int result = Math.max(SPACE_INCREMENT, unadjustedSpace / SPACE_INCREMENT * SPACE_INCREMENT);
+		return result;
 	}
 }

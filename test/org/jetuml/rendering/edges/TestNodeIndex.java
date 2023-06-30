@@ -33,6 +33,8 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Side;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test for the NodeIndex methods. 
@@ -84,40 +86,32 @@ public class TestNodeIndex
 		assertEquals(new Point(100, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Side.RIGHT));
 	}
 	
-	@Test
-	void testSpaceBetweenConnectionPoints_north()
+	@ParameterizedTest
+	@ValueSource(ints = {60,70,80,90,95,100,110,180,190})
+	void testSpaceBetweenConnectionPoints_Horizontal_noExpansion(int pWidth)
 	{
-		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
-		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.TOP));
-		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.TOP));
+		assertEquals(10, spaceBetweenConnectionPoints(new Line(0, 10, pWidth, 10), Side.TOP));
 	}
 	
-	@Test
-	void testSpaceBetweenConnectionPoints_south()
+	@ParameterizedTest
+	@ValueSource(ints = {200,250,270,280,285})
+	void testSpaceBetweenConnectionPoints_Horizontal_withExpansion(int pWidth)
 	{
-		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
-		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.BOTTOM));
-		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.BOTTOM));
+		assertEquals(20, spaceBetweenConnectionPoints(new Line(0, 10, pWidth, 10), Side.TOP));
 	}
 	
-	@Test
-	void testSpaceBetweenConnectionPoints_east()
+	@ParameterizedTest
+	@ValueSource(ints = {60,100,115,116,117})
+	void testSpaceBetweenConnectionPoints_Vertical_noExpansion(int pHeight)
 	{
-		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
-		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.RIGHT));
-		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.RIGHT));
+		assertEquals(10, spaceBetweenConnectionPoints(new Line(10, 0, 10, pHeight), Side.RIGHT));
 	}
 	
-	@Test
-	void testSpaceBetweenConnectionPoints_west()
+	@ParameterizedTest
+	@ValueSource(ints = {118,150,165,166,167})
+	void testSpaceBetweenConnectionPoints_Vertical_withExpansion(int pHeight)
 	{
-		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
-		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10, spaceBetweenConnectionPoints(regularSize, Side.LEFT));
-		assertEquals(20, spaceBetweenConnectionPoints(largerSize, Side.LEFT));
+		assertEquals(20, spaceBetweenConnectionPoints(new Line(10, 0, 10, pHeight), Side.RIGHT));
 	}
 	
 	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
