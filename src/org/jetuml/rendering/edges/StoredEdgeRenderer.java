@@ -281,6 +281,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 
 	/**
 	 * Computes the attachment point for drawing a string.
+	 * 
 	 * @param pEndPoint1 an endpoint of the segment along which to draw the string
 	 * @param pEndPoint2 the other endpoint of the segment along which to draw the string
 	 * @param b the bounds of the string to draw
@@ -330,7 +331,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			{
 				yoff = gap;
 			}
-			if(pArrow != null && pArrow != ArrowHead.NONE)
+			if(pArrow != ArrowHead.NONE)
 			{
 				Bounds arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBoundsInLocal();
 				if(pEndPoint1.getY() == pEndPoint2.getY())
@@ -444,7 +445,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		getArrowEnd(edge).view().draw(pGraphics, path.getPointByIndex(path.size()-2), path.getEndPoint());
 		drawString(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
 			false, isStepUp(edge));
-		drawString(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), null, 
+		drawString(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), ArrowHead.NONE, 
 			getMiddleLabel(edge), true, isStepUp(edge));
 		drawString(pGraphics, path.getPointByIndex(path.size()-2), path.getPointByIndex(path.size()-1), 
 			getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
