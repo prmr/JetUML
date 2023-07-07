@@ -37,4 +37,28 @@ public enum ArrowHead
 	{
 		return aView;
 	}
+	
+	/**
+	 * @return True iif this arrow head is in the shape of a triangle.
+	 */
+	public boolean isTriangle()
+	{
+		return this == TRIANGLE || this == BLACK_TRIANGLE;
+	}
+	
+	/**
+	 * @return True iif this arrow head is in the shape of a diamond.
+	 */
+	public boolean isDiamond()
+	{
+		return this == DIAMOND || this == BLACK_DIAMOND;
+	}
+	
+	/**
+	 * @return True iif this arrow head is filled with a solid color.
+	 */
+	public boolean isFilled()
+	{
+		return this == BLACK_TRIANGLE || this == BLACK_DIAMOND;
+	}
 }
