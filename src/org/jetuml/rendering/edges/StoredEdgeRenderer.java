@@ -272,27 +272,22 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 					Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pString);
-		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.width(), textDimensions.height());
-		Point a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter, pIsStepUp);
-		return new Rectangle(Math.round(a.getX()), Math.round(a.getY()),
-				Math.round(stringDimensions.getWidth()), Math.round(stringDimensions.getHeight()));
+		Point attachmentPoint = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, 
+				textDimensions, pCenter, pIsStepUp);
+		return new Rectangle(Math.round(attachmentPoint.getX()), Math.round(attachmentPoint.getY()),
+				Math.round(textDimensions.width()), Math.round(textDimensions.height()));
 	}
 
-	/**
+	/*
 	 * Computes the attachment point for drawing a string.
 	 * 
-	 * @param pEndPoint1 an endpoint of the segment along which to draw the string
-	 * @param pEndPoint2 the other endpoint of the segment along which to draw the string
-	 * @param b the bounds of the string to draw
-	 * @param pCenter true if the string should be centered along the segment
-	 * @return the point at which to draw the string
 	 */
 	private static Point getAttachmentPoint(Point pEndPoint1, Point pEndPoint2, 
-			ArrowHead pArrow, Rectangle pDimension, boolean pCenter, boolean pIsStepUp)
+			ArrowHead pArrow, Dimension pDimension, boolean pCenter, boolean pIsStepUp)
 	{    
 		final int gap = 3;
 		double xoff = gap;
-		double yoff = -gap - pDimension.getHeight();
+		double yoff = -gap - pDimension.height();
 		Point attach = pEndPoint2;
 		if (pCenter)
 		{
@@ -308,23 +303,23 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			}
 			else if (pEndPoint1.getX() == pEndPoint2.getX() && !pIsStepUp)
 			{
-				yoff =  -gap-pDimension.getHeight();
+				yoff =  -gap-pDimension.height();
 			}
 			else if (pEndPoint1.getY() == pEndPoint2.getY())
 			{
-				if (pDimension.getWidth() > Math.abs(pEndPoint1.getX() - pEndPoint2.getX()))
+				if (pDimension.width() > Math.abs(pEndPoint1.getX() - pEndPoint2.getX()))
 				{
-					attach = new Point(pEndPoint2.getX() + (pDimension.getWidth() / 2) + gap, 
+					attach = new Point(pEndPoint2.getX() + (pDimension.width() / 2) + gap, 
 							(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
 				}
-				xoff = -pDimension.getWidth() / 2;
+				xoff = -pDimension.width() / 2;
 			}
 		}
 		else 
 		{
 			if(pEndPoint1.getX() < pEndPoint2.getX())
 			{
-				xoff = -gap - pDimension.getWidth();
+				xoff = -gap - pDimension.width();
 			}
 			if(pEndPoint1.getY() > pEndPoint2.getY())
 			{
