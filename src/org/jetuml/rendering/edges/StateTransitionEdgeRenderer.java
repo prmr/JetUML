@@ -100,18 +100,19 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 			Point connectionPoint2 = getSelfEdgeConnectionPoints(pEdge).getPoint2();
 			if( getPosition(pEdge) == 1 )
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
+				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
 						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).getPoint2());
 			}
 			else
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
+				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
 						connectionPoint2.getY()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).getPoint2());
 			}
 		}
 		else
 		{
-			ArrowHead.V.view().draw(pGraphics, Conversions.toPoint(getControlPoint(pEdge)), getConnectionPoints(pEdge).getPoint2());
+			ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, 
+					Conversions.toPoint(getControlPoint(pEdge)), getConnectionPoints(pEdge).getPoint2());
 		}
 	}
 	
@@ -452,7 +453,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		path.getElements().addAll(moveTo, curveTo);
 		
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
-		ArrowHead.V.view().draw(graphics, control, new Point(40, 40));
+		ArrowHeadRenderer.draw(graphics, ArrowHead.V, control, new Point(40, 40));
 		return canvas;
 	}
 }

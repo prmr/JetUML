@@ -84,7 +84,7 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.DOTTED);
-		ArrowHead.V.view().draw(graphics, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
+		ArrowHeadRenderer.draw(graphics, ArrowHead.V, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
 		return canvas;
 	}
 }

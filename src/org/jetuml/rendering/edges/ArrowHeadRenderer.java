@@ -24,7 +24,9 @@ package org.jetuml.rendering.edges;
 import static org.jetuml.rendering.ArrowHead.NONE;
 import static org.jetuml.rendering.ArrowHead.V;
 
+import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ToolGraphics;
 
@@ -45,25 +47,38 @@ public final class ArrowHeadRenderer
 	private ArrowHeadRenderer() {}
 	
 	/**
-	 * Draws the arrowhead.
+	 * Draws an arrow head at pEnd for a direction given from pEnd.
 	 * 
 	 * @param pGraphics the graphics context
 	 * @param pArrowHead The type of arrow head to draw
-	 * @param pPoint1 a point on the axis of the arrow head
+	 * @param pStart a point on the axis of the arrow head
 	 * @param pEnd the end point of the arrow head
 	 */
-	public void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Point pPoint1, Point pEnd)
+	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Point pStart, Point pEnd)
 	{
-		assert pGraphics != null && pArrowHead != null && pPoint1 != null && pEnd != null;
+		assert pGraphics != null && pArrowHead != null && pStart != null && pEnd != null;
 		
 		if(pArrowHead.isFilled()) 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pPoint1, pEnd), Color.BLACK, false);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pStart, pEnd), Color.BLACK, false);
 		}
 		else 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pPoint1, pEnd), Color.WHITE, false);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pStart, pEnd), Color.WHITE, false);
 		}
+	}
+	
+	/**
+	 * Get the bounds for an arrow head pointing to pEnd.
+	 * 
+	 * @param pArrowHead The type of arrow head.
+	 * @param pStart A point on the axis of the arrow head.
+	 * @param pEnd The point where the arrow head is pointing.
+	 * @return The bounds of the arrow head.
+	 */
+	public static Rectangle getBounds(ArrowHead pArrowHead, Point pStart, Point pEnd)
+	{
+		return Conversions.toRectangle(getPath(pArrowHead, pStart, pEnd).getBoundsInLocal());
 	}
 	
    	/**
@@ -73,7 +88,7 @@ public final class ArrowHeadRenderer
      * @param pEnd the end point of the arrow head
      * @return the path
      */
-   	private Path getPath(ArrowHead pArrowHead, Point pPoint1, Point pEnd)
+   	private static Path getPath(ArrowHead pArrowHead, Point pPoint1, Point pEnd)
    	{
    		if(pArrowHead == NONE) 
    		{

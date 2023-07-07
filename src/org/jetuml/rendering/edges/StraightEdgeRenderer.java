@@ -23,7 +23,6 @@ package org.jetuml.rendering.edges;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
-import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -69,7 +68,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Path shape = (Path) getShape(edge);
 		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
-		aArrowHead.view().draw(pGraphics, connectionPoints.getPoint1(), connectionPoints.getPoint2());
+		ArrowHeadRenderer.draw(pGraphics, aArrowHead, connectionPoints.getPoint1(), connectionPoints.getPoint2());
 	}
 	
 	@Override
@@ -80,8 +79,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		if( aArrowHead != ArrowHead.NONE )
 		{
 			Line connectionPoints = getConnectionPoints(edge);
-			bounds = bounds.add(Conversions.toRectangle(aArrowHead.view().getPath(connectionPoints.getPoint1(), 
-					connectionPoints.getPoint2()).getBoundsInLocal()));
+			bounds = bounds.add(ArrowHeadRenderer.getBounds(aArrowHead, connectionPoints.getPoint1(), connectionPoints.getPoint2()));
 		}
 		return bounds;
 	}
@@ -93,7 +91,8 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
 		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyle);
-		aArrowHead.view().draw(canvas.getGraphicsContext2D(), new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
+		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), aArrowHead, 
+				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
 		return canvas;
 	}
 }

@@ -127,13 +127,13 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		
 		if(isSShaped(edge))
 		{
-			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
+			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
 					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
 		else
 		{
-			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
+			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.getX2() + ENDSIZE, connectionPoints.getY2()), 
 					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
@@ -161,7 +161,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		graphics.scale(0.6, 0.6);
 		Path path = getCShape(new Line(new Point(5, 5), new Point(15,25)));
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
-		ArrowHead.BLACK_TRIANGLE.view().draw(graphics, new Point(20,25), new Point(15, 25));
+		ArrowHeadRenderer.draw(graphics, ArrowHead.BLACK_TRIANGLE, new Point(20,25), new Point(15, 25));
 		return canvas;
 	}
 }

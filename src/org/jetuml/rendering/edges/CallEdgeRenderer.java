@@ -29,20 +29,18 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
-import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
-import org.jetuml.rendering.ArrowHeadViewer;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -96,15 +94,15 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		return new Line(points[0], points[points.length-1]);
 	}
 	
-	private static ArrowHeadViewer getArrowHeadView(CallEdge pEdge)
+	private static ArrowHead getArrowHead(CallEdge pEdge)
 	{
 		if(pEdge.isSignal())
 		{
-			return ArrowHead.HALF_V.view();
+			return ArrowHead.HALF_V;
 		}
 		else
 		{
-			return ArrowHead.V.view();
+			return ArrowHead.V;
 		}
 	}
 	
@@ -114,8 +112,9 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		Rectangle bounds = super.getBounds(pElement);
 		Edge edge = (Edge) pElement;
 		Line connectionPoints = getConnectionPoints(edge);
-		bounds = bounds.add(Conversions.toRectangle(getArrowHeadView((CallEdge)edge).getPath(connectionPoints.getPoint1(), 
-					connectionPoints.getPoint2()).getBoundsInLocal()));
+		
+		bounds = bounds.add(ArrowHeadRenderer.getBounds(getArrowHead((CallEdge)edge), 
+				connectionPoints.getPoint1(), connectionPoints.getPoint2()));
 		final String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
@@ -131,7 +130,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
 		
 		Point[] points = getPoints(edge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
-		getArrowHeadView((CallEdge)edge).draw(pGraphics, points[points.length - 2], points[points.length - 1]);
+		ArrowHeadRenderer.draw(pGraphics, getArrowHead((CallEdge)edge), points[points.length - 2], points[points.length - 1]);
 		String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
@@ -227,7 +226,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
-		ArrowHead.V.view().draw(graphics, new Point(1, offset), new Point((int)(BUTTON_SIZE*(1/scale)-1), offset));
+		ArrowHeadRenderer.draw(graphics, ArrowHead.V, new Point(1, offset), new Point((int)(BUTTON_SIZE*(1/scale)-1), offset));
 		return canvas;
 	}
 }

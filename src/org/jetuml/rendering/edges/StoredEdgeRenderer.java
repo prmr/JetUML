@@ -46,10 +46,9 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.EdgePriority;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.ToolGraphics;
 
-import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -333,7 +332,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			}
 			if(pArrow != ArrowHead.NONE)
 			{
-				Bounds arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBoundsInLocal();
+				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, pEndPoint1, pEndPoint2);
 				if(pEndPoint1.getY() == pEndPoint2.getY())
 				{
 					yoff -= arrowBounds.getHeight() / 2;
@@ -441,8 +440,9 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
 		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(edge), getLineStyle(edge));
-		getArrowStart(edge).view().draw(pGraphics, path.getPointByIndex(1), path.getStartPoint());
-		getArrowEnd(edge).view().draw(pGraphics, path.getPointByIndex(path.size()-2), path.getEndPoint());
+		ArrowHeadRenderer.draw(pGraphics, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
+		ArrowHeadRenderer.draw(pGraphics, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
+
 		drawString(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
 			false, isStepUp(edge));
 		drawString(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), ArrowHead.NONE, 
@@ -459,9 +459,10 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
 		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, getLineStyle(edge));
-		getArrowEnd(edge).view().draw(canvas.getGraphicsContext2D(), 
+		
+		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), getArrowEnd(edge), 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
-		getArrowStart(edge).view().draw(canvas.getGraphicsContext2D(), 
+		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), getArrowStart(edge), 
 				new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET), new Point(OFFSET, OFFSET));
 		return canvas;
 	}

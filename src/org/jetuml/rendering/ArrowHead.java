@@ -28,16 +28,6 @@ public enum ArrowHead
 {
 	NONE, TRIANGLE, BLACK_TRIANGLE, V, HALF_V, DIAMOND, BLACK_DIAMOND;
 	
-	private final ArrowHeadViewer aView = new ArrowHeadViewer(this);
-	
-	/**
-	 * @return An object that can draw this arrowhead.
-	 */
-	public ArrowHeadViewer view()
-	{
-		return aView;
-	}
-	
 	/**
 	 * @return True iif this arrow head is in the shape of a triangle.
 	 */
