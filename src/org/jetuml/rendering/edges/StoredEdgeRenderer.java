@@ -222,7 +222,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			return;
 		}
 		String label = wrapLabel(pString, pEndPoint1, pEndPoint2);
-		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, label, pCenter, pIsStepUp);
+		Rectangle bounds = getStringBounds(new Line(pEndPoint1, pEndPoint2), pArrowHead, label, pCenter, pIsStepUp); // TODO
 		if(pCenter) 
 		{
 			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
@@ -257,23 +257,21 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	
 	/**
 	 * Computes the extent of a string that is drawn along a line segment.
-	 * @param p an endpoint of the segment along which to draw the string
-	 * @param q the other endpoint of the segment along which to draw the string
-	 * @param s the string to draw
-	 * @param center true if the string should be centered along the segment
+	 * @param pSegment The segment to label
+	 * @param pArrow The line decoration
+	 * @param pLabel The label
+	 * @param pCenter true if the string should be centered along the segment
 	 * @return the rectangle enclosing the string
 	*/
-	private static Rectangle getStringBounds(Point pEndPoint1, Point pEndPoint2, 
-			ArrowHead pArrow, String pString, boolean pCenter, boolean pIsStepUp)
+	private static Rectangle getStringBounds(Line pSegment, ArrowHead pArrow, 
+			String pLabel, boolean pCenter, boolean pIsStepUp)
 	{
-		if (pString == null || pString.isEmpty())
+		if(pLabel == null || pLabel.isEmpty())
 		{
-			return new Rectangle(Math.round(pEndPoint2.getX()), 
-					Math.round(pEndPoint2.getY()), 0, 0);
+			return new Rectangle(pSegment.getX2(), pSegment.getY2(), 0, 0);
 		}
-		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pString);
-		Point attachmentPoint = getAttachmentPoint(new Line(pEndPoint1, pEndPoint2), pArrow, //TODO
-				textDimensions, pCenter, pIsStepUp);
+		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pLabel);
+		Point attachmentPoint = getAttachmentPoint(pSegment, pArrow, textDimensions, pCenter, pIsStepUp);
 		return new Rectangle(Math.round(attachmentPoint.getX()), Math.round(attachmentPoint.getY()),
 				Math.round(textDimensions.width()), Math.round(textDimensions.height()));
 	}
@@ -410,11 +408,11 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
 		Rectangle bounds = super.getBounds(edge);
-		bounds = bounds.add(getStringBounds(path.getPointByIndex(1), path.getStartPoint(), 
+		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(1), path.getStartPoint()), // TODO
 				getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
-		bounds = bounds.add(getStringBounds(path.getPointByIndex(path.size() / 2 - 1), 
-				path.getPointByIndex(path.size() / 2), null, getMiddleLabel(edge), true, isStepUp(edge)));
-		bounds = bounds.add(getStringBounds(path.getPointByIndex(path.size() - 2), path.getEndPoint(), 
+		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() / 2 - 1), 
+				path.getPointByIndex(path.size() / 2)), null, getMiddleLabel(edge), true, isStepUp(edge))); // TODO Remove null
+		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() - 2), path.getEndPoint()), 
 				getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
 		return bounds;
 	}
