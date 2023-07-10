@@ -272,7 +272,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 					Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pString);
-		Point attachmentPoint = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, 
+		Point attachmentPoint = getAttachmentPoint(new Line(pEndPoint1, pEndPoint2), pArrow, //TODO
 				textDimensions, pCenter, pIsStepUp);
 		return new Rectangle(Math.round(attachmentPoint.getX()), Math.round(attachmentPoint.getY()),
 				Math.round(textDimensions.width()), Math.round(textDimensions.height()));
@@ -280,59 +280,57 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 
 	/*
 	 * Computes the attachment point for drawing a string.
-	 * 
 	 */
-	private static Point getAttachmentPoint(Point pEndPoint1, Point pEndPoint2, 
+	private static Point getAttachmentPoint(Line pSegment, 
 			ArrowHead pArrow, Dimension pDimension, boolean pCenter, boolean pIsStepUp)
 	{    
 		final int gap = 3;
 		double xoff = gap;
 		double yoff = -gap - pDimension.height();
-		Point attach = pEndPoint2;
-		if (pCenter)
+		Point attach = pSegment.getPoint2();
+		if( pCenter )
 		{
-			if (pEndPoint1.getX() > pEndPoint2.getX()) 
+			if( pSegment.getX1() > pSegment.getX2()) 
 			{ 
-				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter, pIsStepUp); 
+				return getAttachmentPoint(pSegment.reversed(), pArrow, pDimension, pCenter, pIsStepUp); 
 			}
-			attach = new Point((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
-					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
-			if (pEndPoint1.getX() == pEndPoint2.getX() && pIsStepUp)
+			attach = pSegment.center();
+			if( pSegment.isVertical() && pIsStepUp)
 			{
 				yoff = gap;
 			}
-			else if (pEndPoint1.getX() == pEndPoint2.getX() && !pIsStepUp)
+			else if( pSegment.isVertical() && !pIsStepUp)
 			{
 				yoff =  -gap-pDimension.height();
 			}
-			else if (pEndPoint1.getY() == pEndPoint2.getY())
+			else if( pSegment.isHorizontal())
 			{
-				if (pDimension.width() > Math.abs(pEndPoint1.getX() - pEndPoint2.getX()))
+				if(pDimension.width() > pSegment.distanceBetweenPoints().width())
 				{
-					attach = new Point(pEndPoint2.getX() + (pDimension.width() / 2) + gap, 
-							(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
+					attach = new Point(pSegment.getX2() + (pDimension.width() / 2) + gap, 
+							(pSegment.getY1() + pSegment.getY2()) / 2);
 				}
 				xoff = -pDimension.width() / 2;
 			}
 		}
 		else 
 		{
-			if(pEndPoint1.getX() < pEndPoint2.getX())
+			if(pSegment.getX1() < pSegment.getX2())
 			{
 				xoff = -gap - pDimension.width();
 			}
-			if(pEndPoint1.getY() > pEndPoint2.getY())
+			if(pSegment.getY1() > pSegment.getY2())
 			{
 				yoff = gap;
 			}
 			if(pArrow != ArrowHead.NONE)
 			{
-				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, new Line(pEndPoint1, pEndPoint2)); // TODO
-				if(pEndPoint1.getY() == pEndPoint2.getY())
+				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, pSegment); 
+				if(pSegment.isHorizontal())
 				{
 					yoff -= arrowBounds.getHeight() / 2;
 				}
-				else if(pEndPoint1.getX() == pEndPoint2.getX())
+				else if(pSegment.isVertical())
 				{
 					xoff += arrowBounds.getWidth() / 2;
 				}
