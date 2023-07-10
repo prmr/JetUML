@@ -206,7 +206,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 				point1.getX() > point2.getX() && point1.getY() < point2.getY();
 	}
 	
-	/**
+	/*
 	 * Draws a label for an edge.
 	 * 
 	 * @param pGraphics the graphics context
@@ -215,18 +215,18 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private void drawLabel(GraphicsContext pGraphics, Point pEndPoint1, Point pEndPoint2, 
+	private void drawLabel(GraphicsContext pGraphics, Line pSegment, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if (pString == null || pString.length() == 0)
 		{
 			return;
 		}
-		String label = wrapLabel(pString, new Line(pEndPoint1, pEndPoint2)); // TODO
-		Rectangle bounds = getLabelBounds(new Line(pEndPoint1, pEndPoint2), pArrowHead, label, pCenter, pIsStepUp); // TODO
+		String label = wrapLabel(pString, pSegment); 
+		Rectangle bounds = getLabelBounds(pSegment, pArrowHead, label, pCenter, pIsStepUp);
 		if(pCenter) 
 		{
-			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
+			if ( pSegment.getY2() >= pSegment.getY1() )
 			{
 				TOP_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
 			}
@@ -408,12 +408,9 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
 		Rectangle bounds = super.getBounds(edge);
-		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(1), path.getStartPoint()), // TODO
-				getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
-		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(path.size() / 2 - 1), 
-				path.getPointByIndex(path.size() / 2)), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge))); 
-		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(path.size() - 2), path.getEndPoint()), 
-				getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
+		bounds = bounds.add(getLabelBounds(segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
+		bounds = bounds.add(getLabelBounds(segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge))); 
+		bounds = bounds.add(getLabelBounds(segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
 		return bounds;
 	}
 
@@ -434,12 +431,27 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		ArrowHeadRenderer.draw(pGraphics, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
 		ArrowHeadRenderer.draw(pGraphics, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
-		drawLabel(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
-			false, isStepUp(edge));
-		drawLabel(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), ArrowHead.NONE, 
-			getMiddleLabel(edge), true, isStepUp(edge));
-		drawLabel(pGraphics, path.getPointByIndex(path.size()-2), path.getPointByIndex(path.size()-1), 
-			getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
+		drawLabel(pGraphics, segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
+		drawLabel(pGraphics, segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
+		drawLabel(pGraphics, segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
+	}
+	
+	/*
+	 * @return The line segment used to position
+	 */
+	private Line segmentForStartLabel(EdgePath pPath)
+	{
+		return new Line(pPath.getPointByIndex(1), pPath.getStartPoint());
+	}
+	
+	private Line segmentForMiddleLabel(EdgePath pPath)
+	{
+		return new Line( pPath.getPointByIndex(pPath.size() / 2 - 1) , pPath.getPointByIndex(pPath.size() / 2));
+	}
+	
+	private Line segmentForEndLabel(EdgePath pPath)
+	{
+		return new Line(pPath.getPointByIndex(pPath.size()-2), pPath.getPointByIndex(pPath.size()-1));
 	}
 
 	@Override
