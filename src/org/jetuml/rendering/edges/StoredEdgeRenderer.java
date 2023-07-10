@@ -327,7 +327,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			}
 			if(pArrow != ArrowHead.NONE)
 			{
-				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, pEndPoint1, pEndPoint2);
+				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, new Line(pEndPoint1, pEndPoint2)); // TODO
 				if(pEndPoint1.getY() == pEndPoint2.getY())
 				{
 					yoff -= arrowBounds.getHeight() / 2;

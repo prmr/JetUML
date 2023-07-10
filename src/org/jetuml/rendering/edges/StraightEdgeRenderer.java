@@ -68,7 +68,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Path shape = (Path) getShape(edge);
 		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
-		ArrowHeadRenderer.draw(pGraphics, aArrowHead, connectionPoints.getPoint1(), connectionPoints.getPoint2());
+		ArrowHeadRenderer.draw(pGraphics, aArrowHead, connectionPoints);
 	}
 	
 	@Override
@@ -78,8 +78,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		if( aArrowHead != ArrowHead.NONE )
 		{
-			Line connectionPoints = getConnectionPoints(edge);
-			bounds = bounds.add(ArrowHeadRenderer.getBounds(aArrowHead, connectionPoints.getPoint1(), connectionPoints.getPoint2()));
+			bounds = bounds.add(ArrowHeadRenderer.getBounds(aArrowHead, getConnectionPoints(edge)));
 		}
 		return bounds;
 	}

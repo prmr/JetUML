@@ -25,6 +25,7 @@ import static org.jetuml.rendering.ArrowHead.NONE;
 import static org.jetuml.rendering.ArrowHead.V;
 
 import org.jetuml.geom.Conversions;
+import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
@@ -47,70 +48,88 @@ public final class ArrowHeadRenderer
 	private ArrowHeadRenderer() {}
 	
 	/**
-	 * Draws an arrow head at pEnd for a direction given from pEnd.
+	 * Draws an arrow head at the end of the axis.
 	 * 
 	 * @param pGraphics the graphics context
 	 * @param pArrowHead The type of arrow head to draw
-	 * @param pStart a point on the axis of the arrow head
-	 * @param pEnd the end point of the arrow head
+	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
 	 */
-	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Point pStart, Point pEnd)
+	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Line pAxis)
 	{
-		assert pGraphics != null && pArrowHead != null && pStart != null && pEnd != null;
+		assert pGraphics != null && pArrowHead != null && pAxis != null;
 		
 		if(pArrowHead.isFilled()) 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pStart, pEnd), Color.BLACK, false);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pAxis), Color.BLACK, false);
 		}
 		else 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pStart, pEnd), Color.WHITE, false);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pAxis), Color.WHITE, false);
 		}
 	}
 	
 	/**
-	 * Get the bounds for an arrow head pointing to pEnd.
+	 * Draws an arrow head at pPoint2 for a direction given from pPoint2.
+	 * 
+	 * @param pGraphics the graphics context
+	 * @param pArrowHead The type of arrow head to draw
+	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
+	 */
+	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
+	{
+		assert pGraphics != null && pArrowHead != null && pPoint1 != null && pPoint2 != null;
+		
+		if(pArrowHead.isFilled()) 
+		{
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, false);
+		}
+		else 
+		{
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, false);
+		}
+	}
+	
+	/**
+	 * Get the bounds for an arrow head pointing to the second point in the axis.
 	 * 
 	 * @param pArrowHead The type of arrow head.
-	 * @param pStart A point on the axis of the arrow head.
-	 * @param pEnd The point where the arrow head is pointing.
+	 * @param pAxis The axis of the arrow.
 	 * @return The bounds of the arrow head.
 	 */
-	public static Rectangle getBounds(ArrowHead pArrowHead, Point pStart, Point pEnd)
+	public static Rectangle getBounds(ArrowHead pArrowHead, Line pAxis)
 	{
-		return Conversions.toRectangle(getPath(pArrowHead, pStart, pEnd).getBoundsInLocal());
+		return Conversions.toRectangle(getPath(pArrowHead, pAxis).getBoundsInLocal());
 	}
 	
    	/**
      * Gets the path of the arrowhead.
      * 
-     * @param pPoint1 a point on the axis of the arrow head
-     * @param pEnd the end point of the arrow head
+     * @param pAxis The axis of the arrow. The Arrow points to pAxis.getPoint2()
      * @return the path
      */
-   	private static Path getPath(ArrowHead pArrowHead, Point pPoint1, Point pEnd)
+   	private static Path getPath(ArrowHead pArrowHead, Line pAxis)
    	{
    		if(pArrowHead == NONE) 
    		{
    			return new Path();
    		}
    		
-   		int dx = pEnd.getX() - pPoint1.getX();
-   		int dy = pEnd.getY() - pPoint1.getY();
+   		int dx = pAxis.getX2() - pAxis.getX1();
+   		int dy = pAxis.getY2() - pAxis.getY1();
    		final double angle = Math.atan2(dy, dx);
-   		int x1 = (int) Math.round(pEnd.getX() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
-   		int y1 = (int) Math.round(pEnd.getY() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
-   		int x2 = (int) Math.round(pEnd.getX() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
-   		int y2 = (int) Math.round(pEnd.getY() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
+   		int x1 = (int) Math.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   		int y1 = (int) Math.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
+   		int x2 = (int) Math.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
+   		int y2 = (int) Math.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
 
-   		MoveTo moveToOrigin = new MoveTo(pEnd.getX(), pEnd.getY());
+   		MoveTo moveToOrigin = new MoveTo(pAxis.getX2(), pAxis.getY2());
    		LineTo lineTo1 = new LineTo(x1, y1);
    		Path path = new Path();
    		path.getElements().addAll(moveToOrigin, lineTo1);
    		if(pArrowHead == V)
    		{
    			MoveTo moveTo2 = new MoveTo(x2, y2);
-   			LineTo lineTo2 = new LineTo(pEnd.getX(), pEnd.getY());
+   			LineTo lineTo2 = new LineTo(pAxis.getX2(), pAxis.getY2());
    			path.getElements().addAll(moveTo2, lineTo2);
    		}
    		else if(pArrowHead.isTriangle())

@@ -111,10 +111,8 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Rectangle bounds = super.getBounds(pElement);
 		Edge edge = (Edge) pElement;
-		Line connectionPoints = getConnectionPoints(edge);
 		
-		bounds = bounds.add(ArrowHeadRenderer.getBounds(getArrowHead((CallEdge)edge), 
-				connectionPoints.getPoint1(), connectionPoints.getPoint2()));
+		bounds = bounds.add(ArrowHeadRenderer.getBounds(getArrowHead((CallEdge)edge), getConnectionPoints(edge)));
 		final String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
