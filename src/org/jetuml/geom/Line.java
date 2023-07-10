@@ -114,6 +114,19 @@ public class Line
 	}
 	
 	/**
+	 * A distance between points is the absolute difference
+	 * between X-values expressed as a width and the absolute
+	 * difference between Y-values expressed as a height.
+	 * 
+	 * @return The distance between points as a dimension
+	 */
+	public Dimension distanceBetweenPoints()
+	{
+		return new Dimension(Math.abs(getX1()-getX2()), 
+				Math.abs(getY1()-getY2()));
+	}
+	
+	/**
 	 * @return The rectangle spanning this line.
 	 */
 	public Rectangle spanning()

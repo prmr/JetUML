@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class TestLine
 {
@@ -235,6 +237,23 @@ public class TestLine
 		{
 			assertEquals(new Line(1,1,2,2).hashCode(), new Line(1,1,2,2).hashCode());
 		}
-
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0","1,1", "5,10", "200,0"})
+	void testDistanceBetweenPoints_SamePoint(int pX, int pY)
+	{
+		assertEquals(0, new Line(pX, pY, pX, pY).distanceBetweenPoints().width());
+		assertEquals(0, new Line(pX, pY, pX, pY).distanceBetweenPoints().height());
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 5,10, 5,10",
+		"5,10, 0,0, 5,10",
+		"200,153, 100,53, 100,100"})
+	void testDistanceBetweenPoints_DifferentPoint(int pX1, int pY1, int pX2, int pY2, int pWidth, int pHeight)
+	{
+		assertEquals(pWidth, new Line(pX1, pY1, pX2, pY2).distanceBetweenPoints().width());
+		assertEquals(pHeight, new Line(pX1, pY1, pX2, pY2).distanceBetweenPoints().height());
 	}
 }
