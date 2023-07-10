@@ -255,7 +255,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		return StringRenderer.wrapString(pLabel, lineLength);
 	}
 	
-	/**
+	/*
 	 * Computes the extent of a string that is drawn along a line segment.
 	 * @param pSegment The segment to label
 	 * @param pArrow The line decoration
@@ -272,8 +272,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pLabel);
 		Point attachmentPoint = getAttachmentPoint(pSegment, pArrow, textDimensions, pCenter, pIsStepUp);
-		return new Rectangle(Math.round(attachmentPoint.getX()), Math.round(attachmentPoint.getY()),
-				Math.round(textDimensions.width()), Math.round(textDimensions.height()));
+		return new Rectangle(attachmentPoint.getX(), attachmentPoint.getY(), textDimensions.width(), textDimensions.height());
 	}
 
 	/*
@@ -446,6 +445,13 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	
 	private Line segmentForMiddleLabel(EdgePath pPath)
 	{
+		// If any point is the same we consider this is a straight path
+		if( pPath.size() == 4 && (pPath.getPointByIndex(0).equals(pPath.getPointByIndex(1)) || 
+				pPath.getPointByIndex(1).equals(pPath.getPointByIndex(2)) || 
+				pPath.getPointByIndex(2).equals(pPath.getPointByIndex(3))))
+		{
+			return new Line(pPath.getStartPoint(), pPath.getEndPoint());
+		}
 		return new Line( pPath.getPointByIndex(pPath.size() / 2 - 1) , pPath.getPointByIndex(pPath.size() / 2));
 	}
 	
