@@ -127,6 +127,14 @@ public class Line
 	}
 	
 	/**
+	 * @return A new line that is this line with the two points reversed
+	 */
+	public Line reversed()
+	{
+		return new Line(getPoint2(), getPoint1());
+	}
+	
+	/**
 	 * @return The rectangle spanning this line.
 	 */
 	public Rectangle spanning()

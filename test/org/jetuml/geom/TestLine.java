@@ -256,4 +256,15 @@ public class TestLine
 		assertEquals(pWidth, new Line(pX1, pY1, pX2, pY2).distanceBetweenPoints().width());
 		assertEquals(pHeight, new Line(pX1, pY1, pX2, pY2).distanceBetweenPoints().height());
 	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 0,0",
+		"5,10, 20,30"})
+	void testReversed(int pX1, int pY1, int pX2, int pY2)
+	{
+		Line line = new Line(pX1, pX2, pY2, pY2);
+		Line reversed = line.reversed();
+		assertEquals(line.getPoint1(), reversed.getPoint2());
+		assertEquals(line.getPoint2(), reversed.getPoint1());
+	}
 }
