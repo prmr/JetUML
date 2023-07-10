@@ -221,7 +221,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		{
 			return;
 		}
-		String label = wrapLabel(pString, pEndPoint1, pEndPoint2);
+		String label = wrapLabel(pString, new Line(pEndPoint1, pEndPoint2)); // TODO
 		Rectangle bounds = getStringBounds(new Line(pEndPoint1, pEndPoint2), pArrowHead, label, pCenter, pIsStepUp); // TODO
 		if(pCenter) 
 		{
@@ -240,19 +240,18 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 	
-	private String wrapLabel(String pString, Point pEndPoint1, Point pEndPoint2) 
+	private String wrapLabel(String pLabel, Line pSegment) 
 	{
-		int distanceInX = Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
-		int distanceInY = Math.abs(pEndPoint1.getY() - pEndPoint2.getY());
+		Dimension distances = pSegment.distanceBetweenPoints();
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
-		double distanceInXPerChar = distanceInX / SINGLE_CHAR_WIDTH;
-		double distanceInYPerChar = distanceInY / SIGLE_CHAR_HEIGHT;
-		if (distanceInX > 0)
+		double distanceInXPerChar = distances.width() / SINGLE_CHAR_WIDTH;
+		double distanceInYPerChar = distances.height() / SIGLE_CHAR_HEIGHT;
+		if( distances.width() > 0)
 		{
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInYPerChar/distanceInXPerChar));
-			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
+			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distances.width() / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return StringRenderer.wrapString(pString, lineLength);
+		return StringRenderer.wrapString(pLabel, lineLength);
 	}
 	
 	/**
@@ -411,7 +410,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(1), path.getStartPoint()), // TODO
 				getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
 		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() / 2 - 1), 
-				path.getPointByIndex(path.size() / 2)), null, getMiddleLabel(edge), true, isStepUp(edge))); // TODO Remove null
+				path.getPointByIndex(path.size() / 2)), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge))); 
 		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() - 2), path.getEndPoint()), 
 				getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
 		return bounds;
