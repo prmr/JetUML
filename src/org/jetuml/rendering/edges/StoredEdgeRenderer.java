@@ -207,14 +207,15 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	}
 	
 	/**
-	 * Draws a string.
+	 * Draws a label for an edge.
+	 * 
 	 * @param pGraphics the graphics context
 	 * @param pEndPoint1 an endpoint of the segment along which to draw the string
 	 * @param pEndPoint2 the other endpoint of the segment along which to draw the string
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private void drawString(GraphicsContext pGraphics, Point pEndPoint1, Point pEndPoint2, 
+	private void drawLabel(GraphicsContext pGraphics, Point pEndPoint1, Point pEndPoint2, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if (pString == null || pString.length() == 0)
@@ -222,7 +223,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			return;
 		}
 		String label = wrapLabel(pString, new Line(pEndPoint1, pEndPoint2)); // TODO
-		Rectangle bounds = getStringBounds(new Line(pEndPoint1, pEndPoint2), pArrowHead, label, pCenter, pIsStepUp); // TODO
+		Rectangle bounds = getLabelBounds(new Line(pEndPoint1, pEndPoint2), pArrowHead, label, pCenter, pIsStepUp); // TODO
 		if(pCenter) 
 		{
 			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
@@ -262,7 +263,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @param pCenter true if the string should be centered along the segment
 	 * @return the rectangle enclosing the string
 	*/
-	private static Rectangle getStringBounds(Line pSegment, ArrowHead pArrow, 
+	private static Rectangle getLabelBounds(Line pSegment, ArrowHead pArrow, 
 			String pLabel, boolean pCenter, boolean pIsStepUp)
 	{
 		if(pLabel == null || pLabel.isEmpty())
@@ -407,11 +408,11 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
 		Rectangle bounds = super.getBounds(edge);
-		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(1), path.getStartPoint()), // TODO
+		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(1), path.getStartPoint()), // TODO
 				getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
-		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() / 2 - 1), 
+		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(path.size() / 2 - 1), 
 				path.getPointByIndex(path.size() / 2)), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge))); 
-		bounds = bounds.add(getStringBounds(new Line(path.getPointByIndex(path.size() - 2), path.getEndPoint()), 
+		bounds = bounds.add(getLabelBounds(new Line(path.getPointByIndex(path.size() - 2), path.getEndPoint()), 
 				getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
 		return bounds;
 	}
@@ -433,11 +434,11 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		ArrowHeadRenderer.draw(pGraphics, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
 		ArrowHeadRenderer.draw(pGraphics, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
-		drawString(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
+		drawLabel(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
 			false, isStepUp(edge));
-		drawString(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), ArrowHead.NONE, 
+		drawLabel(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), ArrowHead.NONE, 
 			getMiddleLabel(edge), true, isStepUp(edge));
-		drawString(pGraphics, path.getPointByIndex(path.size()-2), path.getPointByIndex(path.size()-1), 
+		drawLabel(pGraphics, path.getPointByIndex(path.size()-2), path.getPointByIndex(path.size()-1), 
 			getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
 	}
 
