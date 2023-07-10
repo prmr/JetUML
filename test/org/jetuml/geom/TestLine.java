@@ -267,4 +267,15 @@ public class TestLine
 		assertEquals(line.getPoint1(), reversed.getPoint2());
 		assertEquals(line.getPoint2(), reversed.getPoint1());
 	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 0,0, 0,0",
+		"5,10, 25,30, 15,20",
+		"25,30, 5,10, 15,20",
+		"10,40, 40, 0, 25,20",
+		"40,0, 10,40, 25,20"})
+	void testCenter(int pX1, int pY1, int pX2, int pY2, int pCenterX, int pCenterY)
+	{
+		assertEquals(new Point(pCenterX, pCenterY), new Line(pX1, pY1, pX2, pY2).center());
+	}
 }

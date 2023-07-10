@@ -135,6 +135,14 @@ public class Line
 	}
 	
 	/**
+	 * @return The point at the center of the line.
+	 */
+	public Point center()
+	{
+		return new Point((getX1() + getX2())/2, (getY1() + getY2())/2);
+	}
+	
+	/**
 	 * @return The rectangle spanning this line.
 	 */
 	public Rectangle spanning()
