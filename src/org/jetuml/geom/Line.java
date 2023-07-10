@@ -143,6 +143,26 @@ public class Line
 	}
 	
 	/**
+	 * A line is horizontal if the Y-value of both points is the same.
+	 * 
+	 * @return True iif the line is horizontal.
+	 */
+	public boolean isHorizontal()
+	{
+		return getY1() == getY2();
+	}
+	
+	/**
+	 * A line is vertical if the X-value of both points is the same.
+	 * 
+	 * @return True iif the line is horizontal.
+	 */
+	public boolean isVertical()
+	{
+		return getX1() == getX2();
+	}
+	
+	/**
 	 * @return The rectangle spanning this line.
 	 */
 	public Rectangle spanning()

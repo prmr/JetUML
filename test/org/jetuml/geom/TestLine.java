@@ -21,7 +21,9 @@
 package org.jetuml.geom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -277,5 +279,35 @@ public class TestLine
 	void testCenter(int pX1, int pY1, int pX2, int pY2, int pCenterX, int pCenterY)
 	{
 		assertEquals(new Point(pCenterX, pCenterY), new Line(pX1, pY1, pX2, pY2).center());
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 0,0",
+		"0,0,10,0",
+		"10,0,0,0",
+		"25,0,50,0"})
+	void testIsHorizontal_True(int pX1, int pY1, int pX2, int pY2)
+	{
+		assertTrue(new Line(pX1, pY1, pX2, pY2).isHorizontal());
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 0,1",
+		"0,0,11,1",
+		"10,0,5,3",
+		"25,3,53,0"})
+	void testIsHorizontal_False(int pX1, int pY1, int pX2, int pY2)
+	{
+		assertFalse(new Line(pX1, pY1, pX2, pY2).isHorizontal());
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"0,0, 0,0",
+		"0,0,0,10",
+		"0,10,0,0",
+		"0,25, 0,50"})
+	void testIsVertical_True(int pX1, int pY1, int pX2, int pY2)
+	{
+		assertTrue(new Line(pX1, pY1, pX2, pY2).isVertical());
 	}
 }
