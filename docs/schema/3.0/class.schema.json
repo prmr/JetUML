@@ -1,0 +1,164 @@
+{
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "$id": "http://jetuml.org/docs/schema/3.0/class.schema.json",
+   "title": "JetUML File Format for Class Diagrams",
+   "type": "object",
+   "required": [
+      "diagram",
+      "nodes",
+      "edges",
+      "version"
+   ],
+   "properties": {
+      "diagram": {"const": "ClassDiagram"},
+      "nodes": {
+         "type": "array",
+         "uniqueItems": true,
+         "items": {
+            "type": "object",
+            "required": [
+               "x",
+               "y",
+               "id",
+               "type"
+            ],
+            "properties": {
+               "x": {"type": "integer"},
+               "y": {"type": "integer"},
+               "id": {"type": "integer"},
+               "type": {"enum": [
+                  "PointNode",
+                  "InterfaceNode",
+                  "ClassNode",
+                  "NoteNode",
+                  "PackageDescriptionNode",
+                  "PackageNode"
+               ]},
+               "children": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {"type": "integer"}
+               },
+               "name": {"type": "string"},
+               "methods": {"type": "string"},
+               "attributes": {"type": "string"},
+               "contents": {"type": "string"}
+            },
+            "allOf": [
+               {
+                  "if": {"properties": {"type": {"const": "PointNode"}}},
+                  "then": {"required": []}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "InterfaceNode"}}},
+                  "then": {"required": [
+                     "name",
+                     "methods"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "ClassNode"}}},
+                  "then": {"required": [
+                     "name",
+                     "attributes",
+                     "methods"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "NoteNode"}}},
+                  "then": {"required": ["name"]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "PackageDescriptionNode"}}},
+                  "then": {"required": [
+                     "name",
+                     "contents"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "PackageNode"}}},
+                  "then": {"required": ["name"]}
+               }
+            ],
+            "unevaluatedProperties": false
+         }
+      },
+      "edges": {
+         "type": "array",
+         "uniqueItems": true,
+         "items": {
+            "type": "object",
+            "required": [
+               "start",
+               "end",
+               "type"
+            ],
+            "properties": {
+               "start": {"type": "integer"},
+               "end": {"type": "integer"},
+               "type": {"enum": [
+                  "DependencyEdge",
+                  "GeneralizationEdge",
+                  "AggregationEdge",
+                  "AssociationEdge",
+                  "NoteEdge"
+               ]},
+               "middleLabel": {"type": "string"},
+               "directionality": {"enum": [
+                  "Unspecified",
+                  "Unidirectional",
+                  "Bidirectional"
+               ]},
+               "Generalization Type": {"enum": [
+                  "Inheritance",
+                  "Implementation"
+               ]},
+               "startLabel": {"type": "string"},
+               "endLabel": {"type": "string"},
+               "Aggregation Type": {"enum": [
+                  "Aggregation",
+                  "Composition"
+               ]}
+            },
+            "allOf": [
+               {
+                  "if": {"properties": {"type": {"const": "DependencyEdge"}}},
+                  "then": {"required": [
+                     "middleLabel",
+                     "directionality"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "GeneralizationEdge"}}},
+                  "then": {"required": ["Generalization Type"]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "AggregationEdge"}}},
+                  "then": {"required": [
+                     "startLabel",
+                     "middleLabel",
+                     "endLabel",
+                     "Aggregation Type"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "AssociationEdge"}}},
+                  "then": {"required": [
+                     "startLabel",
+                     "middleLabel",
+                     "endLabel",
+                     "directionality"
+                  ]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "NoteEdge"}}},
+                  "then": {"required": []}
+               }
+            ],
+            "unevaluatedProperties": false
+         }
+      },
+      "version": {"type": "string"}
+   },
+   "unevaluatedProperties": false
+}

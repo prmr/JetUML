@@ -1,0 +1,112 @@
+{
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "$id": "http://jetuml.org/docs/schema/3.0/usecase.schema.json",
+   "title": "JetUML File Format for Use Case Diagrams",
+   "type": "object",
+   "required": [
+      "diagram",
+      "nodes",
+      "edges",
+      "version"
+   ],
+   "properties": {
+      "diagram": {"const": "UseCaseDiagram"},
+      "nodes": {
+         "type": "array",
+         "uniqueItems": true,
+         "items": {
+            "type": "object",
+            "required": [
+               "x",
+               "y",
+               "id",
+               "type"
+            ],
+            "properties": {
+               "x": {"type": "integer"},
+               "y": {"type": "integer"},
+               "id": {"type": "integer"},
+               "type": {"enum": [
+                  "PointNode",
+                  "UseCaseNode",
+                  "NoteNode",
+                  "ActorNode"
+               ]},
+               "children": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {"type": "integer"}
+               },
+               "name": {"type": "string"}
+            },
+            "allOf": [
+               {
+                  "if": {"properties": {"type": {"const": "PointNode"}}},
+                  "then": {"required": []}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "UseCaseNode"}}},
+                  "then": {"required": ["name"]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "NoteNode"}}},
+                  "then": {"required": ["name"]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "ActorNode"}}},
+                  "then": {"required": ["name"]}
+               }
+            ],
+            "unevaluatedProperties": false
+         }
+      },
+      "edges": {
+         "type": "array",
+         "uniqueItems": true,
+         "items": {
+            "type": "object",
+            "required": [
+               "start",
+               "end",
+               "type"
+            ],
+            "properties": {
+               "start": {"type": "integer"},
+               "end": {"type": "integer"},
+               "type": {"enum": [
+                  "UseCaseGeneralizationEdge",
+                  "UseCaseAssociationEdge",
+                  "UseCaseDependencyEdge",
+                  "NoteEdge"
+               ]},
+               "Dependency Type": {"enum": [
+                  "None",
+                  "Include",
+                  "Extend"
+               ]}
+            },
+            "allOf": [
+               {
+                  "if": {"properties": {"type": {"const": "UseCaseGeneralizationEdge"}}},
+                  "then": {"required": []}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "UseCaseAssociationEdge"}}},
+                  "then": {"required": []}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "UseCaseDependencyEdge"}}},
+                  "then": {"required": ["Dependency Type"]}
+               },
+               {
+                  "if": {"properties": {"type": {"const": "NoteEdge"}}},
+                  "then": {"required": []}
+               }
+            ],
+            "unevaluatedProperties": false
+         }
+      },
+      "version": {"type": "string"}
+   },
+   "unevaluatedProperties": false
+}
