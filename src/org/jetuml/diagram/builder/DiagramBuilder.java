@@ -481,7 +481,7 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private PackageNodeRenderer packageNodeRenderer()
+	protected PackageNodeRenderer packageNodeRenderer()
 	{
 		return (PackageNodeRenderer)aDiagramRenderer.rendererFor(PackageNode.class);
 	}

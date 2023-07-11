@@ -31,6 +31,7 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
 
 /**
  * A builder for class diagrams.
@@ -305,6 +306,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		Node parent = findSharedParent(pNodes).get();
 		// CSOFF:
 		Node outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
+		Rectangle parentBound = packageNodeRenderer().getBounds(parent);
+
 		if( outerParent == null )
 		{
 			// The parent of the nodes in pNodes does not have parent, 
@@ -316,6 +319,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							aDiagramRenderer.diagram().addRootNode(pNode);
 							parent.removeChild(pNode);
 						}
+						parent.translate( parentBound.getX()-parent.position().getX(),  
+							parentBound.getY()-parent.position().getY() );
 					},
 					()->
 					{
@@ -337,6 +342,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							parent.removeChild(pNode);
 							outerParent.addChild(pNode);
 						}
+						parent.translate( parentBound.getX()-parent.position().getX(),  
+									parentBound.getY()-parent.position().getY() );
 					},
 					()->
 					{
