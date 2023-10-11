@@ -1,9 +1,10 @@
 package org.jetuml.gui;
 
 /**
- * An object that can be displayed by the NotificationHandler
+ * An object that can be displayed by the NotificationHandler.
  */
-public interface Notification {
+public interface Notification
+{
 
     /**
      * Show the Notification object to the desired coordinates.
