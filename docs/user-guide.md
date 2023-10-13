@@ -70,7 +70,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 </div>
 <button class="collapsible">Linking Note Elements</button>
 <div class="content">
-<p>Use the note edge to link nodes to various parts of the diagram. Dragging a note edge from a target node to the note edge will link the note edge with the target node. Dragging a note edge from the note element will anchor the edge to a fixed point on the diagram.</p>
+<p>Use the note edge to link notes to various parts of the diagram. Dragging a note edge from a target node to the note node will link the note node with the target node. Dragging a note edge from the note node will anchor the edge to a fixed point on the diagram.</p>
 <img src="../tipdata/tip_images/tip14.png">
 </div>
 <button class="collapsible">Tool Shortcuts</button>
@@ -85,7 +85,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 </div>
 <button class="collapsible">Cutting, Copying, and Pasting</button>
 <div class="content">
-<p>You can cut or copy one or more diagram elements and paste them either within the same diagram or into a different diagram. It is only possible to paste a selection to another diagram if all the elements in the selection are compatible with the destination diagram type.</p>
+<p>You can cut or copy one or more diagram elements and paste them either within the same diagram or into a different diagram. It is only possible to paste a selection to another diagram if all the elements in the selection are compatible with the destination diagram type. It is also not possible to paste elements into a sequence diagram as this would result in an invalid control-flow sequence.</p>
 <img src="../tipdata/tip_images/tip17.png">
 </div>
 <button class="collapsible">Verbose Tooltips</button>

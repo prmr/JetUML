@@ -1,7 +1,7 @@
 { 
   "title": "Linking Note Elements",
   "content": [ 
-    { "text": "Use the note edge to link nodes to various parts of the diagram. Dragging a note edge from a target node to the note edge will link the note edge with the target node. Dragging a note edge from the note element will anchor the edge to a fixed point on the diagram." },
+    { "text": "Use the note edge to link notes to various parts of the diagram. Dragging a note edge from a target node to the note node will link the note node with the target node. Dragging a note edge from the note node will anchor the edge to a fixed point on the diagram." },
   	{ "image": "tip14.png"}
   ]
 }
