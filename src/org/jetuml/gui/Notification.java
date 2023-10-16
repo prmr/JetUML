@@ -12,7 +12,7 @@ public interface Notification
      * @param pX The target X position
      * @param pY The target Y position
      */
-    void show(double pX, double pY);
+    void show(double pX, double pY, NotificationHandler.CleanUpCallback pCleanUpCallback);
 
     /**
      * Move the Notification object to the desired X position.
