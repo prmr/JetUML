@@ -10,6 +10,30 @@ import java.util.LinkedList;
 public final class NotificationHandler
 {
 
+    /**
+     * A callback for Notification objects called when they reached the end of their lifetime.
+     * It removes them from the handler notification list.
+     */
+    public class CleanUpCallback
+    {
+
+        private CleanUpCallback()
+        {}
+
+        /**
+         * Removes the specified notification object from the handler notification list.
+         * @param pNotification The notification object that calls this function
+         */
+        public void execute(Notification pNotification)
+        {
+            if (INSTANCE.aNotificationList.contains(pNotification))
+            {
+                aNotificationList.remove(pNotification);
+            }
+        }
+
+    }
+
     private static final NotificationHandler INSTANCE = new NotificationHandler();
 
     private Stage aMainStage;
