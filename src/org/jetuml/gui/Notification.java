@@ -28,4 +28,9 @@ public interface Notification
      */
     void setY(double pY);
 
+    /**
+     * @return The height of the Notification object.
+     */
+    double getHeight();
+
 }

@@ -123,6 +123,17 @@ public class ToastNotification implements Notification
     @Override
     public void setY(double pY)
     {
-        this.aStage.setY(pY);
+        // Since notifications are shown in the bottom-left corner, we set the
+        // bottom-left corner of the notification object as the reference point for its position
+        this.aStage.setY(pY - this.aStage.getHeight());
+    }
+
+    /**
+     * @return The height of the Notification object.
+     */
+    @Override
+    public double getHeight()
+    {
+        return aStage.getHeight();
     }
 }
