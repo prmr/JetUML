@@ -14,7 +14,7 @@ public final class NotificationHandler
      * A callback for Notification objects called when they reached the end of their lifetime.
      * It removes them from the handler notification list.
      */
-    public class CleanUpCallback
+    public final class CleanUpCallback
     {
 
         private CleanUpCallback()
