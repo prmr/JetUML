@@ -114,10 +114,6 @@
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="GenericIllegalRegexp">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
     <module name="TodoComment">
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
@@ -153,10 +149,6 @@
     <module name="UnnecessaryParentheses"/>
     <module name="BooleanExpressionComplexity"/>
     <module name="NPathComplexity"/>
-    <module name="PackageHtml">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
     <module name="SuppressionCommentFilter">
       <property name="offCommentFormat" value="CSOFF\:"/>
       <property name="onCommentFormat" value="CSON\:"/>
