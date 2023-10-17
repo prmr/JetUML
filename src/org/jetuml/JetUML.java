@@ -46,6 +46,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  * Entry point for launching JetUML.
@@ -105,6 +107,16 @@ public final class JetUML extends Application
 		pStage.setScene(new Scene(editor));
 
 		NotificationHandler.instance().setMainStage(pStage);
+
+		// Window position listener for notifications
+		ChangeListener<Number> stageMoveListener = new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
+				NotificationHandler.instance().updatePosition();
+			}
+		};
+		pStage.xProperty().addListener(stageMoveListener);
+		pStage.yProperty().addListener(stageMoveListener);
 		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
