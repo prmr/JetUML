@@ -82,6 +82,27 @@ public final class NotificationHandler
     }
 
     /**
+     * Spawns a notification (it should be instantiated first).
+     *
+     * @param pNotification The notification object to spawn
+     */
+    public void spawn(Notification pNotification)
+    {
+        if (this.aMainStage == null)
+        {
+            return;
+        }
+
+        double x = this.aMainStage.getX() + NOTIFICATION_STACK_X_MARGIN;
+        double y = this.aMainStage.getY() + this.aMainStage.getHeight() - NOTIFICATION_STACK_Y_MARGIN;
+
+        aNotificationList.add(pNotification);
+
+        pNotification.show(x, y, new CleanUpCallback());
+        this.updatePosition();
+    }
+
+    /**
      * Spawns a new toast notification.
      *
      * @param pText The text to show on the toast
@@ -94,15 +115,8 @@ public final class NotificationHandler
             return;
         }
 
-        double x = this.aMainStage.getX() + NOTIFICATION_STACK_X_MARGIN;
-        double y = this.aMainStage.getY() + this.aMainStage.getHeight() - NOTIFICATION_STACK_Y_MARGIN;
-
         ToastNotification toast = new ToastNotification(pText, this.aMainStage);
-
-        aNotificationList.add(toast);
-
-        toast.show(x, y, new CleanUpCallback());
-        this.updatePosition();
+        spawn(toast);
 
     }
 
