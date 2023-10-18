@@ -64,6 +64,14 @@ public final class NotificationHandler
     }
 
     /**
+     * @return The application stage
+     */
+    public Stage getMainStage()
+    {
+        return this.aMainStage;
+    }
+
+    /**
      * Rearranges the notifications so that they are stacked properly and do not overlap.
      */
     public void updatePosition()
@@ -107,7 +115,7 @@ public final class NotificationHandler
      *
      * @param pText The text to show on the toast
      */
-    public void spawn(String pText)
+    public void spawn(String pText, ToastNotification.Type pType)
     {
 
         if (this.aMainStage == null)
@@ -115,7 +123,7 @@ public final class NotificationHandler
             return;
         }
 
-        ToastNotification toast = new ToastNotification(pText, this.aMainStage);
+        ToastNotification toast = new ToastNotification(pText, pType, this.aMainStage);
         spawn(toast);
 
     }

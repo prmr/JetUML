@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,18 +20,58 @@ import org.jetuml.application.UserPreferences;
 public class ToastNotification implements Notification
 {
 
+    /**
+     * Defines the color of the toast notification.
+     */
+    public enum Type
+    {
+        ERROR, SUCCESS, WARNING, INFO
+    }
+
     private static final int FADE_IN_DELAY = 500;
     private static final int FADE_OUT_DELAY = 500;
     private static final int NOTIFICATION_DELAY = 5000;
 
     private final Stage aStage;
 
-    protected ToastNotification(String pMessage, Stage pOwnerStage)
+    /**
+     * Creates a new Toast notification object.
+     *
+     * @param pMessage The message to display
+     * @param pOwnerStage The main window stage
+     */
+    public ToastNotification(String pMessage, Type pType, Stage pOwnerStage)
     {
-        this.aStage = generate(pMessage, pOwnerStage);
+        this.aStage = generate(pMessage, pType, pOwnerStage);
     }
 
-    private Stage generate(String pMessage, Stage pOwnerStage)
+    /**
+     * Creates a new Toast notification object. (The owner stage is fetched automatically)
+     *
+     * @param pMessage The message to display
+     */
+    public ToastNotification(String pMessage, Type pType)
+    {
+        Stage ownerStage = NotificationHandler.instance().getMainStage();
+        this.aStage = generate(pMessage, pType, ownerStage);
+    }
+
+    private static String getStyleByType(Type pType)
+    {
+        switch (pType)
+        {
+            case ERROR:
+                return "-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10";
+            case SUCCESS:
+                return "-fx-padding: 8px; -fx-background-color: rgb(112, 173, 70); -fx-background-radius: 10";
+            case WARNING:
+                return "-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10";
+            default: // We consider INFO as the default type
+                return "-fx-padding: 8px; -fx-background-color: rgb(70, 115, 195); -fx-background-radius: 10";
+        }
+    }
+
+    private Stage generate(String pMessage, Type pType, Stage pOwnerStage)
     {
 
         Stage stage = new Stage();
@@ -46,7 +87,7 @@ public class ToastNotification implements Notification
 
         StackPane pane = new StackPane(text);
 
-        pane.setStyle("-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10");
+        pane.setStyle(getStyleByType(pType));
         pane.setOpacity(0);
 
         Scene scene = new Scene(pane);
