@@ -289,6 +289,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void copy()
 	{
 		Clipboard.instance().copy(aSelected);
+		NotificationHandler.instance().spawn("Copied to clipboard!", ToastNotification.Type.SUCCESS);
 	}
 	
 	/**
