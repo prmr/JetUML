@@ -53,27 +53,53 @@ public class ToastNotification implements Notification
     private static final int NOTIFICATION_DELAY = 5000;
 
     private final Stage aStage;
+    private final int aFadeInDelay;
+    private final int aFadeOutDelay;
+    private final int aNotificationDelay;
 
     /**
      * Creates a new Toast notification object.
      *
      * @param pMessage The message to display
+     * @param pType The type of the toast notification
+     * @param pOwnerStage The main window stage
+     * @param pFadeInDelay The duration of the fade-in animation (in ms)
+     * @param pFadeOutDelay The duration of the fade-out animation (in ms)
+     * @param pNotificationDelay The notification lifespan (in ms, this adds up to the fade-in and fade-out delays)
+     */
+    public ToastNotification(String pMessage, Type pType, Stage pOwnerStage, int pFadeInDelay, int pFadeOutDelay, int pNotificationDelay)
+    {
+        this.aStage = generate(pMessage, pType, pOwnerStage);
+
+        this.aFadeInDelay = pFadeInDelay;
+        this.aFadeOutDelay = pFadeOutDelay;
+        this.aNotificationDelay = pNotificationDelay;
+    }
+
+    /**
+     * Creates a new Toast notification object using default fade in delay, fade out delay and lifespan.
+     *
+     * @param pMessage The message to display
+     * @param pType The type of the toast notification
      * @param pOwnerStage The main window stage
      */
     public ToastNotification(String pMessage, Type pType, Stage pOwnerStage)
     {
-        this.aStage = generate(pMessage, pType, pOwnerStage);
+        this(pMessage, pType, pOwnerStage, FADE_IN_DELAY, FADE_OUT_DELAY, NOTIFICATION_DELAY);
+        //this.aStage = generate(pMessage, pType, pOwnerStage);
     }
 
     /**
      * Creates a new Toast notification object. (The owner stage is fetched automatically)
      *
      * @param pMessage The message to display
+     * @param pType The type of the toast notification
      */
     public ToastNotification(String pMessage, Type pType)
     {
-        Stage ownerStage = NotificationHandler.instance().getMainStage();
-        this.aStage = generate(pMessage, pType, ownerStage);
+        this(pMessage, pType, NotificationHandler.instance().getMainStage());
+        //Stage ownerStage = NotificationHandler.instance().getMainStage();
+        //this.aStage = generate(pMessage, pType, ownerStage);
     }
 
     private static String getStyleByType(Type pType)
@@ -133,14 +159,14 @@ public class ToastNotification implements Notification
         this.aStage.setY(pY - this.aStage.getHeight());
 
         Timeline fadeInTimeline = new Timeline();
-        KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY), new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 1));
+        KeyFrame fadeInKey = new KeyFrame(Duration.millis(aFadeInDelay), new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 1));
 
         fadeInTimeline.getKeyFrames().add(fadeInKey);
         fadeInTimeline.setOnFinished(actionEvent -> {
             new Thread(() -> {
                 try
                 {
-                    Thread.sleep(NOTIFICATION_DELAY);
+                    Thread.sleep(aNotificationDelay);
                 }
                 catch (InterruptedException e)
                 {
@@ -148,7 +174,7 @@ public class ToastNotification implements Notification
                 }
 
                 Timeline fadeOutTimeline = new Timeline();
-                KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
+                KeyFrame fadeOutKey = new KeyFrame(Duration.millis(aFadeOutDelay),
                         new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 0));
 
                 fadeOutTimeline.getKeyFrames().add(fadeOutKey);
