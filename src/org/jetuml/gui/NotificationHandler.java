@@ -21,12 +21,14 @@
 package org.jetuml.gui;
 
 import javafx.stage.Stage;
+import org.jetuml.annotations.Singleton;
 
 import java.util.LinkedList;
 
 /**
  * Singleton object that manages the notification object positions and display states.
  */
+@Singleton
 public final class NotificationHandler
 {
 
