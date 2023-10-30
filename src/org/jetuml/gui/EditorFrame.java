@@ -402,10 +402,7 @@ public class EditorFrame extends BorderPane
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
 	    clipboard.setContent(content);
-		Alert alert = new Alert(AlertType.INFORMATION, RESOURCES.getString("dialog.to_clipboard.message"), ButtonType.OK);
-		alert.initOwner(aMainStage);
-		alert.setHeaderText(RESOURCES.getString("dialog.to_clipboard.title"));
-		alert.showAndWait();
+		spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */
