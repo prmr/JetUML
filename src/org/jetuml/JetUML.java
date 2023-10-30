@@ -35,7 +35,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.DeserializationErrorAlert;
 import org.jetuml.gui.EditorFrame;
 import org.jetuml.gui.GuiUtils;
-import org.jetuml.gui.NotificationHandler;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
@@ -106,13 +105,11 @@ public final class JetUML extends Application
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
 
-		NotificationHandler.instance().setMainStage(pStage);
-
 		// Window position listener for notifications
 		ChangeListener<Number> stageMoveListener = new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-				NotificationHandler.instance().updatePosition();
+				editor.updateNotificationPosition();
 			}
 		};
 		pStage.xProperty().addListener(stageMoveListener);

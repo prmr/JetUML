@@ -21,7 +21,7 @@
 package org.jetuml.gui;
 
 /**
- * An object that can be displayed by the NotificationHandler.
+ * An object that can be displayed by the EditorFrame spawn() method.
  */
 public interface Notification
 {
@@ -32,7 +32,7 @@ public interface Notification
      * @param pX The target X position
      * @param pY The target Y position
      */
-    void show(double pX, double pY, NotificationHandler.CleanUpCallback pCleanUpCallback);
+    void show(double pX, double pY, EditorFrame.CleanUpCallback pCleanUpCallback);
 
     /**
      * Move the Notification object to the desired X position.
