@@ -91,7 +91,7 @@ public class EditorFrame extends BorderPane
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-	private ArrayList<Notification> aNotificationList = new ArrayList<>();
+	private List<Notification> aNotificationList = new ArrayList<>();
 	
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
