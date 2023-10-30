@@ -83,11 +83,15 @@ public class EditorFrame extends BorderPane
 	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide.html";
 	
 	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
+	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
+	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 18;
+	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 18;
 	
 	private Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
+	private ArrayList<Notification> aNotificationList = new ArrayList<>();
 	
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
@@ -729,5 +733,82 @@ public class EditorFrame extends BorderPane
 		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
+	}
+
+	/**
+	 * A callback for Notification objects called when they reached the end of their lifetime.
+	 * It removes them from the handler notification list.
+	 */
+	public final class CleanUpCallback
+	{
+
+		private Notification aTargetNotification;
+
+		/**
+		 * Creates a CleanUpCallback object.
+		 *
+		 * @param pTargetNotification The notification to remove when the callback is executed.
+		 */
+		private CleanUpCallback(Notification pTargetNotification)
+		{
+			aTargetNotification = pTargetNotification;
+		}
+
+		/**
+		 * Removes the specified notification object from the handler notification list.
+		 */
+		public void execute()
+		{
+			aNotificationList.remove(aTargetNotification);
+		}
+
+	}
+
+	/**
+	 * Rearranges the notifications so that they are stacked properly and do not overlap.
+	 */
+	public void updateNotificationPosition()
+	{
+
+		double yBuf = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
+		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
+
+		for (int i = aNotificationList.size() - 1; i >= 0; i--)
+		{
+			Notification notification = aNotificationList.get(i);
+			notification.setX(x);
+			notification.setY(yBuf);
+			yBuf = yBuf - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
+		}
+	}
+
+	/**
+	 * Spawns a notification (it should be instantiated first).
+	 *
+	 * @param pNotification The notification object to spawn
+	 */
+	public void spawnNotification(Notification pNotification)
+	{
+
+		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
+		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
+
+		aNotificationList.add(pNotification);
+
+		pNotification.show(x, y, new EditorFrame.CleanUpCallback(pNotification));
+		updateNotificationPosition();
+	}
+
+	/**
+	 * Spawns a new toast notification.
+	 *
+	 * @param pText The text to show on the toast
+	 */
+	public void spawnNotification(String pText, ToastNotification.Type pType)
+	{
+
+		ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
+		spawnNotification(toast);
+
 	}
 }
