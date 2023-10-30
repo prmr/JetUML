@@ -32,25 +32,25 @@ public interface Notification
      * @param pX The target X position
      * @param pY The target Y position
      */
-    void show(double pX, double pY, EditorFrame.CleanUpCallback pCleanUpCallback);
+    void show(int pX, int pY, EditorFrame.CleanUpCallback pCleanUpCallback);
 
     /**
      * Move the Notification object to the desired X position.
      *
      * @param pX The target X position
      */
-    void setX(double pX);
+    void setX(int pX);
 
     /**
      * Move the Notification object to the desired Y position.
      *
      * @param pY The target Y position
      */
-    void setY(double pY);
+    void setY(int pY);
 
     /**
      * @return The height of the Notification object.
      */
-    double getHeight();
+    int getHeight();
 
 }
