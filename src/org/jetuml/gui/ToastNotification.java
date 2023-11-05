@@ -115,12 +115,12 @@ public class ToastNotification implements Notification
      * @param pY The target Y position
      */
     @Override
-    public void show(int pX, int pY, EditorFrame.CleanUpCallback pCleanUpCallback)
+    public void show(double pX, double pY, EditorFrame.CleanUpCallback pCleanUpCallback)
     {
         this.aStage.show();
 
-        this.aStage.setX(pX + 0.5);
-        this.aStage.setY(pY - this.aStage.getHeight() + 0.5);
+        this.aStage.setX(pX);
+        this.aStage.setY(pY - this.aStage.getHeight());
 
         Timeline fadeInTimeline = new Timeline();
         KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY), new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 1));
@@ -161,9 +161,9 @@ public class ToastNotification implements Notification
      * @param pX The target X position
      */
     @Override
-    public void setX(int pX)
+    public void setX(double pX)
     {
-        aStage.setX(pX + 0.5);
+        aStage.setX(pX);
     }
 
     /**
@@ -172,19 +172,19 @@ public class ToastNotification implements Notification
      * @param pY The target Y position
      */
     @Override
-    public void setY(int pY)
+    public void setY(double pY)
     {
         // Since notifications are shown in the bottom-left corner, we set the
         // bottom-left corner of the notification object as the reference point for its position
-        aStage.setY(pY - aStage.getHeight() + 0.5);
+        aStage.setY(pY - aStage.getHeight());
     }
 
     /**
      * @return The height of the Notification object.
      */
     @Override
-    public int getHeight()
+    public double getHeight()
     {
-        return (int) aStage.getHeight();
+        return aStage.getHeight();
     }
 }

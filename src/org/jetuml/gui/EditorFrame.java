@@ -767,8 +767,8 @@ public class EditorFrame extends BorderPane
 	public void updateNotificationPosition()
 	{
 
-		int yBuf = (int) (aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN);
-		int x = (int) (aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN);
+		double yBuf = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
+		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
 		for (int i = aNotificationList.size() - 1; i >= 0; i--)
 		{
@@ -787,8 +787,8 @@ public class EditorFrame extends BorderPane
 	public void spawnNotification(Notification pNotification)
 	{
 
-		int x = (int) (aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN);
-		int y = (int) (aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN);
+		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
+		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 
 		aNotificationList.add(pNotification);
 
