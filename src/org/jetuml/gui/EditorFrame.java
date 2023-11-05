@@ -42,6 +42,8 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import org.jetuml.JetUML;
 import org.jetuml.application.FileExtensions;
 import org.jetuml.application.RecentFilesQueue;
@@ -136,6 +138,18 @@ public class EditorFrame extends BorderPane
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
+
+		// Window position listener for notifications
+		ChangeListener<Number> stageMoveListener = new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> pObservableValue, Number pOldValue, Number pNewValue)
+			{
+				updateNotificationPosition();
+			}
+		};
+		pMainStage.xProperty().addListener(stageMoveListener);
+		pMainStage.yProperty().addListener(stageMoveListener);
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
