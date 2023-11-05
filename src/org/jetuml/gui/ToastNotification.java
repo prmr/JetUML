@@ -45,7 +45,26 @@ public class ToastNotification implements Notification
      */
     public enum Type
     {
-        ERROR, SUCCESS, WARNING, INFO
+
+        ERROR("-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10"),
+        SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(112, 173, 70); -fx-background-radius: 10"),
+        WARNING("-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10"),
+        INFO("-fx-padding: 8px; -fx-background-color: rgb(70, 115, 195); -fx-background-radius: 10");
+
+        private String aStyle;
+
+        Type(String pStyle)
+        {
+            aStyle = pStyle;
+        }
+
+        /**
+         * @return A string containing the CSS style of the type
+         */
+        public String getStyle()
+        {
+            return aStyle;
+        }
     }
 
     private static final int FADE_IN_DELAY = 500;
@@ -63,25 +82,10 @@ public class ToastNotification implements Notification
      */
     public ToastNotification(String pMessage, Type pType, Stage pOwnerStage)
     {
-        aStage = generate(pMessage, pType, pOwnerStage);
+        aStage = createStage(pMessage, pType, pOwnerStage);
     }
 
-    private static String getStyleByType(Type pType)
-    {
-        switch (pType)
-        {
-            case ERROR:
-                return "-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10";
-            case SUCCESS:
-                return "-fx-padding: 8px; -fx-background-color: rgb(112, 173, 70); -fx-background-radius: 10";
-            case WARNING:
-                return "-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10";
-            default: // We consider INFO as the default type
-                return "-fx-padding: 8px; -fx-background-color: rgb(70, 115, 195); -fx-background-radius: 10";
-        }
-    }
-
-    private Stage generate(String pMessage, Type pType, Stage pOwnerStage)
+    private Stage createStage(String pMessage, Type pType, Stage pOwnerStage)
     {
 
         Stage stage = new Stage();
@@ -97,7 +101,7 @@ public class ToastNotification implements Notification
 
         StackPane pane = new StackPane(text);
 
-        pane.setStyle(getStyleByType(pType));
+        pane.setStyle(pType.getStyle());
         pane.setOpacity(0);
 
         Scene scene = new Scene(pane);
