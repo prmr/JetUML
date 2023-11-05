@@ -27,12 +27,11 @@ public interface Notification
 {
 
     /**
-     * Show the Notification object to the desired coordinates.
+     * Show the Notification object.
      *
-     * @param pX The target X position
-     * @param pY The target Y position
+     * @param pCleanUpCallback The callback to execute when the notification should be removed from the notification list
      */
-    void show(double pX, double pY, EditorFrame.CleanUpCallback pCleanUpCallback);
+    void show(EditorFrame.CleanUpCallback pCleanUpCallback);
 
     /**
      * Move the Notification object to the desired X position.

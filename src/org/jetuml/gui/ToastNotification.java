@@ -63,7 +63,7 @@ public class ToastNotification implements Notification
      */
     public ToastNotification(String pMessage, Type pType, Stage pOwnerStage)
     {
-        this.aStage = generate(pMessage, pType, pOwnerStage);
+        aStage = generate(pMessage, pType, pOwnerStage);
     }
 
     private static String getStyleByType(Type pType)
@@ -109,21 +109,17 @@ public class ToastNotification implements Notification
     }
 
     /**
-     * Show the Notification object to the desired coordinates.
+     * Show the Notification object.
      *
-     * @param pX The target X position
-     * @param pY The target Y position
+     * @param pCleanUpCallback The callback to execute when the notification should be removed from the notification list
      */
     @Override
-    public void show(double pX, double pY, EditorFrame.CleanUpCallback pCleanUpCallback)
+    public void show(EditorFrame.CleanUpCallback pCleanUpCallback)
     {
-        this.aStage.show();
-
-        this.aStage.setX(pX);
-        this.aStage.setY(pY - this.aStage.getHeight());
+        aStage.show();
 
         Timeline fadeInTimeline = new Timeline();
-        KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY), new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 1));
+        KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY), new KeyValue(aStage.getScene().getRoot().opacityProperty(), 1));
 
         fadeInTimeline.getKeyFrames().add(fadeInKey);
         fadeInTimeline.setOnFinished(actionEvent -> {
@@ -139,7 +135,7 @@ public class ToastNotification implements Notification
 
                 Timeline fadeOutTimeline = new Timeline();
                 KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
-                        new KeyValue(this.aStage.getScene().getRoot().opacityProperty(), 0));
+                        new KeyValue(aStage.getScene().getRoot().opacityProperty(), 0));
 
                 fadeOutTimeline.getKeyFrames().add(fadeOutKey);
                 fadeOutTimeline.setOnFinished(actionEvent1 -> {
