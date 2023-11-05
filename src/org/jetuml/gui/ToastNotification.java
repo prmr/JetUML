@@ -34,6 +34,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.jetuml.application.UserPreferences;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * A toast notification object (that pops up and disappears without requiring any user interaction).
  */
@@ -122,36 +125,38 @@ public class ToastNotification implements Notification
     {
         aStage.show();
 
+        // We define the Timeline for the fadein animation
         Timeline fadeInTimeline = new Timeline();
         KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY), new KeyValue(aStage.getScene().getRoot().opacityProperty(), 1));
-
         fadeInTimeline.getKeyFrames().add(fadeInKey);
-        fadeInTimeline.setOnFinished(actionEvent -> {
-            new Thread(() -> {
-                try
-                {
-                    Thread.sleep(NOTIFICATION_DELAY);
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
 
-                Timeline fadeOutTimeline = new Timeline();
-                KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
-                        new KeyValue(aStage.getScene().getRoot().opacityProperty(), 0));
+        // We define the Timeline for the fadeout animation
+        Timeline fadeOutTimeline = new Timeline();
+        KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
+                new KeyValue(aStage.getScene().getRoot().opacityProperty(), 0));
 
-                fadeOutTimeline.getKeyFrames().add(fadeOutKey);
-                fadeOutTimeline.setOnFinished(actionEvent1 -> {
-                    aStage.close();
-                    pCleanUpCallback.execute();
-                }); // AUTO CLOSE ?
-
-                fadeOutTimeline.play();
-
-
-            }).start();
+        fadeOutTimeline.getKeyFrames().add(fadeOutKey);
+        // We close the stage and execute the callback at the end of the fadeout animation
+        fadeOutTimeline.setOnFinished(actionEvent1 -> {
+            aStage.close();
+            pCleanUpCallback.execute();
         });
+
+        Timer notificationTimer = new Timer();
+        TimerTask lifespan = new TimerTask()
+        {
+            public void run()
+            {
+                fadeOutTimeline.play();
+            }
+        };
+
+        // When the fadein animation ends, we start a timer that will execute the fadeout animation
+        fadeInTimeline.setOnFinished(actionEvent -> {
+            notificationTimer.schedule(lifespan, (long) NOTIFICATION_DELAY);
+        });
+
+        // We trigger the fadein animation
         fadeInTimeline.play();
     }
 
