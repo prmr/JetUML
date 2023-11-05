@@ -792,7 +792,7 @@ public class EditorFrame extends BorderPane
 
 		aNotificationList.add(pNotification);
 
-		pNotification.show(x, y, new EditorFrame.CleanUpCallback(pNotification));
+		pNotification.show(new EditorFrame.CleanUpCallback(pNotification));
 		updateNotificationPosition();
 	}
 
