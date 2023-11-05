@@ -104,16 +104,6 @@ public final class JetUML extends Application
 		EditorFrame editor = new EditorFrame(pStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
-
-		// Window position listener for notifications
-		ChangeListener<Number> stageMoveListener = new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-				editor.updateNotificationPosition();
-			}
-		};
-		pStage.xProperty().addListener(stageMoveListener);
-		pStage.yProperty().addListener(stageMoveListener);
 		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
