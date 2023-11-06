@@ -27,7 +27,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -118,10 +117,10 @@ public class ToastNotification implements Notification
     /**
      * Show the Notification object.
      *
-     * @param pCleanUpCallback The callback to execute when the notification should be removed from the notification list
+     * @param pCleanUpCallback The Runnable to run when the notification should be removed from the notification list
      */
     @Override
-    public void show(EditorFrame.CleanUpCallback pCleanUpCallback)
+    public void show(Runnable pCleanUpCallback)
     {
         aStage.show();
 
@@ -139,7 +138,7 @@ public class ToastNotification implements Notification
         // We close the stage and execute the callback at the end of the fadeout animation
         fadeOutTimeline.setOnFinished(actionEvent1 -> {
             aStage.close();
-            pCleanUpCallback.execute();
+            pCleanUpCallback.run();
         });
 
         Timer notificationTimer = new Timer();

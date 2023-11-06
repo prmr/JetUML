@@ -29,9 +29,9 @@ public interface Notification
     /**
      * Show the Notification object.
      *
-     * @param pCleanUpCallback The callback to execute when the notification should be removed from the notification list
+     * @param pCleanUpCallback The Runnable to run when the notification should be removed from the notification list
      */
-    void show(EditorFrame.CleanUpCallback pCleanUpCallback);
+    void show(Runnable pCleanUpCallback);
 
     /**
      * Move the Notification object to the desired X position.
