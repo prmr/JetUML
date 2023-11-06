@@ -47,7 +47,6 @@ public class ToastNotification implements Notification
      */
     public enum Type
     {
-
         ERROR("-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10"),
         SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(112, 173, 70); -fx-background-radius: 10"),
         WARNING("-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10"),
@@ -89,7 +88,6 @@ public class ToastNotification implements Notification
 
     private Stage createStage(String pMessage, Type pType, Stage pOwnerStage)
     {
-
         Stage stage = new Stage();
 
         stage.initOwner(pOwnerStage);
@@ -111,7 +109,6 @@ public class ToastNotification implements Notification
         stage.setScene(scene);
 
         return stage;
-
     }
 
     /**

@@ -93,7 +93,7 @@ public class EditorFrame extends BorderPane
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-	private List<Notification> aNotificationList = new ArrayList<>();
+	private List<Notification> aNotifications = new ArrayList<>();
 	
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
@@ -751,13 +751,12 @@ public class EditorFrame extends BorderPane
 	 */
 	public void updateNotificationPosition()
 	{
-
 		double yBuf = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
-		for (int i = aNotificationList.size() - 1; i >= 0; i--)
-		{
-			Notification notification = aNotificationList.get(i);
+		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
+		Collections.reverse(reverseNotifications);
+		for (Notification notification : reverseNotifications) {
 			notification.setX(x);
 			notification.setY(yBuf);
 			yBuf = yBuf - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
@@ -771,13 +770,12 @@ public class EditorFrame extends BorderPane
 	 */
 	public void spawnNotification(Notification pNotification)
 	{
-
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 
-		aNotificationList.add(pNotification);
+		aNotifications.add(pNotification);
 
-		pNotification.show(() -> { aNotificationList.remove(pNotification); });
+		pNotification.show(() -> { aNotifications.remove(pNotification); });
 		updateNotificationPosition();
 	}
 
@@ -788,9 +786,7 @@ public class EditorFrame extends BorderPane
 	 */
 	public void spawnNotification(String pText, ToastNotification.Type pType)
 	{
-
 		ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
 		spawnNotification(toast);
-
 	}
 }
