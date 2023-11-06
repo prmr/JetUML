@@ -30,7 +30,7 @@ public class TestEditorFrame {
     @BeforeAll
     public static void setup() throws ReflectiveOperationException, InterruptedException
     {
-        aListField = EditorFrame.class.getDeclaredField("aNotificationList");
+        aListField = EditorFrame.class.getDeclaredField("aNotifications");
         aListField.setAccessible(true);
         aStageField = ToastNotification.class.getDeclaredField("aStage");
         aStageField.setAccessible(true);
