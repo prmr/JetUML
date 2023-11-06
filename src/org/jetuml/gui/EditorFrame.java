@@ -756,7 +756,8 @@ public class EditorFrame extends BorderPane
 
 		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
 		Collections.reverse(reverseNotifications);
-		for (Notification notification : reverseNotifications) {
+		for (Notification notification : reverseNotifications)
+		{
 			notification.setX(x);
 			notification.setY(yBuf);
 			yBuf = yBuf - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
