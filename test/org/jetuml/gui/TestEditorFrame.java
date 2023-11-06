@@ -1,8 +1,6 @@
 package org.jetuml.gui;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +37,7 @@ public class TestEditorFrame {
         Platform.startup(() -> {
             aStage = new Stage();
             aFrame = new EditorFrame(aStage);
+            aStage.show();
         });
         waitForRunLater();
     }
@@ -89,15 +88,6 @@ public class TestEditorFrame {
     @Test
     public void testNotificationPositionWhenStageMoved() throws InterruptedException, ReflectiveOperationException
     {
-
-        ChangeListener<Number> stageMoveListener = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-                aFrame.updateNotificationPosition();
-            }
-        };
-        aStage.xProperty().addListener(stageMoveListener);
-
         Platform.runLater(() -> {
             aStage.setX(0.5);
             aFrame.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
@@ -112,8 +102,6 @@ public class TestEditorFrame {
 
         double stage1X = stage1.getX();
         double stage2X = stage2.getX();
-
-        System.out.println(stage1X);
 
         Platform.runLater(() -> {
             aStage.setX(200);
