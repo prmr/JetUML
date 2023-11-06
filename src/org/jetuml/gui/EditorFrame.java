@@ -747,35 +747,6 @@ public class EditorFrame extends BorderPane
 	}
 
 	/**
-	 * A callback for Notification objects called when they reached the end of their lifetime.
-	 * It removes them from the handler notification list.
-	 */
-	public final class CleanUpCallback
-	{
-
-		private Notification aTargetNotification;
-
-		/**
-		 * Creates a CleanUpCallback object.
-		 *
-		 * @param pTargetNotification The notification to remove when the callback is executed.
-		 */
-		private CleanUpCallback(Notification pTargetNotification)
-		{
-			aTargetNotification = pTargetNotification;
-		}
-
-		/**
-		 * Removes the specified notification object from the handler notification list.
-		 */
-		public void execute()
-		{
-			aNotificationList.remove(aTargetNotification);
-		}
-
-	}
-
-	/**
 	 * Rearranges the notifications so that they are stacked properly and do not overlap.
 	 */
 	public void updateNotificationPosition()
@@ -806,7 +777,7 @@ public class EditorFrame extends BorderPane
 
 		aNotificationList.add(pNotification);
 
-		pNotification.show(new EditorFrame.CleanUpCallback(pNotification));
+		pNotification.show(() -> { aNotificationList.remove(pNotification); });
 		updateNotificationPosition();
 	}
 
