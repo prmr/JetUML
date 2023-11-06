@@ -780,7 +780,8 @@ public class EditorFrame extends BorderPane
 	}
 
 	/**
-	 * Spawns a new toast notification.
+	 * Spawns a new toast notification without having to pass a ToastNotification object, i.e. without having
+	 * to fetch the main stage.
 	 *
 	 * @param pText The text to show on the toast
 	 */
