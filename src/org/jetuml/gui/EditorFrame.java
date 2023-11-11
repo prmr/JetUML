@@ -751,16 +751,15 @@ public class EditorFrame extends BorderPane
 	 */
 	public void updateNotificationPosition()
 	{
-		double yBuf = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
+		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
 		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
 		Collections.reverse(reverseNotifications);
 		for (Notification notification : reverseNotifications)
 		{
-			notification.setX(x);
-			notification.setY(yBuf);
-			yBuf = yBuf - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
+			notification.setPosition(x, y);
+			y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
 		}
 	}
 
@@ -776,7 +775,7 @@ public class EditorFrame extends BorderPane
 
 		aNotifications.add(pNotification);
 
-		pNotification.show(() -> { aNotifications.remove(pNotification); });
+		pNotification.show(() -> aNotifications.remove(pNotification));
 		updateNotificationPosition();
 	}
 

@@ -34,18 +34,12 @@ public interface Notification
     void show(Runnable pCleanUpCallback);
 
     /**
-     * Move the Notification object to the desired X position.
+     * Move the Notification object to the desired position on the screen.
      *
      * @param pX The target X position
-     */
-    void setX(double pX);
-
-    /**
-     * Move the Notification object to the desired Y position.
-     *
      * @param pY The target Y position
      */
-    void setY(double pY);
+    void setPosition(double pX, double pY);
 
     /**
      * @return The height of the Notification object.

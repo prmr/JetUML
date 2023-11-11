@@ -157,27 +157,15 @@ public class ToastNotification implements Notification
     }
 
     /**
-     * Move the Notification object to the desired X position.
+     * Move the Notification object to the desired position on the screen.
      *
      * @param pX The target X position
-     */
-    @Override
-    public void setX(double pX)
-    {
-        aStage.setX(pX);
-    }
-
-    /**
-     * Move the Notification object to the desired Y position.
-     *
      * @param pY The target Y position
      */
     @Override
-    public void setY(double pY)
-    {
-        // Since notifications are shown in the bottom-left corner, we set the
-        // bottom-left corner of the notification object as the reference point for its position
-        aStage.setY(pY - aStage.getHeight());
+    public void setPosition(double pX, double pY) {
+        aStage.setX(pX);
+        aStage.setY(pY - aStage.getHeight()); // We consider the bottom-left corner as the y position reference point
     }
 
     /**
