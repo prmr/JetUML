@@ -2,6 +2,8 @@ package org.jetuml.gui;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.jetuml.JavaFXLoader;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,10 +22,14 @@ public class TestEditorFrame {
     private static Stage aStage;
     private static EditorFrame aFrame;
 
+    /*
+     * Allows waiting for the platform instructions to be executed before continuing on.
+     * It then prevents having a test finishing before the JavaFX instructions are run.
+     */
     public static void waitForRunLater() throws InterruptedException
     {
         Semaphore semaphore = new Semaphore(0);
-        Platform.runLater(() -> semaphore.release());
+        Platform.runLater(semaphore::release);
         semaphore.acquire();
     }
 
@@ -34,11 +40,19 @@ public class TestEditorFrame {
         aListField.setAccessible(true);
         aStageField = ToastNotification.class.getDeclaredField("aStage");
         aStageField.setAccessible(true);
-        Platform.startup(() -> {
+
+        JavaFXLoader.load();
+        Platform.runLater(() -> {
             aStage = new Stage();
             aFrame = new EditorFrame(aStage);
             aStage.show();
         });
+        waitForRunLater();
+    }
+
+    @AfterAll
+    public static void closeStage() throws InterruptedException {
+        Platform.runLater(() -> aStage.close());
         waitForRunLater();
     }
 
@@ -103,9 +117,7 @@ public class TestEditorFrame {
         double stage1X = stage1.getX();
         double stage2X = stage2.getX();
 
-        Platform.runLater(() -> {
-            aStage.setX(200);
-        });
+        Platform.runLater(() -> aStage.setX(200));
         waitForRunLater();
 
         assertTrue(stage1.getX() > stage1X);
