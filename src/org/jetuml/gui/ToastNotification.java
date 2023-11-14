@@ -39,7 +39,7 @@ import java.util.TimerTask;
 /**
  * A toast notification object (that pops up and disappears without requiring any user interaction).
  */
-public class ToastNotification implements Notification
+public final class ToastNotification implements Notification
 {
 
     /**
@@ -52,7 +52,7 @@ public class ToastNotification implements Notification
         WARNING("-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10"),
         INFO("-fx-padding: 8px; -fx-background-color: rgb(70, 115, 195); -fx-background-radius: 10");
 
-        private String aStyle;
+        private final String aStyle;
 
         Type(String pStyle)
         {
@@ -148,9 +148,7 @@ public class ToastNotification implements Notification
         };
 
         // When the fadein animation ends, we start a timer that will execute the fadeout animation
-        fadeInTimeline.setOnFinished(actionEvent -> {
-            notificationTimer.schedule(lifespan, (long) NOTIFICATION_DELAY);
-        });
+        fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, NOTIFICATION_DELAY));
 
         // We trigger the fadein animation
         fadeInTimeline.play();
@@ -163,7 +161,8 @@ public class ToastNotification implements Notification
      * @param pY The target Y position
      */
     @Override
-    public void setPosition(double pX, double pY) {
+    public void setPosition(double pX, double pY)
+    {
         aStage.setX(pX);
         aStage.setY(pY - aStage.getHeight()); // We consider the bottom-left corner as the y position reference point
     }

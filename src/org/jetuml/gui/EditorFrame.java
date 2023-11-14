@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import org.jetuml.JetUML;
 import org.jetuml.application.FileExtensions;
 import org.jetuml.application.RecentFilesQueue;
@@ -89,11 +88,11 @@ public class EditorFrame extends BorderPane
 	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 18;
 	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 18;
 	
-	private Stage aMainStage;
+	private final Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-	private List<Notification> aNotifications = new ArrayList<>();
+	private final List<Notification> aNotifications = new ArrayList<>();
 	
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
@@ -140,14 +139,7 @@ public class EditorFrame extends BorderPane
 		});
 
 		// Window position listener for notifications
-		ChangeListener<Number> stageMoveListener = new ChangeListener<Number>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Number> pObservableValue, Number pOldValue, Number pNewValue)
-			{
-				updateNotificationPosition();
-			}
-		};
+		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) -> updateNotificationPosition();
 		pMainStage.xProperty().addListener(stageMoveListener);
 		pMainStage.yProperty().addListener(stageMoveListener);
 	}
@@ -770,9 +762,6 @@ public class EditorFrame extends BorderPane
 	 */
 	public void spawnNotification(Notification pNotification)
 	{
-		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
-		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
-
 		aNotifications.add(pNotification);
 
 		pNotification.show(() -> aNotifications.remove(pNotification));
