@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class TestEditorFrame {
+public class TestNotificationHandler {
 
     private static Field aListField;
     private static Field aStageField;
     private static Stage aStage;
     private static EditorFrame aFrame;
+    private static NotificationHandler aHandler;
 
     /*
      * Allows waiting for the platform instructions to be executed before continuing on.
@@ -36,10 +37,12 @@ public class TestEditorFrame {
     @BeforeAll
     public static void setup() throws ReflectiveOperationException, InterruptedException
     {
-        aListField = EditorFrame.class.getDeclaredField("aNotifications");
+        aListField = NotificationHandler.class.getDeclaredField("aNotifications");
         aListField.setAccessible(true);
         aStageField = ToastNotification.class.getDeclaredField("aStage");
         aStageField.setAccessible(true);
+
+        aHandler = NotificationHandler.instance();
 
         JavaFXLoader.load();
         Platform.runLater(() -> {
@@ -60,22 +63,22 @@ public class TestEditorFrame {
     public void resetList() throws ReflectiveOperationException
     {
         ArrayList<Notification> newList = new ArrayList<>();
-        aListField.set(aFrame, newList);
+        aListField.set(aHandler, newList);
     }
 
     @Test
     public void testSpawnToast() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aFrame.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aFrame.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
-            aFrame.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
-            aFrame.spawnNotification("This is a test success notification.", ToastNotification.Type.SUCCESS);
+            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aHandler.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
+            aHandler.spawnNotification("This is a test success notification.", ToastNotification.Type.SUCCESS);
         });
 
         waitForRunLater();
 
-        List<Notification> notificationList = (List<Notification>) aListField.get(aFrame);
+        List<Notification> notificationList = (List<Notification>) aListField.get(aHandler);
         assertEquals(4, notificationList.size());
     }
 
@@ -83,13 +86,13 @@ public class TestEditorFrame {
     public void testNotificationPosition() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aFrame.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aFrame.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
-            aFrame.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
+            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aHandler.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aFrame);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -104,12 +107,12 @@ public class TestEditorFrame {
     {
         Platform.runLater(() -> {
             aStage.setX(0.5);
-            aFrame.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aFrame.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aFrame);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -128,19 +131,19 @@ public class TestEditorFrame {
     public void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aFrame.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aFrame.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aFrame);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
 
         double stage1Y = stage1.getY();
 
         notificationList.remove(1);
-        aFrame.updateNotificationPosition();
+        aHandler.updateNotificationPosition();
 
         assertTrue(stage1.getY() > stage1Y);
     }

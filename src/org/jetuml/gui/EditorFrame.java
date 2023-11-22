@@ -84,16 +84,12 @@ public class EditorFrame extends BorderPane
 	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide.html";
 	
 	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
-	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
-	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 18;
-	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 18;
 	
 	private final Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-	private final List<Notification> aNotifications = new ArrayList<>();
-	
+
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
@@ -139,9 +135,12 @@ public class EditorFrame extends BorderPane
 		});
 
 		// Window position listener for notifications
-		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) -> updateNotificationPosition();
+		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
+				NotificationHandler.instance().updateNotificationPosition();
 		pMainStage.xProperty().addListener(stageMoveListener);
 		pMainStage.yProperty().addListener(stageMoveListener);
+
+		NotificationHandler.instance().setMainStage(pMainStage);
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
@@ -408,7 +407,7 @@ public class EditorFrame extends BorderPane
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
 	    clipboard.setContent(content);
-		spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
+		NotificationHandler.instance().spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */
@@ -736,47 +735,5 @@ public class EditorFrame extends BorderPane
 		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
-	}
-
-	/**
-	 * Rearranges the notifications so that they are stacked properly and do not overlap.
-	 */
-	public void updateNotificationPosition()
-	{
-		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
-		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
-
-		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
-		Collections.reverse(reverseNotifications);
-		for (Notification notification : reverseNotifications)
-		{
-			notification.setPosition(x, y);
-			y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
-		}
-	}
-
-	/**
-	 * Spawns a notification (it should be instantiated first).
-	 *
-	 * @param pNotification The notification object to spawn
-	 */
-	public void spawnNotification(Notification pNotification)
-	{
-		aNotifications.add(pNotification);
-
-		pNotification.show(() -> aNotifications.remove(pNotification));
-		updateNotificationPosition();
-	}
-
-	/**
-	 * Spawns a new toast notification without having to pass a ToastNotification object, i.e. without having
-	 * to fetch the main stage.
-	 *
-	 * @param pText The text to show on the toast
-	 */
-	public void spawnNotification(String pText, ToastNotification.Type pType)
-	{
-		ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
-		spawnNotification(toast);
 	}
 }
