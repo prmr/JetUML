@@ -8,7 +8,7 @@ public final class ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes implements 
 
     private final int aMaxNumberOfEdges;
 
-    ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(int pMaxNumberOfEdges)
+    public ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(int pMaxNumberOfEdges)
     {
         aMaxNumberOfEdges = pMaxNumberOfEdges;
     }

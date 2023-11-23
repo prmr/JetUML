@@ -8,7 +8,7 @@ public final class ConstraintNoDirectCyclesForEdgeType implements EdgeConstraint
 
     private Class<? extends Edge> aEdgeType;
 
-    ConstraintNoDirectCyclesForEdgeType(Class<? extends Edge> pEdgeType)
+    public ConstraintNoDirectCyclesForEdgeType(Class<? extends Edge> pEdgeType)
     {
         aEdgeType = pEdgeType;
     }
