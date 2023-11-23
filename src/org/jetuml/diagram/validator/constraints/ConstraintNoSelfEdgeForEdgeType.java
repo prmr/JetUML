@@ -8,9 +8,9 @@ public final class ConstraintNoSelfEdgeForEdgeType implements EdgeConstraint {
 
     private Class<? extends Edge> aEdgeType;
 
-    ConstraintNoSelfEdgeForEdgeType(Class<? extends Edge> aEdgeType)
+    public ConstraintNoSelfEdgeForEdgeType(Class<? extends Edge> pEdgeType)
     {
-        aEdgeType = aEdgeType;
+        aEdgeType = pEdgeType;
     }
 
     /**
