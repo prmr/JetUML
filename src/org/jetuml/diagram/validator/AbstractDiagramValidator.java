@@ -30,6 +30,8 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
+import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeToPointExceptNoteEdge;
+import org.jetuml.diagram.validator.constraints.ConstraintValidNoteEdge;
 
 /**
  * Implementation of the general scaffolding for validating a diagram.
@@ -41,8 +43,8 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	private static final Set<Class<? extends Edge>> UNIVERSAL_EDGES_TYPES = 
 			Set.of(NoteEdge.class);
 	private static final Set<EdgeConstraint> UNIVERSAL_CONSTRAINTS =
-			Set.of(AbstractDiagramValidator::constraintValidNoteEdge,
-					AbstractDiagramValidator::constraintNoEdgeToPointExceptNoteEdge);
+			Set.of(new ConstraintValidNoteEdge(),
+					new ConstraintNoEdgeToPointExceptNoteEdge());
 	
 	private final Diagram aDiagram;
 	private final Set<Class<? extends Node>> aValidNodeTypes = new HashSet<>();
@@ -146,86 +148,5 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	public final Diagram diagram()
 	{
 		return aDiagram;
-	}
-	
-	/*
-	 * Validates that a note edge is semantically correct. A note edge can come in 
-	 * two flavors:
-	 * 1. From a note node to a point node
-	 * 2. From any node except a note node or a point node to a note node
-	 */
-	private static boolean constraintValidNoteEdge(Edge pEdge, Diagram pDiagram)
-	{
-		if( pEdge.getClass() != NoteEdge.class )
-		{
-			return true;
-		}
-		if( pEdge.end().getClass() == PointNode.class )
-		{
-			return pEdge.start().getClass() == NoteNode.class;
-		}
-		return pEdge.start().getClass() != PointNode.class && pEdge.start().getClass() != NoteNode.class &&
-				pEdge.end().getClass() == NoteNode.class;
-	}
-	
-	/*
-	 * Validates that only note edges can point to point nodes
-	 */
-	private static boolean constraintNoEdgeToPointExceptNoteEdge(Edge pEdge, Diagram pDiagram)
-	{
-		return !(pEdge.getClass() != NoteEdge.class && 
-				(pEdge.start().getClass() == PointNode.class || pEdge.end().getClass() == PointNode.class));
-	}
-	
-	public static EdgeConstraint createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(int pMaxNumberOfEdges)
-	{
-		return (edge, diagram) -> numberOfEdges(edge, diagram) <= pMaxNumberOfEdges;
-	}
-	
-	/*
-	 * Returns the number of edges of type pType between pStart and pEnd
-	 */
-	private static int numberOfEdges(Edge pEdge, Diagram pDiagram)
-	{
-		assert pEdge != null && pDiagram != null;
-		int result = 0;
-		for( Edge edge : pDiagram.edges() )
-		{
-			if( edge.getClass() == pEdge.getClass() && edge.start() == pEdge.start() && edge.end() == pEdge.end() )
-			{
-				result++;
-			}
-		}
-		return result;
-	}
-	
-	public static EdgeConstraint createConstraintNoSelfEdgeForEdgeType(Class<? extends Edge> pEdgeType)
-	{
-		return (edge, diagram) -> !(edge.getClass() == pEdgeType && edge.start() == edge.end());
-	}
-	
-	/**
-	 * There can't be two edges of a given type, one in each direction, between
-	 * two DIFFERENT nodes.
-	 */
-	public static EdgeConstraint createConstraintNoDirectCyclesForEdgeType(Class<? extends Edge> pEdgeType)
-	{
-		return (Edge pEdge, Diagram pDiagram) -> {
-			if( pEdge.getClass() != pEdgeType || pEdge.start() == pEdge.end() )
-			{
-				return true;
-			}
-			
-			int sameDirectionCount = 0;
-			for( Edge edge : pDiagram.edgesConnectedTo(pEdge.start()) )
-			{
-				if( edge.getClass() == pEdgeType && edge.end() == pEdge.start() && edge.start() == pEdge.end() )
-				{
-					sameDirectionCount += 1;
-				}
-			}
-			
-			return sameDirectionCount == 0;
-		};
 	}
 }

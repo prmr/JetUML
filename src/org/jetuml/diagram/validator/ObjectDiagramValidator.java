@@ -30,6 +30,11 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.diagram.validator.constraints.ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes;
+import org.jetuml.diagram.validator.constraints.ConstraintNoSelfEdgeForEdgeType;
+import org.jetuml.diagram.validator.constraints.ConstraintValidCollaborationEdge;
+import org.jetuml.diagram.validator.constraints.ConstraintValidReferenceEdge;
+import org.jetuml.diagram.validator.constraints.ConstraintNoDirectCyclesForEdgeType;
 
 /**
  * Validator for object diagrams.
@@ -37,11 +42,11 @@ import org.jetuml.diagram.nodes.ObjectNode;
 public class ObjectDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			ObjectDiagramValidator::constraintValidReferenceEdge,
-			ObjectDiagramValidator::constraintValidCollaborationEdge,
-			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(ObjectCollaborationEdge.class),
-			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
-			AbstractDiagramValidator.createConstraintNoDirectCyclesForEdgeType(ObjectCollaborationEdge.class));
+			new ConstraintValidReferenceEdge(),
+			new ConstraintValidCollaborationEdge(),
+			new ConstraintNoSelfEdgeForEdgeType(ObjectCollaborationEdge.class),
+			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
+			new ConstraintNoDirectCyclesForEdgeType(ObjectCollaborationEdge.class));
 	
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ObjectNode.class, 
@@ -70,23 +75,5 @@ public class ObjectDiagramValidator extends AbstractDiagramValidator
 	protected boolean hasValidDiagramNodes()
 	{
 		return diagram().rootNodes().stream().noneMatch(node -> node instanceof FieldNode);
-	}
-	
-	/*
-	 * A reference edge can only be between an object node and a field node.
-	 */
-	private static boolean constraintValidReferenceEdge(Edge pEdge, Diagram pDiagram)
-	{
-		return !(pEdge.getClass() == ObjectReferenceEdge.class &&
-					(pEdge.start().getClass() != FieldNode.class || pEdge.end().getClass() != ObjectNode.class));
-	}
-	
-	/*
-	 * A collaboration edge can only be between two object nodes.
-	 */
-	private static boolean constraintValidCollaborationEdge(Edge pEdge, Diagram pDiagram)
-	{
-		return !(pEdge.getClass() == ObjectCollaborationEdge.class &&
-			(pEdge.start().getClass() != ObjectNode.class || pEdge.end().getClass() != ObjectNode.class));
 	}
 }
