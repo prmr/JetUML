@@ -33,6 +33,9 @@ import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.diagram.validator.constraints.ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes;
+import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeConnectedToNote;
+import org.jetuml.diagram.validator.constraints.ConstraintNoSelfEdgeForEdgeType;
 
 /**
  * Validator for use case diagrams.
@@ -40,11 +43,11 @@ import org.jetuml.diagram.nodes.UseCaseNode;
 public class UseCaseDiagramValidator extends AbstractDiagramValidator
 {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
-			AbstractDiagramValidator.createConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
-			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(UseCaseAssociationEdge.class),
-			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(UseCaseGeneralizationEdge.class),
-			AbstractDiagramValidator.createConstraintNoSelfEdgeForEdgeType(UseCaseDependencyEdge.class),
-			UseCaseDiagramValidator::constraintNoEdgeConnectedToNote);
+			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
+			new ConstraintNoSelfEdgeForEdgeType(UseCaseAssociationEdge.class),
+			new ConstraintNoSelfEdgeForEdgeType(UseCaseGeneralizationEdge.class),
+			new ConstraintNoSelfEdgeForEdgeType(UseCaseDependencyEdge.class),
+			new ConstraintNoEdgeConnectedToNote());
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ActorNode.class, 
@@ -66,15 +69,5 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 	{
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.USECASE;
-	}
-	
-	/*
-     * Only associate edges can connect to actors
-	 */
-	private static boolean constraintNoEdgeConnectedToNote(Edge pEdge, Diagram pDiagram)
-	{
-		return !(pEdge.getClass() != NoteEdge.class && 
-				(pEdge.start().getClass() == NoteNode.class || 
-				 pEdge.end().getClass() == NoteNode.class ));
 	}
 }
