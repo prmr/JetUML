@@ -21,9 +21,11 @@
 package org.jetuml.diagram.validator;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.jetuml.annotations.TemplateMethod;
+import org.jetuml.application.ApplicationResources;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
@@ -32,6 +34,8 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeToPointExceptNoteEdge;
 import org.jetuml.diagram.validator.constraints.ConstraintValidNoteEdge;
+import org.jetuml.gui.NotificationHandler;
+import org.jetuml.gui.ToastNotification;
 
 /**
  * Implementation of the general scaffolding for validating a diagram.
@@ -100,13 +104,27 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	public final boolean hasValidSemantics()
 	{
 		return aDiagram.edges().stream()
-				.allMatch(edge -> allConstraintsSatistifed(edge));
+				.allMatch(edge -> allConstraintsSatisfied(edge));
 	}
 	
-	private boolean allConstraintsSatistifed(Edge pEdge)
+	private boolean allConstraintsSatisfied(Edge pEdge)
 	{
-		return aConstraints.stream()
-				.allMatch(constraint -> constraint.satisfied(pEdge, aDiagram));
+		// We retrieve the first constraint that is not satisfied (if it exists)
+		Optional<EdgeConstraint> invalidatingConstraint = aConstraints.stream()
+				.filter(constraint -> !constraint.satisfied(pEdge, aDiagram))
+				.findFirst();
+
+		// If no such constraint exist, then they are all satisfied
+		if (invalidatingConstraint.isEmpty()) {
+			return true;
+		}
+
+		EdgeConstraint constraint = invalidatingConstraint.get();
+		String errorMessage = ApplicationResources.RESOURCES.getString("error."+constraint.getClass().getSimpleName());
+
+		NotificationHandler.instance().spawnNotification(errorMessage, ToastNotification.Type.ERROR);
+
+		return false;
 	}
 
 	private boolean hasValidElementTypes()

@@ -75,6 +75,11 @@ public final class NotificationHandler
      */
     public void spawnNotification(Notification pNotification)
     {
+        if (aMainStage == null)
+        {
+            return;
+        }
+
         aNotifications.add(pNotification);
 
         pNotification.show(() -> aNotifications.remove(pNotification));
@@ -89,6 +94,11 @@ public final class NotificationHandler
      */
     public void spawnNotification(String pText, ToastNotification.Type pType)
     {
+        if (aMainStage == null)
+        {
+            return;
+        }
+
         ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
         spawnNotification(toast);
     }
