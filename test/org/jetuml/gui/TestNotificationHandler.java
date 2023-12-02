@@ -1,6 +1,7 @@
 package org.jetuml.gui;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.stage.Stage;
 import org.jetuml.JavaFXLoader;
 import org.junit.jupiter.api.AfterAll;
@@ -20,7 +21,6 @@ public class TestNotificationHandler {
     private static Field aListField;
     private static Field aStageField;
     private static Stage aStage;
-    private static EditorFrame aFrame;
     private static NotificationHandler aHandler;
 
     /*
@@ -44,19 +44,27 @@ public class TestNotificationHandler {
 
         aHandler = NotificationHandler.instance();
 
+        // Manually setting the parent stage of the NotificationService
         JavaFXLoader.load();
         Platform.runLater(() -> {
             aStage = new Stage();
-            aFrame = new EditorFrame(aStage);
+            NotificationHandler.instance().setMainStage(aStage);
             aStage.show();
         });
         waitForRunLater();
+
+        // Adding the Stage position listener for testing notification anchoring to the window
+        ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
+                NotificationHandler.instance().updateNotificationPosition();
+        aStage.xProperty().addListener(stageMoveListener);
+        aStage.yProperty().addListener(stageMoveListener);
     }
 
     @AfterAll
     public static void closeStage() throws InterruptedException {
         Platform.runLater(() -> aStage.close());
         waitForRunLater();
+        NotificationHandler.instance().setMainStage(null);
     }
 
     @BeforeEach
@@ -82,6 +90,9 @@ public class TestNotificationHandler {
         assertEquals(4, notificationList.size());
     }
 
+    /*
+        Notifications should stack, one on top of the other.
+     */
     @Test
     public void testNotificationPosition() throws InterruptedException, ReflectiveOperationException
     {
@@ -102,6 +113,9 @@ public class TestNotificationHandler {
         assertTrue(stage2.getY() < stage3.getY());
     }
 
+    /*
+        If the stage is moved, the notifications should move as well.
+     */
     @Test
     public void testNotificationPositionWhenStageMoved() throws InterruptedException, ReflectiveOperationException
     {
@@ -125,6 +139,8 @@ public class TestNotificationHandler {
 
         assertTrue(stage1.getX() > stage1X);
         assertTrue(stage2.getX() > stage2X);
+
+        assertTrue(stage1.getY() < stage2.getY());
     }
 
     @Test

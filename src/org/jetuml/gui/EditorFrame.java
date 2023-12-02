@@ -135,12 +135,13 @@ public class EditorFrame extends BorderPane
 		});
 
 		// Window position listener for notifications
+		/*
 		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
 				NotificationHandler.instance().updateNotificationPosition();
 		pMainStage.xProperty().addListener(stageMoveListener);
 		pMainStage.yProperty().addListener(stageMoveListener);
 
-		NotificationHandler.instance().setMainStage(pMainStage);
+		NotificationHandler.instance().setMainStage(pMainStage); */
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.beans.value.ChangeListener;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.Version;
 import org.jetuml.diagram.Diagram;
@@ -35,6 +36,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.DeserializationErrorAlert;
 import org.jetuml.gui.EditorFrame;
 import org.jetuml.gui.GuiUtils;
+import org.jetuml.gui.NotificationHandler;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
@@ -102,6 +104,14 @@ public final class JetUML extends Application
 		EditorFrame editor = new EditorFrame(pStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
+
+		// Window position listener for notifications
+		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
+				NotificationHandler.instance().updateNotificationPosition();
+		pStage.xProperty().addListener(stageMoveListener);
+		pStage.yProperty().addListener(stageMoveListener);
+
+		NotificationHandler.instance().setMainStage(pStage);
 		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
