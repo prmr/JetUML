@@ -30,7 +30,7 @@ import org.jetuml.diagram.validator.EdgeConstraint;
 public final class ConstraintNoSelfEdgeForEdgeType implements EdgeConstraint
 {
 
-    private Class<? extends Edge> aEdgeType;
+    private final Class<? extends Edge> aEdgeType;
 
     /**
      * @param pEdgeType The edge type which cannot have the same start node and end node

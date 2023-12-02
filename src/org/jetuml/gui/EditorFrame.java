@@ -42,7 +42,6 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
-import javafx.beans.value.ChangeListener;
 import org.jetuml.JetUML;
 import org.jetuml.application.FileExtensions;
 import org.jetuml.application.RecentFilesQueue;
@@ -133,15 +132,6 @@ public class EditorFrame extends BorderPane
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
-
-		// Window position listener for notifications
-		/*
-		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
-				NotificationHandler.instance().updateNotificationPosition();
-		pMainStage.xProperty().addListener(stageMoveListener);
-		pMainStage.yProperty().addListener(stageMoveListener);
-
-		NotificationHandler.instance().setMainStage(pMainStage); */
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
@@ -408,7 +398,7 @@ public class EditorFrame extends BorderPane
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
 	    clipboard.setContent(content);
-		NotificationHandler.instance().spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
+		NotificationService.instance().spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */

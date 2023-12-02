@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class TestNotificationHandler {
+public class TestNotificationService {
 
     private static Field aListField;
     private static Field aStageField;
     private static Stage aStage;
-    private static NotificationHandler aHandler;
+    private static NotificationService aNotificationService;
 
     /*
      * Allows waiting for the platform instructions to be executed before continuing on.
@@ -37,25 +37,25 @@ public class TestNotificationHandler {
     @BeforeAll
     public static void setup() throws ReflectiveOperationException, InterruptedException
     {
-        aListField = NotificationHandler.class.getDeclaredField("aNotifications");
+        aListField = NotificationService.class.getDeclaredField("aNotifications");
         aListField.setAccessible(true);
         aStageField = ToastNotification.class.getDeclaredField("aStage");
         aStageField.setAccessible(true);
 
-        aHandler = NotificationHandler.instance();
+        aNotificationService = NotificationService.instance();
 
         // Manually setting the parent stage of the NotificationService
         JavaFXLoader.load();
         Platform.runLater(() -> {
             aStage = new Stage();
-            NotificationHandler.instance().setMainStage(aStage);
+            NotificationService.instance().setMainStage(aStage);
             aStage.show();
         });
         waitForRunLater();
 
         // Adding the Stage position listener for testing notification anchoring to the window
         ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
-                NotificationHandler.instance().updateNotificationPosition();
+                NotificationService.instance().updateNotificationPosition();
         aStage.xProperty().addListener(stageMoveListener);
         aStage.yProperty().addListener(stageMoveListener);
     }
@@ -64,29 +64,29 @@ public class TestNotificationHandler {
     public static void closeStage() throws InterruptedException {
         Platform.runLater(() -> aStage.close());
         waitForRunLater();
-        NotificationHandler.instance().setMainStage(null);
+        NotificationService.instance().setMainStage(null);
     }
 
     @BeforeEach
     public void resetList() throws ReflectiveOperationException
     {
         ArrayList<Notification> newList = new ArrayList<>();
-        aListField.set(aHandler, newList);
+        aListField.set(aNotificationService, newList);
     }
 
     @Test
     public void testSpawnToast() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
-            aHandler.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
-            aHandler.spawnNotification("This is a test success notification.", ToastNotification.Type.SUCCESS);
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aNotificationService.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
+            aNotificationService.spawnNotification("This is a test success notification.", ToastNotification.Type.SUCCESS);
         });
 
         waitForRunLater();
 
-        List<Notification> notificationList = (List<Notification>) aListField.get(aHandler);
+        List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(4, notificationList.size());
     }
 
@@ -97,13 +97,13 @@ public class TestNotificationHandler {
     public void testNotificationPosition() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
-            aHandler.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aNotificationService.spawnNotification("This is a test warning notification.", ToastNotification.Type.WARNING);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -121,12 +121,12 @@ public class TestNotificationHandler {
     {
         Platform.runLater(() -> {
             aStage.setX(0.5);
-            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -147,19 +147,19 @@ public class TestNotificationHandler {
     public void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
-            aHandler.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
-            aHandler.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aHandler);
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
 
         double stage1Y = stage1.getY();
 
         notificationList.remove(1);
-        aHandler.updateNotificationPosition();
+        aNotificationService.updateNotificationPosition();
 
         assertTrue(stage1.getY() > stage1Y);
     }
