@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2023 by McGill University.
+ *
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package org.jetuml.gui;
 
 import javafx.stage.Stage;
@@ -11,44 +31,43 @@ import java.util.List;
  * Singleton object that manages the notification object positions and display states.
  */
 @Singleton
-public final class NotificationHandler
+public final class NotificationService
 {
 
     private static final int NOTIFICATION_DISPLAY_SPACING = 8;
     private static final int NOTIFICATION_DISPLAY_X_MARGIN = 18;
     private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 18;
 
-    private static final NotificationHandler INSTANCE = new NotificationHandler();
+    private static final NotificationService INSTANCE = new NotificationService();
 
+    /*
+        This attribute sets the parent stage of all notifications. It is set at initialization,
+        in JetUML.java. It is impossible to spawn a notification if the main stage attribute
+        is null.
+     */
     private Stage aMainStage;
     private final List<Notification> aNotifications = new ArrayList<>();
 
-    private NotificationHandler() {}
+    private NotificationService() {}
 
     /**
-     * @return The NotificationHandler singleton instance
+     * @return The NotificationService singleton instance
      */
-    public static NotificationHandler instance()
+    public static NotificationService instance()
     {
         return INSTANCE;
     }
 
     /**
      * Sets the parent stage of all the notification stages.
+     * Only used once in JetUML.java at initialization. The parent stage should
+     * be the application stage.
      *
      * @param pStage The target parent stage of the notification objects
      */
     public void setMainStage(Stage pStage)
     {
         this.aMainStage = pStage;
-    }
-
-    /**
-     * @return The application stage
-     */
-    public Stage getMainStage()
-    {
-        return this.aMainStage;
     }
 
     /**

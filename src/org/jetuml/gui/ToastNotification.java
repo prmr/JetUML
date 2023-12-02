@@ -112,7 +112,8 @@ public final class ToastNotification implements Notification
     }
 
     /**
-     * Show the Notification object.
+     * Shows the Notification object to the screen. This method is also responsible for
+     * terminating the notification and deleting it from the NotificationService notification list.
      *
      * @param pCleanUpCallback The Runnable to run when the notification should be removed from the notification list
      */
@@ -155,7 +156,7 @@ public final class ToastNotification implements Notification
     }
 
     /**
-     * Move the Notification object to the desired position on the screen.
+     * Moves the Notification object to the desired position on the screen.
      *
      * @param pX The target X position
      * @param pY The target Y position

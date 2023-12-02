@@ -34,7 +34,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeToPointExceptNoteEdge;
 import org.jetuml.diagram.validator.constraints.ConstraintValidNoteEdge;
-import org.jetuml.gui.NotificationHandler;
+import org.jetuml.gui.NotificationService;
 import org.jetuml.gui.ToastNotification;
 
 /**
@@ -115,14 +115,15 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 				.findFirst();
 
 		// If no such constraint exist, then they are all satisfied
-		if (invalidatingConstraint.isEmpty()) {
+		if (invalidatingConstraint.isEmpty())
+		{
 			return true;
 		}
 
 		EdgeConstraint constraint = invalidatingConstraint.get();
 		String errorMessage = ApplicationResources.RESOURCES.getString("error."+constraint.getClass().getSimpleName());
 
-		NotificationHandler.instance().spawnNotification(errorMessage, ToastNotification.Type.ERROR);
+		NotificationService.instance().spawnNotification(errorMessage, ToastNotification.Type.ERROR);
 
 		return false;
 	}

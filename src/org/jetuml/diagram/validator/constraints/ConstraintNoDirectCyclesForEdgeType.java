@@ -31,7 +31,7 @@ import org.jetuml.diagram.validator.EdgeConstraint;
 public final class ConstraintNoDirectCyclesForEdgeType implements EdgeConstraint
 {
 
-    private Class<? extends Edge> aEdgeType;
+    private final Class<? extends Edge> aEdgeType;
 
     /**
      * @param pEdgeType The edge type which cannot be used to form a direct cycle
