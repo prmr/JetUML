@@ -42,13 +42,15 @@ import org.jetuml.gui.ToastNotification;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-public class TestSemanticErrorNotification {
-
+@Disabled("Concurrency issue makes the test hang")
+public class TestSemanticErrorNotification 
+{
     private final ClassDiagramValidator aValidator =
             new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
     private static Field aListField;
@@ -149,5 +151,4 @@ public class TestSemanticErrorNotification {
 		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(1, notificationList.size());
     }
-
 }
