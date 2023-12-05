@@ -20,9 +20,14 @@
  *******************************************************************************/
 package org.jetuml.diagram.validator;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.stage.Stage;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
+
 import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
@@ -39,13 +44,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 public class TestSemanticErrorNotification {
 
@@ -116,7 +116,8 @@ public class TestSemanticErrorNotification {
         diagram().addRootNode(new PointNode());
         Platform.runLater(() -> aValidator.isValid()); // invalid structure but semantically valid
         waitForRunLater();
-        List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(0, notificationList.size());
     }
 
@@ -130,7 +131,8 @@ public class TestSemanticErrorNotification {
         diagram().addEdge(edge);
         Platform.runLater(() -> aValidator.isValid());
         waitForRunLater();
-        List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(1, notificationList.size());
     }
 
@@ -143,7 +145,8 @@ public class TestSemanticErrorNotification {
         diagram().addEdge(aNoteEdge);
         Platform.runLater(() -> assertFalse(aValidator.isValid()));
         waitForRunLater();
-        List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(1, notificationList.size());
     }
 

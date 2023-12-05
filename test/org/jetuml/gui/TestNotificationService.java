@@ -86,7 +86,8 @@ public class TestNotificationService {
 
         waitForRunLater();
 
-        List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
         assertEquals(4, notificationList.size());
     }
 
@@ -103,7 +104,8 @@ public class TestNotificationService {
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -126,7 +128,8 @@ public class TestNotificationService {
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
         Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
@@ -152,7 +155,8 @@ public class TestNotificationService {
         });
         waitForRunLater();
 
-        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
+        @SuppressWarnings("unchecked")
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
 
         Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
 
