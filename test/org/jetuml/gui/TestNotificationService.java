@@ -21,7 +21,6 @@
 package org.jetuml.gui;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.stage.Stage;
 import org.jetuml.JavaFXLoader;
 import org.junit.jupiter.api.AfterAll;
@@ -29,6 +28,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -72,12 +72,6 @@ public class TestNotificationService {
             aStage.show();
         });
         waitForRunLater();
-
-        // Adding the Stage position listener for testing notification anchoring to the window
-        ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
-                NotificationService.instance().updateNotificationPosition();
-        aStage.xProperty().addListener(stageMoveListener);
-        aStage.yProperty().addListener(stageMoveListener);
     }
 
     @AfterAll
@@ -162,6 +156,34 @@ public class TestNotificationService {
 
         assertTrue(stage1.getX() > stage1X);
         assertTrue(stage2.getX() > stage2X);
+
+        assertTrue(stage1.getY() < stage2.getY());
+    }
+
+    @Test
+    public void testNotificationPositionWhenStageResized() throws InterruptedException, ReflectiveOperationException
+    {
+        Platform.runLater(() -> {
+            aStage.setHeight(600);
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+        });
+        waitForRunLater();
+
+        @SuppressWarnings("unchecked")
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
+
+        Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
+        Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
+
+        double stage1Y = stage1.getY();
+        double stage2Y = stage2.getY();
+
+        Platform.runLater(() -> aStage.setHeight(300));
+        waitForRunLater();
+
+        assertNotEquals(stage1.getY(), stage1Y);
+        assertNotEquals(stage2.getY(), stage2Y);
 
         assertTrue(stage1.getY() < stage2.getY());
     }
