@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import javafx.beans.value.ChangeListener;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.Version;
 import org.jetuml.diagram.Diagram;
@@ -104,18 +103,6 @@ public final class JetUML extends Application
 		EditorFrame editor = new EditorFrame(pStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
-
-		// Window position and size listener for notifications
-		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue, pNewValue) ->
-				NotificationService.instance().updateNotificationPosition();
-
-		// When the stage is moved, update the notification positions
-		pStage.xProperty().addListener(stageTransformationListener);
-		pStage.yProperty().addListener(stageTransformationListener);
-
-		// When the stage is resized, update the notification positions
-		pStage.heightProperty().addListener(stageTransformationListener);
-		pStage.widthProperty().addListener(stageTransformationListener);
 
 		NotificationService.instance().setMainStage(pStage);
 		

@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import javafx.beans.value.ChangeListener;
 import javafx.stage.Stage;
 import org.jetuml.annotations.Singleton;
 
@@ -68,6 +69,21 @@ public final class NotificationService
     public void setMainStage(Stage pStage)
     {
         this.aMainStage = pStage;
+
+        if (pStage != null)
+        {
+            // Window position and size listener for notifications
+            ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue, pNewValue) ->
+                    NotificationService.instance().updateNotificationPosition();
+
+            // When the stage is moved, update the notification positions
+            pStage.xProperty().addListener(stageTransformationListener);
+            pStage.yProperty().addListener(stageTransformationListener);
+
+            // When the stage is resized, update the notification positions
+            pStage.heightProperty().addListener(stageTransformationListener);
+            pStage.widthProperty().addListener(stageTransformationListener);
+        }
     }
 
     /**
