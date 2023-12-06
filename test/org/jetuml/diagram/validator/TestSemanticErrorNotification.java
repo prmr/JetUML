@@ -38,23 +38,19 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.gui.Notification;
 import org.jetuml.gui.NotificationService;
-import org.jetuml.gui.ToastNotification;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-@Disabled("Concurrency issue makes the test hang")
-public class TestSemanticErrorNotification 
+public class TestSemanticErrorNotification
 {
     private final ClassDiagramValidator aValidator =
             new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
     private static Field aListField;
-    private static Field aStageField;
     private static Stage aStage;
     private static NotificationService aNotificationService;
 
@@ -84,8 +80,6 @@ public class TestSemanticErrorNotification
     {
         aListField = NotificationService.class.getDeclaredField("aNotifications");
         aListField.setAccessible(true);
-        aStageField = ToastNotification.class.getDeclaredField("aStage");
-        aStageField.setAccessible(true);
 
         aNotificationService = NotificationService.instance();
 
@@ -116,7 +110,7 @@ public class TestSemanticErrorNotification
     @Test
     void testPointNodeNotConnected() throws InterruptedException, ReflectiveOperationException {
         diagram().addRootNode(new PointNode());
-        Platform.runLater(() -> aValidator.isValid()); // invalid structure but semantically valid
+        Platform.runLater(aValidator::isValid); // invalid structure but semantically valid
         waitForRunLater();
         @SuppressWarnings("unchecked")
 		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
@@ -131,7 +125,7 @@ public class TestSemanticErrorNotification
         Edge edge = new DependencyEdge();
         edge.connect(aClassNode, aPointNode);
         diagram().addEdge(edge);
-        Platform.runLater(() -> aValidator.isValid());
+        Platform.runLater(aValidator::isValid);
         waitForRunLater();
         @SuppressWarnings("unchecked")
 		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);
