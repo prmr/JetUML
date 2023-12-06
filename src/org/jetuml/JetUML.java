@@ -105,11 +105,17 @@ public final class JetUML extends Application
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
 
-		// Window position listener for notifications
-		ChangeListener<Number> stageMoveListener = (pObservableValue, pOldValue, pNewValue) ->
+		// Window position and size listener for notifications
+		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue, pNewValue) ->
 				NotificationService.instance().updateNotificationPosition();
-		pStage.xProperty().addListener(stageMoveListener);
-		pStage.yProperty().addListener(stageMoveListener);
+
+		// When the stage is moved, update the notification positions
+		pStage.xProperty().addListener(stageTransformationListener);
+		pStage.yProperty().addListener(stageTransformationListener);
+
+		// When the stage is resized, update the notification positions
+		pStage.heightProperty().addListener(stageTransformationListener);
+		pStage.widthProperty().addListener(stageTransformationListener);
 
 		NotificationService.instance().setMainStage(pStage);
 		

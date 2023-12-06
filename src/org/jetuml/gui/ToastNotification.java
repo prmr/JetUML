@@ -121,6 +121,7 @@ public final class ToastNotification implements Notification
     public void show(Runnable pCleanUpCallback)
     {
         aStage.show();
+        aStage.getOwner().requestFocus(); // Keeps the main Stage focused (and not the notifications)
 
         // We define the Timeline for the fadein animation
         Timeline fadeInTimeline = new Timeline();
