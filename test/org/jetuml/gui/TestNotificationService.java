@@ -82,10 +82,15 @@ public class TestNotificationService {
     }
 
     @BeforeEach
-    public void resetList() throws ReflectiveOperationException
+    public void resetListAndProperties() throws ReflectiveOperationException
     {
         ArrayList<Notification> newList = new ArrayList<>();
         aListField.set(aNotificationService, newList);
+
+        aStage.setHeight(695.5);
+        aStage.setWidth(1125.0);
+        aStage.setX(220.5);
+        aStage.setY(220.5);
     }
 
     @Test
@@ -135,8 +140,8 @@ public class TestNotificationService {
     @Test
     public void testNotificationPositionWhenStageMoved() throws InterruptedException, ReflectiveOperationException
     {
+        aStage.setX(0.5);
         Platform.runLater(() -> {
-            aStage.setX(0.5);
             aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
             aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
@@ -151,8 +156,7 @@ public class TestNotificationService {
         double stage1X = stage1.getX();
         double stage2X = stage2.getX();
 
-        Platform.runLater(() -> aStage.setX(200));
-        waitForRunLater();
+        aStage.setX(200);
 
         assertTrue(stage1.getX() > stage1X);
         assertTrue(stage2.getX() > stage2X);
@@ -163,8 +167,8 @@ public class TestNotificationService {
     @Test
     public void testNotificationPositionWhenStageResized() throws InterruptedException, ReflectiveOperationException
     {
+        aStage.setHeight(600);
         Platform.runLater(() -> {
-            aStage.setHeight(600);
             aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
             aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
         });
@@ -179,8 +183,7 @@ public class TestNotificationService {
         double stage1Y = stage1.getY();
         double stage2Y = stage2.getY();
 
-        Platform.runLater(() -> aStage.setHeight(300));
-        waitForRunLater();
+        aStage.setHeight(300);
 
         assertNotEquals(stage1.getY(), stage1Y);
         assertNotEquals(stage2.getY(), stage2Y);
@@ -210,4 +213,42 @@ public class TestNotificationService {
         assertTrue(stage1.getY() > stage1Y);
     }
 
+    /*
+        If the notifications overshoot the main window, the oldest ones are removed to keep
+        the whole notification stack in the frame.
+     */
+    @Test
+    public void testNotificationDeletionWhenWindowBorderReached() throws InterruptedException, ReflectiveOperationException
+    {
+        Field notificationSpacingField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_SPACING");
+        notificationSpacingField.setAccessible(true);
+        Field notificationYMarginField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_Y_MARGIN");
+        notificationYMarginField.setAccessible(true);
+
+        @SuppressWarnings("unchecked")
+        int notificationSpacing = (int) notificationSpacingField.get(null);
+        @SuppressWarnings("unchecked")
+        int yMargin = (int) notificationYMarginField.get(null);
+
+        Platform.runLater(() -> {
+            ToastNotification errorNotification = new ToastNotification("This is a test error notification.", ToastNotification.Type.ERROR, aStage);
+            ToastNotification infoNotification = new ToastNotification("This is a test info notification.", ToastNotification.Type.INFO, aStage);
+
+            aNotificationService.spawnNotification(errorNotification);
+            aNotificationService.spawnNotification(infoNotification);
+
+            // Let's compute the necessary height of the main window to fit two notifications
+            double height = yMargin + notificationSpacing*2 + errorNotification.getHeight() + infoNotification.getHeight()+1;
+            aStage.setHeight(height);
+
+            aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
+            aNotificationService.spawnNotification("This is a test info notification.", ToastNotification.Type.INFO);
+        });
+        waitForRunLater();
+
+        @SuppressWarnings("unchecked")
+        ArrayList<Notification> notificationList = (ArrayList<Notification>) aListField.get(aNotificationService);
+
+        assertEquals(2, notificationList.size());
+    }
 }

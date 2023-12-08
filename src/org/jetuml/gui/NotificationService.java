@@ -100,6 +100,12 @@ public final class NotificationService
         {
             notification.setPosition(x, y);
             y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
+
+            if (y < aMainStage.getY())
+            {
+                notification.close();
+                aNotifications.remove(notification);
+            }
         }
     }
 

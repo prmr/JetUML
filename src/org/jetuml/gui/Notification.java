@@ -34,6 +34,12 @@ public interface Notification
     void show(Runnable pCleanUpCallback);
 
     /**
+     * Close the stage of the Notification object (to end it prematurely).
+     * Useful when the notifications go beyond the window.
+     */
+    void close();
+
+    /**
      * Move the Notification object to the desired position on the screen.
      *
      * @param pX The target X position
