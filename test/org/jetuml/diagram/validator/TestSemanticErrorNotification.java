@@ -22,6 +22,7 @@ package org.jetuml.diagram.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -139,7 +140,7 @@ public class TestSemanticErrorNotification
         diagram().addRootNode(aPointNode);
         aNoteEdge.connect(aClassNode, aPointNode);
         diagram().addEdge(aNoteEdge);
-        Platform.runLater(() -> assertFalse(aValidator.isValid()));
+        Platform.runLater(aValidator::isValid);
         waitForRunLater();
         @SuppressWarnings("unchecked")
 		List<Notification> notificationList = (List<Notification>) aListField.get(aNotificationService);

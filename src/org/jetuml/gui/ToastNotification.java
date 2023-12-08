@@ -157,6 +157,16 @@ public final class ToastNotification implements Notification
     }
 
     /**
+     * Close the stage of the Notification object (to end it prematurely).
+     * Useful when the notifications go beyond the window.
+     */
+    @Override
+    public void close()
+    {
+        aStage.close();
+    }
+
+    /**
      * Moves the Notification object to the desired position on the screen.
      *
      * @param pX The target X position
