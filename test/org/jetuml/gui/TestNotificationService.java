@@ -225,9 +225,7 @@ public class TestNotificationService {
         Field notificationYMarginField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_Y_MARGIN");
         notificationYMarginField.setAccessible(true);
 
-        @SuppressWarnings("unchecked")
         int notificationSpacing = (int) notificationSpacingField.get(null);
-        @SuppressWarnings("unchecked")
         int yMargin = (int) notificationYMarginField.get(null);
 
         Platform.runLater(() -> {
