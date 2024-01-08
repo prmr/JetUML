@@ -47,7 +47,7 @@ public class TestNotificationService {
      * Allows waiting for the platform instructions to be executed before continuing on.
      * It then prevents having a test finishing before the JavaFX instructions are run.
      */
-    public static void waitForRunLater() throws InterruptedException
+    private static void waitForRunLater() throws InterruptedException
     {
         Semaphore semaphore = new Semaphore(0);
         Platform.runLater(semaphore::release);
@@ -55,7 +55,7 @@ public class TestNotificationService {
     }
 
     @BeforeAll
-    public static void setup() throws ReflectiveOperationException, InterruptedException
+    private static void setup() throws ReflectiveOperationException, InterruptedException
     {
         aListField = NotificationService.class.getDeclaredField("aNotifications");
         aListField.setAccessible(true);
@@ -75,14 +75,14 @@ public class TestNotificationService {
     }
 
     @AfterAll
-    public static void closeStage() throws InterruptedException {
+    private static void closeStage() throws InterruptedException {
         Platform.runLater(() -> aStage.close());
         waitForRunLater();
         NotificationService.instance().setMainStage(null);
     }
 
     @BeforeEach
-    public void resetListAndProperties() throws ReflectiveOperationException
+    private void resetListAndProperties() throws ReflectiveOperationException
     {
         ArrayList<Notification> newList = new ArrayList<>();
         aListField.set(aNotificationService, newList);
@@ -94,7 +94,7 @@ public class TestNotificationService {
     }
 
     @Test
-    public void testSpawnToast() throws InterruptedException, ReflectiveOperationException
+    void testSpawnToast() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
             aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
@@ -114,7 +114,7 @@ public class TestNotificationService {
         Notifications should stack, one on top of the other.
      */
     @Test
-    public void testNotificationPosition() throws InterruptedException, ReflectiveOperationException
+    void testNotificationPosition() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
             aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
@@ -138,7 +138,7 @@ public class TestNotificationService {
         If the stage is moved, the notifications should move as well.
      */
     @Test
-    public void testNotificationPositionWhenStageMoved() throws InterruptedException, ReflectiveOperationException
+    void testNotificationPositionWhenStageMoved() throws InterruptedException, ReflectiveOperationException
     {
         aStage.setX(0.5);
         Platform.runLater(() -> {
@@ -165,7 +165,7 @@ public class TestNotificationService {
     }
 
     @Test
-    public void testNotificationPositionWhenStageResized() throws InterruptedException, ReflectiveOperationException
+    void testNotificationPositionWhenStageResized() throws InterruptedException, ReflectiveOperationException
     {
         aStage.setHeight(600);
         Platform.runLater(() -> {
@@ -192,7 +192,7 @@ public class TestNotificationService {
     }
 
     @Test
-    public void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException
+    void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException
     {
         Platform.runLater(() -> {
             aNotificationService.spawnNotification("This is a test error notification.", ToastNotification.Type.ERROR);
@@ -218,7 +218,7 @@ public class TestNotificationService {
         the whole notification stack in the frame.
      */
     @Test
-    public void testNotificationDeletionWhenWindowBorderReached() throws InterruptedException, ReflectiveOperationException
+    void testNotificationDeletionWhenWindowBorderReached() throws InterruptedException, ReflectiveOperationException
     {
         Field notificationSpacingField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_SPACING");
         notificationSpacingField.setAccessible(true);
