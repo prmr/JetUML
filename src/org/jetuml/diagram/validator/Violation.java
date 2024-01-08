@@ -27,6 +27,8 @@ import org.jetuml.application.ApplicationResources;
  */
 public final class Violation
 {
+	private static final String KEY_PREFIX = "error.";
+	
 	private enum Category
 	{
 		STRUCTURAL, SEMANTIC
@@ -48,17 +50,17 @@ public final class Violation
 	public static Violation newStructuralViolation(String pDescriptor)
 	{
 		assert pDescriptor != null;
-		return new Violation(Category.STRUCTURAL, pDescriptor);
+		return new Violation(Category.STRUCTURAL, KEY_PREFIX + pDescriptor);
 	}
 	
 	/**
 	 * @param pDescriptor A key to a property that describes the violation.
-	 * @return A new structural Violation with descriptor pDescriptor 
+	 * @return A constraint that was violated
 	 */
-	public static Violation newSemanticViolation(String pDescriptor)
+	public static Violation newSemanticViolation(EdgeConstraint pConstraint)
 	{
-		assert pDescriptor != null;
-		return new Violation(Category.SEMANTIC, pDescriptor);
+		assert pConstraint != null;
+		return new Violation(Category.SEMANTIC, KEY_PREFIX + pConstraint.getClass().getSimpleName());
 	}
 	
 	/**
@@ -80,8 +82,14 @@ public final class Violation
 	/**
 	 * @return The externalized description of this violation.
 	 */
-	public String getDescription()
+	public String description()
 	{
 		return ApplicationResources.RESOURCES.getString(aDescriptor);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[%s Violation: %s", aCategory.name().toLowerCase(), description());
 	}
 }

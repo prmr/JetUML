@@ -46,6 +46,7 @@ import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.validator.DiagramValidator;
+import org.jetuml.diagram.validator.Violation;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
@@ -529,7 +530,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = Grid.snapped(getMousePoint(pEvent));
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
-		if (aDiagramValidator.isValid())
+		Optional<Violation> violation = aDiagramValidator.validate();
+		
+		if(violation.isEmpty())
 		{
 			setSelection(newNode);
 			diagram().placeOnTop(newNode);
@@ -539,11 +542,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				editSelected();
 			}
 		}
-
 		else
 		{
 			aProcessor.undoLastExecutedOperation();
 			handleSelection(pEvent);
+			NotificationService.instance().spawnNotification(violation.get().description(), ToastNotification.Type.ERROR);
 		}
 	}
 
@@ -645,10 +648,12 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, aMouseDownPoint, pMousePoint));
-
-			if( !aDiagramValidator.isValid() )
+			Optional<Violation> violation = aDiagramValidator.validate();
+			
+			if( violation.isPresent() )
 			{
 				aProcessor.undoLastExecutedOperation();
+				NotificationService.instance().spawnNotification(violation.get().description(), ToastNotification.Type.ERROR);
 			}
 			else
 			{

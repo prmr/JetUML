@@ -39,9 +39,9 @@ import org.jetuml.diagram.validator.constraints.ConstraintValidNoteEdge;
  */
 abstract class AbstractDiagramValidator implements DiagramValidator
 {
-	private static final String DESCRIPTOR_INVALID_ELEMENTS = "InvalidElements";
-	private static final String DESCRIPTOR_INVALID_POINTS = "InvalidPoints";
-	private static final String DESCRIPTOR_INVALID_NODES = "InvalidNodes";
+	private static final String DESCRIPTOR_INVALID_ELEMENTS = "StructureInvalidElements";
+	private static final String DESCRIPTOR_INVALID_POINTS = "StructureInvalidPoints";
+	private static final String DESCRIPTOR_INVALID_NODES = "StructureInvalidNodes";
 
 	
 	private static final Set<Class<? extends Node>> UNIVERSAL_NODES_TYPES = 
@@ -144,7 +144,7 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 		return aConstraints.stream()
 				.filter(constraint -> !constraint.satisfied(pEdge, aDiagram))
 				.findFirst()
-				.map(constraint -> Violation.newSemanticViolation(constraint.getClass().getName()));
+				.map(constraint -> Violation.newSemanticViolation(constraint));
 	}
 	
 	private boolean hasValidElementTypes()
