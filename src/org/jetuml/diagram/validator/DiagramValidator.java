@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.diagram.validator;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.Node;
 
 /**
@@ -34,6 +36,13 @@ public interface DiagramValidator
 	 * any structural or semantic rules. 
 	 */
 	boolean isValid();
+	
+	/**
+	 * Checks if any rule violates the correctness of this diagram.
+	 * @return Optional.empty if the diagram is correct, or a Violation that 
+	 * describes the problem if not.
+	 */
+	Optional<Violation> validate();
 	
 	/**
 	 * The structure of a diagram consists of the type of nodes and edges

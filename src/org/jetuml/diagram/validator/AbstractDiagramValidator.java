@@ -42,6 +42,11 @@ import org.jetuml.gui.ToastNotification;
  */
 abstract class AbstractDiagramValidator implements DiagramValidator
 {
+	private static final String DESCRIPTOR_INVALID_ELEMENTS = "InvalidElements";
+	private static final String DESCRIPTOR_INVALID_POINTS = "InvalidPoints";
+	private static final String DESCRIPTOR_INVALID_NODES = "InvalidNodes";
+
+	
 	private static final Set<Class<? extends Node>> UNIVERSAL_NODES_TYPES = 
 			Set.of(PointNode.class, NoteNode.class);
 	private static final Set<Class<? extends Edge>> UNIVERSAL_EDGES_TYPES = 
@@ -87,7 +92,61 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	{
 		return hasValidStructure() && hasValidSemantics();
 	}
-
+	
+	@Override
+	public final Optional<Violation> validate()
+	{
+		return validateElementTypes()
+				.or(this::validatePointNodes)
+				.or(this::validateDiagramNodes)
+				.or(this::validateSemantics);
+	}
+	
+	private Optional<Violation> validateElementTypes()
+	{
+		if( hasValidElementTypes() )
+		{
+			return Optional.empty();
+		}
+		else
+		{
+			return Optional.of(Violation.newStructuralViolation(DESCRIPTOR_INVALID_ELEMENTS));
+		}
+	}
+	
+	private Optional<Violation> validatePointNodes()
+	{
+		if( hasValidPointNodes() )
+		{
+			return Optional.empty();
+		}
+		else
+		{
+			return Optional.of(Violation.newStructuralViolation(DESCRIPTOR_INVALID_POINTS));
+		}
+	}
+	
+	private Optional<Violation> validateDiagramNodes()
+	{
+		if( hasValidDiagramNodes() )
+		{
+			return Optional.empty();
+		}
+		else
+		{
+			return Optional.of(Violation.newStructuralViolation(DESCRIPTOR_INVALID_NODES));
+		}
+	}
+	
+	private Optional<Violation> validateSemantics()
+	{
+		return aDiagram.edges().stream()
+				.map(edge -> validateAllConstraintsFor(edge))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.findFirst();
+	}
+	
 	@Override
 	@TemplateMethod
 	public final boolean hasValidStructure()
@@ -105,6 +164,15 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	{
 		return aDiagram.edges().stream()
 				.allMatch(edge -> allConstraintsSatisfied(edge));
+	}
+	
+	private Optional<Violation> validateAllConstraintsFor(Edge pEdge)
+	{
+		// We retrieve the first constraint that is not satisfied (if it exists)
+		return aConstraints.stream()
+				.filter(constraint -> !constraint.satisfied(pEdge, aDiagram))
+				.findFirst()
+				.map(constraint -> Violation.newSemanticViolation(constraint.getClass().getName()));
 	}
 	
 	private boolean allConstraintsSatisfied(Edge pEdge)
