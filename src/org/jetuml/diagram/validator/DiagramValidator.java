@@ -28,12 +28,15 @@ import java.util.Optional;
 public interface DiagramValidator
 {
 	/**
-	 * Should always return hasValidStructure() && hasValidSemantics().
+	 * Convenience method to check if the validation finds no violation.
 	 * 
 	 * @return True if the content of the diagram does not violate
 	 * any structural or semantic rules. 
 	 */
-	boolean isValid();
+	default boolean isValid()
+	{
+		return validate().isEmpty();
+	}
 	
 	/**
 	 * Checks if any rule violates the correctness of this diagram. Returns

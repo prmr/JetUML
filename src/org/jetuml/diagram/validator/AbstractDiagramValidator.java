@@ -85,12 +85,6 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 	}
 
 	@Override
-	public final boolean isValid()
-	{
-		return validate().isEmpty();
-	}
-	
-	@Override
 	public final Optional<Violation> validate()
 	{
 		return validateElementTypes()
