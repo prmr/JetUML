@@ -26,30 +26,21 @@ import org.jetuml.diagram.validator.EdgeConstraint;
 
 /**
  * There can't be two edges of a given type, one in each direction, between
- * two DIFFERENT nodes.
+ * two different nodes.
  */
 public final class ConstraintNoDirectCyclesForEdgeType implements EdgeConstraint
 {
-
     private final Class<? extends Edge> aEdgeType;
 
     /**
-     * @param pEdgeType The edge type which cannot be used to form a direct cycle
+     * @param pEdgeType The edge type which cannot be used to form a direct
+     * cycle.
      */
     public ConstraintNoDirectCyclesForEdgeType(Class<? extends Edge> pEdgeType)
     {
         aEdgeType = pEdgeType;
     }
 
-    /**
-     * Determines if a constraint is satisfied.
-     *
-     * @param pEdge    The edge being validated.
-     * @param pDiagram The diagram containing the edge.
-     * @return True if the edge is satisfied.
-     * @pre pEdge != null && pDiagram != null && pDiagram.contains(pEdge)
-     * @pre pEdge.start() != null && pEdge.end() != null;
-     */
     @Override
     public boolean satisfied(Edge pEdge, Diagram pDiagram)
     {
