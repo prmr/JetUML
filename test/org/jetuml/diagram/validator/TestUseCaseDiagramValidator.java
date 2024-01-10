@@ -109,26 +109,6 @@ public class TestUseCaseDiagramValidator
 	}
 	
 	@Test
-	void testActorToNote()
-	{
-		diagram().addRootNode(aActor1);
-		diagram().addRootNode(aNoteNode);
-		aDependency.connect(aActor1, aNoteNode);
-		diagram().addEdge(aDependency);
-		assertFalse(aValidator.isValid());
-	}
-	
-	@Test
-	void testNoteToActor()
-	{
-		diagram().addRootNode(aActor1);
-		diagram().addRootNode(aNoteNode);
-		aDependency.connect(aNoteNode, aActor1);
-		diagram().addEdge(aDependency);
-		assertFalse(aValidator.isValid());
-	}
-	
-	@Test
 	void testTwoEdgesBetweenNodes()
 	{
 		diagram().addRootNode(aCase1);

@@ -32,7 +32,6 @@ import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.diagram.validator.constraints.ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes;
-import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeConnectedToNote;
 import org.jetuml.diagram.validator.constraints.ConstraintNoSelfEdgeForEdgeType;
 
 /**
@@ -44,8 +43,7 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
 			new ConstraintNoSelfEdgeForEdgeType(UseCaseAssociationEdge.class),
 			new ConstraintNoSelfEdgeForEdgeType(UseCaseGeneralizationEdge.class),
-			new ConstraintNoSelfEdgeForEdgeType(UseCaseDependencyEdge.class),
-			new ConstraintNoEdgeConnectedToNote());
+			new ConstraintNoSelfEdgeForEdgeType(UseCaseDependencyEdge.class));
 
 	private static final Set<Class<? extends Node>> VALID_NODE_TYPES = Set.of(
 			ActorNode.class, 
