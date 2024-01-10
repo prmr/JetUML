@@ -32,6 +32,7 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.validator.constraints.ConstraintNoEdgeToPointExceptNoteEdge;
+import org.jetuml.diagram.validator.constraints.ConstraintNoSelfEdgeForEdgeType;
 import org.jetuml.diagram.validator.constraints.ConstraintValidNoteEdge;
 
 /**
@@ -50,7 +51,8 @@ abstract class AbstractDiagramValidator implements DiagramValidator
 			Set.of(NoteEdge.class);
 	private static final Set<EdgeConstraint> UNIVERSAL_CONSTRAINTS =
 			Set.of(new ConstraintValidNoteEdge(),
-					new ConstraintNoEdgeToPointExceptNoteEdge());
+					new ConstraintNoEdgeToPointExceptNoteEdge(),
+					new ConstraintNoSelfEdgeForEdgeType(NoteEdge.class));
 	
 	private final Diagram aDiagram;
 	private final Set<Class<? extends Node>> aValidNodeTypes = new HashSet<>();
