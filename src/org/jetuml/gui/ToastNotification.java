@@ -41,16 +41,17 @@ import java.util.TimerTask;
  */
 public final class ToastNotification implements Notification
 {
+	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
     /**
      * Defines the color of the toast notification.
      */
     public enum Type
     {
-        ERROR("-fx-padding: 8px; -fx-background-color: rgb(200, 70, 70); -fx-background-radius: 10"),
-        SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(112, 173, 70); -fx-background-radius: 10"),
-        WARNING("-fx-padding: 8px; -fx-background-color: rgb(220, 150, 20); -fx-background-radius: 10"),
-        INFO("-fx-padding: 8px; -fx-background-color: rgb(70, 115, 195); -fx-background-radius: 10");
+        ERROR("-fx-padding: 8px; -fx-background-color: rgb(255, 217, 217); -fx-background-radius: 7"),
+        SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(224, 255, 217); -fx-background-radius: 7"),
+        WARNING("-fx-padding: 8px; -fx-background-color: rgb(255, 253, 217); -fx-background-radius: 7"),
+        INFO("-fx-padding: 8px; -fx-background-color: rgb(217, 245, 255); -fx-background-radius: 7");
 
         private final String aStyle;
 
@@ -97,7 +98,7 @@ public final class ToastNotification implements Notification
         Text text = new Text(pMessage);
 
         text.setFont(Font.font("System", UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize)));
-        text.setFill(Color.WHITE);
+        text.setFill(TEXT_COLOR);
 
         StackPane pane = new StackPane(text);
 
@@ -143,7 +144,8 @@ public final class ToastNotification implements Notification
         Timer notificationTimer = new Timer();
         TimerTask lifespan = new TimerTask()
         {
-            public void run()
+            @Override
+			public void run()
             {
                 fadeOutTimeline.play();
             }
