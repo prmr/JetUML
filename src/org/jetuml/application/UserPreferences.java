@@ -61,7 +61,7 @@ public final class UserPreferences
 	 */
 	public enum IntegerPreference
 	{
-		diagramWidth(0), diagramHeight(0), nextTipId(1), fontSize(DEFAULT_FONT_SIZE);
+		diagramWidth(0), diagramHeight(0), nextTipId(1), fontSize(DEFAULT_FONT_SIZE), notificationDuration(5);
 		
 		private int aDefault;
 		
@@ -70,7 +70,10 @@ public final class UserPreferences
 			aDefault = pDefault;
 		}
 		
-		String getDefault()
+		/**
+		 * @return The default value for this preference.
+		 */
+		public String getDefault()
 		{
 			return Integer.toString(aDefault);
 		}
