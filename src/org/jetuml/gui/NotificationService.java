@@ -36,8 +36,8 @@ public final class NotificationService
 {
 
     private static final int NOTIFICATION_DISPLAY_SPACING = 8;
-    private static final int NOTIFICATION_DISPLAY_X_MARGIN = 18;
-    private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 18;
+    private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
+    private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
 
     private static final NotificationService INSTANCE = new NotificationService();
 

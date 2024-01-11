@@ -20,6 +20,11 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.jetuml.application.UserPreferences;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -31,16 +36,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.jetuml.application.UserPreferences;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A toast notification object (that pops up and disappears without requiring any user interaction).
  */
 public final class ToastNotification implements Notification
 {
+	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
     /**
@@ -71,7 +73,6 @@ public final class ToastNotification implements Notification
 
     private static final int FADE_IN_DELAY = 500;
     private static final int FADE_OUT_DELAY = 500;
-    private static final int NOTIFICATION_DELAY = 5000;
 
     private final Stage aStage;
 
@@ -121,6 +122,13 @@ public final class ToastNotification implements Notification
     @Override
     public void show(Runnable pCleanUpCallback)
     {
+    	int duration = notificationDurationInMilliseconds();
+    	// A duration of zero disables notifications
+    	if( duration == 0 )
+    	{
+    		return;
+    	}
+    	
         aStage.show();
         aStage.getOwner().requestFocus(); // Keeps the main Stage focused (and not the notifications)
 
@@ -152,12 +160,18 @@ public final class ToastNotification implements Notification
         };
 
         // When the fadein animation ends, we start a timer that will execute the fadeout animation
-        fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, NOTIFICATION_DELAY));
+        fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, duration));
 
         // We trigger the fadein animation
         fadeInTimeline.play();
     }
 
+    private static int notificationDurationInMilliseconds()
+    {
+    	return UserPreferences.instance().getInteger(
+    			UserPreferences.IntegerPreference.notificationDuration) * MILLISECONDS_PER_SECOND;
+    }
+    
     /**
      * Close the stage of the Notification object (to end it prematurely).
      * Useful when the notifications go beyond the window.
