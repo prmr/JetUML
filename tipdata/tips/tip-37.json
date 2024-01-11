@@ -1,0 +1,7 @@
+{ 
+  "title": "Notifications",
+  "content": [ 
+    { "text": "Errors and confirmations get reported as temporary notifications in the bottom left of the application window. It is possible to adjust the duration of the notifications. A duration of zero disables all notifications." },
+    { "image": "tip37.png"}
+  ]
+}
