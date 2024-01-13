@@ -53,7 +53,7 @@ import javafx.stage.Stage;
 public final class JetUML extends Application
 {
 	@SuppressWarnings("exports")
-	public static final Version VERSION = Version.create(3, 6);
+	public static final Version VERSION = Version.create(3, 7);
 	
 	private static HostServices aHostServices; // Required to open a browser page.
 	
