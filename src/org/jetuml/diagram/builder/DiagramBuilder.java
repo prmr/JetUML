@@ -210,6 +210,19 @@ public abstract class DiagramBuilder
 				if(descendants.contains(edge.start() ) || descendants.contains(edge.end()))
 				{
 					result.add(edge);
+					// Special case that if we remove a note edge we must always 
+					// remove the point node as well.
+					if( edge instanceof NoteEdge )
+					{
+						if( edge.start() instanceof PointNode )
+						{
+							result.add(edge.start());
+						}
+						if( edge.end() instanceof PointNode )
+						{
+							result.add(edge.end());
+						}
+					}
 				}
 			}
 		}
