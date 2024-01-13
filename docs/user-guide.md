@@ -35,7 +35,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 </div>
 <button class="collapsible">Edge Validation</button>
 <div class="content">
-<p>When attempting to create a new edge, the operation will only succeed if the edge is a valid connection between two elements according to the syntax of the diagram.</p>
+<p>When attempting to create a new edge, the operation will only succeed if the edge is a valid connection between two elements according to the syntax of the diagram. Invalid attempts to create edges get reported as notifications.</p>
 <img src="../tipdata/tip_images/tip3.png">
 </div>
 <button class="collapsible">Tool Hints</button>
@@ -186,6 +186,11 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <div class="content">
 <p>In the Properties editor for any diagram element, use the shortcut key combination Ctrl-Q to insert the characters « », which are the delimiters for UML stereotypes. The cursor will be positioned between the delimiters, so you can just continue typing the name of your stereotype.</p>
 <img src="../tipdata/tip_images/tip36.png">
+</div>
+<button class="collapsible">Notifications</button>
+<div class="content">
+<p>Errors and confirmations get reported as temporary notifications in the bottom left of the application window. It is possible to adjust the duration of the notifications. A duration of zero disables all notifications.</p>
+<img src="../tipdata/tip_images/tip37.png">
 </div>
 </div>
 
