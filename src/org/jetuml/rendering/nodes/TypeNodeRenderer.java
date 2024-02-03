@@ -28,6 +28,7 @@ import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
@@ -49,7 +50,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
-	
+	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
+			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
@@ -81,20 +83,69 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			final int splitY = bounds.getY() + nameHeight;
 			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
-			STRING_VIEWER.draw(node.getAttributes(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), attributeHeight));
+			drawAttribute(node, bounds, splitY, attributeHeight, pGraphics);
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
 				RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
-				STRING_VIEWER.draw(node.getMethods(), pGraphics, 
-						new Rectangle(bounds.getX(), splitY2, bounds.getWidth(), methodHeight));
+				drawMethod(node, bounds, splitY2, methodHeight, pGraphics);
 			}
 		}
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.getY() + nameHeight;
 			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
-			STRING_VIEWER.draw(node.getMethods(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), methodHeight));
+			drawMethod(node, bounds, splitY, methodHeight, pGraphics);
+		}
+	}
+	
+	// Draws the attributes in the attribute box line by line. Attributes with the underline markup are underlined.
+	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsContext pGraphics)
+	{
+		String attributes = pNode.getAttributes();
+		String[] attributesByLine = attributes.split("\n");
+		int lineSpacing = 0;
+		for( String attribute : attributesByLine )
+		{
+			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
+			{
+				StringBuilder underline = new StringBuilder(attribute);
+				underline.deleteCharAt(0);
+				underline.deleteCharAt(underline.length() - 1);
+				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
+			}
+			else
+			{
+				STRING_VIEWER.draw(attribute, pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
+			}
+			lineSpacing += FontMetrics.getHeight(attribute);
+		}	
+	}
+	
+	// Draws the methods in the method box line by line. Methods with the underline markup are underlined.
+	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, GraphicsContext pGraphics)
+	{
+		String methods = pNode.getMethods();
+		String[] methodsByLine = methods.split("\n");
+		int lineSpacing = 0;
+		for( String method : methodsByLine )
+		{
+			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
+			{
+				StringBuilder underline = new StringBuilder(method);
+				underline.deleteCharAt(0);
+				underline.deleteCharAt(underline.length() - 1);
+				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+			}
+			else
+			{
+				STRING_VIEWER.draw(method, pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+			}
+			lineSpacing += FontMetrics.getHeight(method);
 		}	
 	}
 	

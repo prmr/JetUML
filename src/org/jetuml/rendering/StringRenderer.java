@@ -228,13 +228,12 @@ public final class StringRenderer
 	{
 		final VPos oldVPos = pGraphics.getTextBaseline();
 		final TextAlignment oldAlign = pGraphics.getTextAlign();
+		int textX = 0;
+		int textY = 0;
 		
 		pGraphics.setTextAlign(getTextAlignment());
 		pGraphics.setTextBaseline(getTextBaseline());
 		
-		
-		int textX = 0;
-		int textY = 0;
 		if( aAlign.isHorizontallyCentered() ) 
 		{
 			textX = pRectangle.getWidth()/2;
@@ -266,7 +265,10 @@ public final class StringRenderer
 			{
 				xOffset = dimension.width();
 			}
-			
+			else if( aAlign.isTop() )
+			{
+				yOffset = dimension.height() + 1;
+			}
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
