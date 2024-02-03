@@ -28,6 +28,7 @@ import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
@@ -98,12 +99,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
+	// Draws the attributes in the attribute box line by line. Attributes with the underline markup are underlined.
 	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsContext pGraphics)
 	{
 		String attributes = pNode.getAttributes();
 		String[] attributesByLine = attributes.split("\n");
 		int lineSpacing = 0;
-		
 		for( String attribute : attributesByLine )
 		{
 			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
@@ -119,16 +120,16 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				STRING_VIEWER.draw(attribute, pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
 			}
-			lineSpacing += STRING_VIEWER.getHeight(attribute);
+			lineSpacing += FontMetrics.getHeight(attribute);
 		}	
 	}
 	
+	// Draws the methods in the method box line by line. Methods with the underline markup are underlined.
 	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, GraphicsContext pGraphics)
 	{
 		String methods = pNode.getMethods();
 		String[] methodsByLine = methods.split("\n");
 		int lineSpacing = 0;
-		
 		for( String method : methodsByLine )
 		{
 			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
@@ -144,8 +145,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				STRING_VIEWER.draw(method, pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
-			lineSpacing += STRING_VIEWER.getHeight(method);
-		}	
+			lineSpacing += FontMetrics.getHeight(method);
+		}
 	}
 	
 	private static int attributeBoxHeight(TypeNode pNode)
