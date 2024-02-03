@@ -99,12 +99,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	// Draws the attributes in the attribute box line by line. Attributes with the underline markup are underlined.
 	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsContext pGraphics)
 	{
 		String attributes = pNode.getAttributes();
 		String[] attributesByLine = attributes.split("\n");
 		int lineSpacing = 0;
+		
 		for( String attribute : attributesByLine )
 		{
 			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
@@ -124,12 +124,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}	
 	}
 	
-	// Draws the methods in the method box line by line. Methods with the underline markup are underlined.
 	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, GraphicsContext pGraphics)
 	{
 		String methods = pNode.getMethods();
 		String[] methodsByLine = methods.split("\n");
 		int lineSpacing = 0;
+		
 		for( String method : methodsByLine )
 		{
 			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
