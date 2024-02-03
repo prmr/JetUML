@@ -83,4 +83,19 @@ public class FontMetrics
 		double leading = aTextNode.getLayoutBounds().getMaxY();
 		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight() - leading));
 	}
+	
+	/**
+	 * Returns the height of a string including the leading space.
+	 * 
+	 * @param pString The string. 
+	 * @return The height of the string.
+	 * @pre pString != null
+	 */
+	public static int getHeight(String pString)
+	{
+		assert pString != null;
+		
+		Text text = new Text(pString);
+		return (int) Math.round(text.getLayoutBounds().getHeight());
+	}
 } 
