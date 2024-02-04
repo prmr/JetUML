@@ -91,11 +91,11 @@ public class FontMetrics
 	 * @return The height of the string.
 	 * @pre pString != null
 	 */
-	public static int getHeight(String pString)
+	public int getHeight(String pString)
 	{
 		assert pString != null;
 		
-		Text text = new Text(pString);
-		return (int) Math.round(text.getLayoutBounds().getHeight());
+		aTextNode.setText(pString);
+		return (int) Math.round(aTextNode.getLayoutBounds().getHeight());
 	}
 } 
