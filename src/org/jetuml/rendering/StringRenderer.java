@@ -157,6 +157,20 @@ public final class StringRenderer
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
+	
+	/**
+	 * Gets the height of a string including the leading space.
+	 * 
+	 * @param pString The string.
+	 * @return The height of the string.
+	 * @pre pString != null
+	 */
+	public int getHeight(String pString)
+	{
+		assert pString != null;
+		
+		return CANVAS_FONT.getHeight(pString, aBold);
+	}
 
 	/**
 	 * Breaks up a string such that each multi-word line has at most
@@ -321,6 +335,18 @@ public final class StringRenderer
 		public Dimension getDimension(String pString, boolean pBold)
 		{
 			return getFontMetrics(pBold).getDimension(pString);
+		}
+		
+		/**
+		 * Returns the height of a string including the leading space.
+		 * 
+		 * @param pString The string.
+		 * @param pBold Whether the text is in bold.
+		 * @return The height of the string.
+		 */
+		public int getHeight(String pString, boolean pBold)
+		{
+			return getFontMetrics(pBold).getHeight(pString);
 		}
 
 		/**
