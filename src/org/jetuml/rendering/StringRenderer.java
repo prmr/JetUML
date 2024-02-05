@@ -182,7 +182,6 @@ public final class StringRenderer
         formattedString.deleteCharAt(formattedString.length() - 1);
     	return formattedString.toString();
 	}
-
 	
 	/**
      * Draws the string inside a given rectangle.
