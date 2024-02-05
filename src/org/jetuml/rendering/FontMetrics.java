@@ -49,7 +49,7 @@ import javafx.scene.text.Text;
  * off the leading value (found by getting the max Y value of a one-lined text
  * box)
  */
-public class FontMetrics 
+public class FontMetrics
 {
 	public static final int DEFAULT_FONT_SIZE = 12;
 	private static final String BLANK = "";

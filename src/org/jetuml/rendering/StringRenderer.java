@@ -27,16 +27,11 @@ import java.util.Map;
 
 import org.jetuml.annotations.Flyweight;
 import org.jetuml.annotations.Immutable;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
-import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -49,52 +44,48 @@ import javafx.scene.text.TextAlignment;
 @Flyweight
 public final class StringRenderer
 {
-	private static final CanvasFont CANVAS_FONT = new CanvasFont();
-	
+	private static final CanvasFont CANVAS_FONT = CanvasFont.instance();
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
 	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
-	
 	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
 	
 	/**
 	 * How to align the text in this string.
 	 */
 	public enum Alignment
-	{ TOP_LEFT, TOP_CENTER, TOP_RIGHT,
-	  CENTER_LEFT, CENTER_CENTER, CENTER_RIGHT,
-	  BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
+	{ 
+		TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER_CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
 	  
-	  private boolean isTop() 
-	  { 
-		  return this == TOP_LEFT || this == TOP_CENTER || this == TOP_RIGHT; 
-	  } 
+		private boolean isTop() 
+		{ 
+			return this == TOP_LEFT || this == TOP_CENTER || this == TOP_RIGHT; 
+		} 
 		
-	  private boolean isVerticallyCentered() 
-	  { 
-		  return this == CENTER_LEFT || this == CENTER_CENTER || this == CENTER_RIGHT; 
-	  } 
+		private boolean isVerticallyCentered() 
+		{ 
+			return this == CENTER_LEFT || this == CENTER_CENTER || this == CENTER_RIGHT; 
+		} 
 	  
-	  private boolean isBottom() 
-	  { 
-		  return this == BOTTOM_LEFT || this == BOTTOM_CENTER || this == BOTTOM_RIGHT; 
-	  }
+		private boolean isBottom() 
+		{ 
+			return this == BOTTOM_LEFT || this == BOTTOM_CENTER || this == BOTTOM_RIGHT; 
+		}
 	  
-	  private boolean isLeft() 
-	  { 
-		  return this == TOP_LEFT || this == CENTER_LEFT || this == BOTTOM_LEFT; 
-	  }
+		private boolean isLeft() 
+		{ 
+			return this == TOP_LEFT || this == CENTER_LEFT || this == BOTTOM_LEFT; 
+		}
 	  
-	  private boolean isHorizontallyCentered() 
-	  { 
-		  return this == TOP_CENTER || this == CENTER_CENTER || this == BOTTOM_CENTER; 
-	  }
+		private boolean isHorizontallyCentered() 
+		{ 
+			return this == TOP_CENTER || this == CENTER_CENTER || this == BOTTOM_CENTER; 
+		}
 	  
-	  private boolean isRight() 
-	  { 
-		  return this == TOP_RIGHT || this == CENTER_RIGHT || this == BOTTOM_RIGHT; 
-	  }
-	  
+		private boolean isRight() 
+		{ 
+			return this == TOP_RIGHT || this == CENTER_RIGHT || this == BOTTOM_RIGHT; 
+		}
 	}
 	
 	/**
@@ -192,31 +183,6 @@ public final class StringRenderer
     	return formattedString.toString();
 	}
 
-	private TextAlignment getTextAlignment()
-	{		
-		if ( aAlign.isLeft() )
-		{
-			return TextAlignment.LEFT;
-		}
-		else if ( aAlign.isHorizontallyCentered() )
-		{
-			return TextAlignment.CENTER;
-		}
-		return TextAlignment.RIGHT;
-	}
-	
-	private VPos getTextBaseline()
-	{
-		if ( aAlign.isBottom() )
-		{
-			return VPos.BASELINE;
-		}
-		else if ( aAlign.isTop() )
-		{
-			return VPos.TOP;
-		}
-		return VPos.CENTER;
-	}
 	
 	/**
      * Draws the string inside a given rectangle.
@@ -250,7 +216,7 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		CANVAS_FONT.drawString(pGraphics, textX, textY, pString.trim(), aBold);
+		RenderingUtils.drawText(pGraphics, textX, textY, pString, CANVAS_FONT.getFont(aBold));
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
@@ -260,7 +226,7 @@ public final class StringRenderer
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
-				yOffset = CANVAS_FONT.fontSize()/2 + 1;
+				yOffset = dimension.height()/2 + 1;
 			}
 			else if( aAlign.isRight() )
 			{
@@ -274,92 +240,30 @@ public final class StringRenderer
 		pGraphics.setTextBaseline(oldVPos);
 		pGraphics.setTextAlign(oldAlign);
 	}
+
+	private TextAlignment getTextAlignment()
+	{		
+		if ( aAlign.isLeft() )
+		{
+			return TextAlignment.LEFT;
+		}
+		else if ( aAlign.isHorizontallyCentered() )
+		{
+			return TextAlignment.CENTER;
+		}
+		return TextAlignment.RIGHT;
+	}
 	
-	/**
-	 * Responsible for performing more rudimentary operations involving font,
-	 * as well as being synchronized with the user's current font.
-	 */
-	private static final class CanvasFont implements IntegerPreferenceChangeHandler
+	private VPos getTextBaseline()
 	{
-
-		private Font aFont;
-		private Font aFontBold;
-		private FontMetrics aFontMetrics;
-		private FontMetrics aFontBoldMetrics;
-
-		private CanvasFont()
+		if ( aAlign.isBottom() )
 		{
-			refreshAttributes();
-			UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
+			return VPos.BASELINE;
 		}
-
-		private Font getFont(boolean pBold)
+		else if ( aAlign.isTop() )
 		{
-			if ( pBold )
-			{
-				return aFontBold;
-			}
-			return aFont;
+			return VPos.TOP;
 		}
-
-		private FontMetrics getFontMetrics(boolean pBold)
-		{
-			if ( pBold )
-			{
-				return aFontBoldMetrics;
-			}
-			return aFontMetrics;
-		}
-
-		/**
-		 * Returns the dimension of a given string.
-		 * @param pString The string to which the bounds pertain.
-		 * @return The dimension of the string
-		 */
-		public Dimension getDimension(String pString, boolean pBold)
-		{
-			return getFontMetrics(pBold).getDimension(pString);
-		}
-
-		/**
-		 * Draws the string on the graphics context at the specified position.
-		 * @param pGraphics The graphics context
-		 * @param pTextX The x-position of the string
-		 * @param pTextY The y-position of the string
-		 * @param pString The canvas on which to draw the string
-		 * @param pBold If the text should be bold
-		 */
-		public void drawString(GraphicsContext pGraphics, int pTextX, int pTextY, String pString, boolean pBold)
-		{
-			RenderingUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
-		}
-
-		/**
-		 * Returns the font size the user currently specifies.
-		 * @return The font size
-		 */
-		public int fontSize()
-		{
-			return (int) Math.round(aFont.getSize());
-		}
-
-		@Override
-		public void integerPreferenceChanged(IntegerPreference pPreference) 
-		{
-			if ( pPreference == IntegerPreference.fontSize && aFont.getSize() != UserPreferences.instance().getInteger(pPreference) )
-			{
-				refreshAttributes();
-			}
-
-		}
-
-		private void refreshAttributes()
-		{
-			aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
-			aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
-			aFontMetrics = new FontMetrics(aFont);
-			aFontBoldMetrics = new FontMetrics(aFontBold);
-		}
-
+		return VPos.CENTER;
 	}
 }
