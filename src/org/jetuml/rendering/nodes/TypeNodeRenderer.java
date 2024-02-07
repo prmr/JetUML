@@ -48,9 +48,13 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
+	private static final StringRenderer ITALIC_NAME_VIEWER = StringRenderer.get(
+			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALIC, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
 			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
+	private static final StringRenderer ITALIC_STRING_VIEWER = StringRenderer.get(
+			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALIC);
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
@@ -76,7 +80,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
 		RenderingUtils.drawRectangle(pGraphics, bounds);	
-		NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
+		drawName(node, bounds, bounds.getY(), nameHeight, pGraphics);
+		//NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
 		
 		if( attributeHeight > 0 )
 		{
@@ -95,6 +100,24 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			final int splitY = bounds.getY() + nameHeight;
 			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
 			drawMethod(node, bounds, splitY, methodHeight, pGraphics);
+		}
+	}
+	
+	private static void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
+	{
+		String name = pNode.getName();
+		if( name.length() > 2 && name.startsWith("/") && name.endsWith("/") )
+		{
+			StringBuilder underline = new StringBuilder(name);
+			underline.deleteCharAt(0);
+			underline.deleteCharAt(underline.length() - 1);
+			ITALIC_NAME_VIEWER.draw(underline.toString(), pGraphics, 
+					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
+		}
+		else
+		{
+			NAME_VIEWER.draw(name, pGraphics, 
+					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
 		}
 	}
 	
@@ -137,6 +160,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				underline.deleteCharAt(0);
 				underline.deleteCharAt(underline.length() - 1);
 				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+			}
+			else if( method.length() > 2 && method.startsWith("/") && method.endsWith("/") )
+			{
+				StringBuilder underline = new StringBuilder(method);
+				underline.deleteCharAt(0);
+				underline.deleteCharAt(underline.length() - 1);
+				ITALIC_STRING_VIEWER.draw(underline.toString(), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
 			else
