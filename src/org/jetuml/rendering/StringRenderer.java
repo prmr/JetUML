@@ -36,6 +36,7 @@ import org.jetuml.geom.Rectangle;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
@@ -101,10 +102,11 @@ public final class StringRenderer
 	 * Various text decorations.
 	 */
 	public enum TextDecoration
-	{ BOLD, UNDERLINED, PADDED }
+	{ BOLD, ITALIC, UNDERLINED, PADDED }
 	
 	private Alignment aAlign = Alignment.CENTER_CENTER;
 	private final boolean aBold;
+	private final boolean aItalic;
 	private final boolean aUnderlined;
 	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
 	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
@@ -118,6 +120,7 @@ public final class StringRenderer
 		}
 		aAlign = pAlign;
 		aBold = pDecorations.contains(TextDecoration.BOLD);
+		aItalic = pDecorations.contains(TextDecoration.ITALIC);
 		aUnderlined = pDecorations.contains(TextDecoration.UNDERLINED);
 	}
 	
@@ -242,12 +245,12 @@ public final class StringRenderer
 	{
 		final VPos oldVPos = pGraphics.getTextBaseline();
 		final TextAlignment oldAlign = pGraphics.getTextAlign();
-		int textX = 0;
-		int textY = 0;
 		
 		pGraphics.setTextAlign(getTextAlignment());
 		pGraphics.setTextBaseline(getTextBaseline());
 		
+		int textX = 0;
+		int textY = 0;
 		if( aAlign.isHorizontallyCentered() ) 
 		{
 			textX = pRectangle.getWidth()/2;
@@ -263,7 +266,18 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		CANVAS_FONT.drawString(pGraphics, textX, textY, pString.trim(), aBold);
+		if( aBold && aItalic )
+		{
+			RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getBoldItalic());
+		}
+		else if( aItalic )
+		{
+			RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getItalic());
+		}
+		else
+		{
+			CANVAS_FONT.drawString(pGraphics, textX, textY, pString.trim(), aBold);
+		}
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
@@ -300,8 +314,12 @@ public final class StringRenderer
 
 		private Font aFont;
 		private Font aFontBold;
+		private Font aFontItalic;
+		private Font aFontBoldItalic;
 		private FontMetrics aFontMetrics;
 		private FontMetrics aFontBoldMetrics;
+		private FontMetrics aFontItalicMetrics;
+		private FontMetrics aFontBoldItalicMetrics;
 
 		private CanvasFont()
 		{
@@ -316,6 +334,16 @@ public final class StringRenderer
 				return aFontBold;
 			}
 			return aFont;
+		}
+		
+		public Font getItalic()
+		{
+			return aFontItalic;
+		}
+		
+		public Font getBoldItalic()
+		{
+			return aFontBoldItalic;
 		}
 
 		private FontMetrics getFontMetrics(boolean pBold)
@@ -385,8 +413,12 @@ public final class StringRenderer
 		{
 			aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 			aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
+			aFontItalic = Font.font(aFont.getFamily(), FontPosture.ITALIC, aFont.getSize());
+			aFontBoldItalic = Font.font(aFont.getFamily(), FontWeight.BOLD, FontPosture.ITALIC, aFont.getSize());
 			aFontMetrics = new FontMetrics(aFont);
 			aFontBoldMetrics = new FontMetrics(aFontBold);
+			aFontItalicMetrics = new FontMetrics(aFontItalic);
+			aFontBoldItalicMetrics = new FontMetrics(aFontBoldItalic);
 		}
 
 	}
