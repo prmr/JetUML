@@ -81,7 +81,6 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 
 		RenderingUtils.drawRectangle(pGraphics, bounds);	
 		drawName(node, bounds, bounds.getY(), nameHeight, pGraphics);
-		//NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
 		
 		if( attributeHeight > 0 )
 		{
@@ -108,10 +107,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		String name = pNode.getName();
 		if( name.length() > 2 && name.startsWith("/") && name.endsWith("/") )
 		{
-			StringBuilder underline = new StringBuilder(name);
-			underline.deleteCharAt(0);
-			underline.deleteCharAt(underline.length() - 1);
-			ITALIC_NAME_VIEWER.draw(underline.toString(), pGraphics, 
+			ITALIC_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
 					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
 		}
 		else
@@ -126,15 +122,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		String attributes = pNode.getAttributes();
 		String[] attributesByLine = attributes.split("\n");
 		int lineSpacing = 0;
-		
 		for( String attribute : attributesByLine )
 		{
 			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
 			{
-				StringBuilder underline = new StringBuilder(attribute);
-				underline.deleteCharAt(0);
-				underline.deleteCharAt(underline.length() - 1);
-				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
 			}
 			else
@@ -151,23 +143,16 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		String methods = pNode.getMethods();
 		String[] methodsByLine = methods.split("\n");
 		int lineSpacing = 0;
-		
 		for( String method : methodsByLine )
 		{
 			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
 			{
-				StringBuilder underline = new StringBuilder(method);
-				underline.deleteCharAt(0);
-				underline.deleteCharAt(underline.length() - 1);
-				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
 			else if( method.length() > 2 && method.startsWith("/") && method.endsWith("/") )
 			{
-				StringBuilder underline = new StringBuilder(method);
-				underline.deleteCharAt(0);
-				underline.deleteCharAt(underline.length() - 1);
-				ITALIC_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
 			else
@@ -177,6 +162,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			lineSpacing += STRING_VIEWER.getHeight(method);
 		}	
+	}
+
+	private static String removeMarkup(String pString)
+	{
+		StringBuilder result = new StringBuilder(pString);
+		result.deleteCharAt(0);
+		result.deleteCharAt(result.length() - 1);
+		return result.toString();
 	}
 	
 	private static int attributeBoxHeight(TypeNode pNode)
