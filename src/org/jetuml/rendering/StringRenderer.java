@@ -156,7 +156,7 @@ public final class StringRenderer
 		{
 			return EMPTY;
 		}
-		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
+		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
@@ -172,7 +172,7 @@ public final class StringRenderer
 	{
 		assert pString != null;
 		
-		return CANVAS_FONT.getHeight(pString, aBold);
+		return CANVAS_FONT.getHeight(pString, aBold, aItalic);
 	}
 
 	/**
@@ -283,7 +283,7 @@ public final class StringRenderer
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
+			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
@@ -346,11 +346,19 @@ public final class StringRenderer
 			return aFontBoldItalic;
 		}
 
-		private FontMetrics getFontMetrics(boolean pBold)
+		private FontMetrics getFontMetrics(boolean pBold, boolean pItalic)
 		{
-			if ( pBold )
+			if( pBold && pItalic )
+			{
+				return aFontBoldItalicMetrics;
+			}
+			else if( pBold )
 			{
 				return aFontBoldMetrics;
+			}
+			else if( pItalic )
+			{
+				return aFontItalicMetrics;
 			}
 			return aFontMetrics;
 		}
@@ -360,9 +368,9 @@ public final class StringRenderer
 		 * @param pString The string to which the bounds pertain.
 		 * @return The dimension of the string
 		 */
-		public Dimension getDimension(String pString, boolean pBold)
+		public Dimension getDimension(String pString, boolean pBold, boolean pItalic)
 		{
-			return getFontMetrics(pBold).getDimension(pString);
+			return getFontMetrics(pBold, pItalic).getDimension(pString);
 		}
 		
 		/**
@@ -372,9 +380,9 @@ public final class StringRenderer
 		 * @param pBold Whether the text is in bold.
 		 * @return The height of the string.
 		 */
-		public int getHeight(String pString, boolean pBold)
+		public int getHeight(String pString, boolean pBold, boolean pItalic)
 		{
-			return getFontMetrics(pBold).getHeight(pString);
+			return getFontMetrics(pBold, pItalic).getHeight(pString);
 		}
 
 		/**
