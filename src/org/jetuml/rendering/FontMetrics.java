@@ -59,7 +59,6 @@ public class FontMetrics
 	 * Creates a new FontMetrics object.
 	 * @param pFont The font to use.
 	 */
-
 	public FontMetrics(Font pFont)
 	{
 		assert pFont != null;
