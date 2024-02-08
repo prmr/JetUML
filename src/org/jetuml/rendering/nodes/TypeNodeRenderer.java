@@ -102,9 +102,9 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	private static void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
+	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
 	{
-		String name = pNode.getName();
+		String name = getNameText(pNode);
 		if( name.length() > 2 && name.startsWith("/") && name.endsWith("/") )
 		{
 			ITALIC_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
