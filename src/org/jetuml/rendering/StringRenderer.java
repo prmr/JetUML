@@ -244,15 +244,15 @@ public final class StringRenderer
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
-				yOffset = dimension.height()/2;
 			}
-			else if( aAlign.isRight() )
-			{
-				xOffset = dimension.width();
-			}
-			else if( aAlign.isTop() )
+			
+			if( aAlign.isTop() )
 			{
 				yOffset = dimension.height() + 1;
+			}
+			else if( aAlign.isVerticallyCentered() )
+			{
+				yOffset = dimension.height()/2;
 			}
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
