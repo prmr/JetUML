@@ -35,7 +35,6 @@ jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/
 
 ### Mac
 
-
 Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
 
 ```
