@@ -43,6 +43,8 @@ public class TestStringViewer
 	private StringRenderer topCenterPadded;
 	private StringRenderer topCenterBold;
 	private StringRenderer bottomCenterPadded;
+	private StringRenderer italic;
+	private StringRenderer boldItalic;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -58,6 +60,8 @@ public class TestStringViewer
 		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
 		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
 		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
+		italic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALIC);
+		boldItalic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALIC);
 	}
 	
 	@AfterAll

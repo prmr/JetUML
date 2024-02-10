@@ -38,7 +38,8 @@ import javafx.scene.text.Text;
 
 public class TestFontMetrics {
 
-	private static final FontMetrics aMetrics = new FontMetrics(Font.font("System", DEFAULT_FONT_SIZE));
+	private static final Font DEFAULT_FONT = Font.font("System", DEFAULT_FONT_SIZE);
+	private static final FontMetrics aMetrics = new FontMetrics(DEFAULT_FONT);
 	// Ensures there is no caching of sorts when reusing the same Text object
 	@ParameterizedTest
 	@MethodSource("stringPairParameters")
@@ -70,6 +71,7 @@ public class TestFontMetrics {
 	public void testGetHeight_EmptyText()
 	{
 		Text emptyText = new Text("");
+		emptyText.setFont(DEFAULT_FONT);
 		int height = (int) Math.round(emptyText.getLayoutBounds().getHeight());
 		assertEquals( height, aMetrics.getHeight(""));	
 	}
@@ -78,6 +80,7 @@ public class TestFontMetrics {
 	public void testGetHeight_SingleLineText()
 	{
 		Text singleLineText = new Text("Single-Line-String");
+		singleLineText.setFont(DEFAULT_FONT);
 		int height = (int) Math.round(singleLineText.getLayoutBounds().getHeight());
 		assertEquals( height, aMetrics.getHeight("Single-Line-String"));	
 	}
@@ -86,6 +89,7 @@ public class TestFontMetrics {
 	public void testGetHeight_MultiLineText()
 	{
 		Text multiLineText = new Text("Multi\nLine\nString");
+		multiLineText.setFont(DEFAULT_FONT);
 		int height = (int) Math.round(multiLineText.getLayoutBounds().getHeight());
 		assertEquals( height, aMetrics.getHeight("Multi\nLine\nString"));	
 	}
