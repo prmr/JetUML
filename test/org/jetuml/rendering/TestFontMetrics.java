@@ -34,6 +34,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class TestFontMetrics {
 
@@ -63,5 +64,29 @@ public class TestFontMetrics {
 		assertEquals(new Dimension(0, osDependent(13,12,12)), aMetrics.getDimension(""));
 		assertEquals(new Dimension(osDependent(95, 92, 92), osDependent(13, 12, 12)), aMetrics.getDimension("Single-Line-String"));
 		assertEquals(new Dimension(osDependent(31, 30, 30), osDependent(45, 40, 45)), aMetrics.getDimension("Multi\nLine\nString"));
+	}
+	
+	@Test
+	public void testGetHeight_EmptyText()
+	{
+		Text emptyText = new Text("");
+		int height = (int) Math.round(emptyText.getLayoutBounds().getHeight());
+		assertEquals( height, aMetrics.getHeight(""));	
+	}
+	
+	@Test 
+	public void testGetHeight_SingleLineText()
+	{
+		Text singleLineText = new Text("Single-Line-String");
+		int height = (int) Math.round(singleLineText.getLayoutBounds().getHeight());
+		assertEquals( height, aMetrics.getHeight("Single-Line-String"));	
+	}
+	
+	@Test 
+	public void testGetHeight_MultiLineText()
+	{
+		Text multiLineText = new Text("Multi\nLine\nString");
+		int height = (int) Math.round(multiLineText.getLayoutBounds().getHeight());
+		assertEquals( height, aMetrics.getHeight("Multi\nLine\nString"));	
 	}
 }
