@@ -36,15 +36,25 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
 public class TestStringViewer 
 {
 	private static int userDefinedFontSize;
 	private StringRenderer topCenter;
 	private StringRenderer topCenterPadded;
 	private StringRenderer topCenterBold;
+	private StringRenderer topCenterItalic;
+	private StringRenderer topCenterBoldItalic;
 	private StringRenderer bottomCenterPadded;
-	private StringRenderer italic;
-	private StringRenderer boldItalic;
+	
+	private static int textBoxHeight(Text pText)
+	{
+		return (int) Math.round(pText.getLayoutBounds().getHeight());
+	}
 	
 	@BeforeAll
 	public static void setupClass()
@@ -59,9 +69,9 @@ public class TestStringViewer
 		topCenter = StringRenderer.get(Alignment.TOP_CENTER);
 		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
 		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
+		topCenterItalic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALIC);
+		topCenterBoldItalic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALIC);
 		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
-		italic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALIC);
-		boldItalic = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALIC);
 	}
 	
 	@AfterAll
@@ -123,5 +133,43 @@ public class TestStringViewer
 		assertEquals("Display\nString", StringRenderer.wrapString("Display String", 1));
 		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
 				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
+	}
+	
+	@Test
+	public void testGetHeight_12ptFont()
+	{
+		Font defaultFont = Font.font("System", 12);
+		Font boldFont = Font.font("System", FontWeight.BOLD, 12);
+		Font italicFont = Font.font("System", FontPosture.ITALIC, 12);
+		Font boldItalicFont = Font.font("System", FontWeight.BOLD, FontPosture.ITALIC, 12);
+		Text text = new Text("Display String");
+		text.setFont(defaultFont);
+		assertEquals(textBoxHeight(text), topCenter.getHeight("Display String"));
+		text.setFont(boldFont);
+		assertEquals(textBoxHeight(text), topCenterBold.getHeight("Display String"));
+		text.setFont(italicFont);
+		assertEquals(textBoxHeight(text), topCenterItalic.getHeight("Display String"));
+		text.setFont(boldItalicFont);
+		assertEquals(textBoxHeight(text), topCenterBoldItalic.getHeight("Display String"));
+	}
+	
+	@Test
+	public void testGetHeight_24ptFont()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
+		Font defaultFont = Font.font("System", 24);
+		Font boldFont = Font.font("System", FontWeight.BOLD, 24);
+		Font italicFont = Font.font("System", FontPosture.ITALIC, 24);
+		Font boldItalicFont = Font.font("System", FontWeight.BOLD, FontPosture.ITALIC, 24);
+		Text text = new Text("Display String");
+		text.setFont(defaultFont);
+		assertEquals(textBoxHeight(text), topCenter.getHeight("Display String"));
+		text.setFont(boldFont);
+		assertEquals(textBoxHeight(text), topCenterBold.getHeight("Display String"));
+		text.setFont(italicFont);
+		assertEquals(textBoxHeight(text), topCenterItalic.getHeight("Display String"));
+		text.setFont(boldItalicFont);
+		assertEquals(textBoxHeight(text), topCenterBoldItalic.getHeight("Display String"));
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 }

@@ -59,6 +59,11 @@ public class TestFontMetrics {
 	    );
 	}
 	
+	private static int textBoxHeight(Text pText)
+	{
+		return (int) Math.round(pText.getLayoutBounds().getHeight());
+	}
+	
 	@Test
 	public void testGetDimensions()
 	{
@@ -72,8 +77,7 @@ public class TestFontMetrics {
 	{
 		Text emptyText = new Text("");
 		emptyText.setFont(DEFAULT_FONT);
-		int height = (int) Math.round(emptyText.getLayoutBounds().getHeight());
-		assertEquals( height, aMetrics.getHeight(""));	
+		assertEquals(textBoxHeight(emptyText), aMetrics.getHeight(""));	
 	}
 	
 	@Test 
@@ -81,8 +85,7 @@ public class TestFontMetrics {
 	{
 		Text singleLineText = new Text("Single-Line-String");
 		singleLineText.setFont(DEFAULT_FONT);
-		int height = (int) Math.round(singleLineText.getLayoutBounds().getHeight());
-		assertEquals( height, aMetrics.getHeight("Single-Line-String"));	
+		assertEquals(textBoxHeight(singleLineText), aMetrics.getHeight("Single-Line-String"));	
 	}
 	
 	@Test 
@@ -90,7 +93,6 @@ public class TestFontMetrics {
 	{
 		Text multiLineText = new Text("Multi\nLine\nString");
 		multiLineText.setFont(DEFAULT_FONT);
-		int height = (int) Math.round(multiLineText.getLayoutBounds().getHeight());
-		assertEquals( height, aMetrics.getHeight("Multi\nLine\nString"));	
+		assertEquals(textBoxHeight(multiLineText), aMetrics.getHeight("Multi\nLine\nString"));	
 	}
 }
