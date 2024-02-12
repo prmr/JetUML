@@ -37,7 +37,7 @@ import javafx.scene.text.FontWeight;
 @Singleton
 public final class CanvasFont implements IntegerPreferenceChangeHandler
 {
-	public static final CanvasFont INSTANCE = new CanvasFont();
+	private static final CanvasFont INSTANCE = new CanvasFont();
 	
 	private Font aFont;
 	private Font aFontBold;
