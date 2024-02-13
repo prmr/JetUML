@@ -33,20 +33,14 @@ set FXMODS="C:\local\Java\javafx-jmods-17.0.2"
 jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
 ```
 
-### Mac
-
-Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
-
-```
-$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
-```
-
 ### Linux
 
-After compiling the project, run this from the git repo root (where FXMODS points to the JavaFX mods directory) 
+Run this from the git repo root (adjust paths as needed):
 
 ``` 
-jpackage --module-path %FXMODS%:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.0 --icon docs/JetUML.ico 
+FXMODS=/usr/lib/jvm/javafx-jmods-17.0.9
+JMODS=/usr/lib/jvm/jdk-17-oracle-x64/jmods
+jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.7 --icon icons/jet.png 
 ```
 
 To build JetUML from the command line, after downloading the necessary JUnit 5 dependencies and placing them into a `junit` folder at the root of the git repo, run the following: 
@@ -68,6 +62,14 @@ To test that the files were correctly compiled, run the following:
 
 ``` 
 java -p %FXMODS%:bin/jetuml --add-modules javafx.controls,javafx.swing,jetuml org.jetuml.JetUML 
+```
+
+### Mac
+
+Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
+
+```
+$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
 ```
 
 ### Runtime image
