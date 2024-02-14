@@ -144,10 +144,7 @@ public final class ToastNotification implements Notification
 
         fadeOutTimeline.getKeyFrames().add(fadeOutKey);
         // We close the stage and execute the callback at the end of the fadeout animation
-        fadeOutTimeline.setOnFinished(actionEvent1 -> {
-            aStage.close();
-            pCleanUpCallback.run();
-        });
+        fadeOutTimeline.setOnFinished(actionEvent1 -> pCleanUpCallback.run());
 
         Timer notificationTimer = new Timer();
         TimerTask lifespan = new TimerTask()
