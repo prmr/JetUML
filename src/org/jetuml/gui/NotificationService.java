@@ -48,6 +48,10 @@ public final class NotificationService
      */
     private Stage aMainStage;
     private final List<Notification> aNotifications = new ArrayList<>();
+    // Dead notifications are notifications that reached the end of their lifespan and should be
+    // removed. We store them in a separate list so that we can close them all at once when
+    // the window is maximized, to prevent having the JetUML taskbar window flashing. - See Issue #524
+    private final List<Notification> aDeadNotifications = new ArrayList<>();
 
     private NotificationService() {}
 
@@ -120,10 +124,15 @@ public final class NotificationService
         {
             return;
         }
+        aDeadNotifications.forEach(Notification::close);
+        aDeadNotifications.clear();
 
         aNotifications.add(pNotification);
 
-        pNotification.show(() -> aNotifications.remove(pNotification));
+        pNotification.show(() -> {
+            aNotifications.remove(pNotification);
+            aDeadNotifications.add(pNotification);
+        });
         updateNotificationPosition();
     }
 
