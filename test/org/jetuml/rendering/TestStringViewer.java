@@ -130,6 +130,9 @@ public class TestStringViewer
 				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
 	}
 	
+	/*
+	 * Test different font styles for font size 12.
+	 */
 	@Test
 	public void testGetHeight_12ptFont()
 	{
@@ -148,6 +151,9 @@ public class TestStringViewer
 		assertEquals(textBoxHeight(text), topCenterBoldItalics.getHeight("Display String"));
 	}
 	
+	/*
+	 * Test different font styles for font size 24.
+	 */
 	@Test
 	public void testGetHeight_24ptFont()
 	{
