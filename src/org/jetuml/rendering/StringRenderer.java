@@ -27,17 +27,11 @@ import java.util.Map;
 
 import org.jetuml.annotations.Flyweight;
 import org.jetuml.annotations.Immutable;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
-import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -50,7 +44,7 @@ import javafx.scene.text.TextAlignment;
 @Flyweight
 public final class StringRenderer
 {
-	private static final CanvasFont CANVAS_FONT = new CanvasFont();
+	private static final CanvasFont CANVAS_FONT = CanvasFont.instance();
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
@@ -292,116 +286,5 @@ public final class StringRenderer
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 		pGraphics.setTextBaseline(oldVPos);
 		pGraphics.setTextAlign(oldAlign);
-	}
-	
-	/**
-	 * Responsible for performing more rudimentary operations involving font,
-	 * as well as being synchronized with the user's current font.
-	 */
-	private static final class CanvasFont implements IntegerPreferenceChangeHandler
-	{
-
-		private Font aFont;
-		private Font aFontBold;
-		private Font aFontItalics;
-		private Font aFontBoldItalics;
-		private FontMetrics aFontMetrics;
-		private FontMetrics aFontBoldMetrics;
-		private FontMetrics aFontItalicsMetrics;
-		private FontMetrics aFontBoldItalicsMetrics;
-
-		private CanvasFont()
-		{
-			refreshAttributes();
-			UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
-		}
-
-		private Font getFont(boolean pBold, boolean pItalics)
-		{
-			if( pBold && pItalics )
-			{
-				return aFontBoldItalics;
-			}
-			else if( pBold )
-			{
-				return aFontBold;
-			}
-			else if( pItalics )
-			{
-				return aFontItalics;
-			}
-			return aFont;
-		}
-		
-		private FontMetrics getFontMetrics(boolean pBold, boolean pItalics)
-		{
-			if( pBold && pItalics )
-			{
-				return aFontBoldItalicsMetrics;
-			}
-			else if( pBold )
-			{
-				return aFontBoldMetrics;
-			}
-			else if( pItalics )
-			{
-				return aFontItalicsMetrics;
-			}
-			return aFontMetrics;
-		}
-
-		/**
-		 * Returns the dimension of a given string.
-		 * @param pString The string to which the bounds pertain.
-		 * @return The dimension of the string
-		 */
-		public Dimension getDimension(String pString, boolean pBold, boolean pItalics)
-		{
-			return getFontMetrics(pBold, pItalics).getDimension(pString);
-		}
-		
-		/**
-		 * Returns the height of a string including the leading space.
-		 * 
-		 * @param pString The string.
-		 * @param pBold Whether the text is in bold.
-		 * @return The height of the string.
-		 */
-		public int getHeight(String pString, boolean pBold, boolean pItalics)
-		{
-			return getFontMetrics(pBold, pItalics).getHeight(pString);
-		}
-
-		/**
-		 * Returns the font size the user currently specifies.
-		 * @return The font size
-		 */
-		public int fontSize()
-		{
-			return (int) Math.round(aFont.getSize());
-		}
-
-		@Override
-		public void integerPreferenceChanged(IntegerPreference pPreference) 
-		{
-			if ( pPreference == IntegerPreference.fontSize && aFont.getSize() != UserPreferences.instance().getInteger(pPreference) )
-			{
-				refreshAttributes();
-			}
-
-		}
-
-		private void refreshAttributes()
-		{
-			aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
-			aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
-			aFontItalics = Font.font(aFont.getFamily(), FontPosture.ITALIC, aFont.getSize());
-			aFontBoldItalics = Font.font(aFont.getFamily(), FontWeight.BOLD, FontPosture.ITALIC, aFont.getSize());
-			aFontMetrics = new FontMetrics(aFont);
-			aFontBoldMetrics = new FontMetrics(aFontBold);
-			aFontItalicsMetrics = new FontMetrics(aFontItalics);
-			aFontBoldItalicsMetrics = new FontMetrics(aFontBoldItalics);
-		}
-
 	}
 }
