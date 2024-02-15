@@ -48,9 +48,13 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
+	private static final StringRenderer ITALICS_NAME_VIEWER = StringRenderer.get(
+			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALICS, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
 			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
+	private static final StringRenderer ITALICS_STRING_VIEWER = StringRenderer.get(
+			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALICS);
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
@@ -76,7 +80,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
 		RenderingUtils.drawRectangle(pGraphics, bounds);	
-		NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
+		drawName(node, bounds, bounds.getY(), nameHeight, pGraphics);
 		
 		if( attributeHeight > 0 )
 		{
@@ -98,6 +102,21 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
+	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
+	{
+		String name = getNameText(pNode);
+		if( name.length() > 2 && name.startsWith("/") && name.endsWith("/") )
+		{
+			ITALICS_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
+					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
+		}
+		else
+		{
+			NAME_VIEWER.draw(name, pGraphics, 
+					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
+		}
+	}
+	
 	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsContext pGraphics)
 	{
 		String attributes = pNode.getAttributes();
@@ -108,10 +127,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
 			{
-				StringBuilder underline = new StringBuilder(attribute);
-				underline.deleteCharAt(0);
-				underline.deleteCharAt(underline.length() - 1);
-				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
 			}
 			else
@@ -133,10 +149,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
 			{
-				StringBuilder underline = new StringBuilder(method);
-				underline.deleteCharAt(0);
-				underline.deleteCharAt(underline.length() - 1);
-				UNDERLINING_STRING_VIEWER.draw(underline.toString(), pGraphics, 
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
+						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+			}
+			else if( method.length() > 2 && method.startsWith("/") && method.endsWith("/") )
+			{
+				ITALICS_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
 			else
@@ -146,6 +164,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			lineSpacing += STRING_VIEWER.getHeight(method);
 		}	
+	}
+	
+	private static String removeMarkup(String pString)
+	{
+		StringBuilder result = new StringBuilder(pString);
+		result.deleteCharAt(0);
+		result.deleteCharAt(result.length() - 1);
+		return result.toString();
 	}
 	
 	private static int attributeBoxHeight(TypeNode pNode)

@@ -37,6 +37,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -101,10 +102,11 @@ public final class StringRenderer
 	 * Various text decorations.
 	 */
 	public enum TextDecoration
-	{ BOLD, UNDERLINED, PADDED }
+	{ BOLD, ITALICS, UNDERLINED, PADDED }
 	
 	private Alignment aAlign = Alignment.CENTER_CENTER;
 	private final boolean aBold;
+	private final boolean aItalics;
 	private final boolean aUnderlined;
 	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
 	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
@@ -118,6 +120,7 @@ public final class StringRenderer
 		}
 		aAlign = pAlign;
 		aBold = pDecorations.contains(TextDecoration.BOLD);
+		aItalics = pDecorations.contains(TextDecoration.ITALICS);
 		aUnderlined = pDecorations.contains(TextDecoration.UNDERLINED);
 	}
 	
@@ -153,7 +156,7 @@ public final class StringRenderer
 		{
 			return EMPTY;
 		}
-		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
+		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalics);
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
@@ -169,7 +172,7 @@ public final class StringRenderer
 	{
 		assert pString != null;
 		
-		return CANVAS_FONT.getHeight(pString, aBold);
+		return CANVAS_FONT.getHeight(pString, aBold, aItalics);
 	}
 
 	/**
@@ -242,12 +245,12 @@ public final class StringRenderer
 	{
 		final VPos oldVPos = pGraphics.getTextBaseline();
 		final TextAlignment oldAlign = pGraphics.getTextAlign();
-		int textX = 0;
-		int textY = 0;
 		
 		pGraphics.setTextAlign(getTextAlignment());
 		pGraphics.setTextBaseline(getTextBaseline());
 		
+		int textX = 0;
+		int textY = 0;
 		if( aAlign.isHorizontallyCentered() ) 
 		{
 			textX = pRectangle.getWidth()/2;
@@ -263,25 +266,25 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		CANVAS_FONT.drawString(pGraphics, textX, textY, pString.trim(), aBold);
+		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalics));
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
+			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalics);
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
-				yOffset = CANVAS_FONT.fontSize()/2 + 1;
 			}
-			else if( aAlign.isRight() )
-			{
-				xOffset = dimension.width();
-			}
-			else if( aAlign.isTop() )
+			
+			if( aAlign.isTop() )
 			{
 				yOffset = dimension.height() + 1;
+			}
+			else if( aAlign.isVerticallyCentered() )
+			{
+				yOffset = dimension.height()/2;
 			}
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
@@ -300,8 +303,12 @@ public final class StringRenderer
 
 		private Font aFont;
 		private Font aFontBold;
+		private Font aFontItalics;
+		private Font aFontBoldItalics;
 		private FontMetrics aFontMetrics;
 		private FontMetrics aFontBoldMetrics;
+		private FontMetrics aFontItalicsMetrics;
+		private FontMetrics aFontBoldItalicsMetrics;
 
 		private CanvasFont()
 		{
@@ -309,20 +316,36 @@ public final class StringRenderer
 			UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
 		}
 
-		private Font getFont(boolean pBold)
+		private Font getFont(boolean pBold, boolean pItalics)
 		{
-			if ( pBold )
+			if( pBold && pItalics )
+			{
+				return aFontBoldItalics;
+			}
+			else if( pBold )
 			{
 				return aFontBold;
 			}
+			else if( pItalics )
+			{
+				return aFontItalics;
+			}
 			return aFont;
 		}
-
-		private FontMetrics getFontMetrics(boolean pBold)
+		
+		private FontMetrics getFontMetrics(boolean pBold, boolean pItalics)
 		{
-			if ( pBold )
+			if( pBold && pItalics )
+			{
+				return aFontBoldItalicsMetrics;
+			}
+			else if( pBold )
 			{
 				return aFontBoldMetrics;
+			}
+			else if( pItalics )
+			{
+				return aFontItalicsMetrics;
 			}
 			return aFontMetrics;
 		}
@@ -332,9 +355,9 @@ public final class StringRenderer
 		 * @param pString The string to which the bounds pertain.
 		 * @return The dimension of the string
 		 */
-		public Dimension getDimension(String pString, boolean pBold)
+		public Dimension getDimension(String pString, boolean pBold, boolean pItalics)
 		{
-			return getFontMetrics(pBold).getDimension(pString);
+			return getFontMetrics(pBold, pItalics).getDimension(pString);
 		}
 		
 		/**
@@ -344,22 +367,9 @@ public final class StringRenderer
 		 * @param pBold Whether the text is in bold.
 		 * @return The height of the string.
 		 */
-		public int getHeight(String pString, boolean pBold)
+		public int getHeight(String pString, boolean pBold, boolean pItalics)
 		{
-			return getFontMetrics(pBold).getHeight(pString);
-		}
-
-		/**
-		 * Draws the string on the graphics context at the specified position.
-		 * @param pGraphics The graphics context
-		 * @param pTextX The x-position of the string
-		 * @param pTextY The y-position of the string
-		 * @param pString The canvas on which to draw the string
-		 * @param pBold If the text should be bold
-		 */
-		public void drawString(GraphicsContext pGraphics, int pTextX, int pTextY, String pString, boolean pBold)
-		{
-			RenderingUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
+			return getFontMetrics(pBold, pItalics).getHeight(pString);
 		}
 
 		/**
@@ -385,8 +395,12 @@ public final class StringRenderer
 		{
 			aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 			aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
+			aFontItalics = Font.font(aFont.getFamily(), FontPosture.ITALIC, aFont.getSize());
+			aFontBoldItalics = Font.font(aFont.getFamily(), FontWeight.BOLD, FontPosture.ITALIC, aFont.getSize());
 			aFontMetrics = new FontMetrics(aFont);
 			aFontBoldMetrics = new FontMetrics(aFontBold);
+			aFontItalicsMetrics = new FontMetrics(aFontItalics);
+			aFontBoldItalicsMetrics = new FontMetrics(aFontBoldItalics);
 		}
 
 	}
