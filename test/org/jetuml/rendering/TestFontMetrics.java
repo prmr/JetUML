@@ -34,10 +34,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class TestFontMetrics {
 
 	private static final FontMetrics aMetrics = new FontMetrics(Font.font("System", DEFAULT_FONT_SIZE));
+	private static final Font DEFAULT_FONT = Font.font("System", DEFAULT_FONT_SIZE);
 	// Ensures there is no caching of sorts when reusing the same Text object
 	@ParameterizedTest
 	@MethodSource("stringPairParameters")
@@ -63,5 +65,34 @@ public class TestFontMetrics {
 		assertEquals(new Dimension(0, osDependent(13,12,12)), aMetrics.getDimension(""));
 		assertEquals(new Dimension(osDependent(95, 92, 92), osDependent(13, 12, 12)), aMetrics.getDimension("Single-Line-String"));
 		assertEquals(new Dimension(osDependent(31, 30, 30), osDependent(45, 40, 45)), aMetrics.getDimension("Multi\nLine\nString"));
+	}
+	
+	private static int textBoxHeight(Text pText)
+	{
+		return (int) Math.round(pText.getLayoutBounds().getHeight());
+	}
+
+	@Test
+	public void testGetHeight_EmptyText()
+	{
+		Text emptyText = new Text("");
+		emptyText.setFont(DEFAULT_FONT);
+		assertEquals(textBoxHeight(emptyText), aMetrics.getHeight(""));	
+	}
+	
+	@Test 
+	public void testGetHeight_SingleLineText()
+	{
+		Text singleLineText = new Text("Single-Line-String");
+		singleLineText.setFont(DEFAULT_FONT);
+		assertEquals(textBoxHeight(singleLineText), aMetrics.getHeight("Single-Line-String"));	
+	}
+	
+	@Test 
+	public void testGetHeight_MultiLineText()
+	{
+		Text multiLineText = new Text("Multi\nLine\nString");
+		multiLineText.setFont(DEFAULT_FONT);
+		assertEquals(textBoxHeight(multiLineText), aMetrics.getHeight("Multi\nLine\nString"));	
 	}
 }
