@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
-import org.jetuml.annotations.Singleton;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
@@ -31,14 +30,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 /**
- * A singleton that is in sync with user font size setting and 
- * manages font metrics calculations.
+ * A utility class for StringRenderer that is in sync with  
+ * the user font size setting and manages font metrics calculations.
  */
-@Singleton
 public final class CanvasFont implements IntegerPreferenceChangeHandler
-{
-	private static final CanvasFont INSTANCE = new CanvasFont();
-	
+{	
 	private Font aFont;
 	private Font aFontBold;
 	private Font aFontItalic;
@@ -48,19 +44,15 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler
 	private FontMetrics aFontItalicMetrics;
 	private FontMetrics aFontBoldItalicMetrics;
 
-	private CanvasFont()
+	/**
+	 * Initializes its attributes based on the user's preferences.
+	 */
+	public CanvasFont()
 	{
 		refreshAttributes();
 		UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
 	}
 	
-	/**
-	 * @return The CanvasFont singleton instance.
-	 */
-	public static CanvasFont instance()
-	{
-		return INSTANCE;
-	}
 	
 	/**
 	 * @param pBold Whether the font is bold.
