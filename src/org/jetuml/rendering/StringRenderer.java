@@ -44,7 +44,7 @@ import javafx.scene.text.TextAlignment;
 @Flyweight
 public final class StringRenderer
 {
-	private static final CanvasFont CANVAS_FONT = CanvasFont.instance();
+	private static final CanvasFont CANVAS_FONT = new CanvasFont();
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
