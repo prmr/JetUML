@@ -49,12 +49,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringRenderer ITALICS_NAME_VIEWER = StringRenderer.get(
-			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALICS, TextDecoration.PADDED);
+			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALIC, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
 			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	private static final StringRenderer ITALICS_STRING_VIEWER = StringRenderer.get(
-			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALICS);
+			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALIC);
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */

@@ -40,11 +40,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-
 public class TestStringViewer 
 {
 	private static int userDefinedFontSize;
@@ -69,8 +64,8 @@ public class TestStringViewer
 		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
 		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
 		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
-		topCenterItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALICS);
-		topCenterBoldItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALICS);
+		topCenterItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALIC);
+		topCenterBoldItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALIC);
 	}
 	
 	@AfterAll
@@ -144,7 +139,7 @@ public class TestStringViewer
 		try 
 		{
 			Field boldField = StringRenderer.class.getDeclaredField("aBold");
-			Field italicsField = StringRenderer.class.getDeclaredField("aItalics");
+			Field italicsField = StringRenderer.class.getDeclaredField("aItalic");
 			boldField.setAccessible(true);
 			italicsField.setAccessible(true);
 			
