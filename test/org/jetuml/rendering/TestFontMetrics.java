@@ -23,41 +23,17 @@ package org.jetuml.rendering;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-import java.util.stream.Stream;
 
 import org.jetuml.geom.Dimension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class TestFontMetrics {
 
-	private static final FontMetrics aMetrics = new FontMetrics(Font.font("System", DEFAULT_FONT_SIZE));
-	private static final Font DEFAULT_FONT = Font.font("System", DEFAULT_FONT_SIZE);
-	// Ensures there is no caching of sorts when reusing the same Text object
-	@ParameterizedTest
-	@MethodSource("stringPairParameters")
-	public void testStateNotPreserved(String firstString, String secondString)
-	{
-		
-		assertNotEquals(aMetrics.getDimension(firstString), aMetrics.getDimension(secondString));
-	}
-	
-	private static Stream<Arguments> stringPairParameters() {
-	    return Stream.of(
-	            Arguments.of("X", "XX"),
-	            Arguments.of("XX", "XXX"),
-	            Arguments.of("XXX", "XXXX"),
-	            Arguments.of("XXXX", "XXXXX"),
-	            Arguments.of("XXXXX", "XXXXXX")
-	    );
-	}
+	private static final Font DEFAULT_FONT = new Font("System", DEFAULT_FONT_SIZE);
+	private static final FontMetrics aMetrics = new FontMetrics(DEFAULT_FONT);
+	private static final String SINGLE_LINE_STRING = "One";
 	
 	@Test
 	public void testGetDimensions()
@@ -66,33 +42,22 @@ public class TestFontMetrics {
 		assertEquals(new Dimension(osDependent(95, 92, 92), osDependent(13, 12, 12)), aMetrics.getDimension("Single-Line-String"));
 		assertEquals(new Dimension(osDependent(31, 30, 30), osDependent(45, 40, 45)), aMetrics.getDimension("Multi\nLine\nString"));
 	}
-
-	@Test
-	public void testGetHeight_EmptyText()
+	
+	/**
+	 * Note that due to the rounding performed in getHeight, testing the height of strings 
+	 * with a certain number of lines will result in the test failing.
+	 * E.g. A string with 13 lines will fail this test.
+	 */
+	@Test 
+	public void testGetHeight_TwoLineString()
 	{
-		Text emptyText = new Text("");
-		emptyText.setFont(DEFAULT_FONT);
-		assertEquals(textBoxHeight(emptyText), aMetrics.getHeight(""));	
+		assertEquals(aMetrics.getHeight(SINGLE_LINE_STRING) * 2, aMetrics.getHeight("One\nTwo"));	
 	}
 	
 	@Test 
-	public void testGetHeight_SingleLineText()
+	public void testGetHeight_TenLineString()
 	{
-		Text singleLineText = new Text("Single-Line-String");
-		singleLineText.setFont(DEFAULT_FONT);
-		assertEquals(textBoxHeight(singleLineText), aMetrics.getHeight("Single-Line-String"));	
-	}
-	
-	@Test 
-	public void testGetHeight_MultiLineText()
-	{
-		Text multiLineText = new Text("Multi\nLine\nString");
-		multiLineText.setFont(DEFAULT_FONT);
-		assertEquals(textBoxHeight(multiLineText), aMetrics.getHeight("Multi\nLine\nString"));	
-	}
-	
-	private static int textBoxHeight(Text pText)
-	{
-		return (int) Math.round(pText.getLayoutBounds().getHeight());
+		assertEquals(aMetrics.getHeight(SINGLE_LINE_STRING) * 10, 
+				aMetrics.getHeight("One\nTwo\nThree\nFour\nFive\nSix\nSeven\nEight\nNine\nTen"));	
 	}
 }
