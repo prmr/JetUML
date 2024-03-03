@@ -96,11 +96,11 @@ public final class StringRenderer
 	 * Various text decorations.
 	 */
 	public enum TextDecoration
-	{ BOLD, ITALICS, UNDERLINED, PADDED }
+	{ BOLD, ITALIC, UNDERLINED, PADDED }
 	
 	private Alignment aAlign = Alignment.CENTER_CENTER;
 	private final boolean aBold;
-	private final boolean aItalics;
+	private final boolean aItalic;
 	private final boolean aUnderlined;
 	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
 	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
@@ -114,7 +114,7 @@ public final class StringRenderer
 		}
 		aAlign = pAlign;
 		aBold = pDecorations.contains(TextDecoration.BOLD);
-		aItalics = pDecorations.contains(TextDecoration.ITALICS);
+		aItalic = pDecorations.contains(TextDecoration.ITALIC);
 		aUnderlined = pDecorations.contains(TextDecoration.UNDERLINED);
 	}
 	
@@ -150,7 +150,7 @@ public final class StringRenderer
 		{
 			return EMPTY;
 		}
-		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalics);
+		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
@@ -166,7 +166,7 @@ public final class StringRenderer
 	{
 		assert pString != null;
 		
-		return CANVAS_FONT.getHeight(pString, aBold, aItalics);
+		return CANVAS_FONT.getHeight(pString, aBold, aItalic);
 	}
 
 	/**
@@ -260,13 +260,13 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalics));
+		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalic));
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalics);
+			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
