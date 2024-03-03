@@ -23,8 +23,12 @@ package org.jetuml.rendering;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.reflect.Field;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
@@ -130,52 +134,39 @@ public class TestStringViewer
 				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
 	}
 	
-	/*
-	 * Test different font styles for font size 12.
+	/**
+	 * getHeight delegates the actual computation of the height to FontMetrics, which is tested in TestFontMetrics.
+	 * Instead, we need to test whether the correct style (bold, italics) is applied to the font we want to get the height of.
 	 */
 	@Test
-	public void testGetHeight_12ptFont()
+	public void testGetHeight()
 	{
-		Font defaultFont = Font.font("System", 12);
-		Font boldFont = Font.font("System", FontWeight.BOLD, 12);
-		Font italicFont = Font.font("System", FontPosture.ITALIC, 12);
-		Font boldItalicFont = Font.font("System", FontWeight.BOLD, FontPosture.ITALIC, 12);
-		Text text = new Text("Display String");
-		text.setFont(defaultFont);
-		assertEquals(textBoxHeight(text), topCenter.getHeight("Display String"));
-		text.setFont(boldFont);
-		assertEquals(textBoxHeight(text), topCenterBold.getHeight("Display String"));
-		text.setFont(italicFont);
-		assertEquals(textBoxHeight(text), topCenterItalics.getHeight("Display String"));
-		text.setFont(boldItalicFont);
-		assertEquals(textBoxHeight(text), topCenterBoldItalics.getHeight("Display String"));
-	}
-	
-	/*
-	 * Test different font styles for font size 24.
-	 */
-	@Test
-	public void testGetHeight_24ptFont()
-	{
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
-		Font defaultFont = Font.font("System", 24);
-		Font boldFont = Font.font("System", FontWeight.BOLD, 24);
-		Font italicFont = Font.font("System", FontPosture.ITALIC, 24);
-		Font boldItalicFont = Font.font("System", FontWeight.BOLD, FontPosture.ITALIC, 24);
-		Text text = new Text("Display String");
-		text.setFont(defaultFont);
-		assertEquals(textBoxHeight(text), topCenter.getHeight("Display String"));
-		text.setFont(boldFont);
-		assertEquals(textBoxHeight(text), topCenterBold.getHeight("Display String"));
-		text.setFont(italicFont);
-		assertEquals(textBoxHeight(text), topCenterItalics.getHeight("Display String"));
-		text.setFont(boldItalicFont);
-		assertEquals(textBoxHeight(text), topCenterBoldItalics.getHeight("Display String"));
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
-	}
-	
-	private static int textBoxHeight(Text pText)
-	{
-		return (int) Math.round(pText.getLayoutBounds().getHeight());
+		try 
+		{
+			Field boldField = StringRenderer.class.getDeclaredField("aBold");
+			Field italicsField = StringRenderer.class.getDeclaredField("aItalics");
+			boldField.setAccessible(true);
+			italicsField.setAccessible(true);
+			
+			// No bold, no italics
+			assertFalse(boldField.getBoolean(topCenter));
+			assertFalse(italicsField.getBoolean(topCenter));
+			
+			// Yes bold, no italics
+			assertTrue(boldField.getBoolean(topCenterBold));
+			assertFalse(italicsField.getBoolean(topCenterBold));
+			
+			// No bold, yes italics
+			assertFalse(boldField.getBoolean(topCenterItalics));
+			assertTrue(italicsField.getBoolean(topCenterItalics));
+			
+			// Yes bold, yes italics
+			assertTrue(boldField.getBoolean(topCenterBoldItalics));
+			assertTrue(italicsField.getBoolean(topCenterBoldItalics));
+		} 
+		catch (ReflectiveOperationException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }
