@@ -52,6 +52,7 @@ import javafx.scene.text.Text;
 public class FontMetrics 
 {
 	public static final int DEFAULT_FONT_SIZE = 12;
+	public static final String DEFAULT_FONT_NAME = "System";
 	private static final String BLANK = "";
 	private Text aTextNode;
 

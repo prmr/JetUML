@@ -23,6 +23,8 @@ package org.jetuml.rendering;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
+import org.jetuml.application.UserPreferences.StringPreference;
+import org.jetuml.application.UserPreferences.StringPreferenceChangeHandler;
 import org.jetuml.geom.Dimension;
 
 import javafx.scene.text.Font;
@@ -33,7 +35,7 @@ import javafx.scene.text.FontWeight;
  * A utility class for StringRenderer that is in sync with  
  * the user font size setting and manages font metrics calculations.
  */
-public final class CanvasFont implements IntegerPreferenceChangeHandler
+public final class CanvasFont implements IntegerPreferenceChangeHandler, StringPreferenceChangeHandler
 {	
 	private Font aFont;
 	private Font aFontBold;
@@ -51,6 +53,7 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler
 	{
 		refreshAttributes();
 		UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
+		UserPreferences.instance().addStringPreferenceChangeHandler(this);
 	}
 	
 	
@@ -127,10 +130,20 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler
 		}
 
 	}
+	
+	@Override
+	public void stringPreferenceChanged(StringPreference pPreference) 
+	{
+		if ( pPreference == StringPreference.fontName && !aFont.getFamily().equals(UserPreferences.instance().getString(pPreference)) )
+		{
+			refreshAttributes();
+		}
+	}
 
 	private void refreshAttributes()
 	{
-		aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+		aFont = Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
+				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 		aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
 		aFontItalic = Font.font(aFont.getFamily(), FontPosture.ITALIC, aFont.getSize());
 		aFontBoldItalic = Font.font(aFont.getFamily(), FontWeight.BOLD, FontPosture.ITALIC, aFont.getSize());

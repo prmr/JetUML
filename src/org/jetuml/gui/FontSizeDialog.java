@@ -22,10 +22,14 @@ package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,11 +38,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -53,9 +60,11 @@ public class FontSizeDialog
 	private static final int VSPACE = 20;
 	private static final int MIN_SIZE = 8;
 	private static final int MAX_SIZE = 24;
+	private static final int FONT_LIST_HEIGHT = 200;
 	
 	private final Stage aStage = new Stage();
 	private final TextField aSizeField = new TextField();
+	private final ListView<String> aFonts = new ListView<>();
 	
 	/**
 	 * Creates a new font dialog.
@@ -82,43 +91,46 @@ public class FontSizeDialog
 		BorderPane layout = new BorderPane();
 		layout.setPadding( new Insets(SPACING));
 		
-		String message = RESOURCES.getString("dialog.font_size.message");
-		message = message.replace("#1", Integer.toString(MIN_SIZE));
-		message = message.replace("#2", Integer.toString(MAX_SIZE));
-
-		HBox top = new HBox(new Text(message));
-		top.setAlignment(Pos.CENTER);
-		layout.setTop(top);
-		layout.setCenter(createForm());
+		layout.setLeft(createForm());
+		layout.setRight(createFontChooser());
 		layout.setBottom(createButtons());
 		
+		BorderPane.setMargin(layout.getLeft(), new Insets(SPACING));
+		BorderPane.setMargin(layout.getRight(), new Insets(SPACING));
 		return new Scene(layout);
 	}
 	
 	private Pane createForm()
 	{
-		HBox pane = new HBox();
-		pane.setAlignment(Pos.CENTER);
-		pane.setPadding(new Insets(SPACING));
-		pane.setSpacing(SPACING);
-				
+		VBox fontSizeChooser = new VBox();
+		fontSizeChooser.setAlignment(Pos.CENTER);
+		fontSizeChooser.setSpacing(SPACING);
+		
+		String message = RESOURCES.getString("dialog.font_size.message");
+		message = message.replace("#1", Integer.toString(MIN_SIZE));
+		message = message.replace("#2", Integer.toString(MAX_SIZE));
+		HBox restriction = new HBox(new Text(message));
+		restriction.setAlignment(Pos.CENTER);
+		
 		aSizeField.setPrefColumnCount((int)Math.log10(MAX_SIZE)+1);
 		aSizeField.setText(Integer.toString(getFontSize()));
 		HBox size = new HBox(new Label(RESOURCES.getString("dialog.font_size.size")), aSizeField);
 		size.setAlignment(Pos.CENTER);
 		size.setSpacing(2);
-		aSizeField.setOnAction(event -> onInput());
+		aSizeField.setOnAction(event -> onInput());		
 		
-		Button defaultButton = new Button(RESOURCES.getString("dialog.font_size.default"));
-		defaultButton.setOnAction( pEvent -> 
-		{
-			aSizeField.setText(Integer.toString(DEFAULT_FONT_SIZE));
-		});
-		
-		
-		pane.getChildren().addAll(size, defaultButton);
-				
-		return pane;
+		fontSizeChooser.getChildren().addAll(restriction, size);
+		return fontSizeChooser;
+	}
+	
+	private ListView<String> createFontChooser()
+	{
+		ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFamilies());
+		aFonts.setItems(fonts);
+		aFonts.setMaxHeight(FONT_LIST_HEIGHT);
+		aFonts.getSelectionModel().select(getFontName());
+		aFonts.scrollTo(aFonts.getSelectionModel().getSelectedIndex());
+		return aFonts;
 	}
 	
 	private static boolean isValid(String pSize) 
@@ -151,14 +163,27 @@ public class FontSizeDialog
 		alert.showAndWait();
 	}
 	
+	private static String getFontName()
+	{
+		return UserPreferences.instance().getString(StringPreference.fontName);
+	}
+	
 	private Pane createButtons()
 	{
+		Button defaultButton = new Button(RESOURCES.getString("dialog.font_size.default"));
+		defaultButton.setOnAction( pEvent -> 
+		{
+			aSizeField.setText(Integer.toString(DEFAULT_FONT_SIZE));
+			aFonts.getSelectionModel().select(DEFAULT_FONT_NAME);
+			aFonts.scrollTo(aFonts.getSelectionModel().getSelectedIndex());
+		});
+		
 		Button ok = new Button(RESOURCES.getString("dialog.font_size.ok"));
 		Button cancel = new Button(RESOURCES.getString("dialog.font_size.cancel"));
 		ok.setOnAction(event -> onInput());
 		cancel.setOnAction( pEvent -> aStage.close() );
 
-		HBox box = new HBox(ok, cancel);
+		HBox box = new HBox(defaultButton, ok, cancel);
 		box.setSpacing(SPACING);
 		box.setAlignment(Pos.CENTER_RIGHT);
 		box.setPadding(new Insets(VSPACE, 0, 0, 0));
@@ -169,6 +194,7 @@ public class FontSizeDialog
 	{
 		if( isValid(aSizeField.getText()) )
 		{
+			UserPreferences.instance().setString(StringPreference.fontName, aFonts.getSelectionModel().getSelectedItem());
 			UserPreferences.instance().setInteger(IntegerPreference.fontSize, Integer.parseInt(aSizeField.getText()));
 			aStage.close();
 		}
