@@ -34,6 +34,8 @@ import org.jetuml.application.UserPreferences.BooleanPreference;
 import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
+import org.jetuml.application.UserPreferences.StringPreference;
+import org.jetuml.application.UserPreferences.StringPreferenceChangeHandler;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -66,7 +68,8 @@ import javafx.stage.Stage;
 /**
  * A canvas on which to view diagrams.
  */
-public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler, IntegerPreferenceChangeHandler
+public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler, IntegerPreferenceChangeHandler,
+StringPreferenceChangeHandler
 {	
 	private static final double LINE_WIDTH = 0.6;
 	/* The number of pixels to leave around a diagram when the canvas size
@@ -360,6 +363,15 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void integerPreferenceChanged(IntegerPreference pPreference) 
 	{
 		if ( pPreference == IntegerPreference.fontSize )
+		{
+			paintPanel();
+		}
+	}
+	
+	@Override
+	public void stringPreferenceChanged(StringPreference pPreference) 
+	{
+		if ( pPreference == StringPreference.fontName )
 		{
 			paintPanel();
 		}

@@ -21,6 +21,7 @@
 package org.jetuml.application;
 
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -80,6 +81,29 @@ public final class UserPreferences
 	}
 	
 	/**
+	 * A string preference.
+	 */
+	public enum StringPreference
+	{
+		fontName(DEFAULT_FONT_NAME);
+		
+		private String aDefault;
+		
+		StringPreference( String pDefault )
+		{
+			aDefault = pDefault;
+		}
+		
+		/**
+		 * @return The default value for this preference.
+		 */
+		public String getDefault()
+		{
+			return aDefault;
+		}
+	}
+	
+	/**
 	 * An object that can react to a change to a boolean user preference.
 	 */
 	public interface BooleanPreferenceChangeHandler
@@ -105,12 +129,27 @@ public final class UserPreferences
 		void integerPreferenceChanged(IntegerPreference pPreference);
 	}
 	
+	/**
+	 * An object that can react to a change to a string user preference.
+	 */
+	public interface StringPreferenceChangeHandler
+	{
+		/**
+		 * Callback for change in string preference values.
+		 * 
+		 * @param pPreference The preference that just changed.
+		 */
+		void stringPreferenceChanged(StringPreference pPreference);
+	}
+	
 	private static final UserPreferences INSTANCE = new UserPreferences();
 	
 	private EnumMap<BooleanPreference, Boolean> aBooleanPreferences = new EnumMap<>(BooleanPreference.class);
 	private final List<BooleanPreferenceChangeHandler> aBooleanPreferenceChangeHandlers = new ArrayList<>();
 	private EnumMap<IntegerPreference, Integer> aIntegerPreferences = new EnumMap<>(IntegerPreference.class);
 	private final List<IntegerPreferenceChangeHandler> aIntegerPreferenceChangeHandlers = new ArrayList<>();
+	private EnumMap<StringPreference, String> aStringPreferences = new EnumMap<>(StringPreference.class);
+	private final List<StringPreferenceChangeHandler> aStringPreferenceChangeHandlers = new ArrayList<>();
 	
 	private UserPreferences()
 	{
@@ -125,6 +164,12 @@ public final class UserPreferences
 			aIntegerPreferences.put( preference, 
 					Integer.valueOf(Preferences.userNodeForPackage(JetUML.class)
 							.get(preference.name(), preference.getDefault())));
+		}
+		for( StringPreference preference : StringPreference.values() )
+		{
+			aStringPreferences.put(preference, 
+					Preferences.userNodeForPackage(JetUML.class)
+							.get(preference.name(), preference.getDefault()));
 		}
 	}
 	
@@ -147,6 +192,15 @@ public final class UserPreferences
 	public int getInteger(IntegerPreference pPreference)
 	{
 		return aIntegerPreferences.get(pPreference);
+	}
+	
+	/**
+	 * @param pPreference The property whose value to obtain.
+	 * @return The value of the property.
+	 */
+	public String getString(StringPreference pPreference)
+	{
+		return aStringPreferences.get(pPreference);
 	}
 	
 	/**
@@ -173,6 +227,19 @@ public final class UserPreferences
 		aIntegerPreferences.put(pPreference, pValue);
 		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), Integer.toString(pValue));
 		aIntegerPreferenceChangeHandlers.forEach(handler -> handler.integerPreferenceChanged(pPreference));
+	}
+	
+	/**
+	 * Sets and persists the value of a preference.
+	 * 
+	 * @param pPreference The property to set.
+	 * @param pValue The value to set.
+	 */
+	public void setString(StringPreference pPreference, String pValue)
+	{
+		aStringPreferences.put(pPreference, pValue);
+		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), pValue);
+		aStringPreferenceChangeHandlers.forEach(handler -> handler.stringPreferenceChanged(pPreference));
 	}
 	
 	/**
@@ -215,5 +282,25 @@ public final class UserPreferences
 	public void removeIntegerPreferenceChangeHandler(IntegerPreferenceChangeHandler pHandler)
 	{
 		aIntegerPreferenceChangeHandlers.remove(pHandler);
+	}
+	
+	/**
+	 * Adds a handler for a string property change.
+	 * 
+	 * @param pHandler A handler for a change in integer preferences.
+	 */
+	public void addStringPreferenceChangeHandler(StringPreferenceChangeHandler pHandler)
+	{
+		aStringPreferenceChangeHandlers.add(pHandler);
+	}
+
+	/**
+	 * Removes a handler.
+	 * 
+	 * @param pHandler The handler to remove.
+	 */
+	public void removeStringPreferenceChangeHandler(StringPreferenceChangeHandler pHandler)
+	{
+		aStringPreferenceChangeHandlers.remove(pHandler);
 	}
 }
