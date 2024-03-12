@@ -22,6 +22,10 @@ package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 
 import org.jetuml.application.UserPreferences;
@@ -30,6 +34,7 @@ import org.jetuml.application.UserPreferences.StringPreference;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,11 +42,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -57,12 +65,19 @@ import javafx.stage.Stage;
 public class FontSizeDialog 
 {
 	private static final int SPACING = 10;
+	private static final int HSPACE = 50;
 	private static final int VSPACE = 20;
 	private static final int MIN_SIZE = 8;
 	private static final int MAX_SIZE = 24;
 	private static final int FONT_LIST_HEIGHT = 200;
+	private static final Insets LEFT_MARGIN = new Insets(0, 0, 0, 30);
+	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
+			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
+	private static final String PREVIEW_MESSAGE = "The quick brown fox jumps over the lazy dog.";
+	private static final String FAMILY_COMBOBOX_STYLE = "family-combobox";
 	
 	private final Stage aStage = new Stage();
+	private final GridPane aLayout = new GridPane();
 	private final TextField aSizeField = new TextField();
 	private final ListView<String> aFonts = new ListView<>();
 	
@@ -88,16 +103,78 @@ public class FontSizeDialog
 	
 	private Scene createScene() 
 	{
-		BorderPane layout = new BorderPane();
-		layout.setPadding( new Insets(SPACING));
+//		BorderPane layout = new BorderPane();
+//		layout.setPadding( new Insets(SPACING));
+//		
+//		layout.setLeft(createForm());
+//		layout.setRight(createFontChooser());
+//		layout.setBottom(createButtons());
+//		
+//		BorderPane.setMargin(layout.getLeft(), new Insets(SPACING));
+//		BorderPane.setMargin(layout.getRight(), new Insets(SPACING));
+		aLayout.setHgap(HSPACE);
+		aLayout.setVgap(VSPACE);
+		aLayout.setPadding(new Insets(SPACING));
+		//aLayout.setGridLinesVisible(true);
 		
-		layout.setLeft(createForm());
-		layout.setRight(createFontChooser());
-		layout.setBottom(createButtons());
+		createFamily();
+		createSize();
+		createPreview();
+		createButton();
+		return new Scene(aLayout);
+	}
+	
+	private void createFamily()
+	{
+		Label family = new Label("Family");
+		GridPane.setConstraints(family, 0, 0);
+		GridPane.setMargin(family, LEFT_MARGIN);
 		
-		BorderPane.setMargin(layout.getLeft(), new Insets(SPACING));
-		BorderPane.setMargin(layout.getRight(), new Insets(SPACING));
-		return new Scene(layout);
+		ComboBox<String> fonts = new ComboBox<>(FXCollections.observableArrayList(Font.getFamilies()));
+		fonts.setPrefWidth(150);
+		GridPane.setConstraints(fonts, 1, 0);
+		
+		aLayout.getChildren().addAll(family, fonts);
+	}
+	
+	private void createSize()
+	{
+		Label size = new Label("Size");
+		GridPane.setConstraints(size, 0, 1);
+		GridPane.setMargin(size, LEFT_MARGIN);
+		
+		ComboBox<Integer> sizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
+		sizes.setPrefWidth(150);
+		GridPane.setConstraints(sizes, 1, 1);
+		GridPane.setHalignment(sizes, HPos.RIGHT);
+		
+		aLayout.getChildren().addAll(size, sizes);
+	}
+	
+	private void createPreview()
+	{
+		Label preview = new Label(PREVIEW_MESSAGE);
+		GridPane.setConstraints(preview, 0, 2);
+		GridPane.setMargin(preview, new Insets(20, 0, 20, 0));
+		GridPane.setColumnSpan(preview, 2);
+		GridPane.setHalignment(preview, HPos.CENTER);
+		
+		aLayout.getChildren().add(preview);
+	}
+	
+	private void createButton()
+	{	
+		Button ok = new Button("OK");
+		Button cancel = new Button("Cancel");
+		HBox layout = new HBox(SPACING);
+		layout.setAlignment(Pos.CENTER_RIGHT);
+		layout.getChildren().addAll(ok, cancel);
+		GridPane.setConstraints(layout, 1, 3);
+		
+		Button restore = new Button("Restore Defaults");
+		GridPane.setConstraints(restore, 0, 3);
+
+		aLayout.getChildren().addAll(restore, layout);
 	}
 	
 	private Pane createForm()
