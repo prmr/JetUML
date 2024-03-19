@@ -23,8 +23,11 @@ package org.jetuml.rendering;
 import org.jetuml.geom.Dimension;
 
 import javafx.geometry.Bounds;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 
 /**
  * A utility class to determine various font position metrics
@@ -82,7 +85,17 @@ public class FontMetrics
 		Bounds bounds = aTextNode.getLayoutBounds();
 		aTextNode.setText(BLANK);
 		double leading = aTextNode.getLayoutBounds().getMaxY();
-		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight() - leading));
+		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
+		
+//		aTextNode.setText(pString);
+//	    Bounds tb = aTextNode.getLayoutBounds();
+//	    Rectangle stencil = new Rectangle(
+//	            tb.getMinX(), tb.getMinY(), tb.getWidth(), tb.getHeight()
+//	    );
+//	    Shape intersection = Shape.intersect(aTextNode, stencil);
+//
+//	    Bounds ib = intersection.getLayoutBounds();
+//	    return new Dimension((int) Math.round(ib.getWidth()), (int) Math.round(ib.getHeight()));
 	}
 	
 	/**
@@ -96,7 +109,22 @@ public class FontMetrics
 	{
 		assert pString != null;
 		
-		aTextNode.setText(pString);
-		return (int) Math.round(aTextNode.getLayoutBounds().getHeight());
+//		aTextNode.setText(pString);
+//		return (int) Math.round(aTextNode.getLayoutBounds().getHeight());
+		aTextNode.setText("Thy\nThy");
+		double height1 = aTextNode.getLayoutBounds().getHeight();
+		aTextNode.setText("Thy");
+		double height2 = aTextNode.getLayoutBounds().getHeight();
+		return (int) Math.round(height1 - height2);
+	}
+	
+	public static void main(String[] args)
+	{
+		Text t1 = new Text("Thy");
+		t1.setFont(new Font("Consolas", 12));
+		Text t2 = new Text("Thy\nThy");
+		t2.setFont(new Font("Consolas", 12));
+		System.out.println(t1.getLayoutBounds());
+		System.out.println(t2.getLayoutBounds());
 	}
 } 

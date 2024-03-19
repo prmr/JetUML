@@ -48,13 +48,16 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
-	private static final StringRenderer ITALICS_NAME_VIEWER = StringRenderer.get(
+	private static final StringRenderer ITALIC_NAME_VIEWER = StringRenderer.get(
 			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALIC, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
 			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
-	private static final StringRenderer ITALICS_STRING_VIEWER = StringRenderer.get(
+	private static final StringRenderer ITALIC_STRING_VIEWER = StringRenderer.get(
 			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALIC);
+	private static final String ITALIC_MARKUP = "/";
+	private static final String UNDERLINE_MARKUP = "_";
+	
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
@@ -105,9 +108,9 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
 	{
 		String name = getNameText(pNode);
-		if( name.length() > 2 && name.startsWith("/") && name.endsWith("/") )
+		if( name.length() > 2 && name.startsWith(ITALIC_MARKUP) && name.endsWith(ITALIC_MARKUP) )
 		{
-			ITALICS_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
+			ITALIC_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
 					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
 		}
 		else
@@ -125,7 +128,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		
 		for( String attribute : attributesByLine )
 		{
-			if( attribute.length() > 2 && attribute.startsWith("_") && attribute.endsWith("_") )
+			if( attribute.length() > 2 && attribute.startsWith(UNDERLINE_MARKUP) && attribute.endsWith(UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
@@ -147,14 +150,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		
 		for( String method : methodsByLine )
 		{
-			if( method.length() > 2 && method.startsWith("_") && method.endsWith("_") )
+			if( method.length() > 2 && method.startsWith(UNDERLINE_MARKUP) && method.endsWith(UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
-			else if( method.length() > 2 && method.startsWith("/") && method.endsWith("/") )
+			else if( method.length() > 2 && method.startsWith(ITALIC_MARKUP) && method.endsWith(ITALIC_MARKUP) )
 			{
-				ITALICS_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
+				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
 			else
