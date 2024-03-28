@@ -120,6 +120,11 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	{
 		return getFontMetrics(pBold, pItalic).getHeight(pString);
 	}
+	
+	public int getBaselineOffset(boolean pBold, boolean pItalic)
+	{
+		return getFontMetrics(pBold, pItalic).getBaselineOffset();
+	}
 
 	@Override
 	public void integerPreferenceChanged(IntegerPreference pPreference) 

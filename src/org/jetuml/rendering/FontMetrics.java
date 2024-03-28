@@ -74,6 +74,9 @@ public class FontMetrics
 
 	/**
 	 * Returns the dimension of a given string.
+	 * For the fonts available in JetUML, the dimension includes the leading space in the height,
+	 * but a tight bound on the width. Note that this behavior is not consistent for all fonts.
+	 * 
 	 * @param pString The string to which the bounds pertain.
 	 * @return The dimension of the string
 	 */
@@ -84,18 +87,7 @@ public class FontMetrics
 		aTextNode.setText(pString);
 		Bounds bounds = aTextNode.getLayoutBounds();
 		aTextNode.setText(BLANK);
-		double leading = aTextNode.getLayoutBounds().getMaxY();
 		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
-		
-//		aTextNode.setText(pString);
-//	    Bounds tb = aTextNode.getLayoutBounds();
-//	    Rectangle stencil = new Rectangle(
-//	            tb.getMinX(), tb.getMinY(), tb.getWidth(), tb.getHeight()
-//	    );
-//	    Shape intersection = Shape.intersect(aTextNode, stencil);
-//
-//	    Bounds ib = intersection.getLayoutBounds();
-//	    return new Dimension((int) Math.round(ib.getWidth()), (int) Math.round(ib.getHeight()));
 	}
 	
 	/**
@@ -109,8 +101,6 @@ public class FontMetrics
 	{
 		assert pString != null;
 		
-//		aTextNode.setText(pString);
-//		return (int) Math.round(aTextNode.getLayoutBounds().getHeight());
 		aTextNode.setText("Thy\nThy");
 		double height1 = aTextNode.getLayoutBounds().getHeight();
 		aTextNode.setText("Thy");
@@ -118,13 +108,8 @@ public class FontMetrics
 		return (int) Math.round(height1 - height2);
 	}
 	
-	public static void main(String[] args)
+	public int getBaselineOffset()
 	{
-		Text t1 = new Text("Thy");
-		t1.setFont(new Font("Consolas", 12));
-		Text t2 = new Text("Thy\nThy");
-		t2.setFont(new Font("Consolas", 12));
-		System.out.println(t1.getLayoutBounds());
-		System.out.println(t2.getLayoutBounds());
+		return (int) Math.round(aTextNode.getBaselineOffset());
 	}
 } 
