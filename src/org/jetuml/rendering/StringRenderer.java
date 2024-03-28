@@ -48,7 +48,7 @@ public final class StringRenderer
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
-	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 0;
+	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
 	
 	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
 	
@@ -258,6 +258,10 @@ public final class StringRenderer
 		{
 			textY = pRectangle.getHeight()/2;
 		}
+		else
+		{
+			textY = aVerticalPadding/2;
+		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalic));
@@ -267,6 +271,7 @@ public final class StringRenderer
 			int xOffset = 0;
 			int yOffset = 0;
 			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
+			int baselineOffset = CANVAS_FONT.getBaselineOffset(aBold, aItalic);
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
@@ -274,11 +279,11 @@ public final class StringRenderer
 			
 			if( aAlign.isTop() )
 			{
-				yOffset = dimension.height() + 1;
+				yOffset = baselineOffset + 2;
 			}
 			else if( aAlign.isVerticallyCentered() )
 			{
-				yOffset = dimension.height()/2;
+				yOffset = baselineOffset/2;
 			}
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);

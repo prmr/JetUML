@@ -35,22 +35,15 @@ import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -63,23 +56,23 @@ public class FontSizeDialog
 	private static final int SPACING = 10;
 	private static final int HSPACE = 50;
 	private static final int VSPACE = 20;
-	private static final int MIN_SIZE = 8;
-	private static final int MAX_SIZE = 24;
-	private static final int FONT_LIST_HEIGHT = 200;
-	private static final int COMBOBOX_WIDTH = 150;
-	private static final Insets LEFT_MARGIN = new Insets(0, 0, 0, 45);
+	private static final Insets EXTRA_MARGIN = new Insets(0, 0, 0, 10);
+	
+	private static final ArrayList<String> FONT_FAMILIES = new ArrayList<>(
+			Arrays.asList("System", "SansSerif", "Serif", "Monospaced"));
 	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
 			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
-	private static final String PREVIEW_MESSAGE = "The quick brown fox jumps over the lazy dog.";
+	private static final String PREVIEW_MESSAGE = "Preview";
+	private static final int PREVIEW_HEIGHT = 35;
+	private static final int PREVIEW_WIDTH = 110;
 	
 	private final Stage aStage = new Stage();
 	private final GridPane aLayout = new GridPane();
-
+	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
-	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(Font.getFamilies()));
 	private final Label aPreview = new Label(PREVIEW_MESSAGE);
-	private final TextField aSizeField = new TextField();
-	//private final ListView<String> aFonts = new ListView<>();
+	private String aSelectedFont = getCurrentFont();
+	private int aSelectedSize = getCurrentFontSize();
 	
 	/**
 	 * Creates a new font dialog.
@@ -103,37 +96,24 @@ public class FontSizeDialog
 	
 	private Scene createScene() 
 	{
-//		BorderPane layout = new BorderPane();
-//		layout.setPadding( new Insets(SPACING));
-//		
-//		layout.setLeft(createForm());
-//		layout.setRight(createFontChooser());
-//		layout.setBottom(createButtons());
-//		
-//		BorderPane.setMargin(layout.getLeft(), new Insets(SPACING));
-//		BorderPane.setMargin(layout.getRight(), new Insets(SPACING));
 		aLayout.setHgap(HSPACE);
 		aLayout.setVgap(VSPACE);
 		aLayout.setPadding(new Insets(SPACING));
-		//aLayout.setPrefWidth(300);
-		//aLayout.setGridLinesVisible(true);
-		
-		createFamily();
+		createFont();
 		createSize();
 		createPreview();
 		createButton();
 		return new Scene(aLayout);
 	}
 	
-	private void createFamily()
+	private void createFont()
 	{
-		Label family = new Label("Family");
+		Label family = new Label("Font");
 		GridPane.setConstraints(family, 0, 0);
-		GridPane.setMargin(family, LEFT_MARGIN);
+		GridPane.setMargin(family, EXTRA_MARGIN);
 		
 		aFonts.getSelectionModel().select(getCurrentFont());
-		aFonts.setPrefWidth(COMBOBOX_WIDTH);
-		aFonts.setOnAction(pEvent -> onPreviewInput());
+		aFonts.setOnAction(pEvent -> updatePreview());
 		GridPane.setConstraints(aFonts, 1, 0);
 		GridPane.setHalignment(aFonts, HPos.RIGHT);
 		
@@ -144,11 +124,10 @@ public class FontSizeDialog
 	{
 		Label size = new Label("Size");
 		GridPane.setConstraints(size, 0, 1);
-		GridPane.setMargin(size, LEFT_MARGIN);
+		GridPane.setMargin(size, EXTRA_MARGIN);
 		
-		aSizes.getSelectionModel().select((Integer) getFontSize());
-		aSizes.setPrefWidth(COMBOBOX_WIDTH);
-		aSizes.setOnAction(pEvent -> onPreviewInput());
+		aSizes.getSelectionModel().select((Integer) getCurrentFontSize());
+		aSizes.setOnAction(pEvent -> updatePreview());
 		GridPane.setConstraints(aSizes, 1, 1);
 		GridPane.setHalignment(aSizes, HPos.RIGHT);
 		
@@ -157,14 +136,12 @@ public class FontSizeDialog
 	
 	private void createPreview()
 	{
-		aPreview.setFont(new Font(getCurrentFont(), getFontSize()));
-		aPreview.setPrefWidth(500);
-		aPreview.setPrefHeight(130);
+		aPreview.setFont(Font.font(getCurrentFont(), getCurrentFontSize()));
+		aPreview.setPrefWidth(PREVIEW_WIDTH);
+		aPreview.setPrefHeight(PREVIEW_HEIGHT);
 		aPreview.setWrapText(true);
-		aPreview.setTextAlignment(TextAlignment.CENTER);
 		aPreview.setAlignment(Pos.CENTER);
-		GridPane.setConstraints(aPreview, 0, 2, 2, 1);
-		GridPane.setMargin(aPreview, new Insets(0, 40, 0, 40));
+		GridPane.setConstraints(aPreview, 0, 2, 2, 1, HPos.CENTER, VPos.CENTER);
 		
 		aLayout.getChildren().add(aPreview);
 	}
@@ -172,87 +149,30 @@ public class FontSizeDialog
 	private void createButton()
 	{	
 		Button ok = new Button("OK");
+		ok.setOnAction(pEvent -> onInput());
+		
 		Button cancel = new Button("Cancel");
+		cancel.setOnAction(pEvent -> aStage.close());
+		
 		HBox layout = new HBox(SPACING);
 		layout.setAlignment(Pos.CENTER_RIGHT);
 		layout.getChildren().addAll(ok, cancel);
 		GridPane.setConstraints(layout, 1, 3);
 		
 		Button restoreDefaults = new Button("Restore Defaults");
-		GridPane.setConstraints(restoreDefaults, 0, 3);
-
-		ok.setOnAction(pEvent -> onInput());
-		cancel.setOnAction(pEvent -> aStage.close());
 		restoreDefaults.setOnAction(pEvent -> 
 		{
 			aFonts.getSelectionModel().select(DEFAULT_FONT_NAME);
 			aSizes.getSelectionModel().select((Integer) DEFAULT_FONT_SIZE);
 		});
+		GridPane.setConstraints(restoreDefaults, 0, 3);
 		
 		aLayout.getChildren().addAll(restoreDefaults, layout);
 	}
-	
-	private Pane createForm()
-	{
-		VBox fontSizeChooser = new VBox();
-		fontSizeChooser.setAlignment(Pos.CENTER);
-		fontSizeChooser.setSpacing(SPACING);
-		
-		String message = RESOURCES.getString("dialog.font_size.message");
-		message = message.replace("#1", Integer.toString(MIN_SIZE));
-		message = message.replace("#2", Integer.toString(MAX_SIZE));
-		HBox restriction = new HBox(new Text(message));
-		restriction.setAlignment(Pos.CENTER);
-		
-		aSizeField.setPrefColumnCount((int)Math.log10(MAX_SIZE)+1);
-		aSizeField.setText(Integer.toString(getFontSize()));
-		HBox size = new HBox(new Label(RESOURCES.getString("dialog.font_size.size")), aSizeField);
-		size.setAlignment(Pos.CENTER);
-		size.setSpacing(2);
-		aSizeField.setOnAction(event -> onInput());		
-		
-		fontSizeChooser.getChildren().addAll(restriction, size);
-		return fontSizeChooser;
-	}
-	
-//	private ListView<String> createFontChooser()
-//	{
-//		ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFamilies());
-//		aFonts.setItems(fonts);
-//		aFonts.setMaxHeight(FONT_LIST_HEIGHT);
-//		aFonts.getSelectionModel().select(getFontName());
-//		aFonts.scrollTo(aFonts.getSelectionModel().getSelectedIndex());
-//		return aFonts;
-//	}
-	
-	private static boolean isValid(String pSize) 
-	{
-		try
-		{
-			int parsedSize = Integer.parseInt(pSize);
-			return MIN_SIZE <= parsedSize && parsedSize <= MAX_SIZE;
-		}
-		catch ( NumberFormatException exception )
-		{
-			return false;
-		}
-	}
 
-	private static int getFontSize()
+	private static int getCurrentFontSize()
 	{
 		return UserPreferences.instance().getInteger(IntegerPreference.fontSize);
-	}
-	
-	private void showInvalidSizeAlert()
-	{
-		String content = RESOURCES.getString("dialog.font_size.error_content");
-		content = content.replace("#1", Integer.toString(MIN_SIZE));
-		content = content.replace("#2", Integer.toString(MAX_SIZE));
-		Alert alert = new Alert(AlertType.ERROR, content, ButtonType.OK);
-		alert.setTitle(RESOURCES.getString("alert.error.title"));
-		alert.setHeaderText(RESOURCES.getString("dialog.font_size.error_header"));
-		alert.initOwner(aStage);
-		alert.showAndWait();
 	}
 	
 	private static String getCurrentFont()
@@ -260,49 +180,25 @@ public class FontSizeDialog
 		return UserPreferences.instance().getString(StringPreference.fontName);
 	}
 	
-	private Pane createButtons()
+	private void updatePreview()
 	{
-		Button defaultButton = new Button(RESOURCES.getString("dialog.font_size.default"));
-		defaultButton.setOnAction( pEvent -> 
-		{
-			aSizeField.setText(Integer.toString(DEFAULT_FONT_SIZE));
-			aFonts.getSelectionModel().select(DEFAULT_FONT_NAME);
-			//aFonts.scrollTo(aFonts.getSelectionModel().getSelectedIndex());
-		});
-		
-		Button ok = new Button(RESOURCES.getString("dialog.font_size.ok"));
-		Button cancel = new Button(RESOURCES.getString("dialog.font_size.cancel"));
-		ok.setOnAction(event -> onInput());
-		cancel.setOnAction( pEvent -> aStage.close() );
-
-		HBox box = new HBox(defaultButton, ok, cancel);
-		box.setSpacing(SPACING);
-		box.setAlignment(Pos.CENTER_RIGHT);
-		box.setPadding(new Insets(VSPACE, 0, 0, 0));
-		return box;
+		aSelectedFont = aFonts.getSelectionModel().getSelectedItem();
+		aSelectedSize = aSizes.getSelectionModel().getSelectedItem();
+		aPreview.setFont(Font.font(aSelectedFont, aSelectedSize));
 	}
 	
 	private void onInput()
 	{
-		UserPreferences.instance().setString(StringPreference.fontName, aFonts.getSelectionModel().getSelectedItem());
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, aSizes.getSelectionModel().getSelectedItem());
+		if( !aSelectedFont.equals(getCurrentFont()) )
+		{
+			UserPreferences.instance().setString(StringPreference.fontName, aSelectedFont);
+		}
+		
+		if( aSelectedSize != getCurrentFontSize() )
+		{
+			UserPreferences.instance().setInteger(IntegerPreference.fontSize, aSelectedSize);
+		}
 		aStage.close();
-//		if( isValid(aSizeField.getText()) )
-//		{
-//			UserPreferences.instance().setString(StringPreference.fontName, aFonts.getSelectionModel().getSelectedItem());
-//			UserPreferences.instance().setInteger(IntegerPreference.fontSize, Integer.parseInt(aSizeField.getText()));
-//			aStage.close();
-//		}
-//		else
-//		{
-//			aSizeField.setText(Integer.toString(getFontSize()));
-//			showInvalidSizeAlert();
-//		}
-	}
-	
-	private void onPreviewInput()
-	{
-		aPreview.setFont(new Font(aFonts.getSelectionModel().getSelectedItem(), aSizes.getSelectionModel().getSelectedItem()));
 	}
 	
 	/**
