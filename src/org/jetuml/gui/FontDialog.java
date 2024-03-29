@@ -41,6 +41,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -51,7 +53,7 @@ import javafx.stage.Stage;
  * A modal dialog that allows users to change font
  * size of diagrams.
  */
-public class FontSizeDialog 
+public class FontDialog 
 {
 	private static final int SPACING = 10;
 	private static final int HSPACE = 50;
@@ -79,10 +81,11 @@ public class FontSizeDialog
 	 * 
 	 * @param pOwner The stage that owns this stage.
 	 */
-	public FontSizeDialog( Stage pOwner )
+	public FontDialog( Stage pOwner )
 	{
 		prepareStage(pOwner);
 		aStage.setScene(createScene());
+		aStage.getScene().getStylesheets().add("FontDialog.css");
 	}
 	
 	private void prepareStage(Stage pOwner) 
@@ -92,6 +95,13 @@ public class FontSizeDialog
 		aStage.initOwner(pOwner);
 		aStage.setTitle(RESOURCES.getString("dialog.font_size.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
+		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
+		{
+			if( pEvent.getCode() == KeyCode.ESCAPE ) 
+			{
+				aStage.close();
+			}
+		});
 	}
 	
 	private Scene createScene() 
