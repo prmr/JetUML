@@ -27,6 +27,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontSmoothingType;
 
 /**
  * A collection of utility methods to draw shapes on the canvas.

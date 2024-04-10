@@ -40,11 +40,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,11 +62,10 @@ public class FontDialog
 	private static final int VSPACE = 20;
 	private static final Insets EXTRA_MARGIN = new Insets(0, 0, 0, 10);
 	
-	private static final ArrayList<String> FONT_FAMILIES = new ArrayList<>(
-			Arrays.asList("System", "SansSerif", "Serif", "Monospaced"));
+	private static final ArrayList<String> FONT_FAMILIES = new ArrayList<>(Arrays.asList("System", "SansSerif", "Serif", "Monospaced"));
 	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
 			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
-	private static final String PREVIEW_MESSAGE = "Preview";
+	// The height and width of the preview depends on the bounds of its text.
 	private static final int PREVIEW_HEIGHT = 35;
 	private static final int PREVIEW_WIDTH = 110;
 	
@@ -72,7 +73,7 @@ public class FontDialog
 	private final GridPane aLayout = new GridPane();
 	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
-	private final Label aPreview = new Label(PREVIEW_MESSAGE);
+	private final Label aPreview = new Label(RESOURCES.getString("dialog.font.preview"));
 	private String aSelectedFont = getCurrentFont();
 	private int aSelectedSize = getCurrentFontSize();
 	
@@ -85,7 +86,7 @@ public class FontDialog
 	{
 		prepareStage(pOwner);
 		aStage.setScene(createScene());
-		aStage.getScene().getStylesheets().add("FontDialog.css");
+		aStage.getScene().getStylesheets().add(getClass().getResource("FontDialog.css").toExternalForm());
 	}
 	
 	private void prepareStage(Stage pOwner) 
@@ -93,7 +94,7 @@ public class FontDialog
 		aStage.setResizable(false);
 		aStage.initModality(Modality.WINDOW_MODAL);
 		aStage.initOwner(pOwner);
-		aStage.setTitle(RESOURCES.getString("dialog.font_size.title"));
+		aStage.setTitle(RESOURCES.getString("dialog.font.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
@@ -109,6 +110,7 @@ public class FontDialog
 		aLayout.setHgap(HSPACE);
 		aLayout.setVgap(VSPACE);
 		aLayout.setPadding(new Insets(SPACING));
+		//aLayout.setGridLinesVisible(true);
 		createFont();
 		createSize();
 		createPreview();
@@ -118,10 +120,11 @@ public class FontDialog
 	
 	private void createFont()
 	{
-		Label family = new Label("Font");
+		Label family = new Label(RESOURCES.getString("dialog.font.family"));
 		GridPane.setConstraints(family, 0, 0);
 		GridPane.setMargin(family, EXTRA_MARGIN);
 		
+		aFonts.getStyleClass().add("font-combobox");
 		aFonts.getSelectionModel().select(getCurrentFont());
 		aFonts.setOnAction(pEvent -> updatePreview());
 		GridPane.setConstraints(aFonts, 1, 0);
@@ -132,10 +135,11 @@ public class FontDialog
 	
 	private void createSize()
 	{
-		Label size = new Label("Size");
+		Label size = new Label(RESOURCES.getString("dialog.font.size"));
 		GridPane.setConstraints(size, 0, 1);
 		GridPane.setMargin(size, EXTRA_MARGIN);
 		
+		aSizes.getStyleClass().add("font-combobox");
 		aSizes.getSelectionModel().select((Integer) getCurrentFontSize());
 		aSizes.setOnAction(pEvent -> updatePreview());
 		GridPane.setConstraints(aSizes, 1, 1);
@@ -149,35 +153,41 @@ public class FontDialog
 		aPreview.setFont(Font.font(getCurrentFont(), getCurrentFontSize()));
 		aPreview.setPrefWidth(PREVIEW_WIDTH);
 		aPreview.setPrefHeight(PREVIEW_HEIGHT);
-		aPreview.setWrapText(true);
 		aPreview.setAlignment(Pos.CENTER);
-		GridPane.setConstraints(aPreview, 0, 2, 2, 1, HPos.CENTER, VPos.CENTER);
 		
-		aLayout.getChildren().add(aPreview);
+		HBox previewContainer = new HBox(aPreview);
+		previewContainer.getStyleClass().add("font-preview");
+		previewContainer.setAlignment(Pos.CENTER);
+		GridPane.setConstraints(previewContainer, 0, 2, 2, 1, HPos.CENTER, VPos.CENTER);
+		
+		aLayout.getChildren().add(previewContainer);
 	}
 	
 	private void createButton()
 	{	
-		Button ok = new Button("OK");
+		Button ok = new Button(RESOURCES.getString("dialog.font.ok"));
 		ok.setOnAction(pEvent -> onInput());
+		ok.getStyleClass().add("font-button");
 		
-		Button cancel = new Button("Cancel");
+		Button cancel = new Button(RESOURCES.getString("dialog.font.cancel"));
 		cancel.setOnAction(pEvent -> aStage.close());
+		cancel.getStyleClass().add("font-button");
 		
 		HBox layout = new HBox(SPACING);
 		layout.setAlignment(Pos.CENTER_RIGHT);
 		layout.getChildren().addAll(ok, cancel);
 		GridPane.setConstraints(layout, 1, 3);
 		
-		Button restoreDefaults = new Button("Restore Defaults");
-		restoreDefaults.setOnAction(pEvent -> 
+		Button restoreDefault = new Button(RESOURCES.getString("dialog.font.default"));
+		restoreDefault.setOnAction(pEvent -> 
 		{
 			aFonts.getSelectionModel().select(DEFAULT_FONT_NAME);
 			aSizes.getSelectionModel().select((Integer) DEFAULT_FONT_SIZE);
 		});
-		GridPane.setConstraints(restoreDefaults, 0, 3);
+		restoreDefault.getStyleClass().add("font-button");
+		GridPane.setConstraints(restoreDefault, 0, 3);
 		
-		aLayout.getChildren().addAll(restoreDefaults, layout);
+		aLayout.getChildren().addAll(restoreDefault, layout);
 	}
 
 	private static int getCurrentFontSize()
