@@ -112,4 +112,15 @@ public class FontMetrics
 	{
 		return (int) Math.round(aTextNode.getBaselineOffset());
 	}
+	
+	public static void main(String[] args)
+	{
+		Text t1 = new Text("s\ns");
+		t1.setFont(new Font("Consolas", 12));
+		double height1 = t1.getLayoutBounds().getHeight();
+		Text t2 = new Text("s");
+		t2.setFont(new Font("Consolas", 12));
+		double height2 = t2.getLayoutBounds().getHeight();
+		System.out.println((height1 - height2) == height2);
+	}
 } 
