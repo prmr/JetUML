@@ -98,29 +98,43 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 
 	/**
 	 * Returns the dimension of a given string.
+	 * 
 	 * @param pString The string to which the bounds pertain.
 	 * @param pBold Whether the text is in bold.
 	 * @param pItalic Whether the text is in italic.
 	 * @return The dimension of the string.
+	 * @pre pString != null
 	 */
 	public Dimension getDimension(String pString, boolean pBold, boolean pItalic)
 	{
+		assert pString != null;
+		
 		return getFontMetrics(pBold, pItalic).getDimension(pString);
 	}
 	
 	/**
-	 * Returns the height of a string including the leading space.
+	 * Returns the distance between the top and bottom of a single lined text.
 	 * 
 	 * @param pString The string.
 	 * @param pBold Whether the text is in bold.
 	 * @param pItalic Whether the text is in italic.
 	 * @return The height of the string.
+	 * @pre pString != null
 	 */
 	public int getHeight(String pString, boolean pBold, boolean pItalic)
 	{
+		assert pString != null;
+		
 		return getFontMetrics(pBold, pItalic).getHeight(pString);
 	}
 	
+	/**
+	 * Returns the distance between the top and baseline of a single lined text.
+	 * 
+	 * @param pBold Whether the font is bold.
+	 * @param pItalic whether the font is italic.
+	 * @return the distance above the baseline for a single lined text.
+	 */
 	public int getBaselineOffset(boolean pBold, boolean pItalic)
 	{
 		return getFontMetrics(pBold, pItalic).getBaselineOffset();
@@ -137,9 +151,9 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	}
 	
 	@Override
-	public void stringPreferenceChanged(StringPreference pPreference) 
+	public void stringPreferenceChanged(StringPreference pPreference)
 	{
-		if ( pPreference == StringPreference.fontName && !aFont.getFamily().equals(UserPreferences.instance().getString(pPreference)) )
+		if( pPreference == StringPreference.fontName && !aFont.getFamily().equals(UserPreferences.instance().getString(pPreference)) )
 		{
 			refreshAttributes();
 		}

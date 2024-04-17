@@ -371,7 +371,7 @@ StringPreferenceChangeHandler
 	@Override
 	public void stringPreferenceChanged(StringPreference pPreference) 
 	{
-		if ( pPreference == StringPreference.fontName )
+		if( pPreference == StringPreference.fontName )
 		{
 			paintPanel();
 		}

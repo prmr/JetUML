@@ -156,7 +156,7 @@ public final class StringRenderer
 	}
 	
 	/**
-	 * Gets the height of a string including the leading space.
+	 * Returns the distance between the top and bottom of a single lined text.
 	 * 
 	 * @param pString The string.
 	 * @return The height of the string.
@@ -279,7 +279,7 @@ public final class StringRenderer
 			}
 			else if( aAlign.isVerticallyCentered() )
 			{
-				yOffset = baselineOffset/2;
+				yOffset = baselineOffset/2 + 1;
 			}
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
