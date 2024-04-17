@@ -23,11 +23,8 @@ package org.jetuml.rendering;
 import org.jetuml.geom.Dimension;
 
 import javafx.geometry.Bounds;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 
 /**
  * A utility class to determine various font position metrics
@@ -56,7 +53,8 @@ public class FontMetrics
 {
 	public static final int DEFAULT_FONT_SIZE = 12;
 	public static final String DEFAULT_FONT_NAME = "System";
-	private static final String BLANK = "";
+	private static final String SINGLE_LINED_TEXT = "One";
+	private static final String TWO_LINED_TEXT = "One\nTwo";
 	private Text aTextNode;
 
 	/**
@@ -74,8 +72,8 @@ public class FontMetrics
 
 	/**
 	 * Returns the dimension of a given string.
-	 * For the fonts available in JetUML, the dimension includes the leading space in the height,
-	 * but a tight bound on the width. Note that this behavior is not consistent for all fonts.
+	 * For the fonts supported in JetUML, the dimension includes the leading space in the height.
+	 * However, this behavior is not consistent across all fonts.
 	 * 
 	 * @param pString The string to which the bounds pertain.
 	 * @return The dimension of the string
@@ -86,39 +84,37 @@ public class FontMetrics
 		
 		aTextNode.setText(pString);
 		Bounds bounds = aTextNode.getLayoutBounds();
-		aTextNode.setText(BLANK);
 		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
 	}
 	
 	/**
-	 * Returns the height of a string including the leading space.
+	 * Returns the distance between the top and bottom of a single lined text.
 	 * 
 	 * @param pString The string. 
-	 * @return The height of the string.
+	 * @return The height of a single lined text.
 	 * @pre pString != null
 	 */
 	public int getHeight(String pString)
 	{
 		assert pString != null;
 		
-		aTextNode.setText("Thy\nThy");
-		double height1 = aTextNode.getLayoutBounds().getHeight();
-		aTextNode.setText("Thy");
-		double height2 = aTextNode.getLayoutBounds().getHeight();
-		return (int) Math.round(height1 - height2);
+		aTextNode.setText(TWO_LINED_TEXT);
+		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
+		aTextNode.setText(SINGLE_LINED_TEXT);
+		double singleLineHeight = aTextNode.getLayoutBounds().getHeight();
+		return (int) Math.round(twoLineHeight - singleLineHeight);
 	}
 	
+	/**
+	 * Returns the distance between the top and baseline of a single lined text.
+	 * 
+	 * @param pBold Whether the font is bold.
+	 * @param pItalic whether the font is italic.
+	 * @return the distance above the baseline for a single lined text.
+	 */
 	public int getBaselineOffset()
 	{
+		aTextNode.setText(SINGLE_LINED_TEXT);
 		return (int) Math.round(aTextNode.getBaselineOffset());
-	}
-	
-	public static void main(String[] args)
-	{
-		System.out.println(Font.getFamilies());
-		System.out.println(Font.getFontNames("Arial"));
-		System.out.println(Font.getFontNames());
-		Font f1 = Font.font("Monospaced");
-		System.out.println(f1.getName());
 	}
 } 

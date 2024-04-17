@@ -40,20 +40,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * A modal dialog that allows users to change font
- * size of diagrams.
+ * A modal dialog that allows users to change the font
+ * and font size of text in diagrams.
  */
 public class FontDialog 
 {
@@ -66,7 +64,6 @@ public class FontDialog
 	private static final ArrayList<String> FONT_FAMILIES = new ArrayList<>(Arrays.asList("System", "SansSerif", "Serif", "Monospaced"));
 	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
 			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
-	// The height and width of the preview depends on the bounds of its text.
 	private static final int PREVIEW_HEIGHT = 35;
 	private static final int PREVIEW_WIDTH = 110;
 	

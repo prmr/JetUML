@@ -47,6 +47,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
+	private static final int TOP_MARGIN = 5;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringRenderer ITALIC_NAME_VIEWER = StringRenderer.get(
 			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALIC, TextDecoration.PADDED);
@@ -124,7 +125,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	{
 		String attributes = pNode.getAttributes();
 		String[] attributesByLine = attributes.split("\n");
-		int lineSpacing = 5;
+		int lineSpacing = TOP_MARGIN;
 		
 		for( String attribute : attributesByLine )
 		{
@@ -146,7 +147,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	{
 		String methods = pNode.getMethods();
 		String[] methodsByLine = methods.split("\n");
-		int lineSpacing = 5;
+		int lineSpacing = TOP_MARGIN;
 		
 		for( String method : methodsByLine )
 		{
