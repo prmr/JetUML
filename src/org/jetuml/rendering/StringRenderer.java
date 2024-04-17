@@ -47,7 +47,7 @@ public final class StringRenderer
 	private static final CanvasFont CANVAS_FONT = new CanvasFont();
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
-	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 5;
+	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
 	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
 	
 	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
@@ -245,8 +245,6 @@ public final class StringRenderer
 		
 		int textX = 0;
 		int textY = 0;
-		// Offset for line spacing and underlining position for visual accuracy
-		final int spacingOffset = 2;
 		if( aAlign.isHorizontallyCentered() ) 
 		{
 			textX = pRectangle.getWidth()/2;
@@ -259,10 +257,6 @@ public final class StringRenderer
 		if ( aAlign.isVerticallyCentered() )
 		{
 			textY = pRectangle.getHeight()/2;
-		}
-		else
-		{
-			textY = spacingOffset;
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
@@ -281,7 +275,7 @@ public final class StringRenderer
 			
 			if( aAlign.isTop() )
 			{
-				yOffset = baselineOffset + spacingOffset;
+				yOffset = baselineOffset + 2;
 			}
 			else if( aAlign.isVerticallyCentered() )
 			{

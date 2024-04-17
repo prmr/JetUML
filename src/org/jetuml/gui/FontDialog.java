@@ -62,6 +62,7 @@ public class FontDialog
 	private static final int VSPACE = 20;
 	private static final Insets EXTRA_MARGIN = new Insets(0, 0, 0, 10);
 	
+	// The Serif and Monospaced fonts position the underscore character below the underline.
 	private static final ArrayList<String> FONT_FAMILIES = new ArrayList<>(Arrays.asList("System", "SansSerif", "Serif", "Monospaced"));
 	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
 			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
@@ -74,8 +75,6 @@ public class FontDialog
 	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
 	private final Label aPreview = new Label(RESOURCES.getString("dialog.font.preview"));
-	private String aSelectedFont = getCurrentFont();
-	private int aSelectedSize = getCurrentFontSize();
 	
 	/**
 	 * Creates a new font dialog.
@@ -110,7 +109,6 @@ public class FontDialog
 		aLayout.setHgap(HSPACE);
 		aLayout.setVgap(VSPACE);
 		aLayout.setPadding(new Insets(SPACING));
-		//aLayout.setGridLinesVisible(true);
 		createFont();
 		createSize();
 		createPreview();
@@ -202,21 +200,19 @@ public class FontDialog
 	
 	private void updatePreview()
 	{
-		aSelectedFont = aFonts.getSelectionModel().getSelectedItem();
-		aSelectedSize = aSizes.getSelectionModel().getSelectedItem();
-		aPreview.setFont(Font.font(aSelectedFont, aSelectedSize));
+		aPreview.setFont(Font.font(aFonts.getSelectionModel().getSelectedItem(), aSizes.getSelectionModel().getSelectedItem()));
 	}
 	
 	private void onInput()
 	{
-		if( !aSelectedFont.equals(getCurrentFont()) )
+		if( !aFonts.getSelectionModel().getSelectedItem().equals(getCurrentFont()) )
 		{
-			UserPreferences.instance().setString(StringPreference.fontName, aSelectedFont);
+			UserPreferences.instance().setString(StringPreference.fontName, aFonts.getSelectionModel().getSelectedItem());
 		}
 		
-		if( aSelectedSize != getCurrentFontSize() )
+		if( aSizes.getSelectionModel().getSelectedItem() != getCurrentFontSize() )
 		{
-			UserPreferences.instance().setInteger(IntegerPreference.fontSize, aSelectedSize);
+			UserPreferences.instance().setInteger(IntegerPreference.fontSize, aSizes.getSelectionModel().getSelectedItem());
 		}
 		aStage.close();
 	}

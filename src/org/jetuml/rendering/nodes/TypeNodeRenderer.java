@@ -124,7 +124,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	{
 		String attributes = pNode.getAttributes();
 		String[] attributesByLine = attributes.split("\n");
-		int lineSpacing = 0;
+		int lineSpacing = 5;
 		
 		for( String attribute : attributesByLine )
 		{
@@ -146,7 +146,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	{
 		String methods = pNode.getMethods();
 		String[] methodsByLine = methods.split("\n");
-		int lineSpacing = 0;
+		int lineSpacing = 5;
 		
 		for( String method : methodsByLine )
 		{

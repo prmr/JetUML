@@ -115,12 +115,10 @@ public class FontMetrics
 	
 	public static void main(String[] args)
 	{
-		Text t1 = new Text("s\ns");
-		t1.setFont(new Font("Consolas", 12));
-		double height1 = t1.getLayoutBounds().getHeight();
-		Text t2 = new Text("s");
-		t2.setFont(new Font("Consolas", 12));
-		double height2 = t2.getLayoutBounds().getHeight();
-		System.out.println((height1 - height2) == height2);
+		System.out.println(Font.getFamilies());
+		System.out.println(Font.getFontNames("Arial"));
+		System.out.println(Font.getFontNames());
+		Font f1 = Font.font("Monospaced");
+		System.out.println(f1.getName());
 	}
 } 
