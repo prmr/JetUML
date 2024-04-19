@@ -21,6 +21,7 @@
 package org.jetuml.rendering.edges;
 
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -28,6 +29,7 @@ import java.lang.reflect.Method;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.edges.StateTransitionEdge;
@@ -39,6 +41,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class TestStateTransitionEdgeViewer 
 {
+	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
 
 	private StateNode aStateNode1 = new StateNode();
@@ -50,6 +53,8 @@ public class TestStateTransitionEdgeViewer
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
+		UserPreferences.instance().setString(StringPreference.fontName, DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
@@ -57,6 +62,7 @@ public class TestStateTransitionEdgeViewer
 	@AfterAll
 	public static void restorePreferences()
 	{
+		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	

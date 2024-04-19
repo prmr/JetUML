@@ -121,11 +121,9 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	 * @return The height of the string.
 	 * @pre pString != null
 	 */
-	public int getHeight(String pString, boolean pBold, boolean pItalic)
+	public int getHeight(boolean pBold, boolean pItalic)
 	{
-		assert pString != null;
-		
-		return getFontMetrics(pBold, pItalic).getHeight(pString);
+		return getFontMetrics(pBold, pItalic).getHeight();
 	}
 	
 	/**

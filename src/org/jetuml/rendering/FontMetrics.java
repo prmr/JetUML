@@ -32,27 +32,24 @@ import javafx.scene.text.Text;
  * 
  * A visual diagram for why the bounds values are what they are
  * (with word "Thy"):   ____________________
- * getMinY() (ascent)  |*****  *           |
+ * (ascent)            |*****  *           |
  *                     |  *    *           |
  *                     |  *    *****   *  *|
  *                     |  *    *   *   *  *|
  *                     |  *    *   *   ****|
- * (baseline)          |------------------*| x=getWidth()
+ * (baseline)          |------------------*|
  *                     |                  *|
  *                     |                  *| 
- * y = 0  (descent)    |                ***|
+ * (descent)           |                ***|
  *                     |                   |
  *                     |                   |
- * getMaxY() (leading) |-------------------|
- *
- * Hence, upon calling getHeight(), to get tight bounds, one should subtract
- * off the leading value (found by getting the max Y value of a one-lined text
- * box)
+ * (leading)           |-------------------|
  */
 public class FontMetrics 
 {
 	public static final int DEFAULT_FONT_SIZE = 12;
 	public static final String DEFAULT_FONT_NAME = "System";
+	public static final Font DEFAULT_FONT = Font.font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE);
 	private static final String SINGLE_LINED_TEXT = "One";
 	private static final String TWO_LINED_TEXT = "One\nTwo";
 	private Text aTextNode;
@@ -89,15 +86,15 @@ public class FontMetrics
 	
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
+	 * Text#getLayoutBounds().getHeight() varies in its inclusion of the leading space depending on the font,
+	 * hence the subtraction approach was taken to ensure inclusion of the leading space.
 	 * 
 	 * @param pString The string. 
 	 * @return The height of a single lined text.
 	 * @pre pString != null
 	 */
-	public int getHeight(String pString)
+	public int getHeight()
 	{
-		assert pString != null;
-		
 		aTextNode.setText(TWO_LINED_TEXT);
 		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
 		aTextNode.setText(SINGLE_LINED_TEXT);
