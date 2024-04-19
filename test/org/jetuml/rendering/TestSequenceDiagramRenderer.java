@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
@@ -36,12 +39,28 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramRenderer
 {
+	private static int userDefinedFontSize;
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
 	private DiagramRenderer aRenderer = new SequenceDiagramRenderer(aDiagram);
+	
+	@BeforeAll
+	public static void setupClass()
+	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
+	}
 	
 	@Test
 	void testNodeAt_NoneShallow()

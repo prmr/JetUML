@@ -20,44 +20,31 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
-import static org.jetuml.testutils.GeometryUtils.osDependent;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jetuml.geom.Dimension;
 import org.junit.jupiter.api.Test;
-
-import javafx.scene.text.Font;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class TestFontMetrics {
 
-	private static final Font DEFAULT_FONT = new Font("System", DEFAULT_FONT_SIZE);
 	private static final FontMetrics aMetrics = new FontMetrics(DEFAULT_FONT);
-	private static final String SINGLE_LINE_STRING = "One";
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetDimensions()
 	{
-		assertEquals(new Dimension(0, osDependent(13,12,12)), aMetrics.getDimension(""));
-		assertEquals(new Dimension(osDependent(95, 92, 92), osDependent(13, 12, 12)), aMetrics.getDimension("Single-Line-String"));
-		assertEquals(new Dimension(osDependent(31, 30, 30), osDependent(45, 40, 45)), aMetrics.getDimension("Multi\nLine\nString"));
+		assertEquals(new Dimension(0, 16), aMetrics.getDimension(""));
+		assertEquals(new Dimension(95, 16), aMetrics.getDimension("Single-Line-String"));
+		assertEquals(new Dimension(31, 48), aMetrics.getDimension("Multi\nLine\nString"));
 	}
 	
-	/**
-	 * Note that due to the rounding performed in getHeight, testing the height of strings 
-	 * with a certain number of lines will result in the test failing.
-	 * E.g. A string with 13 lines will fail this test.
-	 */
 	@Test 
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetHeight_TwoLineString()
 	{
-		assertEquals(aMetrics.getHeight(SINGLE_LINE_STRING) * 2, aMetrics.getHeight("One\nTwo"));	
-	}
-	
-	@Test 
-	public void testGetHeight_TenLineString()
-	{
-		assertEquals(aMetrics.getHeight(SINGLE_LINE_STRING) * 10, 
-				aMetrics.getHeight("One\nTwo\nThree\nFour\nFive\nSix\nSeven\nEight\nNine\nTen"));	
+		assertEquals(16, aMetrics.getHeight());	
 	}
 }

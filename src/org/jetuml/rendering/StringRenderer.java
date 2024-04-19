@@ -48,7 +48,7 @@ public final class StringRenderer
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
-	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
+	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 6;
 	
 	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
 	
@@ -162,11 +162,9 @@ public final class StringRenderer
 	 * @return The height of the string.
 	 * @pre pString != null
 	 */
-	public int getHeight(String pString)
+	public int getHeight()
 	{
-		assert pString != null;
-		
-		return CANVAS_FONT.getHeight(pString, aBold, aItalic);
+		return CANVAS_FONT.getHeight(aBold, aItalic);
 	}
 
 	/**

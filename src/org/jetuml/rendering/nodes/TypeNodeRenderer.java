@@ -139,7 +139,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				STRING_VIEWER.draw(attribute, pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
 			}
-			lineSpacing += STRING_VIEWER.getHeight(attribute);
+			lineSpacing += STRING_VIEWER.getHeight();
 		}	
 	}
 	
@@ -166,7 +166,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				STRING_VIEWER.draw(method, pGraphics, 
 						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
 			}
-			lineSpacing += STRING_VIEWER.getHeight(method);
+			lineSpacing += STRING_VIEWER.getHeight();
 		}	
 	}
 	

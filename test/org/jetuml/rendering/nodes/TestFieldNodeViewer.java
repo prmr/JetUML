@@ -21,6 +21,7 @@
 package org.jetuml.rendering.nodes;
 
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,6 +31,29 @@ import java.awt.image.BufferedImage;
 import org.jetuml.JavaFXLoader;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.nodes.FieldNode;
+import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ObjectDiagramRenderer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.jetuml.testutils.GeometryUtils.osDependent;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+import org.jetuml.JavaFXLoader;
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.FieldNode;
@@ -44,6 +68,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestFieldNodeViewer
 {
+	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
 	private ObjectNode aObjectNode1;
 	private FieldNode aFieldNode1;
@@ -54,6 +79,8 @@ public class TestFieldNodeViewer
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
+		UserPreferences.instance().setString(StringPreference.fontName, DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
@@ -75,6 +102,7 @@ public class TestFieldNodeViewer
 	@AfterAll
 	public static void restorePreferences()
 	{
+		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
