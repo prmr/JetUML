@@ -65,9 +65,9 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	// Recursively enlarge the current rectangle to include the selected DiagramElements
 	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
 	{
-		if( pElement instanceof Node && ((Node) pElement).hasParent())
+		if( pElement instanceof Node node && node.hasParent())
 		{
-			return addBounds(pBounds, ((Node) pElement).getParent());
+			return addBounds(pBounds, node.getParent());
 		}
 		else
 		{

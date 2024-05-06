@@ -262,12 +262,12 @@ public class EditorFrame extends BorderPane
 	{
 		for( Tab tab : tabs() )
 		{
-			if(tab instanceof DiagramTab)
+			if(tab instanceof DiagramTab diagramTab)
 			{	
-				if(((DiagramTab) tab).getFile().isPresent()	&& 
-						((DiagramTab) tab).getFile().get().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
+				if(diagramTab.getFile().isPresent()	&& 
+						diagramTab.getFile().get().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
 				{
-					return Optional.of((DiagramTab)tab);
+					return Optional.of(diagramTab);
 				}
 			}
 		}

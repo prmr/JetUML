@@ -876,12 +876,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static boolean noConflictingStartLabels(Edge pEdge1, Edge pEdge2)
 	{
 		assert pEdge1 !=null && pEdge2 !=null;
-		if(pEdge1 instanceof ThreeLabelEdge && pEdge2 instanceof ThreeLabelEdge &&
+		if(pEdge1 instanceof ThreeLabelEdge edge1 && pEdge2 instanceof ThreeLabelEdge edge2 &&
 				priorityOf(pEdge1) == priorityOf(pEdge2))
 		{
-			ThreeLabelEdge labelEdge1 = (ThreeLabelEdge) pEdge1;
-			ThreeLabelEdge labelEdge2 = (ThreeLabelEdge) pEdge2;
-			return labelEdge1.getStartLabel().equals(labelEdge2.getStartLabel());
+			return edge1.getStartLabel().equals(edge2.getStartLabel());
 		}
 		else
 		{
@@ -899,12 +897,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static boolean noConflictingEndLabels(Edge pEdge1, Edge pEdge2)
 	{
 		assert pEdge1 !=null && pEdge2 !=null;
-		if(pEdge1 instanceof ThreeLabelEdge && pEdge2 instanceof ThreeLabelEdge &&
+		if(pEdge1 instanceof ThreeLabelEdge edge1 && pEdge2 instanceof ThreeLabelEdge edge2 &&
 				priorityOf(pEdge1) == priorityOf(pEdge2))
 		{
-			ThreeLabelEdge labelEdge1 = (ThreeLabelEdge) pEdge1;
-			ThreeLabelEdge labelEdge2 = (ThreeLabelEdge) pEdge2;
-			return labelEdge1.getEndLabel().equals(labelEdge2.getEndLabel());
+			return edge1.getEndLabel().equals(edge2.getEndLabel());
 		}
 		else
 		{

@@ -49,9 +49,9 @@ public enum EdgePriority
 		{
 			return EdgePriority.SELF_EDGE;
 		}
-		else if(pEdge instanceof GeneralizationEdge)
+		else if(pEdge instanceof GeneralizationEdge edge)
 		{
-			if(((GeneralizationEdge) pEdge).getType() == GeneralizationEdge.Type.Inheritance) 
+			if(edge.getType() == GeneralizationEdge.Type.Inheritance) 
 			{
 				return EdgePriority.INHERITANCE;
 			}
@@ -60,9 +60,9 @@ public enum EdgePriority
 				return EdgePriority.IMPLEMENTATION;
 			}
 		}
-		else if(pEdge instanceof AggregationEdge)
+		else if(pEdge instanceof AggregationEdge edge)
 		{
-			if(((AggregationEdge) pEdge).getType() == AggregationEdge.Type.Aggregation)
+			if(edge.getType() == AggregationEdge.Type.Aggregation)
 			{
 				return EdgePriority.AGGREGATION;
 			}

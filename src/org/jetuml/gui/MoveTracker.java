@@ -67,10 +67,10 @@ public final class MoveTracker
 		for(DiagramElement element : pElements)
 		{
 			assert element != null;
-			if(element instanceof Node)
+			if(element instanceof Node node)
 			{
-				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(aBoundsCalculator.apply((Node)element));
+				aTrackedNodes.add(node);
+				aOriginalBounds.add(aBoundsCalculator.apply(node));
 			}
 		}
 	}

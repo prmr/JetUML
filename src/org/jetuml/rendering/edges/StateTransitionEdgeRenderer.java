@@ -308,9 +308,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		boolean result = super.contains(pElement, pPoint);
-		if(getShape((Edge)pElement) instanceof Arc)
+		if(getShape((Edge)pElement) instanceof Arc arc)
 		{
-			Arc arc = (Arc) getShape((Edge)pElement);
 			arc.setRadiusX(arc.getRadiusX() + 2 * MAX_DISTANCE);
 			arc.setRadiusY(arc.getRadiusY() + 2 * MAX_DISTANCE);
 			result = arc.contains(pPoint.getX(), pPoint.getY());

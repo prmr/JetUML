@@ -144,13 +144,13 @@ public abstract class DiagramBuilder
 		CompoundOperation operation = new CompoundOperation();
 		for( DiagramElement element : pElements)
 		{
-			if( element instanceof Node )
+			if( element instanceof Node node)
 			{
 				operation.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().addRootNode((Node)element),
-						()-> aDiagramRenderer.diagram().removeRootNode((Node)element)));
+						()-> aDiagramRenderer.diagram().addRootNode(node),
+						()-> aDiagramRenderer.diagram().removeRootNode(node)));
 			}
-			else if( element instanceof Edge)
+			else if( element instanceof Edge edge)
 			{
 				/* We need to re-connect the edge to set the correct value for the
 				 * reference to the diagram, to cover the cases where elements might 
@@ -159,7 +159,6 @@ public abstract class DiagramBuilder
 				operation.add(new SimpleOperation(
 						()-> 
 						{ 
-							Edge edge = (Edge) element;
 							aDiagramRenderer.diagram().addEdge(edge); 
 							edge.connect(edge.start(), edge.end());	
 						},
@@ -202,9 +201,9 @@ public abstract class DiagramBuilder
 				result.add(edge.end());
 			}
 		}
-		if( pElement instanceof Node )
+		if( pElement instanceof Node node)
 		{
-			List<Node> descendants = getNodeAndAllChildren((Node)pElement);
+			List<Node> descendants = getNodeAndAllChildren(node);
 			for(Edge edge : aDiagramRenderer.diagram().edges())
 			{
 				if(descendants.contains(edge.start() ) || descendants.contains(edge.end()))
@@ -274,13 +273,13 @@ public abstract class DiagramBuilder
 		ArrayList<Node> nodes = new ArrayList<>();
 		for( DiagramElement element : result )
 		{
-			if( element instanceof Edge )
+			if( element instanceof Edge edge)
 			{
-				edges.add((Edge)element);
+				edges.add(edge);
 			}
-			else if( element instanceof Node && ((Node)element).hasParent() )
+			else if( element instanceof Node node && node.hasParent() )
 			{
-				nodes.add((Node)element);
+				nodes.add(node);
 			}
 			else
 			{
@@ -330,26 +329,26 @@ public abstract class DiagramBuilder
 		
 		for( DiagramElement element : tweakOrder(toDelete))
 		{
-			if( element instanceof Edge )
+			if( element instanceof Edge edge)
 			{
-				int index = aDiagramRenderer.diagram().indexOf((Edge)element);
+				int index = aDiagramRenderer.diagram().indexOf(edge);
 				result.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().removeEdge((Edge)element),
-						()-> aDiagramRenderer.diagram().addEdge(index, (Edge)element)));
+						()-> aDiagramRenderer.diagram().removeEdge(edge),
+						()-> aDiagramRenderer.diagram().addEdge(index, edge)));
 			}
-			else if( element instanceof Node )
+			else if( element instanceof Node node)
 			{
-				if(((Node) element).hasParent())
+				if(node.hasParent())
 				{
 					result.add(new SimpleOperation(
-						createDetachOperation((Node)element),
-						createReinsertOperation((Node)element)));
+						createDetachOperation(node),
+						createReinsertOperation(node)));
 				}
 				else
 				{
 					result.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().removeRootNode((Node)element),
-						()-> aDiagramRenderer.diagram().addRootNode((Node)element)));
+						()-> aDiagramRenderer.diagram().removeRootNode(node),
+						()-> aDiagramRenderer.diagram().addRootNode(node)));
 				}
 			}
 		}

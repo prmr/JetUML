@@ -242,10 +242,9 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 			ButtonBase button = (ButtonBase) item;
 			if( pShow )
 			{
-				if( item instanceof SelectableToolButton && 
-						((SelectableToolButton)item).getPrototype().isPresent())
+				if( item instanceof SelectableToolButton toolButton && 
+						toolButton.getPrototype().isPresent())
 				{
-					SelectableToolButton toolButton = (SelectableToolButton) item;
 					String text = Prototypes.instance().tooltip(toolButton.getPrototype().get(), false);
 					button.setText(text);
 				}

@@ -161,15 +161,15 @@ public final class Clipboard
 		List<Node> result = new ArrayList<>();
 		for( DiagramElement element : pSelection )
 		{
-			if( element instanceof Node )
+			if( element instanceof Node node)
 			{
-				if( missingParent( (Node)element ))
+				if( missingParent(node))
 				{
 					continue;
 				}
-				Node cloned = ((Node) element).clone();
+				Node cloned = node.clone();
 				result.add(cloned);
-				reassignEdges(pEdges, (Node)element, cloned);
+				reassignEdges(pEdges, node, cloned);
 			}
 		}
 		return result;

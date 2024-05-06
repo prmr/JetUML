@@ -113,9 +113,9 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
 		DiagramOperation result = null;
-		if( pNode instanceof FieldNode )
+		if( pNode instanceof FieldNode fieldNode)
 		{
-			ObjectNode object = findObject((FieldNode)pNode, pRequestedPosition);
+			ObjectNode object = findObject(fieldNode, pRequestedPosition);
 			
 			if( object != null )
 			{

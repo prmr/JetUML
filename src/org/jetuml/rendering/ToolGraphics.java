@@ -167,17 +167,16 @@ public final class ToolGraphics
 		pGraphics.beginPath();
 		for(PathElement element : pPath.getElements())
 		{
-			if(element instanceof MoveTo)
+			if(element instanceof MoveTo moveTo)
 			{
-				pGraphics.moveTo(((int)((MoveTo) element).getX()) + 0.5, ((int)((MoveTo) element).getY()) + 0.5);
+				pGraphics.moveTo(((int)moveTo.getX()) + 0.5, ((int)moveTo.getY()) + 0.5);
 			}
-			else if(element instanceof LineTo)
+			else if(element instanceof LineTo lineTo)
 			{
-				pGraphics.lineTo(((int)((LineTo) element).getX()) + 0.5, ((int)((LineTo) element).getY()) + 0.5);
+				pGraphics.lineTo(((int)lineTo.getX()) + 0.5, ((int)lineTo.getY()) + 0.5);
 			}
-			else if(element instanceof QuadCurveTo)
+			else if(element instanceof QuadCurveTo curve)
 			{
-				QuadCurveTo curve = (QuadCurveTo) element;
 				pGraphics.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
 						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);
 			}

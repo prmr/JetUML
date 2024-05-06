@@ -64,19 +64,19 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
 		List<DiagramElement> result = super.getCoRemovals(pElement);
-		if(pElement instanceof Node)
+		if(pElement instanceof Node node)
 		{
-			result.addAll(getNodeUpstreams((Node)pElement));
-			result.addAll(getNodeDownStreams((Node)pElement));
+			result.addAll(getNodeUpstreams(node));
+			result.addAll(getNodeDownStreams(node));
 		}
-		else if(pElement instanceof Edge)
+		else if(pElement instanceof Edge edge)
 		{
-			Optional<DiagramElement> edgeStart = ((SequenceDiagramRenderer)renderer()).getStartNodeIfExclusive((Edge)pElement);
+			Optional<DiagramElement> edgeStart = ((SequenceDiagramRenderer)renderer()).getStartNodeIfExclusive(edge);
 			if(edgeStart.isPresent())
 			{
 				result.add(edgeStart.get());
 			}
-			result.addAll(getEdgeDownStreams((Edge)pElement));
+			result.addAll(getEdgeDownStreams(edge));
 		}	
 		result.addAll(getCorrespondingReturnEdges(result));
 		//Implicit parameter nodes downstream of constructor calls should not be removed
@@ -208,9 +208,9 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		Set<DiagramElement> returnEdges = new HashSet<>();
 		for( DiagramElement element: pElements )
 		{
-			if( element instanceof CallEdge )
+			if( element instanceof CallEdge edge)
 			{
-				Optional<Edge> returnEdge = getReturnEdge((Edge) element);
+				Optional<Edge> returnEdge = getReturnEdge(edge);
 				if( returnEdge.isPresent() )
 				{
 					returnEdges.add(returnEdge.get());

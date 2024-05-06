@@ -104,9 +104,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static ArrowHead getArrowStart(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if(pEdge instanceof AggregationEdge)
+		if(pEdge instanceof AggregationEdge edge)
 		{
-			AggregationEdge edge = (AggregationEdge) pEdge;
 			if(edge.getType() == Type.Composition)
 			{
 				return ArrowHead.BLACK_DIAMOND;
@@ -116,16 +115,15 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 				return ArrowHead.DIAMOND;
 			}
 		}
-		else if(pEdge instanceof AssociationEdge)
+		else if(pEdge instanceof AssociationEdge edge)
 		{
-			if(((AssociationEdge) pEdge).getDirectionality() == Directionality.Bidirectional)
+			if(edge.getDirectionality() == Directionality.Bidirectional)
 			{
 				return ArrowHead.V;
 			}
 		}
-		else if(pEdge instanceof DependencyEdge)
+		else if(pEdge instanceof DependencyEdge edge)
 		{
-			DependencyEdge edge = (DependencyEdge) pEdge;
 			if(edge.getDirectionality() == DependencyEdge.Directionality.Bidirectional)
 			{
 				return ArrowHead.V;
@@ -155,9 +153,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		{
 			return ArrowHead.V;
 		}
-		else if(pEdge instanceof AssociationEdge)
+		else if(pEdge instanceof AssociationEdge edge)
 		{
-			AssociationEdge edge = (AssociationEdge) pEdge;
 			if(edge.getDirectionality() == AssociationEdge.Directionality.Unidirectional || 
 					edge.getDirectionality() == AssociationEdge.Directionality.Bidirectional)
 			{
@@ -340,9 +337,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getStartLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if(pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge threeLabelEdge)
 		{
-			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getStartLabel();
 		}
 		else
@@ -360,14 +356,12 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getMiddleLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if(pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge threeLabelEdge)
 		{
-			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getMiddleLabel();
 		}
-		else if(pEdge instanceof SingleLabelEdge)
+		else if(pEdge instanceof SingleLabelEdge singleLabelEdge)
 		{
-			SingleLabelEdge singleLabelEdge = (SingleLabelEdge) pEdge;
 			return singleLabelEdge.getMiddleLabel();
 		}
 		else
@@ -385,9 +379,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getEndLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if(pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge threeLabelEdge)
 		{
-			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getEndLabel();
 		}
 		else

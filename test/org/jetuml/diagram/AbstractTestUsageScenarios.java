@@ -106,9 +106,9 @@ public class AbstractTestUsageScenarios
 		CompoundOperation operation = new CompoundOperation();
 		for( DiagramElement element : aSelection)
 		{
-			if( element instanceof Node)
+			if( element instanceof Node node)
 			{
-				operation.add(DiagramBuilder.createMoveNodeOperation((Node)element, pX, pY));
+				operation.add(DiagramBuilder.createMoveNodeOperation(node, pX, pY));
 			}
 		}
 		aProcessor.executeNewOperation(operation);

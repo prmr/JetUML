@@ -193,9 +193,9 @@ StringPreferenceChangeHandler
 	{
 		for(DiagramElement element: pElements) 
 		{
-			if(element instanceof Node) 
+			if(element instanceof Node node) 
 			{
-				((Node)element).translate(pShiftAmount, pShiftAmount);
+				node.translate(pShiftAmount, pShiftAmount);
 			}
 		}
 	}
@@ -898,19 +898,19 @@ StringPreferenceChangeHandler
 	 */
 	private boolean containsParent(DiagramElement pElement)
 	{
-		if( pElement instanceof Node )
+		if( pElement instanceof Node node)
 		{
-			if( !((Node) pElement).hasParent() )
+			if( !node.hasParent() )
 			{
 				return false;
 			}
-			else if( aSelected.contains(((Node) pElement).getParent()))
+			else if( aSelected.contains(node.getParent()))
 			{
 				return true;
 			}
 			else
 			{
-				return containsParent(((Node) pElement).getParent());
+				return containsParent(node.getParent());
 			}
 		}
 		else
