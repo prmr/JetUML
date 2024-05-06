@@ -84,12 +84,6 @@ public final class StringRenderer
 	  { 
 		  return this == TOP_CENTER || this == CENTER_CENTER || this == BOTTOM_CENTER; 
 	  }
-	  
-	  private boolean isRight() 
-	  { 
-		  return this == TOP_RIGHT || this == CENTER_RIGHT || this == BOTTOM_RIGHT; 
-	  }
-	  
 	}
 	
 	/**

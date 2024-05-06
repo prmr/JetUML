@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -42,36 +42,9 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.lang.reflect.Method;
-import java.util.stream.Stream;
-
-import org.jetuml.JavaFXLoader;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
-import org.jetuml.application.UserPreferences.StringPreference;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.diagram.nodes.InterfaceNode;
-import org.jetuml.diagram.nodes.TypeNode;
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

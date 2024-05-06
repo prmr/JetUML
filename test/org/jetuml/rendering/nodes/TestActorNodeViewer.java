@@ -20,25 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.jetuml.JavaFXLoader;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
-import org.jetuml.application.UserPreferences.StringPreference;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.nodes.ActorNode;
-import org.jetuml.geom.Point;
-import org.jetuml.testutils.GeometryUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
