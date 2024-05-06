@@ -61,16 +61,11 @@ import javafx.scene.shape.Shape;
  */
 public class StoredEdgeRenderer extends AbstractEdgeRenderer
 {
-	private static final int BUTTON_SIZE = 25;
-	private static final int OFFSET = 3;
-	private static final int MAX_DISTANCE = 3;
-	
 	private static final StringRenderer TOP_CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
 	private static final StringRenderer BOTTOM_CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.BOTTOM_CENTER);
 	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
 	private static final int SINGLE_CHAR_WIDTH = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").width();
 	private static final int SIGLE_CHAR_HEIGHT = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
-	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_180 = 180;
 	
 	/**

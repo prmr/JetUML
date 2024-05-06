@@ -53,7 +53,7 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	protected static void verifyImplicitParameterNodeTopRectangleDefaultHeight(Node pNode)
 	{
 		final int TOP_HEIGHT = getStaticIntFieldValue(ImplicitParameterNodeRenderer.class, "TOP_HEIGHT");
-		ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer(pNode);
+		ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer();
 		Rectangle implicitParameterTopRectangle = instanceOfImplicitParameterNodeViewer.getTopRectangle(pNode);
 		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.getHeight());
 	}
@@ -65,7 +65,7 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 		assertEquals(WIDTH, nodeBounds.getWidth());
 	}
 	
-	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer(Node pImplicitParameterNode)
+	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer()
 	{
 		try
 		{

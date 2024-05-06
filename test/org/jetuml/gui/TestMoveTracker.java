@@ -70,7 +70,7 @@ public class TestMoveTracker
 	}
 
 	@Test
-	void moveSingleObjectFourTimes() throws ReflectiveOperationException
+	void moveSingleObjectFourTimes()
 	{
 		aTracker.start(asList(aNode1));
 		aNode1.translate(20, 20);
@@ -119,7 +119,7 @@ public class TestMoveTracker
 	}
 	
 	@Test
-	void moveNodesAndEdges() throws ReflectiveOperationException
+	void moveNodesAndEdges()
 	{
 		aTracker.start(asList(aNode1, aNode2, aEdge1));
 		aNode1.translate(20, 20);

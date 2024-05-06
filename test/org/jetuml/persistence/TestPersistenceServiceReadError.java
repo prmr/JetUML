@@ -217,7 +217,7 @@ public class TestPersistenceServiceReadError
 	
 	@ParameterizedTest
 	@ValueSource(strings = {SYNTACTIC_1, SYNTACTIC_2, SYNTACTIC_3})
-	void testRead_SyntacticErrors(String pInput) throws Exception
+	void testRead_SyntacticErrors(String pInput)
 	{
 		assertThrowsWithCategory(Category.SYNTACTIC, () -> PersistenceService.read(createFile(pInput)));
 	}

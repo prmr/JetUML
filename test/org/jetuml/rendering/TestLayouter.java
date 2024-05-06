@@ -785,7 +785,7 @@ public class TestLayouter
 	public void testGetEdgesToMergeEnd()
 	{
 		//Create a diagram with 6 edges incoming on endNode and determine which edges should merge with edgeD
-		Node endNode = new ClassNode();
+		endNode = new ClassNode();
 		Node nodeA = new ClassNode();
 		Node nodeB = new ClassNode();
 		Node nodeC = new ClassNode();
@@ -1487,7 +1487,7 @@ public class TestLayouter
 	public void testGetConnectionPoint_NorthSouthSides()
 	{
 		//Initialize 1 end node and 6 start nodes 
-		Node endNode = new ClassNode();
+		endNode = new ClassNode();
 		Node startNode1 = new ClassNode();
 		Node startNode2 = new ClassNode();
 		Node startNode3 = new ClassNode();
@@ -1552,7 +1552,7 @@ public class TestLayouter
 	public void testGetConnectionPoint_EastWestSides()
 	{
 		//Initialize 1 end node and 4 start nodes 
-		Node endNode = new ClassNode();
+		endNode = new ClassNode();
 		Node startNode1 = new ClassNode();
 		Node startNode2 = new ClassNode();
 		Node startNode3 = new ClassNode();

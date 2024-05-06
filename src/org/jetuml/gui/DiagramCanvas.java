@@ -114,7 +114,7 @@ StringPreferenceChangeHandler
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramValidator = pDiagramValidator;
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
-		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
+		Dimension dimension = getDiagramCanvasWidth();
 		setWidth(dimension.width());
 		setHeight(dimension.height());
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
@@ -382,7 +382,7 @@ StringPreferenceChangeHandler
 	 * the preferred dimension. Otherwise, grow the dimensions to accommodate
 	 * the diagram.
 	 */
-	private Dimension getDiagramCanvasWidth(Diagram pDiagram)
+	private Dimension getDiagramCanvasWidth()
 	{
 		Rectangle bounds = aDiagramBuilder.renderer().getBounds();
 		return new Dimension(
