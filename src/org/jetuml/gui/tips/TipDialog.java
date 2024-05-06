@@ -148,7 +148,7 @@ public class TipDialog
 		aStage.requestFocus();
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
-			if (pEvent.getCode() == KeyCode.ESCAPE) 
+			if(pEvent.getCode() == KeyCode.ESCAPE) 
 			{
 				aStage.close();
 			}

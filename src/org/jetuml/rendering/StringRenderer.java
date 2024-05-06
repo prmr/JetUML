@@ -101,7 +101,7 @@ public final class StringRenderer
 	
 	private StringRenderer(Alignment pAlign, EnumSet<TextDecoration> pDecorations) 
 	{
-		if ( !pDecorations.contains(TextDecoration.PADDED) )
+		if( !pDecorations.contains(TextDecoration.PADDED) )
 		{
 			aHorizontalPadding = 0;
 			aVerticalPadding = 0;
@@ -175,10 +175,10 @@ public final class StringRenderer
         String[] words = pString.split(" ");
         StringBuilder formattedString = new StringBuilder();
 
-        for ( String word : words )
+        for( String word : words )
         {
         	// Replace last space with newline (if last space exists)
-        	if ( word.length() > remainingEmptySpace && formattedString.length() > 0 )
+        	if( word.length() > remainingEmptySpace && formattedString.length() > 0 )
         	{
         		formattedString.deleteCharAt(formattedString.length() - 1);
         		formattedString.append('\n');
@@ -197,11 +197,11 @@ public final class StringRenderer
 
 	private TextAlignment getTextAlignment()
 	{		
-		if ( aAlign.isLeft() )
+		if( aAlign.isLeft() )
 		{
 			return TextAlignment.LEFT;
 		}
-		else if ( aAlign.isHorizontallyCentered() )
+		else if( aAlign.isHorizontallyCentered() )
 		{
 			return TextAlignment.CENTER;
 		}
@@ -210,11 +210,11 @@ public final class StringRenderer
 	
 	private VPos getTextBaseline()
 	{
-		if ( aAlign.isBottom() )
+		if( aAlign.isBottom() )
 		{
 			return VPos.BASELINE;
 		}
-		else if ( aAlign.isTop() )
+		else if( aAlign.isTop() )
 		{
 			return VPos.TOP;
 		}
@@ -246,7 +246,7 @@ public final class StringRenderer
 			textX = aHorizontalPadding;
 		}
 		
-		if ( aAlign.isVerticallyCentered() )
+		if( aAlign.isVerticallyCentered() )
 		{
 			textY = pRectangle.getHeight()/2;
 		}

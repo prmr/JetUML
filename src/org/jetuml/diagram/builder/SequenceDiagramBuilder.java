@@ -80,7 +80,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}	
 		result.addAll(getCorrespondingReturnEdges(result));
 		//Implicit parameter nodes downstream of constructor calls should not be removed
-		if (pElement instanceof ConstructorEdge) 
+		if(pElement instanceof ConstructorEdge) 
 		{
 			result.removeIf(element -> element instanceof ImplicitParameterNode);
 		}
@@ -242,7 +242,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		for( Edge edge : diagram().edges() )
 		{
-			if ( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
+			if( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
 				return true;
 			}
@@ -346,7 +346,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		for( Edge edge : diagram().edges() )
 		{
-			if ( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
+			if( edge.end() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
 				return Optional.of(edge);
 			}
@@ -434,7 +434,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				downstreamElements.addAll(getEdgeDownStreams(edge));
 			}
 		}
-		else if ( pNode.getClass() == ImplicitParameterNode.class )
+		else if( pNode.getClass() == ImplicitParameterNode.class )
 		{
 			downstreamElements.addAll(pNode.getChildren());
 			for( Node child: pNode.getChildren() )

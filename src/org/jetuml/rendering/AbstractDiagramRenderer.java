@@ -121,9 +121,9 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public Rectangle getBounds()
 	{
 		Rectangle bounds = null;
-		for (Node node : aDiagram.rootNodes())
+		for(Node node : aDiagram.rootNodes())
 		{
-			if (bounds == null)
+			if(bounds == null)
 			{
 				bounds = getBounds(node);
 			}
@@ -132,11 +132,11 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 				bounds = bounds.add(getBounds(node));
 			}
 		}
-		for (Edge edge : aDiagram.edges())
+		for(Edge edge : aDiagram.edges())
 		{
 			bounds = bounds.add(getBounds(edge));
 		}
-		if (bounds == null)
+		if(bounds == null)
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}

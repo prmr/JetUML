@@ -39,7 +39,7 @@ public enum NodeCorner
 	 */
 	public static NodeIndex getHorizontalIndex(NodeCorner pCorner)
 	{
-		if (pCorner == BOTTOM_RIGHT || pCorner == TOP_RIGHT)
+		if(pCorner == BOTTOM_RIGHT || pCorner == TOP_RIGHT)
 		{
 			return NodeIndex.PLUS_THREE;
 		}
@@ -56,7 +56,7 @@ public enum NodeCorner
 	 */
 	public static NodeIndex getVerticalIndex(NodeCorner pCorner)
 	{
-		if (pCorner == TOP_LEFT || pCorner == TOP_RIGHT)
+		if(pCorner == TOP_LEFT || pCorner == TOP_RIGHT)
 		{
 			return NodeIndex.MINUS_ONE;
 		}
@@ -75,7 +75,7 @@ public enum NodeCorner
 	public static Direction horizontalSide(NodeCorner pCorner)
 	{
 		assert pCorner != null;
-		if (pCorner == TOP_RIGHT || pCorner == TOP_LEFT)
+		if(pCorner == TOP_RIGHT || pCorner == TOP_LEFT)
 		{
 			return Direction.NORTH;
 		}
@@ -94,7 +94,7 @@ public enum NodeCorner
 	public static Direction verticalSide(NodeCorner pCorner)
 	{
 		assert pCorner != null;
-		if (pCorner == TOP_RIGHT || pCorner == BOTTOM_RIGHT)
+		if(pCorner == TOP_RIGHT || pCorner == BOTTOM_RIGHT)
 		{
 			return Direction.EAST;
 		}

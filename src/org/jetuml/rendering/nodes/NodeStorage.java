@@ -43,11 +43,11 @@ import org.jetuml.geom.Rectangle;
  	 */
  	public Rectangle getBounds(Node pNode, Function<Node, Rectangle> pBoundCalculator)
  	{
- 		if (!aIsActivated)
+ 		if(!aIsActivated)
  		{
  			return pBoundCalculator.apply(pNode);
  		}
- 		else if (aIsActivated && aNodeBounds.containsKey(pNode))
+ 		else if(aIsActivated && aNodeBounds.containsKey(pNode))
  		{
  			return aNodeBounds.get(pNode);
  		}

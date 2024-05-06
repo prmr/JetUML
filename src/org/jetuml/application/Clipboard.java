@@ -301,7 +301,7 @@ public final class Clipboard
 	private static boolean validElementFor( DiagramElement pElement, Diagram pDiagram )
 	{
 		// PointNodes are allowed in all diagrams despite not being contained in prototypes.
-		if ( pElement.getClass() == PointNode.class ) 
+		if( pElement.getClass() == PointNode.class ) 
 		{
 			return true;
 		}

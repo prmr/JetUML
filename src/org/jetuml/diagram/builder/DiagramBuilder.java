@@ -507,7 +507,7 @@ public abstract class DiagramBuilder
 		{
 			newX = aCanvasDimension.width() - pDimension.width();
 		}
-		if (newY + pDimension.height() > aCanvasDimension.height())
+		if(newY + pDimension.height() > aCanvasDimension.height())
 		{
 			newY = aCanvasDimension.height() - pDimension.height();
 		}

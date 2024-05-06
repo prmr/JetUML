@@ -191,7 +191,7 @@ StringPreferenceChangeHandler
 	 */
 	private static void shiftElements(Iterable<DiagramElement> pElements, int pShiftAmount) 
 	{
-		for (DiagramElement element: pElements) 
+		for(DiagramElement element: pElements) 
 		{
 			if(element instanceof Node) 
 			{
@@ -362,7 +362,7 @@ StringPreferenceChangeHandler
 	@Override
 	public void integerPreferenceChanged(IntegerPreference pPreference) 
 	{
-		if ( pPreference == IntegerPreference.fontSize )
+		if( pPreference == IntegerPreference.fontSize )
 		{
 			paintPanel();
 		}
@@ -628,19 +628,19 @@ StringPreferenceChangeHandler
 			int dy = snappedPosition.getY() - bounds.getY();
 			
 			//ensure the bounds of the entire selection are not outside the walls of the canvas
-			if (entireBounds.getMaxX() + dx > getWidth()) 
+			if(entireBounds.getMaxX() + dx > getWidth()) 
 			{
 				dx -= GRID_SIZE;
 			}
-			else if (entireBounds.getX() + dx <= 0) 
+			else if(entireBounds.getX() + dx <= 0) 
 			{
 				dx += GRID_SIZE;
 			}
-			if (entireBounds.getMaxY() + dy > getHeight()) 
+			if(entireBounds.getMaxY() + dy > getHeight()) 
 			{
 				dy -= GRID_SIZE;
 			}
-			else if (entireBounds.getY() <= 0) 
+			else if(entireBounds.getY() <= 0) 
 			{
 				dy += GRID_SIZE;
 			}

@@ -75,14 +75,14 @@ public class TestTipJsons
 	@Test
 	public void testTipJsons_testAllTipIdsInRangeOpenableAsInputStream()
 	{
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			try (InputStream inputStream = TestTipJsons.class
+			try(InputStream inputStream = TestTipJsons.class
 					.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, id)))
 			{
 				assertTrue(inputStream != null);
 			}
-			catch (IOException e)
+			catch(IOException e)
 			{
 				fail();
 			}
@@ -92,7 +92,7 @@ public class TestTipJsons
 	@Test
 	public void testTipJsons_testTipsCanBeOpenedAsJsonObjects() throws IOException
 	{
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject tip = loadTipAsJsonObject(id);
 			assertTrue(tip != null);
@@ -102,7 +102,7 @@ public class TestTipJsons
 	@Test
 	public void testTipJsons_testTipsHaveTwoFieldsOnly() throws IOException
 	{
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
 			assertEquals(jObj.numberOfProperties(), 2);
@@ -114,7 +114,7 @@ public class TestTipJsons
 	{
 		assertTrue(tipsAllHaveField(TipFieldName.TITLE));
 
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
 			Object title = jObj.get(TipFieldName.TITLE.asString());
@@ -127,20 +127,20 @@ public class TestTipJsons
 	{
 		assertTrue(tipsAllHaveField(TipFieldName.CONTENT));
 
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
 			Object obj = jObj.get(TipFieldName.CONTENT.asString());
 			assertTrue(obj instanceof JsonArray);
 			JsonArray jArr = (JsonArray) obj;
-			for (Object contentElement : jArr)
+			for(Object contentElement : jArr)
 			{
 				assertTrue(contentElement instanceof JsonObject);
 				JsonObject contentElementJsonObj = (JsonObject) contentElement;
 				assertEquals(contentElementJsonObj.numberOfProperties(), 1);
-				for (Media media : Media.values())
+				for(Media media : Media.values())
 				{
-					if (contentElementJsonObj.hasProperty(media.name().toLowerCase()))
+					if(contentElementJsonObj.hasProperty(media.name().toLowerCase()))
 					{
 						return;
 					}
@@ -152,7 +152,7 @@ public class TestTipJsons
 
 	private static boolean tipsAllHaveField(TipFieldName pTipFieldName) throws IOException
 	{
-		for (int id = 1; id <= NUM_TIPS; id++)
+		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
 			if (!jObj.hasProperty(pTipFieldName.asString()))

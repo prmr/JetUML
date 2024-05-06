@@ -91,7 +91,7 @@ final class JsonStringParser implements JsonValueParser
 	 */
 	private static char parseUnicode(ParsableCharacterBuffer pInput)
 	{
-		if (!pInput.hasMore(NUMBER_OF_UNICODE_DIGITS))
+		if(!pInput.hasMore(NUMBER_OF_UNICODE_DIGITS))
 		{
 			throw new JsonParsingException(pInput.position());
 		}
@@ -141,16 +141,16 @@ final class JsonStringParser implements JsonValueParser
 		while (pInput.hasMore())
 		{
 			char next = pInput.next();
-			if (isISOControl(next))
+			if(isISOControl(next))
 			{
 				throw new JsonParsingException(pInput.position());
 			}
-			else if (next == CHAR_ESCAPE)
+			else if(next == CHAR_ESCAPE)
 			{
 				pInput.backUp();
 				result.append(parseEscape(pInput));
 			}
-			else if (next == CHAR_QUOTE)
+			else if(next == CHAR_QUOTE)
 			{
 				return result.toString();
 			}

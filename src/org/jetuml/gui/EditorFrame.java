@@ -423,7 +423,7 @@ public class EditorFrame extends BorderPane
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 			alert.showAndWait();
 
-			if (alert.getResult() == ButtonType.YES) 
+			if(alert.getResult() == ButtonType.YES) 
 			{
 				removeGraphFrameFromTabbedPane(diagramTab);
 			}
@@ -451,7 +451,7 @@ public class EditorFrame extends BorderPane
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 			alert.showAndWait();
 
-			if (alert.getResult() == ButtonType.YES) 
+			if(alert.getResult() == ButtonType.YES) 
 			{
 				removeGraphFrameFromTabbedPane(pDiagramTab);
 			}
@@ -655,7 +655,7 @@ public class EditorFrame extends BorderPane
 	public void exit() 
 	{
 		final int modcount = getNumberOfUsavedDiagrams();
-		if (modcount > 0) 
+		if(modcount > 0) 
 		{
 			Alert alert = new Alert(AlertType.CONFIRMATION, 
 					MessageFormat.format(RESOURCES.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(modcount) }),
@@ -666,7 +666,7 @@ public class EditorFrame extends BorderPane
 			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
 			alert.showAndWait();
 
-			if (alert.getResult() == ButtonType.YES) 
+			if(alert.getResult() == ButtonType.YES) 
 			{
 				Preferences.userNodeForPackage(JetUML.class).put("recent", aRecentFiles.serialize());
 				System.exit(0);

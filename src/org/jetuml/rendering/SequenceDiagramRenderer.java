@@ -398,7 +398,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
 		// Only apply shift if necessary
-		if ( shift < CALL_DROP )
+		if( shift < CALL_DROP )
 		{
 			return DROP_MIN;
 		}
@@ -442,7 +442,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		{
 			// We delete the start node of pEdge if it does not have any caller and only makes calls to the 
 			// object being constructed.
-			if ( getCaller(pEdge.start()).isEmpty() && 
+			if( getCaller(pEdge.start()).isEmpty() && 
 					onlyCallsToASingleImplicitParameterNode(pEdge.start(), pEdge.end().getParent()) )
 			{
 				return Optional.of(pEdge.start());

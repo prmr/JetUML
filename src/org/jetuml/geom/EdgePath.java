@@ -53,7 +53,7 @@ public class EdgePath implements Iterable<Point>
 	{
 		assert pLines.length > 0;
 		aPoints.add(pLines[0].getPoint1());
-		for (Line line : pLines)
+		for(Line line : pLines)
 		{
 			aPoints.add(line.getPoint2());
 		}
@@ -99,26 +99,26 @@ public class EdgePath implements Iterable<Point>
 	@Override
 	public boolean equals(Object pObj) 
 	{
-		if (this == pObj)
+		if(this == pObj)
 		{
 			return true;
 		}
-		if (pObj == null)
+		if(pObj == null)
 		{
 			return false;
 		}
-		if (getClass() != pObj.getClass())
+		if(getClass() != pObj.getClass())
 		{
 			return false;
 		}
 		EdgePath other = (EdgePath) pObj;
-		if (other.aPoints.size() != this.aPoints.size())
+		if(other.aPoints.size() != this.aPoints.size())
 		{
 			return false;
 		}
-		for (int i = 0; i < aPoints.size(); i++)
+		for(int i = 0; i < aPoints.size(); i++)
 		{
-			if (!other.aPoints.get(i).equals(aPoints.get(i)))
+			if(!other.aPoints.get(i).equals(aPoints.get(i)))
 			{
 				return false;
 			}

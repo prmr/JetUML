@@ -52,7 +52,7 @@ import javafx.scene.canvas.GraphicsContext;
  		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 
  		double avgExecutionTime = 0.0;
- 		for (int i = 0; i < NUMBER_OF_TRIALS+1; i++)
+ 		for(int i = 0; i < NUMBER_OF_TRIALS+1; i++)
  		{
  			Instant start = Instant.now();
  			renderer.draw(graphicContext);

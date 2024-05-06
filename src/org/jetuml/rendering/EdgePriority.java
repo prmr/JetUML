@@ -45,13 +45,13 @@ public enum EdgePriority
 	public static EdgePriority priorityOf(Edge pEdge)
 	{
 		assert pEdge != null;
-		if (pEdge.start()!= null && pEdge.end() != null && pEdge.start().equals(pEdge.end()))
+		if(pEdge.start()!= null && pEdge.end() != null && pEdge.start().equals(pEdge.end()))
 		{
 			return EdgePriority.SELF_EDGE;
 		}
-		else if (pEdge instanceof GeneralizationEdge)
+		else if(pEdge instanceof GeneralizationEdge)
 		{
-			if (((GeneralizationEdge) pEdge).getType() == GeneralizationEdge.Type.Inheritance) 
+			if(((GeneralizationEdge) pEdge).getType() == GeneralizationEdge.Type.Inheritance) 
 			{
 				return EdgePriority.INHERITANCE;
 			}
@@ -60,9 +60,9 @@ public enum EdgePriority
 				return EdgePriority.IMPLEMENTATION;
 			}
 		}
-		else if (pEdge instanceof AggregationEdge)
+		else if(pEdge instanceof AggregationEdge)
 		{
-			if (((AggregationEdge) pEdge).getType() == AggregationEdge.Type.Aggregation)
+			if(((AggregationEdge) pEdge).getType() == AggregationEdge.Type.Aggregation)
 			{
 				return EdgePriority.AGGREGATION;
 			}
@@ -71,11 +71,11 @@ public enum EdgePriority
 				return EdgePriority.COMPOSITION;
 			}
 		}
-		else if (pEdge instanceof AssociationEdge)
+		else if(pEdge instanceof AssociationEdge)
 		{
 			return EdgePriority.ASSOCIATION;
 		}
-		else if (pEdge instanceof DependencyEdge)
+		else if(pEdge instanceof DependencyEdge)
 		{
 			return EdgePriority.DEPENDENCY;
 		}
@@ -95,7 +95,7 @@ public enum EdgePriority
 	public static boolean isSegmented(EdgePriority pPriority)
 	{
 		assert pPriority != null;
-		if (pPriority == EdgePriority.INHERITANCE || pPriority == EdgePriority.IMPLEMENTATION)
+		if(pPriority == EdgePriority.INHERITANCE || pPriority == EdgePriority.IMPLEMENTATION)
 		{
 			return true;
 		}

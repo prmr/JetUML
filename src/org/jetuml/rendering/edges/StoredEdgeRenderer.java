@@ -104,10 +104,10 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static ArrowHead getArrowStart(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if (pEdge instanceof AggregationEdge)
+		if(pEdge instanceof AggregationEdge)
 		{
 			AggregationEdge edge = (AggregationEdge) pEdge;
-			if (edge.getType() == Type.Composition)
+			if(edge.getType() == Type.Composition)
 			{
 				return ArrowHead.BLACK_DIAMOND;
 			}
@@ -116,17 +116,17 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 				return ArrowHead.DIAMOND;
 			}
 		}
-		else if (pEdge instanceof AssociationEdge)
+		else if(pEdge instanceof AssociationEdge)
 		{
-			if (((AssociationEdge) pEdge).getDirectionality() == Directionality.Bidirectional)
+			if(((AssociationEdge) pEdge).getDirectionality() == Directionality.Bidirectional)
 			{
 				return ArrowHead.V;
 			}
 		}
-		else if (pEdge instanceof DependencyEdge)
+		else if(pEdge instanceof DependencyEdge)
 		{
 			DependencyEdge edge = (DependencyEdge) pEdge;
-			if (edge.getDirectionality() == DependencyEdge.Directionality.Bidirectional)
+			if(edge.getDirectionality() == DependencyEdge.Directionality.Bidirectional)
 			{
 				return ArrowHead.V;
 			}
@@ -143,7 +143,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static ArrowHead getArrowEnd(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if (pEdge instanceof GeneralizationEdge)
+		if(pEdge instanceof GeneralizationEdge)
 		{
 			return ArrowHead.TRIANGLE;
 		}
@@ -151,14 +151,14 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		{
 			return ArrowHead.NONE;
 		}
-		else if (pEdge instanceof DependencyEdge)
+		else if(pEdge instanceof DependencyEdge)
 		{
 			return ArrowHead.V;
 		}
-		else if (pEdge instanceof AssociationEdge)
+		else if(pEdge instanceof AssociationEdge)
 		{
 			AssociationEdge edge = (AssociationEdge) pEdge;
-			if (edge.getDirectionality() == AssociationEdge.Directionality.Unidirectional || 
+			if(edge.getDirectionality() == AssociationEdge.Directionality.Unidirectional || 
 					edge.getDirectionality() == AssociationEdge.Directionality.Bidirectional)
 			{
 				return ArrowHead.V;
@@ -180,7 +180,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Path shape = new Path();
 		EdgePath path = getStoredEdgePath(pEdge);
 		shape.getElements().add(new MoveTo(path.getStartPoint().getX(), path.getStartPoint().getY()));
-		for (int i = 1; i < path.size(); i++)
+		for(int i = 1; i < path.size(); i++)
 		{
 			Point point = path.getPointByIndex(i);
 			shape.getElements().add(new LineTo(point.getX(), point.getY()));
@@ -213,7 +213,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static void drawLabel(GraphicsContext pGraphics, Line pSegment, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
-		if (pString == null || pString.length() == 0)
+		if(pString == null || pString.length() == 0)
 		{
 			return;
 		}
@@ -221,7 +221,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Rectangle bounds = getLabelBounds(pSegment, pArrowHead, label, pCenter, pIsStepUp);
 		if(pCenter) 
 		{
-			if ( pSegment.getY2() >= pSegment.getY1() )
+			if( pSegment.getY2() >= pSegment.getY1() )
 			{
 				TOP_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
 			}
@@ -340,7 +340,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getStartLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if (pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge)
 		{
 			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getStartLabel();
@@ -360,12 +360,12 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getMiddleLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if (pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge)
 		{
 			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getMiddleLabel();
 		}
-		else if (pEdge instanceof SingleLabelEdge)
+		else if(pEdge instanceof SingleLabelEdge)
 		{
 			SingleLabelEdge singleLabelEdge = (SingleLabelEdge) pEdge;
 			return singleLabelEdge.getMiddleLabel();
@@ -385,7 +385,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	private static String getEndLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
-		if (pEdge instanceof ThreeLabelEdge)
+		if(pEdge instanceof ThreeLabelEdge)
 		{
 			ThreeLabelEdge threeLabelEdge = (ThreeLabelEdge) pEdge;
 			return threeLabelEdge.getEndLabel();
@@ -475,7 +475,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics) 
 	{
 		EdgePath path = getStoredEdgePath((Edge)pElement);
-		if (path != null) 
+		if(path != null) 
 		{
 			ToolGraphics.drawHandles(pGraphics, new Line(path.getStartPoint(), path.getEndPoint()));
 		}
@@ -486,7 +486,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	{
 		// Purposefully does not include the arrow head and labels, which create large bounds.
 		EdgePath path = getStoredEdgePath((Edge)pElement);
-		if (path == null)
+		if(path == null)
 		{
 			return false;
 		}

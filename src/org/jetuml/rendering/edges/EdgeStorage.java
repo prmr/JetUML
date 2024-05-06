@@ -119,7 +119,7 @@ public class EdgeStorage
 		assert pConnectionPoint !=null;
 		for( EdgePath path : aEdgePaths.values() )
 		{
-			if (path.getStartPoint().equals(pConnectionPoint) || path.getEndPoint().equals(pConnectionPoint))
+			if(path.getStartPoint().equals(pConnectionPoint) || path.getEndPoint().equals(pConnectionPoint))
 			{
 				return false;
 			}

@@ -108,7 +108,7 @@ public class AboutDialog
 		aStage.requestFocus();
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
-			if (pEvent.getCode() == KeyCode.ENTER) 
+			if(pEvent.getCode() == KeyCode.ENTER) 
 			{
 				aStage.close();
 			}

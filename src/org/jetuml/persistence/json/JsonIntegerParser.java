@@ -32,7 +32,7 @@ final class JsonIntegerParser implements JsonValueParser
 	@Override
 	public boolean isApplicable(ParsableCharacterBuffer pInput)
 	{
-		if (!pInput.hasMore() )
+		if(!pInput.hasMore() )
     	{
     		return false;
     	}

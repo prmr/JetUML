@@ -212,7 +212,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 			final double angleUpperBound = 3 * angleLowerBound;
 			double angle = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
 			double delta = textDimensions.height();
-			if ( angleLowerBound <= angle && angle <= angleUpperBound )
+			if( angleLowerBound <= angle && angle <= angleUpperBound )
 			{
 				delta -= angle*RADIANS_TO_PIXELS;
 			}
@@ -308,7 +308,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		boolean result = super.contains(pElement, pPoint);
-		if (getShape((Edge)pElement) instanceof Arc)
+		if(getShape((Edge)pElement) instanceof Arc)
 		{
 			Arc arc = (Arc) getShape((Edge)pElement);
 			arc.setRadiusX(arc.getRadiusX() + 2 * MAX_DISTANCE);

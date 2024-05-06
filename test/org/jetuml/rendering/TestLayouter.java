@@ -208,7 +208,7 @@ public class TestLayouter
 		aEdgeC = new AggregationEdge(pType);
 		aEdgeD = new GeneralizationEdge();
 	
-		for (Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, aNodeE))
+		for(Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, aNodeE))
 		{
 			aDiagram.addRootNode(node);
 		}
@@ -217,7 +217,7 @@ public class TestLayouter
 		aEdgeB.connect(aNodeD, aNodeB);
 		aEdgeC.connect(aNodeD, aNodeC);
 		aEdgeD.connect(aNodeE, aNodeD);
-		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
+		for(Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
 			aDiagram.addEdge(edge);
 		}
@@ -247,7 +247,7 @@ public class TestLayouter
 		aEdgeB = new GeneralizationEdge(Type.Inheritance);
 		aEdgeC = new GeneralizationEdge(Type.Implementation);
 		aEdgeD = new AssociationEdge();
-		for (Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD,endNode))
+		for(Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD,endNode))
 		{
 			aDiagram.addRootNode(node);
 		}
@@ -256,7 +256,7 @@ public class TestLayouter
 		aEdgeC.connect(aNodeC, endNode);
 		aEdgeD.connect(aNodeD, endNode);
 		
-		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
+		for(Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
 			aDiagram.addEdge(edge);
 		}
@@ -280,7 +280,7 @@ public class TestLayouter
 		aEdgeE = new AggregationEdge(AggregationEdge.Type.Aggregation);
 		aEdgeF = new AggregationEdge(AggregationEdge.Type.Composition);
 		aEdgeG = new DependencyEdge();
-		for (Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, aNodeE, aNodeF, aNodeG, endNode))
+		for(Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, aNodeE, aNodeF, aNodeG, endNode))
 		{
 			aDiagram.addRootNode(node);
 		}
@@ -292,7 +292,7 @@ public class TestLayouter
 		aEdgeF.connect(aNodeF, endNode);
 		aEdgeG.connect(aNodeG, endNode);
 		
-		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD, aEdgeE, aEdgeF, aEdgeG))
+		for(Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD, aEdgeE, aEdgeF, aEdgeG))
 		{
 			aDiagram.addEdge(edge);
 		}
@@ -848,7 +848,7 @@ public class TestLayouter
 	public void testStoredConflictingEdges()
 	{
 		endNode = new ClassNode();
-		for (Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, endNode))
+		for(Node node : Arrays.asList(aNodeA, aNodeB, aNodeC, aNodeD, endNode))
 		{
 			aDiagram.addRootNode(node);
 		}
@@ -860,7 +860,7 @@ public class TestLayouter
 		aEdgeB.connect(aNodeB, endNode);
 		aEdgeC.connect(aNodeC, endNode);
 		aEdgeD.connect(aNodeD, endNode);
-		for (Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
+		for(Edge edge : Arrays.asList(aEdgeA, aEdgeB, aEdgeC, aEdgeD))
 		{
 			aDiagram.addEdge(edge);
 		}

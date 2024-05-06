@@ -72,9 +72,9 @@ public final class NotificationService
      */
     public void setMainStage(Stage pStage)
     {
-        this.aMainStage = pStage;
+        aMainStage = pStage;
 
-        if (pStage != null)
+        if(pStage != null)
         {
             // Window position and size listener for notifications
             ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue, pNewValue) ->
@@ -100,12 +100,12 @@ public final class NotificationService
 
         ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
         Collections.reverse(reverseNotifications);
-        for (Notification notification : reverseNotifications)
+        for(Notification notification : reverseNotifications)
         {
             notification.setPosition(x, y);
             y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
 
-            if (y < aMainStage.getY())
+            if(y < aMainStage.getY())
             {
                 notification.close();
                 aNotifications.remove(notification);
@@ -120,7 +120,7 @@ public final class NotificationService
      */
     public void spawnNotification(Notification pNotification)
     {
-        if (aMainStage == null)
+        if(aMainStage == null)
         {
             return;
         }
@@ -144,7 +144,7 @@ public final class NotificationService
      */
     public void spawnNotification(String pText, ToastNotification.Type pType)
     {
-        if (aMainStage == null)
+        if(aMainStage == null)
         {
             return;
         }

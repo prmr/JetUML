@@ -148,7 +148,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
 		double distanceInX = pDistanceInX / singleCharWidth;
 		double distanceInY = pDistanceInY / singleCharHeight;
-		if (distanceInX > 0)
+		if(distanceInX > 0)
 		{
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInY/distanceInX));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));

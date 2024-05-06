@@ -141,7 +141,7 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	@Override
 	public void integerPreferenceChanged(IntegerPreference pPreference) 
 	{
-		if ( pPreference == IntegerPreference.fontSize && aFont.getSize() != UserPreferences.instance().getInteger(pPreference) )
+		if( pPreference == IntegerPreference.fontSize && aFont.getSize() != UserPreferences.instance().getInteger(pPreference) )
 		{
 			refreshAttributes();
 		}

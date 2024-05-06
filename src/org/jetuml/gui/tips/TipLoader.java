@@ -76,7 +76,7 @@ final class TipLoader
 	{
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		byte[] buffer = new byte[BYTES_IN_KILOBYTE];
-		for (int length; (length = pStream.read(buffer)) != -1; )
+		for(int length; (length = pStream.read(buffer)) != -1; )
 		{
 			result.write(buffer, 0, length);
 		}
@@ -138,7 +138,7 @@ final class TipLoader
 		{
 			List<TipElement> elements = new ArrayList<>();
 
-			for (Object contentObject : pTip.getJsonArray(TipFieldName.CONTENT.asString()))
+			for(Object contentObject : pTip.getJsonArray(TipFieldName.CONTENT.asString()))
 			{
 				JsonObject contentJsonObject = (JsonObject) contentObject;
 				Media media = discoverMediaUsed(contentJsonObject);
@@ -153,7 +153,7 @@ final class TipLoader
 		 */
 		private static Media discoverMediaUsed(JsonObject pTipContent)
 		{
-			for (Media media : Media.values())
+			for(Media media : Media.values())
 			{
 				if(pTipContent.hasProperty(media.name().toLowerCase()))
 				{

@@ -227,18 +227,18 @@ public class PropertySheet extends GridPane
 		{
 			final String aFocusEventText = "TAB_TO_FOCUS_EVENT";
 			
-			if (!KeyCode.TAB.equals(pKeyEvent.getCode()))
+			if(!KeyCode.TAB.equals(pKeyEvent.getCode()))
 	        {
 	            return;
 	        }
-	        if (pKeyEvent.isAltDown() || pKeyEvent.isMetaDown() || pKeyEvent.isShiftDown() || !(pKeyEvent.getSource() instanceof TextArea))
+	        if(pKeyEvent.isAltDown() || pKeyEvent.isMetaDown() || pKeyEvent.isShiftDown() || !(pKeyEvent.getSource() instanceof TextArea))
 	        {
 	            return;
 	        }
 	        final TextArea textAreaSource = (TextArea) pKeyEvent.getSource();
-	        if (pKeyEvent.isControlDown())
+	        if(pKeyEvent.isControlDown())
 	        {
-	            if (!aFocusEventText.equalsIgnoreCase(pKeyEvent.getText()))
+	            if(!aFocusEventText.equalsIgnoreCase(pKeyEvent.getText()))
 	            {
 	            	pKeyEvent.consume();
 	                textAreaSource.replaceSelection("\t");

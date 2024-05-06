@@ -143,7 +143,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	public Line getConnectionPoints(Edge pEdge)
 	{
 		Point point = parent().getConnectionPoints(pEdge.start(), Direction.EAST);
-		if (isSShaped(pEdge))
+		if(isSShaped(pEdge))
 		{
 			return new Line(point, parent().getConnectionPoints(pEdge.end(), Direction.WEST));
 		}

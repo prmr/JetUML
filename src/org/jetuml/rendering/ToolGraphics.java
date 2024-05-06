@@ -175,7 +175,7 @@ public final class ToolGraphics
 			{
 				pGraphics.lineTo(((int)((LineTo) element).getX()) + 0.5, ((int)((LineTo) element).getY()) + 0.5);
 			}
-			else if (element instanceof QuadCurveTo)
+			else if(element instanceof QuadCurveTo)
 			{
 				QuadCurveTo curve = (QuadCurveTo) element;
 				pGraphics.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
