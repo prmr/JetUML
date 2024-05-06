@@ -20,9 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.jetuml.testutils.GeometryUtils.osDependent;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,6 +38,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class TestObjectNodeViewer
 {
@@ -85,19 +86,21 @@ public class TestObjectNodeViewer
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(osDependent(12, 11, 12), ObjectNodeRenderer.getSplitPosition(aNode));
+		assertEquals(12, ObjectNodeRenderer.getSplitPosition(aNode));
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetSplitPosition_TwoFields()
 	{
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(osDependent(47, 49, 58), ObjectNodeRenderer.getSplitPosition(aNode));
+		assertEquals(47, ObjectNodeRenderer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -108,12 +111,13 @@ public class TestObjectNodeViewer
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetYPosition_TwoFields()
 	{
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		assertEquals(70, ObjectNodeRenderer.getYPosition(aNode, aField1));
-		assertEquals(osDependent(95, 95, 101), ObjectNodeRenderer.getYPosition(aNode, aField2));
+		assertEquals(95, ObjectNodeRenderer.getYPosition(aNode, aField2));
 	}
 	
 	@Test

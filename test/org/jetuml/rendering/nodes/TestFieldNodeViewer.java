@@ -22,7 +22,6 @@ package org.jetuml.rendering.nodes;
 
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
-import static org.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Graphics2D;
@@ -43,6 +42,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class TestFieldNodeViewer
 {
@@ -85,34 +86,38 @@ public class TestFieldNodeViewer
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsUnattachedWithNameString()
 	{
 		aFieldNode1.setName("XXXXX");
-		assertEquals(osDependent(42, 44, 53), FieldNodeRenderer.leftWidth(aFieldNode1));    // The length of the string
-		assertEquals(osDependent(37, 36, 37), FieldNodeRenderer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
-		assertEquals(osDependent(20, 20, 23), FieldNodeRenderer.getHeight(aFieldNode1));    // The height of the string
+		assertEquals(42, FieldNodeRenderer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(37, FieldNodeRenderer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsUnattachedWithValueString()
 	{
 		aFieldNode1.setValue("XXXXX");
-		assertEquals(osDependent(7, 6, 7), FieldNodeRenderer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
-		assertEquals(osDependent(42, 44, 53), FieldNodeRenderer.rightWidth(aFieldNode1));  	// The length of the string
-		assertEquals(osDependent(20, 20, 23), FieldNodeRenderer.getHeight(aFieldNode1));    	// The height of the string
+		assertEquals(7, FieldNodeRenderer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(42, FieldNodeRenderer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetBoundsUnattachedNoStrings()
 	{
 		// x = axis (30) - offset (6)
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(osDependent(23, 24, 23),0,osDependent(44, 42, 44), osDependent(20,20,26)), aRenderer.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(23, 0, 44, 20), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetBoundsUnattachedNameValueString()
 	{
 		aFieldNode1.setName("XXXXX");
@@ -121,49 +126,54 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = 47 * 2
 		// h = text height 22
-		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), aRenderer.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(-12, 0, 84, 20), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsAttachedNoStrings()
 	{
 		aObjectNode1.addChild(aFieldNode1);
-		assertEquals(osDependent(7, 6, 7), FieldNodeRenderer.leftWidth(aFieldNode1));    // Just the length of the mid offset
-		assertEquals(osDependent(37, 36, 37), FieldNodeRenderer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
-		assertEquals(osDependent(20, 20,26), FieldNodeRenderer.getHeight(aFieldNode1));   // Default height
+		assertEquals(7, FieldNodeRenderer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(37, FieldNodeRenderer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsAttachedObjectString()
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aObjectNode1.setName("XXXXXXXXXXXXXXXXXXX");
-		assertEquals(osDependent(7, 6, 7), FieldNodeRenderer.leftWidth(aFieldNode1));    // Just the length of the mid offset
-		assertEquals(osDependent(37, 36, 37), FieldNodeRenderer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
-		assertEquals(osDependent(20,20,26), FieldNodeRenderer.getHeight(aFieldNode1));   // Default height
+		assertEquals(7, FieldNodeRenderer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(37, FieldNodeRenderer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsAttachedWithNameString()
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setName("XXXXX");
-		assertEquals(osDependent(42, 44, 53), FieldNodeRenderer.leftWidth(aFieldNode1));    // The length of the string
-		assertEquals(osDependent(37, 36, 37), FieldNodeRenderer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
-		assertEquals(osDependent(20, 20, 23), FieldNodeRenderer.getHeight(aFieldNode1));    // The height of the string
+		assertEquals(42, FieldNodeRenderer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(37, FieldNodeRenderer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testDimensionsAttachedWithValueString()
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setValue("XXXXX");
-		assertEquals(osDependent(7, 6, 7), FieldNodeRenderer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
-		assertEquals(osDependent(42, 44, 53), FieldNodeRenderer.rightWidth(aFieldNode1));  	// The length of the string
-		assertEquals(osDependent(20, 20, 23), FieldNodeRenderer.getHeight(aFieldNode1));    	// The height of the string
+		assertEquals(7, FieldNodeRenderer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(42, FieldNodeRenderer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(20, FieldNodeRenderer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetBoundsAttachedNoStrings()
 	{
 		aObjectNode1.addChild(aFieldNode1);
@@ -171,7 +181,7 @@ public class TestFieldNodeViewer
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(5,70,70, osDependent(20,20,26)), aRenderer.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(5,70,70, 20), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@AfterEach

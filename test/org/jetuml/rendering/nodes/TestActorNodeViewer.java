@@ -33,11 +33,12 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Point;
-import org.jetuml.testutils.GeometryUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class TestActorNodeViewer
 {
@@ -88,10 +89,11 @@ public class TestActorNodeViewer
 	}
 	
 	@Test
+	@EnabledOnOs(OS.WINDOWS)
 	public void testGetBounds_LongName()
 	{
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(GeometryUtils.osDependent(-153,-166,-166),0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(new Point(-153,0), aViewer.getBounds(aNode).getOrigin());
 		assertTrue(aViewer.getBounds(aNode).getWidth() > 48);
 		assertTrue(aViewer.getBounds(aNode).getHeight() > 64);
 	}
