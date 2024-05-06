@@ -88,7 +88,7 @@ public final class ToastNotification implements Notification
         aStage = createStage(pMessage, pType, pOwnerStage);
     }
 
-    private Stage createStage(String pMessage, Type pType, Stage pOwnerStage)
+    private static Stage createStage(String pMessage, Type pType, Stage pOwnerStage)
     {
         Stage stage = new Stage();
 

@@ -74,7 +74,7 @@ final class JsonIntegerParser implements JsonValueParser
     	return parseInt(numberAsString.toString(), pInput.position());
 	}
 	
-    private int parseInt(String pNumber, int pPosition)
+    private static int parseInt(String pNumber, int pPosition)
     {
     	try
     	{

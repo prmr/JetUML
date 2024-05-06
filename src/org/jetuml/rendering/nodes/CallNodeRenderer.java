@@ -107,7 +107,7 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	private int getX(Node pNode)
 	{
 		final int nestingDepth = parent().getNestingDepth((CallNode)pNode);
-		final int lifelineXCoordinate = parent().getCenterXCoordinate((ImplicitParameterNode)pNode.getParent());
+		final int lifelineXCoordinate = SequenceDiagramRenderer.getCenterXCoordinate((ImplicitParameterNode)pNode.getParent());
 		return lifelineXCoordinate - NESTING_SHIFT_DISTANCE + (NESTING_SHIFT_DISTANCE * nestingDepth);
 	}
 	

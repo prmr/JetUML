@@ -108,7 +108,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	/*
 	 * @return The width of the top rectangle.
 	 */
-	private int getWidth(DiagramElement pElement)
+	private static int getWidth(DiagramElement pElement)
 	{
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;
@@ -146,7 +146,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	 * @return The x-coordinate of the center of pNode.
 	 * @pre pNode != null;
 	 */
-	public int getCenterXCoordinate(Node pNode)
+	public static int getCenterXCoordinate(Node pNode)
 	{
 		assert pNode != null;
 		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 

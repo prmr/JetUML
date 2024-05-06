@@ -2849,7 +2849,7 @@ public class TestLayouter
 	}
 	
 	
-	private List<Point> getPoints()
+	private static List<Point> getPoints()
 	{
 		List<Point> result = new ArrayList<>();
 		result.add(new Point(190, 300));

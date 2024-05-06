@@ -635,7 +635,7 @@ public class EditorFrame extends BorderPane
 		return fileChooser;
 	}
 
-	private BufferedImage getBufferedImage(DiagramTab pDiagramTab) 
+	private static BufferedImage getBufferedImage(DiagramTab pDiagramTab) 
 	{
 		return SwingFXUtils.fromFXImage(pDiagramTab.createImage(), null);
 	}

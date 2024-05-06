@@ -83,7 +83,8 @@ public class TestNotificationService
         NotificationService.instance().setMainStage(null);
     }
 
-    @BeforeEach
+    @SuppressWarnings("static-method") // Cannot be statis as per JUnit
+	@BeforeEach
     private void resetListAndProperties() throws ReflectiveOperationException
     {
         ArrayList<Notification> newList = new ArrayList<>();

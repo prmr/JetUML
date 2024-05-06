@@ -469,7 +469,7 @@ public abstract class DiagramBuilder
 				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
 	}
 	
-	private Runnable createReinsertOperation(Node pNode)
+	private static Runnable createReinsertOperation(Node pNode)
 	{
 		Node parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);

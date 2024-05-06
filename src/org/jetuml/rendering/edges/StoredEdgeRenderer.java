@@ -215,7 +215,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private void drawLabel(GraphicsContext pGraphics, Line pSegment, 
+	private static void drawLabel(GraphicsContext pGraphics, Line pSegment, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if (pString == null || pString.length() == 0)
@@ -241,7 +241,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 	
-	private String wrapLabel(String pLabel, Line pSegment) 
+	private static String wrapLabel(String pLabel, Line pSegment) 
 	{
 		Dimension distances = pSegment.distanceBetweenPoints();
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
@@ -342,7 +342,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @return the string start label for pEdge
 	 * @pre pEdge != null
 	 */
-	private String getStartLabel(Edge pEdge)
+	private static String getStartLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
 		if (pEdge instanceof ThreeLabelEdge)
@@ -362,7 +362,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @return the String middle label for pEdge
 	 * @pre pEdge != null
 	 */
-	private String getMiddleLabel(Edge pEdge)
+	private static String getMiddleLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
 		if (pEdge instanceof ThreeLabelEdge)
@@ -387,7 +387,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @return the String end label for pEdge
 	 * @pre pEdge != null
 	 */
-	private String getEndLabel(Edge pEdge)
+	private static String getEndLabel(Edge pEdge)
 	{
 		assert pEdge !=null;
 		if (pEdge instanceof ThreeLabelEdge)
@@ -438,12 +438,12 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	/*
 	 * @return The line segment used to position
 	 */
-	private Line segmentForStartLabel(EdgePath pPath)
+	private static Line segmentForStartLabel(EdgePath pPath)
 	{
 		return new Line(pPath.getPointByIndex(1), pPath.getStartPoint());
 	}
 	
-	private Line segmentForMiddleLabel(EdgePath pPath)
+	private static Line segmentForMiddleLabel(EdgePath pPath)
 	{
 		// If any point is the same we consider this is a straight path
 		if( pPath.size() == 4 && (pPath.getPointByIndex(0).equals(pPath.getPointByIndex(1)) || 
@@ -455,7 +455,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		return new Line( pPath.getPointByIndex(pPath.size() / 2 - 1) , pPath.getPointByIndex(pPath.size() / 2));
 	}
 	
-	private Line segmentForEndLabel(EdgePath pPath)
+	private static Line segmentForEndLabel(EdgePath pPath)
 	{
 		return new Line(pPath.getPointByIndex(pPath.size()-2), pPath.getPointByIndex(pPath.size()-1));
 	}

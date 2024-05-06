@@ -375,7 +375,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @pre pStart != null && pEnd != null
 	 * @pre pMidLine >= 0
 	 */
-	private EdgePath buildSegmentedEdgePath(Side pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
+	private static EdgePath buildSegmentedEdgePath(Side pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
 	{
 		assert pStart != null && pEnd != null;
 		assert pMidLine >= 0;
@@ -728,7 +728,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return the Node which pEdgeA and pEdgeB are both connected to.
 	 * @pre pEdgeA and pEdgeB have an attached node in common
 	 */
-	private Node getSharedNode(Edge pEdgeA, Edge pEdgeB)
+	private static Node getSharedNode(Edge pEdgeA, Edge pEdgeB)
 	{
 		assert pEdgeA.start() == pEdgeB.start() || pEdgeA.start() == pEdgeB.end() ||
 				pEdgeA.end() == pEdgeB.start() || pEdgeA.end() == pEdgeB.end();
@@ -840,7 +840,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return the Point which which maximizes pDirection
 	 * @pre pPoints.size() > 0
 	 */
-	private Point getClosestPoint(Collection<Point> pPoints, Side pDirection) 
+	private static Point getClosestPoint(Collection<Point> pPoints, Side pDirection) 
 	{
 		assert pPoints.size() > 0;
 		assert pDirection!=null;
@@ -873,7 +873,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return false if the edges are both ThreeLabelEdge edges with different start labels. True otherwise. 
 	 * @pre pEdge1 != null && pEdge2 != null
 	 */
-	private boolean noConflictingStartLabels(Edge pEdge1, Edge pEdge2)
+	private static boolean noConflictingStartLabels(Edge pEdge1, Edge pEdge2)
 	{
 		assert pEdge1 !=null && pEdge2 !=null;
 		if (pEdge1 instanceof ThreeLabelEdge && pEdge2 instanceof ThreeLabelEdge &&
@@ -896,7 +896,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return false if the edges are both ThreeLabelEdge edges with different end labels. True otherwise. 
 	 * @pre pEdge1 !=null && pEdge2 !=null
 	 */
-	private boolean noConflictingEndLabels(Edge pEdge1, Edge pEdge2)
+	private static boolean noConflictingEndLabels(Edge pEdge1, Edge pEdge2)
 	{
 		assert pEdge1 !=null && pEdge2 !=null;
 		if (pEdge1 instanceof ThreeLabelEdge && pEdge2 instanceof ThreeLabelEdge &&
@@ -1020,7 +1020,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @pre pNode!=null
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
 	 */
-	private Node getOtherNode(Edge pEdge, Node pNode)
+	private static Node getOtherNode(Edge pEdge, Node pNode)
 	{
 		assert pEdge!=null;
 		assert pNode!=null;
@@ -1113,7 +1113,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @pre pNode!=null
 	 * @pre pEdge!=null
 	 */
-	private boolean isOutgoingEdge(Edge pEdge, Node pNode)
+	private static boolean isOutgoingEdge(Edge pEdge, Node pNode)
 	{
 		assert pEdge!=null && pNode!=null;
 		return pEdge.start() == pNode;
@@ -1258,7 +1258,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return the side of pBounds (either North or South) where an edge connecting pBounds and pOtherBounds should attach.
 	 * @pre pBounds != null && pOtherBounds != null
 	 */
-	private Side northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private static Side northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds != null && pOtherBounds != null;
 		if (pOtherBounds.getCenter().getY() < pBounds.getCenter().getY())
@@ -1279,7 +1279,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return the side of pBounds (either East or West) where an edge connecting pBounds and pOtherBounds should attach.
 	 * @pre pBounds !=null && pOtherBounds !=null
 	 */
-	private Side eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private static Side eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds !=null && pOtherBounds !=null;
 		if(pOtherBounds.getCenter().getX() < pBounds.getCenter().getX() )

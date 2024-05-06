@@ -335,9 +335,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 * @param pNode An implicit parameter node.
 	 * @return The x coordinate of the center of the node.
 	 */
-	public int getCenterXCoordinate(ImplicitParameterNode pNode)
+	public static int getCenterXCoordinate(ImplicitParameterNode pNode)
 	{
-		return ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getCenterXCoordinate(pNode);
+		return ImplicitParameterNodeRenderer.getCenterXCoordinate(pNode);
 	}
 	
 	@Override
@@ -394,7 +394,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 * Takes into account the size of the font to ensure labels on call edges do not overlap.
 	 * 
 	 */
-	private int getDropDistance()
+	private static int getDropDistance()
 	{
 		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
 		// Only apply shift if necessary
