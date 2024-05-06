@@ -177,9 +177,9 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>Use the menu command File | Export Image to save the current diagram as an image file. The image type is determined by the file extension selected from the Save as Type field.</p>
 <img src="../tipdata/tip_images/tip34.png">
 </div>
-<button class="collapsible">Changing the Font Size</button>
+<button class="collapsible">Changing the Font</button>
 <div class="content">
-<p>Use the menu command View | Set Font Size to change the size of the font used in the diagram. This setting only affects how the diagram looks visually.</p>
+<p>Use the menu command View | Change Font to change the font and size of the font used in the diagram. This setting only affects how the diagram looks visually.</p>
 <img src="../tipdata/tip_images/tip35.png">
 </div>
 <button class="collapsible">Inserting Stereotype Delimiters</button>
