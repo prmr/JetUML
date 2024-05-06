@@ -20,42 +20,25 @@
  *******************************************************************************/
 package org.jetuml.application;
 
-import java.util.Comparator;
 import java.util.StringJoiner;
-
-import org.jetuml.annotations.Immutable;
 
 /**
  * Represents a version of JetUML. 
+ * @param major The major version number.
+ * @param minor The minor version number.
+ * @param patch The patch number.
  */
-@Immutable
-public final class Version implements Comparable<Version>
-{
-	private static final Comparator<Version> COMPARATOR = 
-			Comparator.<Version, Integer>comparing( version -> version.aMajor).
-				<Integer>thenComparing(version -> version.aMinor).
-				<Integer>thenComparing(version -> version.aPatch);
-	
-	private final int aMajor;
-	private final int aMinor;
-	private final int aPatch;
-	
-	private Version(int pMajor, int pMinor, int pPatch)
-	{
-		aMajor = pMajor;
-		aMinor = pMinor;
-		aPatch = pPatch;
-	}
-	
+public record Version(int major, int minor, int patch)
+{	
 	@Override
 	public String toString()
 	{
 		StringJoiner versionString = new StringJoiner(".");
-		versionString.add(Integer.toString(aMajor));
-		versionString.add(Integer.toString(aMinor));
-		if( aPatch > 0 )
+		versionString.add(Integer.toString(major));
+		versionString.add(Integer.toString(minor));
+		if( patch > 0 )
 		{
-			versionString.add(Integer.toString(aPatch));
+			versionString.add(Integer.toString(patch));
 		}
 		return versionString.toString();
 	}
@@ -99,6 +82,11 @@ public final class Version implements Comparable<Version>
 	}
 	
 	/**
+	 * This method is functionally equivalent to the canonical constructor and 
+	 * is included to provide a complete and coherent API for creating versions.
+	 * Using this method is preferred over the constructor because it performs
+	 * an assertion check on the input.
+	 * 
 	 * @param pMajor The major component.
 	 * @param pMinor The minor component.
 	 * @param pPatch The patch component.
@@ -122,55 +110,5 @@ public final class Version implements Comparable<Version>
 	public static Version create(int pMajor, int pMinor)
 	{
 		return create(pMajor, pMinor, 0);
-	}
-
-	@Override
-	public int compareTo(Version pVersion)
-	{
-		return COMPARATOR.compare(this, pVersion);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + aMajor;
-		result = prime * result + aMinor;
-		result = prime * result + aPatch;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object pObject)
-	{
-		if( this == pObject )
-		{
-			return true;
-		}
-		if( pObject == null )
-		{
-			return false;
-		}
-		if( getClass() != pObject.getClass() )
-		{
-			return false;
-		}
-		Version other = (Version) pObject;
-		return aMajor == other.aMajor && aMinor == other.aMinor && aPatch == other.aPatch;
-	}
-	
-	/**
-	 * Determines if this version of the diagram is fully compatible
-	 * with pLaterVersion of the application.
-	 * 
-	 * @param pLaterVersion The version to load a diagram in.
-	 * @return true if this version is fully supported by pLaterVersion.
-	 * @pre pLaterVersion != null
-	 */
-	public boolean compatibleWith(Version pLaterVersion)
-	{
-		assert pLaterVersion != null;
-		return !(aMajor < 3 && pLaterVersion.aMajor >= 3);
 	}
 }

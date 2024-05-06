@@ -53,6 +53,34 @@ public class TestVersion
 	private static final Version VERSION2 = Version.create(0, 6, 1);
 	
 	@Test
+	void testMajor()
+	{
+		assertEquals(2, VERSION1.major());
+		assertEquals(0, VERSION2.major());
+	}
+	
+	@Test
+	void testMinor()
+	{
+		assertEquals(5, VERSION1.minor());
+		assertEquals(6, VERSION2.minor());
+	}
+	
+	@Test
+	void testPatch()
+	{
+		assertEquals(0, VERSION1.patch());
+		assertEquals(1, VERSION2.patch());
+	}
+	
+	@Test
+	void testHashcode()
+	{
+		assertEquals(VERSION1.hashCode(), new Version(2,5,0).hashCode());
+		assertEquals(VERSION2.hashCode(), new Version(0,6,1).hashCode());
+	}
+	
+	@Test
 	void testToString_Patch()
 	{
 		assertEquals("2.5", VERSION1.toString());
@@ -137,45 +165,5 @@ public class TestVersion
 	void testEquals_True()
 	{
 		assertTrue(VERSION1.equals(Version.create(2, 5, 0)));
-	}
-	
-	@Test
-	void testCompareTo_Equals()
-	{
-		assertTrue(VERSION1.compareTo(VERSION1) == 0);
-		assertTrue(VERSION2.compareTo(VERSION2) == 0);
-	}
-	
-	@Test
-	void testCompareTo_Lower()
-	{
-		assertTrue(VERSION2.compareTo(VERSION1) < 0 );
-	}
-	
-	@Test
-	void testCompareTo_Higher()
-	{
-		assertTrue(VERSION1.compareTo(VERSION2) > 0 );
-	}
-	
-	@Test
-	void compatibleWith_Same()
-	{
-		assertTrue(VERSION1.compatibleWith(VERSION1));
-		assertTrue(VERSION2.compatibleWith(VERSION2));
-	}
-	
-	@Test
-	void compatibleWith_False()
-	{
-		assertFalse(Version.create(2,1).compatibleWith(Version.create(3, 0)));
-		assertFalse(Version.create(2,1,1).compatibleWith(Version.create(3, 0, 1)));
-	}
-	
-	@Test
-	void compatibleWith_True()
-	{
-		assertTrue(Version.create(2,1).compatibleWith(Version.create(2, 2)));
-		assertTrue(Version.create(3,0).compatibleWith(Version.create(3, 1)));
 	}
 }
