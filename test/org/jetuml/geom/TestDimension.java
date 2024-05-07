@@ -55,10 +55,11 @@ public class TestDimension
 		assertFalse( DIM_0.equals(null));
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	void testEquals_NotSameClass()
 	{
-		assertFalse( DIM_0.equals((Object)"foo"));
+		assertFalse( DIM_0.equals("foo"));
 	}
 	
 	@Test
@@ -93,7 +94,7 @@ public class TestDimension
 	@Test
 	void testToString()
 	{
-		assertEquals("[Dimension: w=5 x h=10]", DIM_4.toString());
+		assertEquals("Dimension[width=5, height=10]", DIM_4.toString());
 	}
 	
 	@Test
@@ -106,14 +107,5 @@ public class TestDimension
 	void testHeight()
 	{
 		assertEquals(10, DIM_1.height());
-	}
-	
-	@Test
-	void testHashCode()
-	{
-		assertEquals(1281, DIM_1.hashCode());
-		assertEquals(1121, DIM_2.hashCode());
-		assertEquals(1126, DIM_3.hashCode());
-		assertEquals(1276, DIM_4.hashCode());
 	}
 }
