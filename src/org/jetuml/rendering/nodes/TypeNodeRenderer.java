@@ -148,7 +148,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	
 	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsContext pGraphics)
 	{
-		String attributes = pNode.getAttributes();
+		String attributes = pNode.getAttributes().trim();
 		String[] attributesByLine = attributes.split("\n");
 		int lineSpacing = TOP_MARGIN;
 		
@@ -170,7 +170,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	
 	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, GraphicsContext pGraphics)
 	{
-		String methods = pNode.getMethods();
+		String methods = pNode.getMethods().trim();
 		String[] methodsByLine = methods.split("\n");
 		int lineSpacing = TOP_MARGIN;
 		
