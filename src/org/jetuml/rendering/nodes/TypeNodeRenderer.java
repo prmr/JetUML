@@ -108,16 +108,41 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	
 	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsContext pGraphics)
 	{
-		String name = getNameText(pNode);
-		if( name.length() > 2 && name.startsWith(ITALIC_MARKUP) && name.endsWith(ITALIC_MARKUP) )
+		String name = getNameText(pNode).trim();
+		String[] nameByLine = name.split("\n");
+		int numLines = nameByLine.length;
+		
+		for( int i = 0; i < numLines; i++ )
 		{
-			ITALIC_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
-					new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
-		}
-		else
-		{
-			NAME_VIEWER.draw(name, pGraphics, 
-					new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
+			boolean italic = false;
+			String paddedName = "";
+			if( nameByLine[i].length() > 2 && nameByLine[i].startsWith(ITALIC_MARKUP) && nameByLine[i].endsWith(ITALIC_MARKUP) )
+			{
+				nameByLine[i] = removeMarkup(nameByLine[i]);
+				italic = true;
+			}
+			// We pad each line to maintain centering of entire name in the node. This allows us to render the name line by line.
+			for( int j = 0; j < numLines; j++ )
+			{
+				if( i == j )
+				{
+					paddedName += nameByLine[i];
+				}
+				else
+				{
+					paddedName += "\n";
+				}
+			}
+			if( italic )
+			{
+				ITALIC_NAME_VIEWER.draw(paddedName, pGraphics, 
+						new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
+			}
+			else
+			{
+				NAME_VIEWER.draw(paddedName, pGraphics, 
+						new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
+			}
 		}
 	}
 	

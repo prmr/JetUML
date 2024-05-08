@@ -252,7 +252,7 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.x(), pRectangle.y());
-		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalic));
+		RenderingUtils.drawText(pGraphics, textX, textY, pString, CANVAS_FONT.getFont(aBold, aItalic));
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
