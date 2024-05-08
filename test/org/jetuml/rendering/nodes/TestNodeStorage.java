@@ -92,7 +92,7 @@ public class TestNodeStorage
 			@Override
 			public Rectangle apply(Node pNode) 
 			{
-				return new Rectangle(pNode.position().getX(), pNode.position().getY(), 100, 100);
+				return new Rectangle(pNode.position().x(), pNode.position().y(), 100, 100);
 			}
 		};
 	}

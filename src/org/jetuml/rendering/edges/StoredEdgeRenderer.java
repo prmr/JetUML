@@ -176,11 +176,11 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		assert pEdge != null;
 		Path shape = new Path();
 		EdgePath path = getStoredEdgePath(pEdge);
-		shape.getElements().add(new MoveTo(path.getStartPoint().getX(), path.getStartPoint().getY()));
+		shape.getElements().add(new MoveTo(path.getStartPoint().x(), path.getStartPoint().y()));
 		for(int i = 1; i < path.size(); i++)
 		{
 			Point point = path.getPointByIndex(i);
-			shape.getElements().add(new LineTo(point.getX(), point.getY()));
+			shape.getElements().add(new LineTo(point.x(), point.y()));
 		}
 		return shape;
 	}
@@ -194,8 +194,8 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Point point1 = getStoredEdgePath(pEdge).getStartPoint();
 		Point point2 = getStoredEdgePath(pEdge).getEndPoint();
-		return point1.getX() < point2.getX() && point1.getY() > point2.getY() || 
-				point1.getX() > point2.getX() && point1.getY() < point2.getY();
+		return point1.x() < point2.x() && point1.y() > point2.y() || 
+				point1.x() > point2.x() && point1.y() < point2.y();
 	}
 	
 	/*
@@ -264,7 +264,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pLabel);
 		Point attachmentPoint = getAttachmentPoint(pSegment, pArrow, textDimensions, pCenter, pIsStepUp);
-		return new Rectangle(attachmentPoint.getX(), attachmentPoint.getY(), textDimensions.width(), textDimensions.height());
+		return new Rectangle(attachmentPoint.x(), attachmentPoint.y(), textDimensions.width(), textDimensions.height());
 	}
 
 	/*
@@ -325,7 +325,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 				}
 			}
 		}
-		return new Point((int) (attach.getX() + xoff), (int) (attach.getY() + yoff));
+		return new Point((int) (attach.x() + xoff), (int) (attach.y() + yoff));
 	}
 	
 	/**
@@ -491,7 +491,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			}
 			Shape fatPath = getShape((Edge)pElement);
 			fatPath.setStrokeWidth(2 * MAX_DISTANCE);
-			return fatPath.contains(pPoint.getX(), pPoint.getY());
+			return fatPath.contains(pPoint.x(), pPoint.y());
 		}
 	}
 

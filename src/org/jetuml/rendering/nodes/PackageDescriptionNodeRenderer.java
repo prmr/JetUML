@@ -70,7 +70,7 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 		Dimension topDimension = getTopDimension(pNode);
 		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
 		
-		return new Rectangle(pNode.position().getX(), pNode.position().getY() + topDimension.height(), 
+		return new Rectangle(pNode.position().x(), pNode.position().y() + topDimension.height(), 
 				width, height);
 	}
 	

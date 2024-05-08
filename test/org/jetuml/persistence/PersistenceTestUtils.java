@@ -158,7 +158,7 @@ public final class PersistenceTestUtils
 	{
 		for( Node node : pDiagram.rootNodes() )
 		{
-			if( node.getClass() == pClass && node.position().getX() == pX )
+			if( node.getClass() == pClass && node.position().x() == pX )
 			{
 				return node;
 			}

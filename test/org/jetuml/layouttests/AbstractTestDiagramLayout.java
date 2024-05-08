@@ -166,8 +166,8 @@ public abstract class AbstractTestDiagramLayout
 	
 	protected static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY)
 	{
-		assertEquals(pExpectedX, pNode.position().getX());
-		assertEquals(pExpectedY, pNode.position().getY());
+		assertEquals(pExpectedX, pNode.position().x());
+		assertEquals(pExpectedY, pNode.position().y());
 	}
 	
 	protected void verifyNoteNodeDefaultDimensions(Node pNode)

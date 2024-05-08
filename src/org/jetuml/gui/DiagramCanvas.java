@@ -422,16 +422,16 @@ StringPreferenceChangeHandler
 	
 	private Line computeRubberband()
 	{
-		return new Line(new Point(aMouseDownPoint.getX(), aMouseDownPoint.getY()), 
-				new Point(aLastMousePoint.getX(), aLastMousePoint.getY()));
+		return new Line(new Point(aMouseDownPoint.x(), aMouseDownPoint.y()), 
+				new Point(aLastMousePoint.x(), aLastMousePoint.y()));
 	}
 	
 	private Rectangle computeLasso()
 	{
-		return new Rectangle(Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
-						     Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
-						     Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()) , 
-						     Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
+		return new Rectangle(Math.min(aMouseDownPoint.x(), aLastMousePoint.x()), 
+						     Math.min(aMouseDownPoint.y(), aLastMousePoint.y()), 
+						     Math.abs(aMouseDownPoint.x() - aLastMousePoint.x()) , 
+						     Math.abs(aMouseDownPoint.y() - aLastMousePoint.y()));
 	}
 	
 	private static Point getMousePoint(MouseEvent pEvent)
@@ -447,7 +447,7 @@ StringPreferenceChangeHandler
 		if(!element.isPresent())
 		{
 			element = aDiagramBuilder.renderer()
-					.selectableNodeAt(new Point(mousePoint.getX(), mousePoint.getY())); 
+					.selectableNodeAt(new Point(mousePoint.x(), mousePoint.y())); 
 		}
 		return element;
 	}
@@ -541,7 +541,7 @@ StringPreferenceChangeHandler
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = Grid.snapped(getMousePoint(pEvent));
-		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
+		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.x(), point.y())));
 		Optional<Violation> violation = aDiagramValidator.validate();
 		
 		if(violation.isEmpty())
@@ -586,7 +586,7 @@ StringPreferenceChangeHandler
 			handleSingleClick(pEvent);
 		}
 		Point point = getMousePoint(pEvent);
-		aLastMousePoint = new Point(point.getX(), point.getY()); 
+		aLastMousePoint = new Point(point.x(), point.y()); 
 		aMouseDownPoint = aLastMousePoint;
 		paintPanel();
 	}
@@ -722,8 +722,8 @@ StringPreferenceChangeHandler
 	{
 		assert !aSelected.isEmpty();
 		
-		int dx = pMousePoint.getX() - aLastMousePoint.getX();
-		int dy = pMousePoint.getY() - aLastMousePoint.getY();
+		int dx = pMousePoint.x() - aLastMousePoint.x();
+		int dy = pMousePoint.y() - aLastMousePoint.y();
 		
 		// Perform the move without painting it
 		selectedNodes().forEach(selected -> selected.translate(dx, dy));

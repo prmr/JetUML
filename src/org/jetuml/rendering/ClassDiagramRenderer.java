@@ -156,7 +156,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert EdgePriority.isSegmented(pEdgePriority);
 		List<Edge> edgesToProcess = diagram().edges().stream()
 				.filter(edge -> priorityOf(edge) == pEdgePriority)
-				.sorted(Comparator.comparing(edge -> edge.start().position().getX()))
+				.sorted(Comparator.comparing(edge -> edge.start().position().x()))
 				.collect(toList());
 				
 		while( !edgesToProcess.isEmpty() )
@@ -264,22 +264,22 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		//determine location of first bend: either 20px above or 20px below the start point
 		if(NodeCorner.horizontalSide(pCorner) == Direction.NORTH)
 		{
-			firstBend = new Point(startPoint.getX(), startPoint.getY() - (2 * TEN_PIXELS)); 
+			firstBend = new Point(startPoint.x(), startPoint.y() - (2 * TEN_PIXELS)); 
 		}
 		else
 		{
-			firstBend = new Point(startPoint.getX(), startPoint.getY() + (2 * TEN_PIXELS)); 
+			firstBend = new Point(startPoint.x(), startPoint.y() + (2 * TEN_PIXELS)); 
 		}
 		//determine location of middle and last bends
 		if(NodeCorner.verticalSide(pCorner) == Direction.EAST)
 		{
-			middleBend = new Point(firstBend.getX() + (4 * TEN_PIXELS), firstBend.getY());
-			lastBend = new Point(endPoint.getX() + (2 * TEN_PIXELS), endPoint.getY());
+			middleBend = new Point(firstBend.x() + (4 * TEN_PIXELS), firstBend.y());
+			lastBend = new Point(endPoint.x() + (2 * TEN_PIXELS), endPoint.y());
 		}
 		else
 		{
-			middleBend = new Point(firstBend.getX() - (4 * TEN_PIXELS), firstBend.getY());
-			lastBend = new Point(endPoint.getX() - (2 * TEN_PIXELS), endPoint.getY());
+			middleBend = new Point(firstBend.x() - (4 * TEN_PIXELS), firstBend.y());
+			lastBend = new Point(endPoint.x() - (2 * TEN_PIXELS), endPoint.y());
 		}
 		return new EdgePath(startPoint, firstBend, middleBend, lastBend, endPoint);
 	}
@@ -384,13 +384,13 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(pEdgeDirection.isHorizontal())
 		{
 			//Then the mid-point coordinate is a Y-coordinate
-			firstMiddlePoint = new Point(pStart.getX(), pMidLine);
-			secondMiddlePoint = new Point(pEnd.getX(), pMidLine);
+			firstMiddlePoint = new Point(pStart.x(), pMidLine);
+			secondMiddlePoint = new Point(pEnd.x(), pMidLine);
 		}
 		else //East or West
 		{	//Then the mid-point coordinate is a X-coordinate
-			firstMiddlePoint = new Point(pMidLine, pStart.getY());
-			secondMiddlePoint = new Point(pMidLine, pEnd.getY());
+			firstMiddlePoint = new Point(pMidLine, pStart.y());
+			secondMiddlePoint = new Point(pMidLine, pEnd.y());
 		}
 		return new EdgePath(pStart, firstMiddlePoint, secondMiddlePoint, pEnd);
 	}
@@ -466,7 +466,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(closestStoredEdge.isEmpty())
 		{
 			//If there are no conflicting segments, return the y-coordinate equidistant between the start and end points
-			return pEnd.getY() + ((pStart.getY() - pEnd.getY()) / 2);
+			return pEnd.y() + ((pStart.y() - pEnd.y()) / 2);
 		}
 		else
 		{	//Return a y-coordinate either 10px above or 10px below the horizontal middle segment of closestStoredEdge
@@ -502,7 +502,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(closestStoredEdge.isEmpty())
 		{
 			//If no stored edges conflict with pEdge then return the x-coordinate in between the start and end points
-			return pEnd.getX() + ((pStart.getX() - pEnd.getX()) / 2);
+			return pEnd.x() + ((pStart.x() - pEnd.x()) / 2);
 		}
 		else
 		{	//Return an x-coordinate either 10px to the left or 10px to the right of closestStoredEdge
@@ -529,11 +529,11 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdgeDirection.isHorizontal();
 		if(pEdgeDirection == Side.TOP)
 		{	
-			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getY() - TEN_PIXELS;
+			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).y() - TEN_PIXELS;
 		}
 		else //pEdgeDirection == Direction.SOUTH
 		{
-			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getY() + TEN_PIXELS;
+			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).y() + TEN_PIXELS;
 		}
 	}
 	
@@ -556,11 +556,11 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdgeDirection.isVertical();
 		if(pEdgeDirection == Side.LEFT)
 		{
-			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getX() - TEN_PIXELS;
+			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).x() - TEN_PIXELS;
 		}
 		else
 		{
-			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getX() + TEN_PIXELS;
+			return getEdgePath(pEdgeWithSameNodes).getPointByIndex(1).x() + TEN_PIXELS;
 		}
 	}
 	
@@ -658,22 +658,22 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		{
 			if(isOutgoingEdge(pEdge, commonNode))
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getY() + TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).y() + TEN_PIXELS;
 			}
 			else
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getY() - TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).y() - TEN_PIXELS;
 			}
 		}
 		else //Direction is BOTTOM
 		{
 			if(isOutgoingEdge(pEdge, commonNode))
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getY() - TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).y() - TEN_PIXELS;
 			}
 			else
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getY() + TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).y() + TEN_PIXELS;
 			}
 		}
 	}
@@ -700,22 +700,22 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		{
 			if(isOutgoingEdge(pEdge, commonNode))
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getX() + TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).x() + TEN_PIXELS;
 			}
 			else
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getX() - TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).x() - TEN_PIXELS;
 			}
 		}
 		else //Direction is RIGHT
 		{
 			if(isOutgoingEdge(pEdge, commonNode))
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getX() - TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).x() - TEN_PIXELS;
 			}
 			else
 			{
-				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).getX() + TEN_PIXELS;
+				return getEdgePath(pClosestStoredEdge).getPointByIndex(1).x() + TEN_PIXELS;
 			}
 		}
 	}
@@ -812,7 +812,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdgeDirection.isHorizontal();	
 		assert EdgePriority.isSegmented(priorityOf(pEdge));
 		assert aEdgeStorage.contains(pEdge);
-		return Math.abs(getEdgePath(pEdge).getPointByIndex(1).getY() - pEndNode.position().getY());
+		return Math.abs(getEdgePath(pEdge).getPointByIndex(1).y() - pEndNode.position().y());
 	}
 	
 	/**
@@ -829,7 +829,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert pEdgeDirection.isVertical();
 		assert EdgePriority.isSegmented(priorityOf(pEdge));
 		assert aEdgeStorage.contains(pEdge);
-		return Math.abs(getEdgePath(pEdge).getPointByIndex(1).getX() - pEndNode.position().getX());
+		return Math.abs(getEdgePath(pEdge).getPointByIndex(1).x() - pEndNode.position().x());
 	}
 	
 	/**
@@ -847,22 +847,22 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if( pDirection == Side.TOP)
 		{//Then return the point with the smallest Y-coordinate
 			return pPoints.stream()
-							.min((p1, p2)->Integer.compare(p1.getY(), p2.getY())).orElseGet(null);
+							.min((p1, p2)->Integer.compare(p1.y(), p2.y())).orElseGet(null);
 		}
 		else if( pDirection == Side.BOTTOM) 
 		{//Then return the point with the the largest Y-coordinate
 			return pPoints.stream()
-						.max((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).orElseGet(null);
+						.max((p1, p2) -> Integer.compare(p1.y(), p2.y())).orElseGet(null);
 		}
 		else if(pDirection == Side.RIGHT)
 		{//Then return the point with the largest X-coordinate
 			return pPoints.stream()
-				.max((p1, p2)-> Integer.compare(p1.getX() , p2.getX())).orElseGet(null);
+				.max((p1, p2)-> Integer.compare(p1.x() , p2.x())).orElseGet(null);
 		}
 		else
 		{ //Then return the point with the smallest X-coordinate
 			return pPoints.stream()
-					.min((p1, p2)-> Integer.compare(p1.getX(), p2.getX())).orElseGet(null);
+					.min((p1, p2)-> Integer.compare(p1.x(), p2.x())).orElseGet(null);
 		}
 	}
 
@@ -959,13 +959,13 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		Point commonNodeCenter = getBounds(pCommonNode).getCenter();
 		if(pAttachedSide.isHorizontal())//then compare X-coordinates
 		{
-			return node1Center.getX() <= commonNodeCenter.getX() && node2Center.getX() <= commonNodeCenter.getX() ||
-					node1Center.getX() >= commonNodeCenter.getX() && node2Center.getX() >= commonNodeCenter.getX();
+			return node1Center.x() <= commonNodeCenter.x() && node2Center.x() <= commonNodeCenter.x() ||
+					node1Center.x() >= commonNodeCenter.x() && node2Center.x() >= commonNodeCenter.x();
 		}
 		else//compare y-coordinates
 		{
-			return node1Center.getY() <= commonNodeCenter.getY() && node2Center.getY() <= commonNodeCenter.getY() ||
-					node1Center.getY() >= commonNodeCenter.getY() && node2Center.getY() >= commonNodeCenter.getY();
+			return node1Center.y() <= commonNodeCenter.y() && node2Center.y() <= commonNodeCenter.y() ||
+					node1Center.y() >= commonNodeCenter.y() && node2Center.y() >= commonNodeCenter.y();
 		}
 	}
 	
@@ -1079,7 +1079,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
 		if( pSideOfNode.isHorizontal() ) //then compare X-coordinates
 		{
-			if(getBounds(pNode).getCenter().getX() <=  getBounds(pOtherNode).getCenter().getX())
+			if(getBounds(pNode).getCenter().x() <=  getBounds(pOtherNode).getCenter().x())
 			{
 				return 1;
 			}
@@ -1090,7 +1090,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		}
 		else //Side of node is East/West, so we need to compare Y-coordinates
 		{
-			if(getBounds(pNode).getCenter().getY() <=  getBounds(pOtherNode).getCenter().getY())
+			if(getBounds(pNode).getCenter().y() <=  getBounds(pOtherNode).getCenter().y())
 			{
 				return 1;
 			}
@@ -1257,7 +1257,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static Side northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds != null && pOtherBounds != null;
-		if(pOtherBounds.getCenter().getY() < pBounds.getCenter().getY())
+		if(pOtherBounds.getCenter().y() < pBounds.getCenter().y())
 		{
 			return Side.TOP;
 		}
@@ -1278,7 +1278,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static Side eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds !=null && pOtherBounds !=null;
-		if(pOtherBounds.getCenter().getX() < pBounds.getCenter().getX() )
+		if(pOtherBounds.getCenter().x() < pBounds.getCenter().x() )
 		{
 			return Side.LEFT;
 		}
@@ -1304,28 +1304,28 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(pAttachedSide == Side.TOP)
 		{ //Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getY() < getEdgePath(edge).getPointByIndex(1).getY() - TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.getY() < getEdgePath(edge).getPointByIndex(1).y() - TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else if(pAttachedSide == Side.BOTTOM)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getMaxY() > getEdgePath(edge).getPointByIndex(1).getY() + TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.getMaxY() > getEdgePath(edge).getPointByIndex(1).y() + TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else if(pAttachedSide == Side.RIGHT)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getMaxX() > getEdgePath(edge).getPointByIndex(1).getX() - TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.getMaxX() > getEdgePath(edge).getPointByIndex(1).x() - TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else //Direction is LEFT
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getX() < getEdgePath(edge).getPointByIndex(1).getX() + TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.getX() < getEdgePath(edge).getPointByIndex(1).x() + TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}

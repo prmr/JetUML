@@ -96,7 +96,7 @@ public final class Direction
 	{
 		assert pStart != null && pEnd != null;
 		assert !pStart.equals(pEnd);
-		return fromAngle(asAngle(pEnd.getX() - pStart.getX(), pEnd.getY() - pStart.getY()));
+		return fromAngle(asAngle(pEnd.x() - pStart.x(), pEnd.y() - pStart.y()));
 	}
 	
 	/**

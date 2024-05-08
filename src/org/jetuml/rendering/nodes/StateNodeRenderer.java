@@ -71,7 +71,7 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
+		return new Rectangle(pNode.position().x(), pNode.position().y(), 
 				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
 	}
 	

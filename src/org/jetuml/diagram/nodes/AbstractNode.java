@@ -38,7 +38,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
 	{
-		aPosition = new Point( aPosition.getX() + pDeltaX, aPosition.getY() + pDeltaY );
+		aPosition = new Point( aPosition.x() + pDeltaX, aPosition.y() + pDeltaY );
 	}
 	
 	@Override

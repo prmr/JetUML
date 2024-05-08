@@ -47,11 +47,11 @@ public class TestObjectNode
 	@Test
 	public void testTranslate_NoFields()
 	{
-		assertEquals(0, aObject1.position().getX());
-		assertEquals(0, aObject1.position().getY());
+		assertEquals(0, aObject1.position().x());
+		assertEquals(0, aObject1.position().y());
 		aObject1.translate(100, 200);
-		assertEquals(100, aObject1.position().getX());
-		assertEquals(200, aObject1.position().getY());
+		assertEquals(100, aObject1.position().x());
+		assertEquals(200, aObject1.position().y());
 	}
 	
 	@Test
@@ -59,19 +59,19 @@ public class TestObjectNode
 	{
 		aObject1.addChild(aField1);
 		aObject1.addChild(aField2);
-		assertEquals(0, aObject1.position().getX());
-		assertEquals(0, aObject1.position().getY());
-		assertEquals(0, aField1.position().getX());
-		assertEquals(0, aField1.position().getY());
-		assertEquals(0, aField2.position().getX());
-		assertEquals(0, aField2.position().getY());
+		assertEquals(0, aObject1.position().x());
+		assertEquals(0, aObject1.position().y());
+		assertEquals(0, aField1.position().x());
+		assertEquals(0, aField1.position().y());
+		assertEquals(0, aField2.position().x());
+		assertEquals(0, aField2.position().y());
 		aObject1.translate(100, 200);
-		assertEquals(100, aObject1.position().getX());
-		assertEquals(200, aObject1.position().getY());
-		assertEquals(100, aField1.position().getX());
-		assertEquals(200, aField1.position().getY());
-		assertEquals(100, aField2.position().getX());
-		assertEquals(200, aField2.position().getY());
+		assertEquals(100, aObject1.position().x());
+		assertEquals(200, aObject1.position().y());
+		assertEquals(100, aField1.position().x());
+		assertEquals(200, aField1.position().y());
+		assertEquals(100, aField2.position().x());
+		assertEquals(200, aField2.position().y());
 	}
 	
 	@Test

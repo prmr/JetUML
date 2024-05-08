@@ -80,7 +80,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = getTopRectangle((Node)pElement);
 		RenderingUtils.drawRectangle(pGraphics, top);
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pGraphics, top);
-		int xmid = top.getCenter().getX();
+		int xmid = top.getCenter().x();
 		RenderingUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pElement).getMaxY(), LineStyle.DOTTED);
 	}
 	
@@ -88,7 +88,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
+		return bounds.getX() <= pPoint.x() && pPoint.x() <= bounds.getX() + bounds.getWidth();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	 */
 	public Rectangle getTopRectangle(Node pNode)
 	{
-		return new Rectangle(pNode.position().getX(), 				
+		return new Rectangle(pNode.position().x(), 				
 				((SequenceDiagramRenderer)parent()).getLifelineTop((ImplicitParameterNode) pNode) - TOP_HEIGHT,
 				getWidth(pNode), 									
 				TOP_HEIGHT);										
@@ -150,7 +150,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		assert pNode != null;
 		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
-				HORIZONTAL_PADDING, DEFAULT_WIDTH)/2 + pNode.position().getX();
+				HORIZONTAL_PADDING, DEFAULT_WIDTH)/2 + pNode.position().x();
 	}
 
 	@Override
@@ -158,9 +158,9 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);
-		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - pNode.position().getX());
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT) - topRectangle.getY();	
-		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height);
+		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.x() - pNode.position().x());
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.y() + TAIL_HEIGHT) - topRectangle.getY();	
+		return new Rectangle(pNode.position().x(), topRectangle.getY(), width, height);
 	}
 	
 	@Override

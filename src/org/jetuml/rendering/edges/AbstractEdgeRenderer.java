@@ -105,7 +105,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 
 		Shape fatPath = getShape(edge);
 		fatPath.setStrokeWidth(2 * MAX_DISTANCE);
-		return fatPath.contains(pPoint.getX(), pPoint.getY());
+		return fatPath.contains(pPoint.x(), pPoint.y());
 	}
 	
 	@Override

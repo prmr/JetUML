@@ -65,8 +65,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				if( container.get().getChildren().size()==0 )
 				{
 					// If pNode would be the first child node, position the node according to its container's position
-					positionNode(pNode, new Point(container.get().position().getX() + PADDING, 
-							container.get().position().getY() + PADDING + TOP_HEIGHT));
+					positionNode(pNode, new Point(container.get().position().x() + PADDING, 
+							container.get().position().y() + PADDING + TOP_HEIGHT));
 				}
 				else 
 				{
@@ -319,8 +319,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							aDiagramRenderer.diagram().addRootNode(pNode);
 							parent.removeChild(pNode);
 						}
-						parent.translate( parentBound.getX()-parent.position().getX(),  
-							parentBound.getY()-parent.position().getY() );
+						parent.translate( parentBound.getX()-parent.position().x(),  
+							parentBound.getY()-parent.position().y() );
 					},
 					()->
 					{
@@ -342,8 +342,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							parent.removeChild(pNode);
 							outerParent.addChild(pNode);
 						}
-						parent.translate( parentBound.getX()-parent.position().getX(),  
-									parentBound.getY()-parent.position().getY() );
+						parent.translate( parentBound.getX()-parent.position().x(),  
+									parentBound.getY()-parent.position().y() );
 					},
 					()->
 					{

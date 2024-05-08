@@ -46,7 +46,7 @@ public class TestMoveTracker
 {
 	// A stub that returns a 40x60 rectangle with origin at the node's position
 	private static final Function<Node, Rectangle> BOUND_CALCULATOR_STUB =
-			(node) -> new Rectangle(node.position().getX(), node.position().getY(), 40, 60);
+			(node) -> new Rectangle(node.position().x(), node.position().y(), 40, 60);
 	
 	private MoveTracker aTracker = new MoveTracker(BOUND_CALCULATOR_STUB);
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);;
@@ -81,11 +81,11 @@ public class TestMoveTracker
 		assertThat(getOperations(operation), hasSize, 1);
 		
 		operation.undo();
-		assertEquals(150, aNode1.position().getX());
-		assertEquals(150, aNode1.position().getY());
+		assertEquals(150, aNode1.position().x());
+		assertEquals(150, aNode1.position().y());
 		operation.execute();
-		assertEquals(220, aNode1.position().getX());
-		assertEquals(420, aNode1.position().getY());
+		assertEquals(220, aNode1.position().x());
+		assertEquals(420, aNode1.position().y());
 		
 		// No change in selection, move only X
 		aTracker.start(asList(aNode1));
@@ -93,11 +93,11 @@ public class TestMoveTracker
 		operation = aTracker.stop();
 		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
-		assertEquals(220, aNode1.position().getX());
-		assertEquals(420, aNode1.position().getY());
+		assertEquals(220, aNode1.position().x());
+		assertEquals(420, aNode1.position().y());
 		operation.execute();
-		assertEquals(420, aNode1.position().getX());
-		assertEquals(420, aNode1.position().getY());
+		assertEquals(420, aNode1.position().x());
+		assertEquals(420, aNode1.position().y());
 		
 		// No change in selection, move only Y
 		aTracker.start(asList(aNode1));
@@ -105,11 +105,11 @@ public class TestMoveTracker
 		operation = aTracker.stop();
 		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
-		assertEquals(420, aNode1.position().getX());
-		assertEquals(420, aNode1.position().getY());
+		assertEquals(420, aNode1.position().x());
+		assertEquals(420, aNode1.position().y());
 		operation.execute();
-		assertEquals(420, aNode1.position().getX());
-		assertEquals(620, aNode1.position().getY());
+		assertEquals(420, aNode1.position().x());
+		assertEquals(620, aNode1.position().y());
 		
 		// No change in selection, null move
 		aTracker.start(asList(aNode1));
@@ -129,26 +129,26 @@ public class TestMoveTracker
 		assertThat(operations, hasSize, 2);
 		
 		operations.get(0).undo();
-		assertEquals(150, aNode1.position().getX());
-		assertEquals(150, aNode1.position().getY());
-		assertEquals(420, aNode2.position().getX());
-		assertEquals(420, aNode2.position().getY());
+		assertEquals(150, aNode1.position().x());
+		assertEquals(150, aNode1.position().y());
+		assertEquals(420, aNode2.position().x());
+		assertEquals(420, aNode2.position().y());
 		operations.get(0).execute();
-		assertEquals(170, aNode1.position().getX());
-		assertEquals(170, aNode1.position().getY());
-		assertEquals(420, aNode2.position().getX());
-		assertEquals(420, aNode2.position().getY());
+		assertEquals(170, aNode1.position().x());
+		assertEquals(170, aNode1.position().y());
+		assertEquals(420, aNode2.position().x());
+		assertEquals(420, aNode2.position().y());
 		
 		operations.get(1).undo();
-		assertEquals(170, aNode1.position().getX());
-		assertEquals(170, aNode1.position().getY());
-		assertEquals(400, aNode2.position().getX());
-		assertEquals(400, aNode2.position().getY());
+		assertEquals(170, aNode1.position().x());
+		assertEquals(170, aNode1.position().y());
+		assertEquals(400, aNode2.position().x());
+		assertEquals(400, aNode2.position().y());
 		operations.get(1).execute();
-		assertEquals(170, aNode1.position().getX());
-		assertEquals(170, aNode1.position().getY());
-		assertEquals(420, aNode2.position().getX());
-		assertEquals(420, aNode2.position().getY());
+		assertEquals(170, aNode1.position().x());
+		assertEquals(170, aNode1.position().y());
+		assertEquals(420, aNode2.position().x());
+		assertEquals(420, aNode2.position().y());
 
 		// Second identical move
 		aTracker.start(asList(aNode1, aNode2, aEdge1));
@@ -160,26 +160,26 @@ public class TestMoveTracker
 		assertThat(operations, hasSize, 2);
 		
 		operations.get(0).undo();
-		assertEquals(170, aNode1.position().getX());
-		assertEquals(170, aNode1.position().getY());
-		assertEquals(440, aNode2.position().getX());
-		assertEquals(440, aNode2.position().getY());
+		assertEquals(170, aNode1.position().x());
+		assertEquals(170, aNode1.position().y());
+		assertEquals(440, aNode2.position().x());
+		assertEquals(440, aNode2.position().y());
 		operations.get(0).execute();
-		assertEquals(190, aNode1.position().getX());
-		assertEquals(190, aNode1.position().getY());
-		assertEquals(440, aNode2.position().getX());
-		assertEquals(440, aNode2.position().getY());
+		assertEquals(190, aNode1.position().x());
+		assertEquals(190, aNode1.position().y());
+		assertEquals(440, aNode2.position().x());
+		assertEquals(440, aNode2.position().y());
 		
 		operations.get(1).undo();
-		assertEquals(190, aNode1.position().getX());
-		assertEquals(190, aNode1.position().getY());
-		assertEquals(420, aNode2.position().getX());
-		assertEquals(420, aNode2.position().getY());
+		assertEquals(190, aNode1.position().x());
+		assertEquals(190, aNode1.position().y());
+		assertEquals(420, aNode2.position().x());
+		assertEquals(420, aNode2.position().y());
 		operations.get(1).execute();
-		assertEquals(190, aNode1.position().getX());
-		assertEquals(190, aNode1.position().getY());
-		assertEquals(440, aNode2.position().getX());
-		assertEquals(440, aNode2.position().getY());
+		assertEquals(190, aNode1.position().x());
+		assertEquals(190, aNode1.position().y());
+		assertEquals(440, aNode2.position().x());
+		assertEquals(440, aNode2.position().y());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -91,8 +91,8 @@ public final class Grid
 	public static Point snapped(Point pPoint)
 	{
 		assert pPoint != null;
-		int x = (int)(Math.round(pPoint.getX() / GRID_SIZE) * GRID_SIZE);
-		int y = (int)(Math.round(pPoint.getY() / GRID_SIZE) * GRID_SIZE);
+		int x = (int)(Math.round(pPoint.x() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(Math.round(pPoint.y() / GRID_SIZE) * GRID_SIZE);
 		return new Point(x, y);
 	}
 	
@@ -106,7 +106,7 @@ public final class Grid
 	{
 		assert pPoint != null;
 		Point snapped = snapped(pPoint);
-		return new Point(snapped.getX(), pPoint.getY());
+		return new Point(snapped.x(), pPoint.y());
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public final class Grid
 	{
 		assert pPoint != null;
 		Point snapped = snapped(pPoint);
-		return new Point(pPoint.getX(), snapped.getY());
+		return new Point(pPoint.x(), snapped.y());
 	}
 	
 	/**

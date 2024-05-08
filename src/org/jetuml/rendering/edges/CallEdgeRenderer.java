@@ -75,12 +75,12 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		Point[] points = getPoints(pEdge);
 		Path path = new Path();
 		Point point = points[points.length - 1];
-		MoveTo moveTo = new MoveTo(point.getX(), point.getY());
+		MoveTo moveTo = new MoveTo(point.x(), point.y());
 		path.getElements().add(moveTo);
 		for(int i = points.length - 2; i >= 0; i--)
 		{
 			point = points[i];
-			LineTo lineTo = new LineTo(point.getX(), point.getY());
+			LineTo lineTo = new LineTo(point.x(), point.y());
 			path.getElements().add(lineTo);
 		}
 		return path;
@@ -144,15 +144,15 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		{
 			Dimension dimensions = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(label);
 			Point[] points = getPoints(pEdge);
-			int heightDelta = (points[2].getY() -  points[1].getY() - dimensions.height())/2 + SHIFT;
-			return new Rectangle(points[1].getX(), points[1].getY() + heightDelta, dimensions.width() , dimensions.height());
+			int heightDelta = (points[2].y() -  points[1].y() - dimensions.height())/2 + SHIFT;
+			return new Rectangle(points[1].x(), points[1].y() + heightDelta, dimensions.width() , dimensions.height());
 		}
 		else
 		{
 			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
 			Point center = getConnectionPoints(pEdge).spanning().getCenter();
-			return new Rectangle(center.getX() - dimensions.width()/2, 
-					center.getY() - dimensions.height() + SHIFT, dimensions.width(), dimensions.height());
+			return new Rectangle(center.x() - dimensions.width()/2, 
+					center.y() - dimensions.height() + SHIFT, dimensions.width(), dimensions.height());
 		}
 	}
 
@@ -183,8 +183,8 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		{
 			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
 			Point q = new Point(end.getMaxX(), end.getY());
-			Point s = new Point(q.getX() + end.getWidth(), q.getY());
-			Point r = new Point(s.getX(), p.getY());
+			Point s = new Point(q.x() + end.getWidth(), q.y());
+			Point r = new Point(s.x(), p.y());
 
 			points.add(p);
 			points.add(r);
@@ -200,13 +200,13 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 			}
 			Point endPoint = parent().getConnectionPoints(endNode, direction);
          
-			if(start.getCenter().getX() < endPoint.getX())
+			if(start.getCenter().x() < endPoint.x())
 			{
-				points.add(new Point(start.getMaxX(), endPoint.getY()));
+				points.add(new Point(start.getMaxX(), endPoint.y()));
 			}
 			else
 			{
-				points.add(new Point(start.getX(), endPoint.getY()));
+				points.add(new Point(start.getX(), endPoint.y()));
 			}
 			points.add(endPoint);
 		}

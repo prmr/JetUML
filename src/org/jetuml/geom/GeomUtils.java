@@ -64,19 +64,19 @@ public final class GeomUtils
 		assert pDirection.isCardinal();
 		if( pDirection == Direction.NORTH )
 		{
-			return new Point(pRectangle.getCenter().getX(), pRectangle.getY());
+			return new Point(pRectangle.getCenter().x(), pRectangle.getY());
 		}
 		else if( pDirection == Direction.SOUTH )
 		{
-			return new Point(pRectangle.getCenter().getX(), pRectangle.getMaxY());
+			return new Point(pRectangle.getCenter().x(), pRectangle.getMaxY());
 		}
 		else if( pDirection == Direction.EAST )
 		{
-			return new Point(pRectangle.getMaxX(), pRectangle.getCenter().getY());
+			return new Point(pRectangle.getMaxX(), pRectangle.getCenter().y());
 		}
 		else // pDirection == Direction.WEST 
 		{
-			return new Point(pRectangle.getX(), pRectangle.getCenter().getY());
+			return new Point(pRectangle.getX(), pRectangle.getCenter().y());
 		}
 	}
 	
@@ -104,23 +104,23 @@ public final class GeomUtils
 		if( pDirection.isBetween(diagonalNE, diagonalSE))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.EAST.asAngle(), pRectangle.getWidth()/2);
-			return new Point(pRectangle.getMaxX(), pRectangle.getCenter().getY() + offset);
+			return new Point(pRectangle.getMaxX(), pRectangle.getCenter().y() + offset);
 		}
 		else if( pDirection.isBetween(diagonalSE, diagonalSW))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.SOUTH.asAngle(), pRectangle.getHeight()/2);
-			return new Point(pRectangle.getCenter().getX() - offset, pRectangle.getMaxY());
+			return new Point(pRectangle.getCenter().x() - offset, pRectangle.getMaxY());
 		}
 		else if( pDirection.isBetween(diagonalSW, diagonalNW))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.WEST.asAngle(), pRectangle.getWidth()/2);
-			return new Point(pRectangle.getX(), pRectangle.getCenter().getY() - offset);
+			return new Point(pRectangle.getX(), pRectangle.getCenter().y() - offset);
 		}
 		else
 		{
 			final int angleS = 360;
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - angleS, pRectangle.getHeight()/2);
-			return new Point(pRectangle.getCenter().getX() + offset, pRectangle.getY());
+			return new Point(pRectangle.getCenter().x() + offset, pRectangle.getY());
 		}
 	}
 	
@@ -147,7 +147,7 @@ public final class GeomUtils
 		
 		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-		return new Point( pBounds.getCenter().getX() + offsetX, pBounds.getCenter().getY() + offsetY);
+		return new Point( pBounds.getCenter().x() + offsetX, pBounds.getCenter().y() + offsetY);
 	}   	 
 	
 	/**
@@ -174,7 +174,7 @@ public final class GeomUtils
 		
 		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * a);
 		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * b);
-		return new Point( pBounds.getCenter().getX() + offsetX, pBounds.getCenter().getY() + offsetY);
+		return new Point( pBounds.getCenter().x() + offsetX, pBounds.getCenter().y() + offsetY);
 	}
 
 	/**
@@ -213,35 +213,35 @@ public final class GeomUtils
 		
 		if( pDirection.isBetween(topNE, bottomNE))
 		{
-			Point cornerCenter = new Point(pBounds.getCenter().getX() + widthOffset, pBounds.getCenter().getY() - heightOffset);
+			Point cornerCenter = new Point(pBounds.getCenter().x() + widthOffset, pBounds.getCenter().y() - heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
 			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			result =  new Point( pBounds.getCenter().getX() + offsetX + widthOffset, pBounds.getCenter().getY() + offsetY - heightOffset);
+			result =  new Point( pBounds.getCenter().x() + offsetX + widthOffset, pBounds.getCenter().y() + offsetY - heightOffset);
 		}
 		else if( pDirection.isBetween(topSE, bottomSE))
 		{
-			Point cornerCenter = new Point(pBounds.getCenter().getX() + widthOffset, pBounds.getCenter().getY() + heightOffset);
+			Point cornerCenter = new Point(pBounds.getCenter().x() + widthOffset, pBounds.getCenter().y() + heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
 			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			result = new Point( pBounds.getCenter().getX() + offsetX + widthOffset, pBounds.getCenter().getY() + offsetY + heightOffset);
+			result = new Point( pBounds.getCenter().x() + offsetX + widthOffset, pBounds.getCenter().y() + offsetY + heightOffset);
 		}
 		else if( pDirection.isBetween(topSW, bottomSW))
 		{
-			Point cornerCenter = new Point(pBounds.getCenter().getX() - widthOffset, pBounds.getCenter().getY() + heightOffset);
+			Point cornerCenter = new Point(pBounds.getCenter().x() - widthOffset, pBounds.getCenter().y() + heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
 			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			result = new Point( pBounds.getCenter().getX() + offsetX - widthOffset, pBounds.getCenter().getY() + offsetY + heightOffset);
+			result = new Point( pBounds.getCenter().x() + offsetX - widthOffset, pBounds.getCenter().y() + offsetY + heightOffset);
 		}
 		else if( pDirection.isBetween(topNW, bottomNW))
 		{
-			Point cornerCenter = new Point(pBounds.getCenter().getX() - widthOffset, pBounds.getCenter().getY() - heightOffset);
+			Point cornerCenter = new Point(pBounds.getCenter().x() - widthOffset, pBounds.getCenter().y() - heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
 			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			result = new Point( pBounds.getCenter().getX() + offsetX - widthOffset, pBounds.getCenter().getY() + offsetY - heightOffset);
+			result = new Point( pBounds.getCenter().x() + offsetX - widthOffset, pBounds.getCenter().y() + offsetY - heightOffset);
 		}
 		else
 		{

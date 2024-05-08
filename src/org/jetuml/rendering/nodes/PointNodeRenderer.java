@@ -54,7 +54,7 @@ public final class PointNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 0, 0);
+		return new Rectangle(pNode.position().x(), pNode.position().y(), 0, 0);
 	}
 
 	@Override

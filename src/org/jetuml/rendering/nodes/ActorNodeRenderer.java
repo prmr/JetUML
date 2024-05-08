@@ -72,8 +72,8 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
 		return new Rectangle(
-				pNode.position().getX() + Math.min(0, (WIDTH - nameBounds.width()) / 2), 
-				pNode.position().getY(),
+				pNode.position().x() + Math.min(0, (WIDTH - nameBounds.width()) / 2), 
+				pNode.position().y(),
 				Math.max(WIDTH, nameBounds.width()),
 				HEIGHT + nameBounds.height()
 		);
@@ -85,7 +85,7 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)node).getName());
-		Rectangle nameBox = new Rectangle(node.position().getX() + (WIDTH - nameBounds.width()) / 2, 
+		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
 				bounds.getY() + HEIGHT, nameBounds.width(), nameBounds.height());
 		NAME_VIEWER.draw(((ActorNode)node).getName(), pGraphics, nameBox);
 		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(node), LineStyle.SOLID);
@@ -95,8 +95,8 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	{
 		Path path = new Path();
 		
-		int neckX = pNode.position().getX() + WIDTH / 2;
-		int neckY = pNode.position().getY() + HEAD_SIZE + PADDING;
+		int neckX = pNode.position().x() + WIDTH / 2;
+		int neckY = pNode.position().y() + HEAD_SIZE + PADDING;
 		int hipX = neckX;
 		int hipY = neckY + BODY_SIZE;
 		float dx = (float) (LEG_SIZE / Math.sqrt(2));

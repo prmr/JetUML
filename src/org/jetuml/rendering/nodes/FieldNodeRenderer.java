@@ -155,7 +155,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
+		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().y());
 	}
 	
 	/*

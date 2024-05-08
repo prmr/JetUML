@@ -78,7 +78,7 @@ public class Line
 	 */
 	public int getX1()
 	{
-		return aPoint1.getX();
+		return aPoint1.x();
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class Line
 	 */
 	public int getY1()
 	{
-		return aPoint1.getY();
+		return aPoint1.y();
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class Line
 	 */
 	public int getX2()
 	{
-		return aPoint2.getX();
+		return aPoint2.x();
 	}
 	
 	/**
@@ -102,7 +102,7 @@ public class Line
 	 */
 	public int getY2()
 	{
-		return aPoint2.getY();
+		return aPoint2.y();
 	}
 	
 	/**

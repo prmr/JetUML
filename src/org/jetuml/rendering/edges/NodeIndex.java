@@ -64,13 +64,13 @@ public enum NodeIndex
 		{
 			Point center = Grid.snappedHorizontally(
 					new Point(((pNodeFace.getX2() - pNodeFace.getX1())/2) + pNodeFace.getX1(), pNodeFace.getY1()));
-			return new Point(center.getX() + offset, center.getY());
+			return new Point(center.x() + offset, center.y());
 		}
 		else 
 		{
 			Point center = Grid.snappedVertically( 
 					new Point(pNodeFace.getX1(), ((pNodeFace.getY2() - pNodeFace.getY1())/2) + pNodeFace.getY1()));
-			return new Point(center.getX(), center.getY() + offset);
+			return new Point(center.x(), center.y() + offset);
 		}
 	}
 	

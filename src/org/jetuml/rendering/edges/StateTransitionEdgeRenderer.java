@@ -100,13 +100,13 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 			Point connectionPoint2 = getSelfEdgeConnectionPoints(pEdge).getPoint2();
 			if( getPosition(pEdge) == 1 )
 			{
-				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).getPoint2());
+				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()+SELF_EDGE_OFFSET, 
+						connectionPoint2.y()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).getPoint2());
 			}
 			else
 			{
-				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).getPoint2());
+				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()-SELF_EDGE_OFFSET/4, 
+						connectionPoint2.y()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).getPoint2());
 			}
 		}
 		else
@@ -256,10 +256,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).getCenter().getX() -
-				parent().getBounds(pEdge.end()).getCenter().getX());
-		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).getCenter().getY() -
-				parent().getBounds(pEdge.end()).getCenter().getY());
+		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).getCenter().x() -
+				parent().getBounds(pEdge.end()).getCenter().x());
+		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).getCenter().y() -
+				parent().getBounds(pEdge.end()).getCenter().y());
 		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
@@ -312,7 +312,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		{
 			arc.setRadiusX(arc.getRadiusX() + 2 * MAX_DISTANCE);
 			arc.setRadiusY(arc.getRadiusY() + 2 * MAX_DISTANCE);
-			result = arc.contains(pPoint.getX(), pPoint.getY());
+			result = arc.contains(pPoint.x(), pPoint.y());
 		}
 		return result;
 	}
@@ -368,9 +368,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Line line = getConnectionPoints(pEdge);
 		Path path = new Path();
-		MoveTo moveTo = new MoveTo(line.getPoint1().getX(), line.getPoint1().getY());
+		MoveTo moveTo = new MoveTo(line.getPoint1().x(), line.getPoint1().y());
 		QuadCurveTo curveTo = new QuadCurveTo(getControlPoint(pEdge).getX(), getControlPoint(pEdge).getY(), 
-				line.getPoint2().getX(), line.getPoint2().getY());
+				line.getPoint2().x(), line.getPoint2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		return path;
 	}
@@ -447,8 +447,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 				(int)((line.getY1() + line.getY2()) / 2 - tangent * dx));         
 		
 		Path path = new Path();
-		MoveTo moveTo = new MoveTo(line.getPoint1().getX(), line.getPoint1().getY());
-		QuadCurveTo curveTo = new QuadCurveTo(control.getX(), control.getY(), line.getPoint2().getX(), line.getPoint2().getY());
+		MoveTo moveTo = new MoveTo(line.getPoint1().x(), line.getPoint1().y());
+		QuadCurveTo curveTo = new QuadCurveTo(control.x(), control.y(), line.getPoint2().x(), line.getPoint2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);

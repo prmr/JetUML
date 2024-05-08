@@ -150,8 +150,8 @@ public class Rectangle
 	public boolean contains(Point pPoint)
 	{
 		assert pPoint != null;
-		return pPoint.getX() >= aX && pPoint.getX() <= aX + aWidth &&
-				pPoint.getY() >= aY && pPoint.getY() <= aY + aHeight;
+		return pPoint.x() >= aX && pPoint.x() <= aX + aWidth &&
+				pPoint.y() >= aY && pPoint.y() <= aY + aHeight;
 	}
 	
 	/**
@@ -187,23 +187,23 @@ public class Rectangle
 		int y = aY;
 		int width = aWidth;
 		int height = aHeight;
-		if( pPoint.getX() < aX)
+		if( pPoint.x() < aX)
 		{
-			x = pPoint.getX();
-			width = getMaxX() - pPoint.getX();
+			x = pPoint.x();
+			width = getMaxX() - pPoint.x();
 		}
-		else if( pPoint.getX() > getMaxX())
+		else if( pPoint.x() > getMaxX())
 		{
-			width = pPoint.getX() - aX;
+			width = pPoint.x() - aX;
 		}
-		if( pPoint.getY() < aY )
+		if( pPoint.y() < aY )
 		{
-			y = pPoint.getY();
-			height = getMaxY() - pPoint.getY();
+			y = pPoint.y();
+			height = getMaxY() - pPoint.y();
 		}
-		else if( pPoint.getY() > getMaxY())
+		else if( pPoint.y() > getMaxY())
 		{
-			height = pPoint.getY() - aY;
+			height = pPoint.y() - aY;
 		}
 		return new Rectangle(x, y, width, height);			
 	}

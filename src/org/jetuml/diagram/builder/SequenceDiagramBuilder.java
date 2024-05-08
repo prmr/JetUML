@@ -126,7 +126,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> parent.addChild(end),
 				()-> parent.removeChild(end)));
-		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
+		int insertionIndex = computeInsertionIndex(start, pStartPoint.y());
 
 		pEdge.connect(start, end);
 		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, pEdge),
@@ -184,7 +184,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			if( node instanceof ImplicitParameterNode && aDiagramRenderer.contains(node, pPoint) )
 			{
-				if( !(pPoint.getY() < implicitParameterRenderer().getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
+				if( !(pPoint.y() < implicitParameterRenderer().getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
 				{
 					return Optional.of( (ImplicitParameterNode)node );
 				}

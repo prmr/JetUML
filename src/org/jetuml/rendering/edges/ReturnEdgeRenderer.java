@@ -63,7 +63,7 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 		{
 			return new Line(new Point(end.getX(), end.getY()), new Point(start.getMaxX(), end.getY()));
 		}      
-		else if(start.getCenter().getX() < end.getCenter().getX())
+		else if(start.getCenter().x() < end.getCenter().x())
 		{
 			return new Line(new Point(start.getMaxX(), start.getMaxY()), new Point(end.getX(), start.getMaxY()));
 		}

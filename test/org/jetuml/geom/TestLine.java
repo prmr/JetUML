@@ -40,7 +40,7 @@ public class TestLine
 	@Test
 	void testToString()
 	{
-		assertEquals("[(x=0,y=0), (x=1,y=1)]", ZERO_TO_ONE.toString());
+		assertEquals("[Point[x=0, y=0], Point[x=1, y=1]]", ZERO_TO_ONE.toString());
 	}
 	
 	@Nested
@@ -56,10 +56,10 @@ public class TestLine
 			assertEquals(0, line.getY1());
 			assertEquals(0, line.getX2());
 			assertEquals(0, line.getY2());	
-			assertEquals(0, line.getPoint1().getX());
-			assertEquals(0, line.getPoint1().getY());
-			assertEquals(0, line.getPoint2().getX());
-			assertEquals(0, line.getPoint2().getY());
+			assertEquals(0, line.getPoint1().x());
+			assertEquals(0, line.getPoint1().y());
+			assertEquals(0, line.getPoint2().x());
+			assertEquals(0, line.getPoint2().y());
 		}
 		
 		@Test
@@ -71,10 +71,10 @@ public class TestLine
 			assertEquals(1, line.getY1());
 			assertEquals(1, line.getX2());
 			assertEquals(1, line.getY2());	
-			assertEquals(1, line.getPoint1().getX());
-			assertEquals(1, line.getPoint1().getY());
-			assertEquals(1, line.getPoint2().getX());
-			assertEquals(1, line.getPoint2().getY());
+			assertEquals(1, line.getPoint1().x());
+			assertEquals(1, line.getPoint1().y());
+			assertEquals(1, line.getPoint2().x());
+			assertEquals(1, line.getPoint2().y());
 		}
 		
 		@Test
@@ -85,10 +85,10 @@ public class TestLine
 			assertEquals(0, ZERO_TO_ONE.getY1());
 			assertEquals(1, ZERO_TO_ONE.getX2());
 			assertEquals(1, ZERO_TO_ONE.getY2());	
-			assertEquals(0, ZERO_TO_ONE.getPoint1().getX());
-			assertEquals(0, ZERO_TO_ONE.getPoint1().getY());
-			assertEquals(1, ZERO_TO_ONE.getPoint2().getX());
-			assertEquals(1, ZERO_TO_ONE.getPoint2().getY());
+			assertEquals(0, ZERO_TO_ONE.getPoint1().x());
+			assertEquals(0, ZERO_TO_ONE.getPoint1().y());
+			assertEquals(1, ZERO_TO_ONE.getPoint2().x());
+			assertEquals(1, ZERO_TO_ONE.getPoint2().y());
 		}
 	}
 	
@@ -105,10 +105,10 @@ public class TestLine
 			assertEquals(0, line.getY1());
 			assertEquals(0, line.getX2());
 			assertEquals(0, line.getY2());	
-			assertEquals(0, line.getPoint1().getX());
-			assertEquals(0, line.getPoint1().getY());
-			assertEquals(0, line.getPoint2().getX());
-			assertEquals(0, line.getPoint2().getY());
+			assertEquals(0, line.getPoint1().x());
+			assertEquals(0, line.getPoint1().y());
+			assertEquals(0, line.getPoint2().x());
+			assertEquals(0, line.getPoint2().y());
 		}
 		
 		@Test
@@ -120,10 +120,10 @@ public class TestLine
 			assertEquals(1, line.getY1());
 			assertEquals(1, line.getX2());
 			assertEquals(1, line.getY2());	
-			assertEquals(1, line.getPoint1().getX());
-			assertEquals(1, line.getPoint1().getY());
-			assertEquals(1, line.getPoint2().getX());
-			assertEquals(1, line.getPoint2().getY());
+			assertEquals(1, line.getPoint1().x());
+			assertEquals(1, line.getPoint1().y());
+			assertEquals(1, line.getPoint2().x());
+			assertEquals(1, line.getPoint2().y());
 		}
 		
 		@Test
@@ -135,10 +135,10 @@ public class TestLine
 			assertEquals(0, line.getY1());
 			assertEquals(1, line.getX2());
 			assertEquals(1, line.getY2());	
-			assertEquals(0, line.getPoint1().getX());
-			assertEquals(0, line.getPoint1().getY());
-			assertEquals(1, line.getPoint2().getX());
-			assertEquals(1, line.getPoint2().getY());
+			assertEquals(0, line.getPoint1().x());
+			assertEquals(0, line.getPoint1().y());
+			assertEquals(1, line.getPoint2().x());
+			assertEquals(1, line.getPoint2().y());
 		}
 	}
 	

@@ -85,14 +85,14 @@ public class TestRectangle
 	void testGetCenter()
 	{
 		Point center = RECTANGLE_1.getCenter();
-		assertEquals(30, center.getX());
-		assertEquals(20, center.getY());
+		assertEquals(30, center.x());
+		assertEquals(20, center.y());
 		center = RECTANGLE_1.translated(10, 10).getCenter();
-		assertEquals(40, center.getX());
-		assertEquals(30, center.getY());
+		assertEquals(40, center.x());
+		assertEquals(30, center.y());
 		center = RECTANGLE_2.getCenter();
-		assertEquals(100, center.getX());
-		assertEquals(20, center.getY());
+		assertEquals(100, center.x());
+		assertEquals(20, center.y());
 	}
 	
 	@Test

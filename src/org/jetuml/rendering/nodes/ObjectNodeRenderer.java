@@ -83,7 +83,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	{
 		Dimension bounds = NAME_VIEWER.getDimension(((ObjectNode)pNode).getName() + TEXT_HORIZONTAL_MARGIN); 
 		bounds = bounds.include(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		return new Rectangle(0, 0, bounds.width(), bounds.height()).translated(pNode.position().getX(), pNode.position().getY());
+		return new Rectangle(0, 0, bounds.width(), bounds.height()).translated(pNode.position().x(), pNode.position().y());
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		{
 			leftWidth = Math.max(leftWidth, FieldNodeRenderer.leftWidth(field));
 		}
-		return pNode.position().getX() + leftWidth + XGAP;
+		return pNode.position().x() + leftWidth + XGAP;
 	}
 	
 	@Override

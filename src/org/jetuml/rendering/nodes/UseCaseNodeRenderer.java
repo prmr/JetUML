@@ -72,7 +72,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
+		return new Rectangle(pNode.position().x(), pNode.position().y(), 
 				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).width()+
 						HORIZONTAL_NAME_PADDING), 
 				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).height()));

@@ -237,7 +237,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		Dimension methodDimension = textDimensions(node.getMethods());
 		int width = max(DEFAULT_WIDTH, nameDimension.width(), attributeDimension.width(), methodDimension.width());
 		int height = attributeHeight + methodHeight + nameHeight;
-		return new Rectangle(node.position().getX(), node.position().getY(), width, height);
+		return new Rectangle(node.position().x(), node.position().y(), width, height);
 	}
 	
 	/**

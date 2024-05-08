@@ -69,7 +69,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), NOTE_COLOR, true);
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(node), Color.WHITE, false);
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), pGraphics, 
-				new Rectangle(node.position().getX(), node.position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
+				new Rectangle(node.position().x(), node.position().y(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	private Path createNotePath(Node pNode)
@@ -107,7 +107,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension textBounds = NOTE_VIEWER.getDimension(((NoteNode)pNode).getName()); 
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
+		return new Rectangle(pNode.position().x(), pNode.position().y(), 
 				Math.max(textBounds.width() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.height(), DEFAULT_HEIGHT));
 	}
 }

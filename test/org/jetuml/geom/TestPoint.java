@@ -35,8 +35,8 @@ public class TestPoint
 	@Test
 	public void testToString()
 	{
-		assertEquals("(x=0,y=0)", ZERO.toString());
-		assertEquals("(x=-1,y=-1)", M_ONE.toString());
+		assertEquals("Point[x=0, y=0]", ZERO.toString());
+		assertEquals("Point[x=-1, y=-1]", M_ONE.toString());
 	}
 	
 	@Test
@@ -53,16 +53,8 @@ public class TestPoint
 		Point point = new Point(0,0);
 		Point clone = point.copy();
 		assertTrue( clone != point );
-		assertEquals( point.getX(), clone.getX());
-		assertEquals( point.getY(), clone.getY());
-	}
-	
-	@Test
-	public void testHashCode()
-	{
-		assertEquals(961, new Point(0,0).hashCode());
-		assertEquals(4161, new Point(100,100).hashCode());
-		assertEquals(-2239, new Point(-100,-100).hashCode());
+		assertEquals( point.x(), clone.x());
+		assertEquals( point.y(), clone.y());
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")

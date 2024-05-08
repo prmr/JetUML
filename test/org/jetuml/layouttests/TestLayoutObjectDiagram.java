@@ -152,7 +152,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 				.filter(edge -> edge.end().equals(type1Node))
 				.collect(toList()).get(0);
 		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
-		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.end().position().getX());
+		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.end().position().x());
 		assertTrue(boundsType1Node.contains(referenceEdge.start().position()));
 	}
 	

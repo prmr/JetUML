@@ -82,6 +82,6 @@ public final class CircularStateNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), DIAMETER, DIAMETER);
+		return new Rectangle(pNode.position().x(), pNode.position().y(), DIAMETER, DIAMETER);
 	}
 }

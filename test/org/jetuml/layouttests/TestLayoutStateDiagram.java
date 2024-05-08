@@ -125,8 +125,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsInitialState = aRenderer.getBounds(nodesByType(InitialStateNode.class).get(0));
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("start"));
-		assertWithDefaultTolerance(boundsInitialState.getMaxX(), edgeLine.getPoint1().getX());
-		assertWithDefaultTolerance(boundsS1.getX(), edgeLine.getPoint2().getX());
+		assertWithDefaultTolerance(boundsInitialState.getMaxX(), edgeLine.getPoint1().x());
+		assertWithDefaultTolerance(boundsS1.getX(), edgeLine.getPoint2().x());
 	}
 	
 	/**
@@ -138,8 +138,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e1"));
-		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint1().getX());
-		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint2().getX());
+		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint1().x());
+		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint2().x());
 	}
 	
 	/**
@@ -151,8 +151,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e2"));
-		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint2().getX());
-		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint1().getX());
+		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint2().x());
+		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint1().x());
 	}
 	
 	/**
@@ -164,8 +164,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Point arrowBaseConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).getPoint1();
 		Point arrowHeadConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).getPoint2();
-		assertWithDefaultTolerance(arrowBaseConnectionPoint.getY(), boundsS2.getY());
-		assertWithDefaultTolerance(arrowHeadConnectionPoint.getX(), boundsS2.getMaxX());
+		assertWithDefaultTolerance(arrowBaseConnectionPoint.y(), boundsS2.getY());
+		assertWithDefaultTolerance(arrowHeadConnectionPoint.x(), boundsS2.getMaxX());
 	}
 	
 	/**
@@ -181,8 +181,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
-		assertWithDefaultTolerance(boundsS2.getMaxY(), edgeLine.getPoint1().getY());
-		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint2().getY());
+		assertWithDefaultTolerance(boundsS2.getMaxY(), edgeLine.getPoint1().y());
+		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint2().y());
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
-		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint1().getY());
+		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint1().y());
 		assertTrue(boundsFinalState.contains(edgeLine.getPoint2()));
 	}
 	
@@ -211,7 +211,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Rectangle boundsNoteNode = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
 		Line edgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
-		assertWithDefaultTolerance(boundsNoteNode.getX(), edgeLine.getPoint1().getX());
+		assertWithDefaultTolerance(boundsNoteNode.getX(), edgeLine.getPoint1().x());
 		assertTrue(boundsS3.contains(edgeLine.getPoint2()));
 	}
 }

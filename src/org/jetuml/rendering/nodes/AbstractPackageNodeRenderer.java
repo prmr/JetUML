@@ -87,13 +87,13 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		Rectangle bounds = topBounds.add(bottomBounds);
 		
 		Point connectionPoint = super.getConnectionPoint(pNode, pDirection);
-		if( connectionPoint.getY() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.getX() )
+		if( connectionPoint.y() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.x() )
 		{
 			// The connection point falls in the empty top-right corner, re-compute it so
 			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			int delta = topBounds.getHeight() * (connectionPoint.getX() - bounds.getCenter().getX()) * 2 / 
+			int delta = topBounds.getHeight() * (connectionPoint.x() - bounds.getCenter().x()) * 2 / 
 					bounds.getHeight();
-			int newX = connectionPoint.getX() - delta;
+			int newX = connectionPoint.x() - delta;
 			if( newX < topBounds.getMaxX() )
 			{
 				newX = topBounds.getMaxX() + 1;
@@ -165,7 +165,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	{
 		Point position = pNode.position();
 		Dimension topDimension = getTopDimension(pNode);
-		return new Rectangle(position.getX(), position.getY(), topDimension.width(), topDimension.height());
+		return new Rectangle(position.x(), position.y(), topDimension.width(), topDimension.height());
 	}
 	
 	protected abstract Rectangle getBottomBounds(AbstractPackageNode pNode);

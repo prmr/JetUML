@@ -51,7 +51,7 @@ public final class Conversions
 	public static Point2D toPoint2D(Point pPoint)
 	{
 		assert pPoint != null;
-		return new Point2D(pPoint.getX(), pPoint.getY());
+		return new Point2D(pPoint.x(), pPoint.y());
 	}
 	
 	/**
