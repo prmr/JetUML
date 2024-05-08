@@ -22,7 +22,6 @@
 package org.jetuml.geom;
 
 import static java.lang.Math.cos;
-import static java.lang.Math.round;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
@@ -145,8 +144,8 @@ public final class GeomUtils
 		
 		final int radius = pBounds.getWidth()/2;
 		
-		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+		int offsetX = round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+		int offsetY = round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 		return new Point( pBounds.getCenter().x() + offsetX, pBounds.getCenter().y() + offsetY);
 	}   	 
 	
@@ -172,8 +171,8 @@ public final class GeomUtils
 		final int a = pBounds.getWidth()/2;
 		final int b = pBounds.getHeight()/2;
 		
-		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * a);
-		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * b);
+		int offsetX = round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * a);
+		int offsetY = round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * b);
 		return new Point( pBounds.getCenter().x() + offsetX, pBounds.getCenter().y() + offsetY);
 	}
 
@@ -215,32 +214,32 @@ public final class GeomUtils
 		{
 			Point cornerCenter = new Point(pBounds.getCenter().x() + widthOffset, pBounds.getCenter().y() - heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
-			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetX = round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			result =  new Point( pBounds.getCenter().x() + offsetX + widthOffset, pBounds.getCenter().y() + offsetY - heightOffset);
 		}
 		else if( pDirection.isBetween(topSE, bottomSE))
 		{
 			Point cornerCenter = new Point(pBounds.getCenter().x() + widthOffset, pBounds.getCenter().y() + heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
-			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetX = round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			result = new Point( pBounds.getCenter().x() + offsetX + widthOffset, pBounds.getCenter().y() + offsetY + heightOffset);
 		}
 		else if( pDirection.isBetween(topSW, bottomSW))
 		{
 			Point cornerCenter = new Point(pBounds.getCenter().x() - widthOffset, pBounds.getCenter().y() + heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
-			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetX = round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			result = new Point( pBounds.getCenter().x() + offsetX - widthOffset, pBounds.getCenter().y() + offsetY + heightOffset);
 		}
 		else if( pDirection.isBetween(topNW, bottomNW))
 		{
 			Point cornerCenter = new Point(pBounds.getCenter().x() - widthOffset, pBounds.getCenter().y() - heightOffset);
 			Direction cornerDirection = Direction.fromLine(cornerCenter, rectangleIntersectionPoint);
-			int offsetX = (int) round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
-			int offsetY = (int) round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetX = round(cos(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = round(sin(toRadians(cornerDirection.asAngle() - Direction.EAST.asAngle())) * radius);
 			result = new Point( pBounds.getCenter().x() + offsetX - widthOffset, pBounds.getCenter().y() + offsetY - heightOffset);
 		}
 		else
@@ -260,5 +259,18 @@ public final class GeomUtils
 	{
 		return (int) Math.round(pAdjacentSide * Math.tan(Math.toRadians(pAngleInDegrees)));
 	}
-
+	
+	/**
+	 * Convenience method to round a number into an int. The input value is 
+	 * expected to be within range of an integer. This implies that the value
+	 * cannot be NaN or negative or positive infinity.
+	 * @param pDouble Input number
+	 * @return The closest integer to pDouble.
+	 * @pre pDouble >= Integer.MIN_VALUE && pDouble <= Integer.MAX_VALUE
+	 */
+	public static int round(double pDouble)
+	{
+		assert pDouble >= Integer.MIN_VALUE && pDouble <= Integer.MAX_VALUE;
+		return (int) Math.round(pDouble);
+	}
 }
