@@ -32,8 +32,8 @@ import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.EdgePath;
 import org.junit.jupiter.api.Test;
 
 /**

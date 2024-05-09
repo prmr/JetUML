@@ -44,7 +44,6 @@ import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge.Type;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.edges.EdgeStorage;

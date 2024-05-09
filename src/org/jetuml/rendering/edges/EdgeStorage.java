@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.EdgePath;
 
 /**
  * Stores the EdgePaths of Edges for class diagrams.
