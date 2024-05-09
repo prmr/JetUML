@@ -115,7 +115,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Rectangle b = parent().getBounds(pEdge.end());
 		Point p = parent().getConnectionPoints(pEdge.start(), Direction.EAST);
-		return b.getX() >= p.x() + 2 * ENDSIZE;
+		return b.x() >= p.x() + 2 * ENDSIZE;
 	}
 
 	@Override

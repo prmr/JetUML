@@ -319,8 +319,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							aDiagramRenderer.diagram().addRootNode(pNode);
 							parent.removeChild(pNode);
 						}
-						parent.translate( parentBound.getX()-parent.position().x(),  
-							parentBound.getY()-parent.position().y() );
+						parent.translate( parentBound.x()-parent.position().x(),  
+							parentBound.y()-parent.position().y() );
 					},
 					()->
 					{
@@ -342,8 +342,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 							parent.removeChild(pNode);
 							outerParent.addChild(pNode);
 						}
-						parent.translate( parentBound.getX()-parent.position().x(),  
-									parentBound.getY()-parent.position().y() );
+						parent.translate( parentBound.x()-parent.position().x(),  
+									parentBound.y()-parent.position().y() );
 					},
 					()->
 					{

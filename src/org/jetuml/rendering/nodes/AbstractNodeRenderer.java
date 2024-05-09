@@ -90,8 +90,8 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	{
 		Node node = (Node) pElement;
 		Rectangle bounds = getBounds(node);
-		int width = bounds.getWidth();
-		int height = bounds.getHeight();
+		int width = bounds.width();
+		int height = bounds.height();
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
 		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
 		double scale = Math.min(scaleX, scaleY);

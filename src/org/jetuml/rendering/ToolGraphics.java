@@ -77,10 +77,10 @@ public final class ToolGraphics
 	 */
 	public static void drawHandles(GraphicsContext pGraphics, Rectangle pBounds)
 	{
-		drawHandle(pGraphics, pBounds.getX(), pBounds.getY());
-		drawHandle(pGraphics, pBounds.getX(), pBounds.getMaxY());
-		drawHandle(pGraphics, pBounds.getMaxX(), pBounds.getY());
-		drawHandle(pGraphics, pBounds.getMaxX(), pBounds.getMaxY());
+		drawHandle(pGraphics, pBounds.x(), pBounds.y());
+		drawHandle(pGraphics, pBounds.x(), pBounds.maxY());
+		drawHandle(pGraphics, pBounds.maxX(), pBounds.y());
+		drawHandle(pGraphics, pBounds.maxX(), pBounds.maxY());
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public final class ToolGraphics
 	public static void drawLasso(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		RenderingUtils.drawRectangle(pGraphics, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
-				pRectangle.getX(), pRectangle.getY(), pRectangle.getWidth(), pRectangle.getHeight());
+				pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 	}
 	
 	/**

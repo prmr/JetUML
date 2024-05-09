@@ -70,10 +70,10 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 			RenderingUtils.drawRectangle(pGraphics, getBounds(pElement));
 			pGraphics.setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds(pElement);
-			int x1 = bounds.getX();
-			int x2 = bounds.getMaxX();
-			int y1 = bounds.getY();
-			int y3 = bounds.getMaxY();
+			int x1 = bounds.x();
+			int x2 = bounds.maxX();
+			int y1 = bounds.y();
+			int y3 = bounds.maxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
 			RenderingUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
 			RenderingUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
@@ -92,11 +92,11 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	{
 		if(pDirection == Direction.EAST)
 		{
-			return new Point(getBounds(pNode).getMaxX(), getBounds(pNode).getY());
+			return new Point(getBounds(pNode).maxX(), getBounds(pNode).y());
 		}
 		else
 		{
-			return new Point(getBounds(pNode).getX(), getBounds(pNode).getY());
+			return new Point(getBounds(pNode).x(), getBounds(pNode).y());
 		}
 	}
 	

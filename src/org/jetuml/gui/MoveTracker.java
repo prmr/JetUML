@@ -94,8 +94,8 @@ public final class MoveTracker
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			int dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
-			int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
+			int dY = selectionBounds2[i].y() - aOriginalBounds.get(i).y();
+			int dX = selectionBounds2[i].x() - aOriginalBounds.get(i).x();
 			if(dX != 0 || dY != 0)
 			{
 				operation.add(DiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));

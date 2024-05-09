@@ -74,10 +74,10 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 	
 	private String wrapLabel(Edge pEdge) 
 	{
-		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).getCenter().x() -
-				parent().getBounds(pEdge.end()).getCenter().x());
-		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).getCenter().y() -
-				parent().getBounds(pEdge.end()).getCenter().y());
+		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).center().x() -
+				parent().getBounds(pEdge.end()).center().x());
+		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).center().y() -
+				parent().getBounds(pEdge.end()).center().y());
 		return super.wrapLabel(aLabelExtractor.apply(pEdge), distanceInX, distanceInY);
 	}
 
@@ -86,7 +86,7 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		String label = wrapLabel(pEdge);
 		assert label != null && label.length() > 0;
 		Dimension dimensions = STRING_VIEWER.getDimension(label);
-		Point center = getConnectionPoints(pEdge).spanning().getCenter();
+		Point center = getConnectionPoints(pEdge).spanning().center();
 		return new Rectangle(center.x()-dimensions.width()/2, center.y() - dimensions.height()/2, dimensions.width(), 
 				dimensions.height());
 	}

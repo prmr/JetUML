@@ -80,15 +80,15 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = getTopRectangle((Node)pElement);
 		RenderingUtils.drawRectangle(pGraphics, top);
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pGraphics, top);
-		int xmid = top.getCenter().x();
-		RenderingUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pElement).getMaxY(), LineStyle.DOTTED);
+		int xmid = top.center().x();
+		RenderingUtils.drawLine(pGraphics, xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
 	}
 	
 	@Override
 	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		return bounds.getX() <= pPoint.x() && pPoint.x() <= bounds.getX() + bounds.getWidth();
+		return bounds.x() <= pPoint.x() && pPoint.x() <= bounds.x() + bounds.width();
 	}
 
 	@Override
@@ -97,11 +97,11 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle bounds = getBounds(pNode);
 		if(pDirection == Direction.EAST)
 		{
-			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
+			return new Point(bounds.maxX(), bounds.y() + TOP_HEIGHT / 2);
 		}
 		else
 		{
-			return new Point(bounds.getX(), bounds.getY() + TOP_HEIGHT / 2);
+			return new Point(bounds.x(), bounds.y() + TOP_HEIGHT / 2);
 		}
 	}
 	
@@ -123,8 +123,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		for( Node child : ((ImplicitParameterNode)pNode).getChildren() )
 		{
 			Rectangle bounds = parent().getBounds(child);
-			maxX = Math.max(maxX,  bounds.getMaxX());
-			maxY = Math.max(maxY, bounds.getMaxY());
+			maxX = Math.max(maxX,  bounds.maxX());
+			maxY = Math.max(maxY, bounds.maxY());
 		}
 		return new Point(maxX, maxY);
 	}
@@ -158,9 +158,9 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);
-		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.x() - pNode.position().x());
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.y() + TAIL_HEIGHT) - topRectangle.getY();	
-		return new Rectangle(pNode.position().x(), topRectangle.getY(), width, height);
+		int width = max(topRectangle.width(), DEFAULT_WIDTH, childrenMaxXY.x() - pNode.position().x());
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.y() + TAIL_HEIGHT) - topRectangle.y();	
+		return new Rectangle(pNode.position().x(), topRectangle.y(), width, height);
 	}
 	
 	@Override
@@ -180,7 +180,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
 		RenderingUtils.drawRectangle(canvas.getGraphicsContext2D(), top);
 		int xmid = DEFAULT_WIDTH/2;
-		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.getMaxY(), xmid, height, LineStyle.DOTTED);
+		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.maxY(), xmid, height, LineStyle.DOTTED);
 		return canvas;
 	}
 }

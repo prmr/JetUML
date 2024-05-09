@@ -80,8 +80,8 @@ public final class PackageNodeRenderer extends AbstractPackageNodeRenderer
 		{
 			return pNode.position();
 		}
-		return new Point(pChildrenBounds.get().getX() - PADDING, 
-				pChildrenBounds.get().getY() - PADDING - getTopDimension(pNode).height());
+		return new Point(pChildrenBounds.get().x() - PADDING, 
+				pChildrenBounds.get().y() - PADDING - getTopDimension(pNode).height());
 	}
 	
 	@Override
@@ -106,8 +106,8 @@ public final class PackageNodeRenderer extends AbstractPackageNodeRenderer
 		
 		if( childrenBounds.isPresent() )
 		{
-			width = max( width, childrenBounds.get().getMaxX() + PADDING - position.x());
-			height = max( height, childrenBounds.get().getMaxY() + PADDING - position.y() - topDimension.height());
+			width = max( width, childrenBounds.get().maxX() + PADDING - position.x());
+			height = max( height, childrenBounds.get().maxY() + PADDING - position.y() - topDimension.height());
 		}
 		
 		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));

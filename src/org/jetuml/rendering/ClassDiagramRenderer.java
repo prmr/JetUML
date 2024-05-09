@@ -952,9 +952,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, Side pAttachedSide)
 	{
 		//Compare positions of pNode1 and pNode2 to the position of pCommonNode
-		Point node1Center = getBounds(pNode1).getCenter();
-		Point node2Center = getBounds(pNode2).getCenter();
-		Point commonNodeCenter = getBounds(pCommonNode).getCenter();
+		Point node1Center = getBounds(pNode1).center();
+		Point node2Center = getBounds(pNode2).center();
+		Point commonNodeCenter = getBounds(pCommonNode).center();
 		if(pAttachedSide.isHorizontal())//then compare X-coordinates
 		{
 			return node1Center.x() <= commonNodeCenter.x() && node2Center.x() <= commonNodeCenter.x() ||
@@ -1077,7 +1077,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
 		if( pSideOfNode.isHorizontal() ) //then compare X-coordinates
 		{
-			if(getBounds(pNode).getCenter().x() <=  getBounds(pOtherNode).getCenter().x())
+			if(getBounds(pNode).center().x() <=  getBounds(pOtherNode).center().x())
 			{
 				return 1;
 			}
@@ -1088,7 +1088,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		}
 		else //Side of node is East/West, so we need to compare Y-coordinates
 		{
-			if(getBounds(pNode).getCenter().y() <=  getBounds(pOtherNode).getCenter().y())
+			if(getBounds(pNode).center().y() <=  getBounds(pOtherNode).center().y())
 			{
 				return 1;
 			}
@@ -1168,8 +1168,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		Rectangle startNodeBounds = getBounds(pEdge.start());
 		Rectangle endNodeBounds = getBounds(pEdge.end());
 		//if the start node is above or below the end node (+- 20 px) then determine whether it belongs on the N or S side
-		if(startNodeBounds.getMaxX() > endNodeBounds.getX() - (2 * TEN_PIXELS) &&
-				startNodeBounds.getX() < endNodeBounds.getMaxX() + (2 * TEN_PIXELS))
+		if(startNodeBounds.maxX() > endNodeBounds.x() - (2 * TEN_PIXELS) &&
+				startNodeBounds.x() < endNodeBounds.maxX() + (2 * TEN_PIXELS))
 		{
 			return northSouthSideUnlessTooClose(pEdge);		
 		}
@@ -1191,8 +1191,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		Rectangle startNodeBounds = getBounds(pEdge.start());
 		Rectangle endNodeBounds = getBounds(pEdge.end());
 		//if the start node is beside the end node (+- 20 px) then compute whether it belongs on the E or W side
-		if(startNodeBounds.getMaxY() > endNodeBounds.getY() - (2 * TEN_PIXELS) && 
-				startNodeBounds.getY() < endNodeBounds.getMaxY() + (2 * TEN_PIXELS))
+		if(startNodeBounds.maxY() > endNodeBounds.y() - (2 * TEN_PIXELS) && 
+				startNodeBounds.y() < endNodeBounds.maxY() + (2 * TEN_PIXELS))
 		{
 			return eastWestSideUnlessTooClose(pEdge);
 		}
@@ -1255,7 +1255,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static Side northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds != null && pOtherBounds != null;
-		if(pOtherBounds.getCenter().y() < pBounds.getCenter().y())
+		if(pOtherBounds.center().y() < pBounds.center().y())
 		{
 			return Side.TOP;
 		}
@@ -1276,7 +1276,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static Side eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds !=null && pOtherBounds !=null;
-		if(pOtherBounds.getCenter().x() < pBounds.getCenter().x() )
+		if(pOtherBounds.center().x() < pBounds.center().x() )
 		{
 			return Side.LEFT;
 		}
@@ -1302,28 +1302,28 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(pAttachedSide == Side.TOP)
 		{ //Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getY() < getEdgePath(edge).getPointByIndex(1).y() - TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.y() < getEdgePath(edge).getPointByIndex(1).y() - TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else if(pAttachedSide == Side.BOTTOM)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getMaxY() > getEdgePath(edge).getPointByIndex(1).y() + TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.maxY() > getEdgePath(edge).getPointByIndex(1).y() + TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else if(pAttachedSide == Side.RIGHT)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getMaxX() > getEdgePath(edge).getPointByIndex(1).x() - TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.maxX() > getEdgePath(edge).getPointByIndex(1).x() - TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
 		else //Direction is LEFT
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
-					.filter(edge -> otherNodeBounds.getX() < getEdgePath(edge).getPointByIndex(1).x() + TEN_PIXELS)
+					.filter(edge -> otherNodeBounds.x() < getEdgePath(edge).getPointByIndex(1).x() + TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
@@ -1377,20 +1377,20 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		else if(pCorner == NodeCorner.TOP_LEFT)
 		{
 			Rectangle nodeBounds = getBounds(pNode);
-			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getY());
-			endPoint = new Point(nodeBounds.getX(), nodeBounds.getY() + TWENTY_PIXELS);
+			startPoint = new Point(nodeBounds.x() + TWENTY_PIXELS, nodeBounds.y());
+			endPoint = new Point(nodeBounds.x(), nodeBounds.y() + TWENTY_PIXELS);
 		}
 		else if(pCorner == NodeCorner.BOTTOM_LEFT)
 		{
 			Rectangle nodeBounds = getBounds(pNode);
-			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getMaxY());
-			endPoint = new Point(nodeBounds.getX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
+			startPoint = new Point(nodeBounds.x() + TWENTY_PIXELS, nodeBounds.maxY());
+			endPoint = new Point(nodeBounds.x(), nodeBounds.maxY() - TWENTY_PIXELS);
 		}
 		else //BOTTOM_RIGHT
 		{
 			Rectangle nodeBounds = getBounds(pNode);
-			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getMaxY());
-			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
+			startPoint = new Point(nodeBounds.maxX() - TWENTY_PIXELS, nodeBounds.maxY());
+			endPoint = new Point(nodeBounds.maxX(), nodeBounds.maxY() - TWENTY_PIXELS);
 		}
 		return new Point[] {startPoint, endPoint};
 	}

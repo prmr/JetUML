@@ -84,24 +84,24 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
 		RenderingUtils.drawRectangle(pGraphics, bounds);	
-		drawName(node, bounds, bounds.getY(), nameHeight, pGraphics);
+		drawName(node, bounds, bounds.y(), nameHeight, pGraphics);
 		
 		if( attributeHeight > 0 )
 		{
-			final int splitY = bounds.getY() + nameHeight;
-			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			final int splitY = bounds.y() + nameHeight;
+			RenderingUtils.drawLine(pGraphics, bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
 			drawAttribute(node, bounds, splitY, attributeHeight, pGraphics);
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
+				RenderingUtils.drawLine(pGraphics, bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
 				drawMethod(node, bounds, splitY2, methodHeight, pGraphics);
 			}
 		}
 		else if( methodHeight > 0 )
 		{
-			final int splitY = bounds.getY() + nameHeight;
-			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			final int splitY = bounds.y() + nameHeight;
+			RenderingUtils.drawLine(pGraphics, bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
 			drawMethod(node, bounds, splitY, methodHeight, pGraphics);
 		}
 	}
@@ -112,12 +112,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		if( name.length() > 2 && name.startsWith(ITALIC_MARKUP) && name.endsWith(ITALIC_MARKUP) )
 		{
 			ITALIC_NAME_VIEWER.draw(removeMarkup(name), pGraphics, 
-					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
+					new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
 		}
 		else
 		{
 			NAME_VIEWER.draw(name, pGraphics, 
-					new Rectangle(pBounds.getX(), pSplitY, pBounds.getWidth(), pNameBoxHeight));
+					new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
 		}
 	}
 	
@@ -132,12 +132,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			if( attribute.length() > 2 && attribute.startsWith(UNDERLINE_MARKUP) && attribute.endsWith(UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pGraphics, 
-						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
+						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pAttributeBoxHeight));
 			}
 			else
 			{
 				STRING_VIEWER.draw(attribute, pGraphics, 
-						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pAttributeBoxHeight));
+						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pAttributeBoxHeight));
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	
@@ -154,17 +154,17 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			if( method.length() > 2 && method.startsWith(UNDERLINE_MARKUP) && method.endsWith(UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
-						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
 			}
 			else if( method.length() > 2 && method.startsWith(ITALIC_MARKUP) && method.endsWith(ITALIC_MARKUP) )
 			{
 				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
-						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
 			}
 			else
 			{
 				STRING_VIEWER.draw(method, pGraphics, 
-						new Rectangle(pBounds.getX(), pSplitY + lineSpacing, pBounds.getWidth(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	

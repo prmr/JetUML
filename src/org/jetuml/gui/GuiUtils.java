@@ -63,11 +63,11 @@ public final class GuiUtils
 	{
 		if( UserPreferences.instance().getBoolean(BooleanPreference.showToolHints))
 		{
-			return defaultStageBounds().getWidth() - WIDTH_PADDING - TOOLBAR_WIDTH_EXPANDED;
+			return defaultStageBounds().width() - WIDTH_PADDING - TOOLBAR_WIDTH_EXPANDED;
 		}
 		else
 		{
-			return defaultStageBounds().getWidth() - WIDTH_PADDING - TOOLBAR_WIDTH_COLLAPSED;
+			return defaultStageBounds().width() - WIDTH_PADDING - TOOLBAR_WIDTH_COLLAPSED;
 		}
 	}
 	
@@ -76,6 +76,6 @@ public final class GuiUtils
 	 */
 	public static int defaultDiagramHeight()
 	{
-		return defaultStageBounds().getHeight() - HEIGHT_PADDING;
+		return defaultStageBounds().height() - HEIGHT_PADDING;
 	}
 }

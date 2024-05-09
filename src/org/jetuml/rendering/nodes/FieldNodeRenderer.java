@@ -79,10 +79,10 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		final int leftWidth = leftWidth(node);
 		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 		NAME_VIEWER.draw(((FieldNode)node).getName(), pGraphics, 
-				new Rectangle(split - leftWidth, bounds.getY(), leftWidth, bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - midOffset, bounds.getY(), midOffset * 2, bounds.getHeight()));
+				new Rectangle(split - leftWidth, bounds.y(), leftWidth, bounds.height()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - midOffset, bounds.y(), midOffset * 2, bounds.height()));
 		VALUE_VIEWER.draw(((FieldNode)node).getValue(), 
-				pGraphics, new Rectangle(split + midOffset, bounds.getY(), rightWidth(node), bounds.getHeight()));
+				pGraphics, new Rectangle(split + midOffset, bounds.y(), rightWidth(node), bounds.height()));
 	}
 	
 	private static int getSplitPosition(Node pNode)
@@ -107,7 +107,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		{
 			int yPosition = ObjectNodeRenderer.getYPosition(pNode.getParent(), (FieldNode) pNode);
 			Rectangle parentBounds = objectNodeViewer().getBounds(pNode.getParent());
-			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, height);
+			return new Rectangle(parentBounds.x() + XGAP, yPosition, parentBounds.width() - 2*XGAP, height);
 		}
 		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth, 0, leftWidth + rightWidth(pNode), height);
 	}
@@ -155,7 +155,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().y());
+		return new Point(bounds.maxX() - XGAP, bounds.center().y());
 	}
 	
 	/*

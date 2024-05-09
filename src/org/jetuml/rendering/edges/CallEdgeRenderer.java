@@ -150,7 +150,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		else
 		{
 			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
-			Point center = getConnectionPoints(pEdge).spanning().getCenter();
+			Point center = getConnectionPoints(pEdge).spanning().center();
 			return new Rectangle(center.x() - dimensions.width()/2, 
 					center.y() - dimensions.height() + SHIFT, dimensions.width(), dimensions.height());
 		}
@@ -181,9 +181,9 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		Rectangle end = parent().getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{
-			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
-			Point q = new Point(end.getMaxX(), end.getY());
-			Point s = new Point(q.x() + end.getWidth(), q.y());
+			Point p = new Point(start.maxX(), end.y() - CallNode.CALL_YGAP / 2);
+			Point q = new Point(end.maxX(), end.y());
+			Point s = new Point(q.x() + end.width(), q.y());
 			Point r = new Point(s.x(), p.y());
 
 			points.add(p);
@@ -194,19 +194,19 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		else     
 		{
 			Direction direction = Direction.WEST;
-			if( start.getX() > end.getX() )
+			if( start.x() > end.x() )
 			{
 				direction = Direction.EAST;
 			}
 			Point endPoint = parent().getConnectionPoints(endNode, direction);
          
-			if(start.getCenter().x() < endPoint.x())
+			if(start.center().x() < endPoint.x())
 			{
-				points.add(new Point(start.getMaxX(), endPoint.y()));
+				points.add(new Point(start.maxX(), endPoint.y()));
 			}
 			else
 			{
-				points.add(new Point(start.getX(), endPoint.y()));
+				points.add(new Point(start.x(), endPoint.y()));
 			}
 			points.add(endPoint);
 		}

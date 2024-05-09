@@ -56,8 +56,8 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		super.draw(pElement, pGraphics);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, 
-				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
+		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pGraphics, new Rectangle(bottomBounds.x() + NAME_GAP, 
+				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()));
 	}
 	
 	@Override

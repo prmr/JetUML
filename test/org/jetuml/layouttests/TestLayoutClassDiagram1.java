@@ -92,7 +92,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	{
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeRenderer.class, "DEFAULT_HEIGHT");
 		Rectangle bounds = aRenderer.getBounds(nodeByName("Node5"));
-		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
+		assertTrue(bounds.height() > DEFAULT_HEIGHT);
 	}
 	
 	/*
@@ -115,8 +115,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 		Rectangle boundsNode2 = aRenderer.getBounds(nodeByName("Node2"));
 		Rectangle boundsNode3 = aRenderer.getBounds(nodeByName("Node3"));
 		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e1"));
-		assertWithDefaultTolerance(boundsNode2.getMaxX(), edgeBounds.getX());
-		assertWithDefaultTolerance(boundsNode3.getX(), edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode2.maxX(), edgeBounds.x());
+		assertWithDefaultTolerance(boundsNode3.x(), edgeBounds.maxX());
 	}
 	
 	/*
@@ -133,8 +133,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.get();
 		aRenderer.getBounds(); // Triggers a layout pass
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
-		assertWithDefaultTolerance(boundsNode1.getMaxY(), edgeBounds.getY());
-		assertWithDefaultTolerance(boundsNode3.getY(), edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode1.maxY(), edgeBounds.y());
+		assertWithDefaultTolerance(boundsNode3.y(), edgeBounds.maxY());
 	}
 	
 	/*
@@ -151,8 +151,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.get();
 		aRenderer.getBounds(); // Trigger a layout pass
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
-		assertWithDefaultTolerance(boundsNode3.getMaxY(), edgeBounds.getY());
-		assertWithDefaultTolerance(boundsNode5.getY(), edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode3.maxY(), edgeBounds.y());
+		assertWithDefaultTolerance(boundsNode5.y(), edgeBounds.maxY());
 	}
 	
 	/*
@@ -169,8 +169,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.get();
 		aRenderer.getBounds(); // Triggers a layout pass
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
-		assertWithDefaultTolerance(boundsNode3.getMaxX(), edgeBounds.getX());
-		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode3.maxX(), edgeBounds.x());
+		assertWithDefaultTolerance(boundsNode4.x(), edgeBounds.maxX());
 	}
 	
 	/*
@@ -187,8 +187,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.get();
 		aRenderer.getBounds(); // Triggers a layout pass
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
-		assertWithDefaultTolerance(boundsNode5.getMaxX(), edgeBounds.getX());
-		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode5.maxX(), edgeBounds.x());
+		assertWithDefaultTolerance(boundsNode4.x(), edgeBounds.maxX());
 	}
 	
 	/*
@@ -204,7 +204,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = aRenderer.getBounds(edge);
-		assertWithDefaultTolerance(boundsNode6.getY(), edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode6.y(), edgeBounds.maxY());
 		assertTrue(boundsNode4.contains(edge.end().position()));
 	}
 }

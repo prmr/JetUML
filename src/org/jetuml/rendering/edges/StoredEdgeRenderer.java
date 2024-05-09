@@ -317,11 +317,11 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 				Rectangle arrowBounds = ArrowHeadRenderer.getBounds(pArrow, pSegment); 
 				if(pSegment.isHorizontal())
 				{
-					yoff -= arrowBounds.getHeight() / 2;
+					yoff -= arrowBounds.height() / 2;
 				}
 				else if(pSegment.isVertical())
 				{
-					xoff += arrowBounds.getWidth() / 2;
+					xoff += arrowBounds.width() / 2;
 				}
 			}
 		}

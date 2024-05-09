@@ -151,10 +151,10 @@ public class TestLine
 		void testZeroLengthLineAtOrigin()
 		{
 			Rectangle spanning = new Line(0,0,0,0).spanning();
-			assertEquals(0, spanning.getX());
-			assertEquals(0, spanning.getY());
-			assertEquals(0, spanning.getWidth());
-			assertEquals(0, spanning.getHeight());
+			assertEquals(0, spanning.x());
+			assertEquals(0, spanning.y());
+			assertEquals(0, spanning.width());
+			assertEquals(0, spanning.height());
 		}
 		
 		@Test
@@ -162,10 +162,10 @@ public class TestLine
 		void testZeroLengthLineNotAtOrigin()
 		{
 			Rectangle spanning = new Line(5,5,5,5).spanning();
-			assertEquals(5, spanning.getX());
-			assertEquals(5, spanning.getY());
-			assertEquals(0, spanning.getWidth());
-			assertEquals(0, spanning.getHeight());
+			assertEquals(5, spanning.x());
+			assertEquals(5, spanning.y());
+			assertEquals(0, spanning.width());
+			assertEquals(0, spanning.height());
 		}
 		
 		@Test
@@ -173,10 +173,10 @@ public class TestLine
 		void testZeroLengthLineGoingBottomRight()
 		{
 			Rectangle spanning = new Line(1,1,5,6).spanning();
-			assertEquals(1, spanning.getX());
-			assertEquals(1, spanning.getY());
-			assertEquals(4, spanning.getWidth());
-			assertEquals(5, spanning.getHeight());
+			assertEquals(1, spanning.x());
+			assertEquals(1, spanning.y());
+			assertEquals(4, spanning.width());
+			assertEquals(5, spanning.height());
 		}
 		
 		@Test
@@ -184,10 +184,10 @@ public class TestLine
 		void testZeroLengthLineGoingTopLeft()
 		{
 			Rectangle spanning = new Line(5,6,1,1).spanning();
-			assertEquals(1, spanning.getX());
-			assertEquals(1, spanning.getY());
-			assertEquals(4, spanning.getWidth());
-			assertEquals(5, spanning.getHeight());
+			assertEquals(1, spanning.x());
+			assertEquals(1, spanning.y());
+			assertEquals(4, spanning.width());
+			assertEquals(5, spanning.height());
 		}
 	}
 	

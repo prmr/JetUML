@@ -386,8 +386,8 @@ StringPreferenceChangeHandler
 	{
 		Rectangle bounds = aDiagramBuilder.renderer().getBounds();
 		return new Dimension(
-				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
-				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
+				Math.max(getPreferredDiagramWidth(), bounds.maxX() + DIMENSION_BUFFER),
+				Math.max(getPreferredDiagramHeight(), bounds.maxY() + DIMENSION_BUFFER));
 	}
 	
 	private static int getPreferredDiagramWidth()
@@ -624,23 +624,23 @@ StringPreferenceChangeHandler
 			Rectangle bounds = aDiagramBuilder.renderer().getBounds(firstSelected);
 			Rectangle snappedPosition = Grid.snapped(bounds);
 			
-			int dx = snappedPosition.getX() - bounds.getX();
-			int dy = snappedPosition.getY() - bounds.getY();
+			int dx = snappedPosition.x() - bounds.x();
+			int dy = snappedPosition.y() - bounds.y();
 			
 			//ensure the bounds of the entire selection are not outside the walls of the canvas
-			if(entireBounds.getMaxX() + dx > getWidth()) 
+			if(entireBounds.maxX() + dx > getWidth()) 
 			{
 				dx -= GRID_SIZE;
 			}
-			else if(entireBounds.getX() + dx <= 0) 
+			else if(entireBounds.x() + dx <= 0) 
 			{
 				dx += GRID_SIZE;
 			}
-			if(entireBounds.getMaxY() + dy > getHeight()) 
+			if(entireBounds.maxY() + dy > getHeight()) 
 			{
 				dy -= GRID_SIZE;
 			}
-			else if(entireBounds.getY() <= 0) 
+			else if(entireBounds.y() <= 0) 
 			{
 				dy += GRID_SIZE;
 			}
@@ -730,10 +730,10 @@ StringPreferenceChangeHandler
 		
 		// If this translation results in exceeding the canvas bounds, roll back.
 		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
-		int dxCorrection = Math.max(-bounds.getX(), 0) 
-				+ Math.min((int)getWidth() - bounds.getMaxX(), 0);
-		int dyCorrection = Math.max(-bounds.getY(), 0) 
-				+ Math.min((int)getHeight() - bounds.getMaxY(), 0);
+		int dxCorrection = Math.max(-bounds.x(), 0) 
+				+ Math.min((int)getWidth() - bounds.maxX(), 0);
+		int dyCorrection = Math.max(-bounds.y(), 0) 
+				+ Math.min((int)getHeight() - bounds.maxY(), 0);
 		selectedNodes().forEach(selected -> selected.translate(dxCorrection, dyCorrection));
 		
 		aLastMousePoint = pMousePoint; 
@@ -747,15 +747,15 @@ StringPreferenceChangeHandler
 	public Image createImage()
 	{
 		Rectangle bounds = aDiagramBuilder.renderer().getBounds();
-		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
-				bounds.getHeight() + DIAGRAM_PADDING *2);
+		Canvas canvas = new Canvas(bounds.width() + DIAGRAM_PADDING * 2, 
+				bounds.height() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(Color.WHITE);
-		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
+		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(context);
-		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
-				bounds.getHeight() + DIAGRAM_PADDING *2);
+		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 
+				bounds.height() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);
 		return image;
 	}

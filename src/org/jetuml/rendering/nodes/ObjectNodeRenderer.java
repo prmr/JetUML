@@ -69,14 +69,14 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
 		final Rectangle topRectangle = getTopRectangle(node);
-		int dividerPosition = topRectangle.getMaxY();
+		int dividerPosition = topRectangle.maxY();
 		RenderingUtils.drawRectangle(pGraphics, bounds);
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
-			RenderingUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)node).getName(), pGraphics, 
-				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), topRectangle.getHeight()));
+				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()));
 	}
 	
 	private static Rectangle getTopRectangle(Node pNode)
@@ -118,9 +118,9 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 			leftWidth = Math.max(leftWidth, FieldNodeRenderer.leftWidth(field));
 			rightWidth = Math.max(rightWidth, FieldNodeRenderer.rightWidth(field));
 		}
-		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
+		int width = Math.max(bounds.width(), leftWidth + rightWidth + 2 * XGAP);
 		width = Grid.toMultiple(width);
-		return new Rectangle(bounds.getX(), bounds.getY(), width, Grid.toMultiple(bounds.getHeight() + height));
+		return new Rectangle(bounds.x(), bounds.y(), width, Grid.toMultiple(bounds.height() + height));
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	{
 		assert ((ObjectNode)pNode).getChildren().contains(pFieldNode);
 		Rectangle bounds = getTopRectangle(pNode);
-		int yPosition = bounds.getMaxY() + YGAP; 
+		int yPosition = bounds.maxY() + YGAP; 
 		for( Node field : ((ObjectNode)pNode).getChildren() )
 		{
 			yPosition += YGAP;

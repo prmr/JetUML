@@ -86,7 +86,7 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		Node node = (Node) pElement;
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)node).getName());
 		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
-				bounds.getY() + HEIGHT, nameBounds.width(), nameBounds.height());
+				bounds.y() + HEIGHT, nameBounds.width(), nameBounds.height());
 		NAME_VIEWER.draw(((ActorNode)node).getName(), pGraphics, nameBox);
 		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(node), LineStyle.SOLID);
 	}

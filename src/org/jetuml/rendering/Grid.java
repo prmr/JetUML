@@ -49,10 +49,10 @@ public final class Grid
 	{
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setStroke(GRID_COLOR);
-		int x1 = pBounds.getX();
-		int y1 = pBounds.getY();
-		int x2 = pBounds.getMaxX();
-		int y2 = pBounds.getMaxY();
+		int x1 = pBounds.x();
+		int y1 = pBounds.y();
+		int x2 = pBounds.maxX();
+		int y2 = pBounds.maxY();
 		for(int x = x1; x < x2; x += GRID_SIZE)
 		{
 			ToolGraphics.strokeSharpLine(pGraphics, x, y1, x, y2);
@@ -75,10 +75,10 @@ public final class Grid
 	public static Rectangle snapped(Rectangle pRectangle)
 	{
 		assert pRectangle != null;
-		int x = (int)(GeomUtils.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE);
-		int width = (int)(Math.ceil(pRectangle.getWidth() / GRID_SIZE) * GRID_SIZE);
-		int y = (int)(GeomUtils.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
-		int height = (int)(Math.ceil(pRectangle.getHeight() / GRID_SIZE) * GRID_SIZE);
+		int x = (int)(GeomUtils.round(pRectangle.x() / GRID_SIZE) * GRID_SIZE);
+		int width = (int)(Math.ceil(pRectangle.width() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(GeomUtils.round(pRectangle.y() / GRID_SIZE) * GRID_SIZE);
+		int height = (int)(Math.ceil(pRectangle.height() / GRID_SIZE) * GRID_SIZE);
 		return new Rectangle(x, y, width, height);
 	}
 	

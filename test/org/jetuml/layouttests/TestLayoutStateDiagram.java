@@ -103,7 +103,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_WIDTH");
 		Rectangle bounds = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
-		assertTrue(bounds.getWidth() > DEFAULT_WIDTH);
+		assertTrue(bounds.width() > DEFAULT_WIDTH);
 	}
 	
 	/**
@@ -125,8 +125,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsInitialState = aRenderer.getBounds(nodesByType(InitialStateNode.class).get(0));
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("start"));
-		assertWithDefaultTolerance(boundsInitialState.getMaxX(), edgeLine.point1().x());
-		assertWithDefaultTolerance(boundsS1.getX(), edgeLine.point2().x());
+		assertWithDefaultTolerance(boundsInitialState.maxX(), edgeLine.point1().x());
+		assertWithDefaultTolerance(boundsS1.x(), edgeLine.point2().x());
 	}
 	
 	/**
@@ -138,8 +138,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e1"));
-		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.point1().x());
-		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.point2().x());
+		assertWithDefaultTolerance(boundsS1.maxX(), edgeLine.point1().x());
+		assertWithDefaultTolerance(boundsS2.x(), edgeLine.point2().x());
 	}
 	
 	/**
@@ -151,8 +151,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e2"));
-		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.point2().x());
-		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.point1().x());
+		assertWithDefaultTolerance(boundsS1.maxX(), edgeLine.point2().x());
+		assertWithDefaultTolerance(boundsS2.x(), edgeLine.point1().x());
 	}
 	
 	/**
@@ -164,8 +164,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Point arrowBaseConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).point1();
 		Point arrowHeadConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).point2();
-		assertWithDefaultTolerance(arrowBaseConnectionPoint.y(), boundsS2.getY());
-		assertWithDefaultTolerance(arrowHeadConnectionPoint.x(), boundsS2.getMaxX());
+		assertWithDefaultTolerance(arrowBaseConnectionPoint.y(), boundsS2.y());
+		assertWithDefaultTolerance(arrowHeadConnectionPoint.x(), boundsS2.maxX());
 	}
 	
 	/**
@@ -181,8 +181,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
-		assertWithDefaultTolerance(boundsS2.getMaxY(), edgeLine.point1().y());
-		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.point2().y());
+		assertWithDefaultTolerance(boundsS2.maxY(), edgeLine.point1().y());
+		assertWithDefaultTolerance(boundsS3.y(), edgeLine.point2().y());
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.findFirst()
 				.get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
-		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.point1().y());
+		assertWithDefaultTolerance(boundsS3.y(), edgeLine.point1().y());
 		assertTrue(boundsFinalState.contains(edgeLine.point2()));
 	}
 	
@@ -211,7 +211,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Rectangle boundsNoteNode = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
 		Line edgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
-		assertWithDefaultTolerance(boundsNoteNode.getX(), edgeLine.point1().x());
+		assertWithDefaultTolerance(boundsNoteNode.x(), edgeLine.point1().x());
 		assertTrue(boundsS3.contains(edgeLine.point2()));
 	}
 }

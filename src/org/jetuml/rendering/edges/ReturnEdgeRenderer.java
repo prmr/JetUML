@@ -61,15 +61,15 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 		
 		if(pEdge.end() instanceof PointNode) // show nicely in tool bar
 		{
-			return new Line(new Point(end.getX(), end.getY()), new Point(start.getMaxX(), end.getY()));
+			return new Line(new Point(end.x(), end.y()), new Point(start.maxX(), end.y()));
 		}      
-		else if(start.getCenter().x() < end.getCenter().x())
+		else if(start.center().x() < end.center().x())
 		{
-			return new Line(new Point(start.getMaxX(), start.getMaxY()), new Point(end.getX(), start.getMaxY()));
+			return new Line(new Point(start.maxX(), start.maxY()), new Point(end.x(), start.maxY()));
 		}
 		else
 		{
-			return new Line(new Point(start.getX(), start.getMaxY()), new Point(end.getMaxX(), start.getMaxY()));
+			return new Line(new Point(start.x(), start.maxY()), new Point(end.maxX(), start.maxY()));
 		}
 	}
 	

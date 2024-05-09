@@ -74,8 +74,8 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
 		RenderingUtils.drawRectangle(pGraphics, topBounds );
 		RenderingUtils.drawRectangle(pGraphics, bottomBounds );
-		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
-				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
+		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pGraphics, new Rectangle(topBounds.x() + NAME_GAP, 
+				topBounds.y(), topBounds.width(), topBounds.height()));
 	}
 	
 	@Override
@@ -87,18 +87,18 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		Rectangle bounds = topBounds.add(bottomBounds);
 		
 		Point connectionPoint = super.getConnectionPoint(pNode, pDirection);
-		if( connectionPoint.y() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.x() )
+		if( connectionPoint.y() < bottomBounds.y() && topBounds.maxX() < connectionPoint.x() )
 		{
 			// The connection point falls in the empty top-right corner, re-compute it so
 			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			int delta = topBounds.getHeight() * (connectionPoint.x() - bounds.getCenter().x()) * 2 / 
-					bounds.getHeight();
+			int delta = topBounds.height() * (connectionPoint.x() - bounds.center().x()) * 2 / 
+					bounds.height();
 			int newX = connectionPoint.x() - delta;
-			if( newX < topBounds.getMaxX() )
+			if( newX < topBounds.maxX() )
 			{
-				newX = topBounds.getMaxX() + 1;
+				newX = topBounds.maxX() + 1;
 			}
-			return new Point(newX, bottomBounds.getY());	
+			return new Point(newX, bottomBounds.y());	
 		}
 		else
 		{
@@ -117,7 +117,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		{
 			Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
 			Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
-			return new Line(topBounds.getMaxX(), bottomBounds.getY(), bottomBounds.getMaxX(), bottomBounds.getY());
+			return new Line(topBounds.maxX(), bottomBounds.y(), bottomBounds.maxX(), bottomBounds.y());
 			
 		}
 		else if( pSide == Side.RIGHT )
@@ -146,7 +146,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	public Point getTopRightCorner(AbstractPackageNode pNode)
 	{
 		Rectangle bottomBounds = getBottomBounds(pNode);
-		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
+		return new Point(bottomBounds.maxX(), bottomBounds.y());
 	}
 	
 	

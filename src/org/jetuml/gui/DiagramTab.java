@@ -291,27 +291,27 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	public void interactionTo(Rectangle pBounds, Direction pDirection)
 	{
 		// Compute point to reveal
-		int x = pBounds.getMaxX();
-		int y = pBounds.getMaxY();
+		int x = pBounds.maxX();
+		int y = pBounds.maxY();
 		
 		if( pDirection.isWesterly() ) // Going left, reverse coordinate
 		{
-			x = pBounds.getX(); 
+			x = pBounds.x(); 
 		}
 		if( pDirection.isNortherly() )	// Going up, reverse coordinate
 		{
-			y = pBounds.getY(); 
+			y = pBounds.y(); 
 		}
 		
 		// Special case: if the viewport is not large enough for the entire
 		// selection, the use will experience unsettling jitter. 
 		// We prevent this by not auto-scrolling
 		ViewportProjection projection = getViewportProjection();
-		if( pBounds.getWidth() <= projection.width() )
+		if( pBounds.width() <= projection.width() )
 		{
 			scrollPane().setHvalue(projection.getAdjustedHValueToRevealX(x));
 		}
-		if( pBounds.getHeight() <= projection.height() )
+		if( pBounds.height() <= projection.height() )
 		{
 			scrollPane().setVvalue(projection.getAdjustedVValueToRevealY(y));
 		}

@@ -52,7 +52,7 @@ public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagram
 	{
 		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeRenderer.class, "DIAMETER");
 		Rectangle bounds = aRenderer.getBounds(pNode);
-		assertEquals(DIAMETER, bounds.getWidth());
-		assertEquals(DIAMETER, bounds.getHeight());
+		assertEquals(DIAMETER, bounds.width());
+		assertEquals(DIAMETER, bounds.height());
 	}
 }

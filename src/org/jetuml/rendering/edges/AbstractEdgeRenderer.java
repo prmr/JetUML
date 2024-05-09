@@ -127,8 +127,8 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 	{
 		Rectangle startBounds = parent().getBounds(pEdge.start());
 		Rectangle endBounds = parent().getBounds(pEdge.end());
-		Point startCenter = startBounds.getCenter();
-		Point endCenter = endBounds.getCenter();
+		Point startCenter = startBounds.center();
+		Point endCenter = endBounds.center();
 		Direction toEnd = Direction.fromLine(startCenter, endCenter);
 		return new Line(parent().getConnectionPoints(pEdge.start(), toEnd), 
 				parent().getConnectionPoints(pEdge.end(), toEnd.rotatedBy(DEGREES_180)));

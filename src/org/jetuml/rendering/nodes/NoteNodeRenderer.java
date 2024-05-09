@@ -77,12 +77,12 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 		Path path = new Path();
 		Rectangle bounds = getBounds(pNode);		
 		path.getElements().addAll(
-				new MoveTo(bounds.getX(), bounds.getY()),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
-				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX(), bounds.getMaxY()),
-				new LineTo(bounds.getX(), bounds.getMaxY()),
-				new LineTo(bounds.getX(), bounds.getY()));
+				new MoveTo(bounds.x(), bounds.y()),
+				new LineTo(bounds.maxX() - FOLD_LENGTH, bounds.y()),
+				new LineTo(bounds.maxX(), bounds.y() + FOLD_LENGTH),
+				new LineTo(bounds.maxX(), bounds.maxY()),
+				new LineTo(bounds.x(), bounds.maxY()),
+				new LineTo(bounds.x(), bounds.y()));
 		return path;
 	}
 	
@@ -95,10 +95,10 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 		Rectangle bounds = getBounds(pNode);
 		Path path = new Path();
 		path.getElements().addAll(
-				new MoveTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY())
+				new MoveTo(bounds.maxX() - FOLD_LENGTH, bounds.y()),
+				new LineTo(bounds.maxX() - FOLD_LENGTH, bounds.y() + FOLD_LENGTH),
+				new LineTo(bounds.maxX(), bounds.y() + FOLD_LENGTH),
+				new LineTo(bounds.maxX() - FOLD_LENGTH, bounds.y())
 		);
 		return path;
 	}

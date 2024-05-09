@@ -96,11 +96,11 @@ public final class RenderingUtils
 	{
 		assert pGraphics != null && pRectangle != null;
 		pGraphics.setEffect(DROP_SHADOW);
-		pGraphics.fillRoundRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, 
-				pRectangle.getWidth(), pRectangle.getHeight(), ARC_SIZE, ARC_SIZE );
+		pGraphics.fillRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
+				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE );
 		pGraphics.setEffect(null);
-		pGraphics.strokeRoundRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, 
-				pRectangle.getWidth(), pRectangle.getHeight(), ARC_SIZE, ARC_SIZE);
+		pGraphics.strokeRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
+				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE);
 	}
 
 	/**
@@ -139,9 +139,9 @@ public final class RenderingUtils
 	{
 		assert pGraphics != null && pRectangle != null;
 		pGraphics.setEffect(DROP_SHADOW);
-		pGraphics.fillRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, pRectangle.getWidth(), pRectangle.getHeight());
+		pGraphics.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		pGraphics.setEffect(null);
-		pGraphics.strokeRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, pRectangle.getWidth(), pRectangle.getHeight());
+		pGraphics.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 	}
 	
 	/**

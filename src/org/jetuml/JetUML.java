@@ -155,9 +155,9 @@ public final class JetUML extends Application
 	private static void setStageBoundaries(Stage pStage)
 	{
 		Rectangle defaultStageBounds = GuiUtils.defaultStageBounds();
-		pStage.setX(defaultStageBounds.getX());
-		pStage.setY(defaultStageBounds.getY());
-		pStage.setWidth(defaultStageBounds.getWidth());
-		pStage.setHeight(defaultStageBounds.getHeight());
+		pStage.setX(defaultStageBounds.x());
+		pStage.setY(defaultStageBounds.y());
+		pStage.setWidth(defaultStageBounds.width());
+		pStage.setHeight(defaultStageBounds.height());
 	}
 }

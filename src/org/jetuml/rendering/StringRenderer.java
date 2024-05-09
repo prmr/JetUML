@@ -239,7 +239,7 @@ public final class StringRenderer
 		int textY = 0;
 		if( aAlign.isHorizontallyCentered() ) 
 		{
-			textX = pRectangle.getWidth()/2;
+			textX = pRectangle.width()/2;
 		}
 		else
 		{
@@ -248,10 +248,10 @@ public final class StringRenderer
 		
 		if( aAlign.isVerticallyCentered() )
 		{
-			textY = pRectangle.getHeight()/2;
+			textY = pRectangle.height()/2;
 		}
 		
-		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
+		pGraphics.translate(pRectangle.x(), pRectangle.y());
 		RenderingUtils.drawText(pGraphics, textX, textY, pString.trim(), CANVAS_FONT.getFont(aBold, aItalic));
 		
 		if(aUnderlined && pString.trim().length() > 0)
@@ -276,7 +276,7 @@ public final class StringRenderer
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
-		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
+		pGraphics.translate(-pRectangle.x(), -pRectangle.y());
 		pGraphics.setTextBaseline(oldVPos);
 		pGraphics.setTextAlign(oldAlign);
 	}

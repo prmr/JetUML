@@ -92,12 +92,12 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 		Rectangle boundsI1 = aRenderer.getBounds(nodeByName("I1"));
 		Rectangle boundsC2 = aRenderer.getBounds(nodeByName("C2"));
 		Rectangle boundsPackageNode = aRenderer.getBounds(nodeByName("p4"));
-		assertEquals(boundsI1.getX() - packageNodePadding, boundsPackageNode.getX());
-		assertEquals(boundsC2.getMaxX() + packageNodePadding, boundsPackageNode.getMaxX());
-		assertEquals(boundsI1.getMaxY() + packageNodePadding, boundsPackageNode.getMaxY());
-		assertEquals(boundsC2.getMaxY() + packageNodePadding, boundsPackageNode.getMaxY());
-		assertTrue(boundsPackageNode.getY() < boundsI1.getY());
-		assertTrue(boundsPackageNode.getY() < boundsC2.getY());
+		assertEquals(boundsI1.x() - packageNodePadding, boundsPackageNode.x());
+		assertEquals(boundsC2.maxX() + packageNodePadding, boundsPackageNode.maxX());
+		assertEquals(boundsI1.maxY() + packageNodePadding, boundsPackageNode.maxY());
+		assertEquals(boundsC2.maxY() + packageNodePadding, boundsPackageNode.maxY());
+		assertTrue(boundsPackageNode.y() < boundsI1.y());
+		assertTrue(boundsPackageNode.y() < boundsC2.y());
 	}
 	
 	/**
@@ -110,8 +110,8 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 		Rectangle boundsC1 = aRenderer.getBounds(nodeByName("C1"));
 		Rectangle boundsI1 = aRenderer.getBounds(nodeByName("I1"));
 		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e1"));
-		assertWithDefaultTolerance(boundsC1.getMaxX(), edgeBounds.getX());
-		assertWithDefaultTolerance(boundsI1.getX(), edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsC1.maxX(), edgeBounds.x());
+		assertWithDefaultTolerance(boundsI1.x(), edgeBounds.maxX());
 	}
 	
 	/**
@@ -124,8 +124,8 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 		Rectangle boundsC2 = aRenderer.getBounds(nodeByName("C2"));
 		Rectangle boundsI1 = aRenderer.getBounds(nodeByName("I1"));
 		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e2"));
-		assertWithDefaultTolerance(boundsC2.getX(), edgeBounds.getMaxX());
-		assertWithDefaultTolerance(boundsI1.getMaxX(), edgeBounds.getX());
+		assertWithDefaultTolerance(boundsC2.x(), edgeBounds.maxX());
+		assertWithDefaultTolerance(boundsI1.maxX(), edgeBounds.x());
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 		Rectangle boundsP3 = aRenderer.getBounds(nodeByName("p3"));
 		Rectangle boundsP2 = aRenderer.getBounds(nodeByName("p2"));
 		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e3"));
-		assertWithDefaultTolerance(boundsP3.getY(), edgeBounds.getMaxY());
-		assertWithDefaultTolerance(boundsP2.getMaxX(), edgeBounds.getX());
+		assertWithDefaultTolerance(boundsP3.y(), edgeBounds.maxY());
+		assertWithDefaultTolerance(boundsP2.maxX(), edgeBounds.x());
 	}
 }

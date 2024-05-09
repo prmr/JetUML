@@ -86,24 +86,24 @@ public enum Side
 		assert pRectangle != null;
 		if( this == Side.TOP )
 		{
-			return new Line(new Point(pRectangle.getX(), pRectangle.getY()), 
-					new Point(pRectangle.getMaxX(), pRectangle.getY()));
+			return new Line(new Point(pRectangle.x(), pRectangle.y()), 
+					new Point(pRectangle.maxX(), pRectangle.y()));
 		}
 		else if( this == Side.BOTTOM)
 		{
-			return new Line(new Point(pRectangle.getX(), pRectangle.getMaxY()), 
-					new Point(pRectangle.getMaxX(), pRectangle.getMaxY()));
+			return new Line(new Point(pRectangle.x(), pRectangle.maxY()), 
+					new Point(pRectangle.maxX(), pRectangle.maxY()));
 		}
 		else if( this == Side.RIGHT)
 		{
-			return new Line(new Point(pRectangle.getMaxX(), pRectangle.getY()), 
-					new Point(pRectangle.getMaxX(), pRectangle.getMaxY()));
+			return new Line(new Point(pRectangle.maxX(), pRectangle.y()), 
+					new Point(pRectangle.maxX(), pRectangle.maxY()));
 		}
 		else
 		{
 			assert this == Side.LEFT;
-			return new Line(new Point(pRectangle.getX(), pRectangle.getY()), 
-					new Point(pRectangle.getX(), pRectangle.getMaxY()));
+			return new Line(new Point(pRectangle.x(), pRectangle.y()), 
+					new Point(pRectangle.x(), pRectangle.maxY()));
 		}
 	}
 }

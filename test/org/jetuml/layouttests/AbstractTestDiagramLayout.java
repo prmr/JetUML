@@ -160,8 +160,8 @@ public abstract class AbstractTestDiagramLayout
 	protected void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
 	{
 		Rectangle bounds = aRenderer.getBounds(pNode);
-		assertEquals(pDefaultWidth, bounds.getWidth());
-		assertEquals(pDefaultHeight, bounds.getHeight());
+		assertEquals(pDefaultWidth, bounds.width());
+		assertEquals(pDefaultHeight, bounds.height());
 	}
 	
 	protected static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY)

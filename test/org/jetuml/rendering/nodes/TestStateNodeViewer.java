@@ -53,26 +53,26 @@ public class TestStateNodeViewer
 	public void testGetBounds_NoName()
 	{
 		aNode.setName("");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-		assertEquals(80, aViewer.getBounds(aNode).getWidth());
-		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(80, aViewer.getBounds(aNode).width());
+		assertEquals(60, aViewer.getBounds(aNode).height());
 	}
 	
 	@Test
 	public void testGetBounds_ShortName()
 	{
 		aNode.setName("X");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-		assertEquals(80, aViewer.getBounds(aNode).getWidth());
-		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(80, aViewer.getBounds(aNode).width());
+		assertEquals(60, aViewer.getBounds(aNode).height());
 	}
 	
 	@Test
 	public void testGetBounds_LongName()
 	{	
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-		assertTrue(aViewer.getBounds(aNode).getWidth() > 80);
-		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertTrue(aViewer.getBounds(aNode).width() > 80);
+		assertEquals(60, aViewer.getBounds(aNode).height());
 	}
 }

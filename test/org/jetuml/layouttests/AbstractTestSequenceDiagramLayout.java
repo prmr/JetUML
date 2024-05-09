@@ -55,14 +55,14 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 		final int TOP_HEIGHT = getStaticIntFieldValue(ImplicitParameterNodeRenderer.class, "TOP_HEIGHT");
 		ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer();
 		Rectangle implicitParameterTopRectangle = instanceOfImplicitParameterNodeViewer.getTopRectangle(pNode);
-		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.getHeight());
+		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.height());
 	}
 	
 	protected void verifyCallNodeDefaultWidth(Node pNode)
 	{
 		final int WIDTH = getStaticIntFieldValue(CallNodeRenderer.class, "WIDTH");
 		Rectangle nodeBounds = aRenderer.getBounds(pNode);
-		assertEquals(WIDTH, nodeBounds.getWidth());
+		assertEquals(WIDTH, nodeBounds.width());
 	}
 	
 	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer()

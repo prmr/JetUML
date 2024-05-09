@@ -257,10 +257,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).getCenter().x() -
-				parent().getBounds(pEdge.end()).getCenter().x());
-		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).getCenter().y() -
-				parent().getBounds(pEdge.end()).getCenter().y());
+		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).center().x() -
+				parent().getBounds(pEdge.end()).center().x());
+		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).center().y() -
+				parent().getBounds(pEdge.end()).center().y());
 		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
@@ -349,18 +349,18 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).getMaxX() - SELF_EDGE_OFFSET, 
-					parent().getBounds(pEdge.start()).getY());
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).getMaxX(), 
-					parent().getBounds(pEdge.start()).getY() + SELF_EDGE_OFFSET);
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).maxX() - SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.start()).y());
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).maxX(), 
+					parent().getBounds(pEdge.start()).y() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).getX(), 
-					parent().getBounds(pEdge.start()).getY() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).getX() + SELF_EDGE_OFFSET, 
-					parent().getBounds(pEdge.start()).getY());
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).x(), 
+					parent().getBounds(pEdge.start()).y() + SELF_EDGE_OFFSET);
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).x() + SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.start()).y());
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 	}
@@ -421,8 +421,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Rectangle start = parent().getBounds(pEdge.start());
 		Rectangle end = parent().getBounds(pEdge.end());
-		Point startCenter = start.getCenter();
-		Point endCenter = end.getCenter();
+		Point startCenter = start.center();
+		Point endCenter = end.center();
 		int turn = DEGREES_5;
 		if( getPosition(pEdge) > 1 )
 		{

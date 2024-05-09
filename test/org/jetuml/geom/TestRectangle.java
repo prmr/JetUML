@@ -34,23 +34,16 @@ public class TestRectangle
 	@Test
 	void testToString()
 	{
-		assertEquals("[x=0, y=0, w=60, h=40]", RECTANGLE_1.toString());
+		assertEquals("Rectangle[x=0, y=0, width=60, height=40]", RECTANGLE_1.toString());
 	}
 	
 	@Test
 	void testMaxXY()
 	{
-		assertEquals(60, RECTANGLE_1.getMaxX());
-		assertEquals(40, RECTANGLE_1.getMaxY());
-		assertEquals(101, RECTANGLE_2.getMaxX());
-		assertEquals(21, RECTANGLE_2.getMaxY());
-	}
-	
-	@Test
-	void testHashCode()
-	{
-		assertEquals(2172821, RECTANGLE_1.hashCode());
-		assertEquals(957393, RECTANGLE_2.hashCode());
+		assertEquals(60, RECTANGLE_1.maxX());
+		assertEquals(40, RECTANGLE_1.maxY());
+		assertEquals(101, RECTANGLE_2.maxX());
+		assertEquals(21, RECTANGLE_2.maxY());
 	}
 	
 	@Test
@@ -82,13 +75,13 @@ public class TestRectangle
 	@Test
 	void testGetCenter()
 	{
-		Point center = RECTANGLE_1.getCenter();
+		Point center = RECTANGLE_1.center();
 		assertEquals(30, center.x());
 		assertEquals(20, center.y());
-		center = RECTANGLE_1.translated(10, 10).getCenter();
+		center = RECTANGLE_1.translated(10, 10).center();
 		assertEquals(40, center.x());
 		assertEquals(30, center.y());
-		center = RECTANGLE_2.getCenter();
+		center = RECTANGLE_2.center();
 		assertEquals(100, center.x());
 		assertEquals(20, center.y());
 	}

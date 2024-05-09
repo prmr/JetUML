@@ -142,7 +142,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		}
 		else
 		{
-			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+			return new Rectangle(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 		}
 	}
 	
