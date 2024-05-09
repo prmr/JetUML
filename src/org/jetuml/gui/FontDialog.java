@@ -72,6 +72,8 @@ public class FontDialog
 	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
 	private final Label aPreview = new Label(RESOURCES.getString("dialog.font.preview"));
+	private final String aUserFamily = getCurrentFont();
+	private final int aUserSize = getCurrentFontSize();
 	
 	/**
 	 * Creates a new font dialog.
@@ -99,6 +101,10 @@ public class FontDialog
 				aStage.close();
 			}
 		});
+		aStage.setOnCloseRequest(pEvent ->
+		{
+			restoreUserSettings();
+		});
 	}
 	
 	private Scene createScene() 
@@ -121,7 +127,7 @@ public class FontDialog
 		
 		aFonts.getStyleClass().add("font-combobox");
 		aFonts.getSelectionModel().select(getCurrentFont());
-		aFonts.setOnAction(pEvent -> updatePreview());
+		aFonts.setOnAction(pEvent -> onInput());
 		GridPane.setConstraints(aFonts, 1, 0);
 		GridPane.setHalignment(aFonts, HPos.RIGHT);
 		
@@ -136,7 +142,7 @@ public class FontDialog
 		
 		aSizes.getStyleClass().add("font-combobox");
 		aSizes.getSelectionModel().select((Integer) getCurrentFontSize());
-		aSizes.setOnAction(pEvent -> updatePreview());
+		aSizes.setOnAction(pEvent -> onInput());
 		GridPane.setConstraints(aSizes, 1, 1);
 		GridPane.setHalignment(aSizes, HPos.RIGHT);
 		
@@ -161,11 +167,15 @@ public class FontDialog
 	private void createButton()
 	{	
 		Button ok = new Button(RESOURCES.getString("dialog.font.ok"));
-		ok.setOnAction(pEvent -> onInput());
+		ok.setOnAction(pEvent -> aStage.close());
 		ok.getStyleClass().add("font-button");
 		
 		Button cancel = new Button(RESOURCES.getString("dialog.font.cancel"));
-		cancel.setOnAction(pEvent -> aStage.close());
+		cancel.setOnAction(pEvent -> 
+		{
+			restoreUserSettings();
+			aStage.close();
+		});
 		cancel.getStyleClass().add("font-button");
 		
 		HBox layout = new HBox(SPACING);
@@ -195,9 +205,10 @@ public class FontDialog
 		return UserPreferences.instance().getString(StringPreference.fontName);
 	}
 	
-	private void updatePreview()
+	private void restoreUserSettings()
 	{
-		aPreview.setFont(Font.font(aFonts.getSelectionModel().getSelectedItem(), aSizes.getSelectionModel().getSelectedItem()));
+		aFonts.getSelectionModel().select(aUserFamily);
+		aSizes.getSelectionModel().select((Integer) aUserSize);
 	}
 	
 	private void onInput()
@@ -211,7 +222,7 @@ public class FontDialog
 		{
 			UserPreferences.instance().setInteger(IntegerPreference.fontSize, aSizes.getSelectionModel().getSelectedItem());
 		}
-		aStage.close();
+		aPreview.setFont(Font.font(getCurrentFont(), getCurrentFontSize()));
 	}
 	
 	/**
