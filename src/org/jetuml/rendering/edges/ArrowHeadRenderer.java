@@ -24,7 +24,6 @@ package org.jetuml.rendering.edges;
 import static org.jetuml.rendering.ArrowHead.NONE;
 import static org.jetuml.rendering.ArrowHead.V;
 
-import org.jetuml.geom.Conversions;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -32,6 +31,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ToolGraphics;
 
+import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -99,7 +99,7 @@ public final class ArrowHeadRenderer
 	 */
 	public static Rectangle getBounds(ArrowHead pArrowHead, Line pAxis)
 	{
-		return Conversions.toRectangle(getPath(pArrowHead, pAxis).getBoundsInLocal());
+		return toRectangle(getPath(pArrowHead, pAxis).getBoundsInLocal());
 	}
 	
    	/**
@@ -150,4 +150,15 @@ public final class ArrowHeadRenderer
    		}      
    		return path;
    	}
+   	
+   	/*
+	 * @param pBounds An input bounds object.
+	 * @return A rectangle that corresponds to pBounds.
+	 * @pre pBounds != null;
+	 */
+	private static Rectangle toRectangle(Bounds pBounds)
+	{
+		assert pBounds != null;
+		return new Rectangle((int)pBounds.getMinX(), (int)pBounds.getMinY(), (int)pBounds.getWidth(), (int)pBounds.getHeight());
+	}
 }
