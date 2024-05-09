@@ -218,7 +218,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Rectangle bounds = getLabelBounds(pSegment, pArrowHead, label, pCenter, pIsStepUp);
 		if(pCenter) 
 		{
-			if( pSegment.getY2() >= pSegment.getY1() )
+			if( pSegment.y2() >= pSegment.y1() )
 			{
 				TOP_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
 			}
@@ -260,7 +260,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if(pLabel == null || pLabel.isEmpty())
 		{
-			return new Rectangle(pSegment.getX2(), pSegment.getY2(), 0, 0);
+			return new Rectangle(pSegment.x2(), pSegment.y2(), 0, 0);
 		}
 		Dimension textDimensions = TOP_CENTERED_STRING_VIEWER.getDimension(pLabel);
 		Point attachmentPoint = getAttachmentPoint(pSegment, pArrow, textDimensions, pCenter, pIsStepUp);
@@ -276,10 +276,10 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		final int gap = 3;
 		double xoff = gap;
 		double yoff = -gap - pDimension.height();
-		Point attach = pSegment.getPoint2();
+		Point attach = pSegment.point2();
 		if( pCenter )
 		{
-			if( pSegment.getX1() > pSegment.getX2()) 
+			if( pSegment.x1() > pSegment.x2()) 
 			{ 
 				return getAttachmentPoint(pSegment.reversed(), pArrow, pDimension, pCenter, pIsStepUp); 
 			}
@@ -296,19 +296,19 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			{
 				if(pDimension.width() > pSegment.distanceBetweenPoints().width())
 				{
-					attach = new Point(pSegment.getX2() + (pDimension.width() / 2) + gap, 
-							(pSegment.getY1() + pSegment.getY2()) / 2);
+					attach = new Point(pSegment.x2() + (pDimension.width() / 2) + gap, 
+							(pSegment.y1() + pSegment.y2()) / 2);
 				}
 				xoff = -pDimension.width() / 2;
 			}
 		}
 		else 
 		{
-			if(pSegment.getX1() < pSegment.getX2())
+			if(pSegment.x1() < pSegment.x2())
 			{
 				xoff = -gap - pDimension.width();
 			}
-			if(pSegment.getY1() > pSegment.getY2())
+			if(pSegment.y1() > pSegment.y2())
 			{
 				yoff = gap;
 			}

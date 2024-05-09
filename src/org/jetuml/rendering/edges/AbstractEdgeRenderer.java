@@ -78,8 +78,8 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 		assert pEdge != null;
 		Line endPoints = getConnectionPoints(pEdge);
 		Path path = new Path();
-		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
-				new LineTo(endPoints.getX2(), endPoints.getY2()));
+		path.getElements().addAll(new MoveTo(endPoints.x1(), endPoints.y1()), 
+				new LineTo(endPoints.x2(), endPoints.y2()));
 		return path;
 	}
 	
@@ -98,7 +98,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 		Edge edge = (Edge) pElement;
 		// Purposefully does not include the arrow head and labels, which create large bounds.
 		Line conn = getConnectionPoints(edge);
-		if(pPoint.distance(conn.getPoint1()) <= MAX_DISTANCE || pPoint.distance(conn.getPoint2()) <= MAX_DISTANCE)
+		if(pPoint.distance(conn.point1()) <= MAX_DISTANCE || pPoint.distance(conn.point2()) <= MAX_DISTANCE)
 		{
 			return false;
 		}

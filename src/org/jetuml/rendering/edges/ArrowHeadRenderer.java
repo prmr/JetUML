@@ -115,22 +115,22 @@ public final class ArrowHeadRenderer
    			return new Path();
    		}
    		
-   		int dx = pAxis.getX2() - pAxis.getX1();
-   		int dy = pAxis.getY2() - pAxis.getY1();
+   		int dx = pAxis.x2() - pAxis.x1();
+   		int dy = pAxis.y2() - pAxis.y1();
    		final double angle = Math.atan2(dy, dx);
-   		int x1 = GeomUtils.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
-   		int y1 = GeomUtils.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
-   		int x2 = GeomUtils.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
-   		int y2 = GeomUtils.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
+   		int x1 = GeomUtils.round(pAxis.x2() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   		int y1 = GeomUtils.round(pAxis.y2() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
+   		int x2 = GeomUtils.round(pAxis.x2() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
+   		int y2 = GeomUtils.round(pAxis.y2() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
 
-   		MoveTo moveToOrigin = new MoveTo(pAxis.getX2(), pAxis.getY2());
+   		MoveTo moveToOrigin = new MoveTo(pAxis.x2(), pAxis.y2());
    		LineTo lineTo1 = new LineTo(x1, y1);
    		Path path = new Path();
    		path.getElements().addAll(moveToOrigin, lineTo1);
    		if(pArrowHead == V)
    		{
    			MoveTo moveTo2 = new MoveTo(x2, y2);
-   			LineTo lineTo2 = new LineTo(pAxis.getX2(), pAxis.getY2());
+   			LineTo lineTo2 = new LineTo(pAxis.x2(), pAxis.y2());
    			path.getElements().addAll(moveTo2, lineTo2);
    		}
    		else if(pArrowHead.isTriangle())

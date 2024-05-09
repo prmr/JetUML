@@ -20,40 +20,18 @@
  *******************************************************************************/
 package org.jetuml.geom;
 
-import static java.lang.Math.min;
-
-import java.util.Objects;
-
-import org.jetuml.annotations.Immutable;
-
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 /**
  * A pair of connected points in the integer space.
+ * @param point1 The first point in the line. Conceptually the "start" of the line. point1 != null
+ * @param point2 The second point in the line. Conceptually the "end" of the line. point2 != null
  */
-@Immutable
-public class Line
+public record Line(Point point1, Point point2)
 {
-	private final Point aPoint1;
-	private final Point aPoint2;
-	
 	/**
-	 * Creates a new line.
-	 * 
-	 * @param pPoint1 The first point in the line. Conceptually the "start" of the line.
-	 * @param pPoint2 The second point in the line. Conceptually the "end" of the line.
-	 * @pre pPoint1 != null
-	 * @pre pPoint2 != null
-	 */
-	public Line(Point pPoint1, Point pPoint2)
-	{
-		assert pPoint1 != null && pPoint2 != null;
-		aPoint1 = pPoint1; 
-		aPoint2 = pPoint2;
-	}
-	
-	/**
-	 * Creates a new line.
+	 * Creates a new line from individual coordinates.
 	 * 
 	 * @param pX1 The X-coordinate of the start of the line.
 	 * @param pY1 The Y-coordinate of the start of the line.
@@ -66,51 +44,35 @@ public class Line
 	}
 
 	/**
-	 * @return The first point of the line.
-	 */
-	public Point getPoint1()
-	{
-		return aPoint1;
-	}
-	
-	/**
 	 * @return The x coordinate of point 1.
 	 */
-	public int getX1()
+	public int x1()
 	{
-		return aPoint1.x();
+		return point1.x();
 	}
 	
 	/**
 	 * @return The y coordinate of point 1.
 	 */
-	public int getY1()
+	public int y1()
 	{
-		return aPoint1.y();
+		return point1.y();
 	}
 	
 	/**
 	 * @return The x coordinate of point 2.
 	 */
-	public int getX2()
+	public int x2()
 	{
-		return aPoint2.x();
+		return point2.x();
 	}
 	
 	/**
 	 * @return The y coordinate of point 2.
 	 */
-	public int getY2()
+	public int y2()
 	{
-		return aPoint2.y();
-	}
-	
-	/**
-	 * @return The second point of the line.
-	 */
-	public Point getPoint2()
-	{
-		return aPoint2;
+		return point2.y();
 	}
 	
 	/**
@@ -122,8 +84,8 @@ public class Line
 	 */
 	public Dimension distanceBetweenPoints()
 	{
-		return new Dimension(Math.abs(getX1()-getX2()), 
-				Math.abs(getY1()-getY2()));
+		return new Dimension(Math.abs(x1()-x2()), 
+				Math.abs(y1()-y2()));
 	}
 	
 	/**
@@ -131,7 +93,7 @@ public class Line
 	 */
 	public Line reversed()
 	{
-		return new Line(getPoint2(), getPoint1());
+		return new Line(point2(), point1());
 	}
 	
 	/**
@@ -139,7 +101,7 @@ public class Line
 	 */
 	public Point center()
 	{
-		return new Point((getX1() + getX2())/2, (getY1() + getY2())/2);
+		return new Point((x1() + x2())/2, (y1() + y2())/2);
 	}
 	
 	/**
@@ -149,7 +111,7 @@ public class Line
 	 */
 	public boolean isHorizontal()
 	{
-		return getY1() == getY2();
+		return y1() == y2();
 	}
 	
 	/**
@@ -159,7 +121,7 @@ public class Line
 	 */
 	public boolean isVertical()
 	{
-		return getX1() == getX2();
+		return x1() == x2();
 	}
 	
 	/**
@@ -167,38 +129,7 @@ public class Line
 	 */
 	public Rectangle spanning()
 	{
-		return new Rectangle(min(getX1(), getX2()), min(getY1(), getY2()), 
-				abs(getX2() - getX1()), abs(getY2() - getY1()));
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(aPoint1, aPoint2);
-	}
-
-	@Override
-	public boolean equals(Object pObject)
-	{
-		if(this == pObject)
-		{
-			return true;
-		}
-		if(pObject == null)
-		{
-			return false;
-		}
-		if(getClass() != pObject.getClass())
-		{
-			return false;
-		}
-		Line other = (Line) pObject;
-		return Objects.equals(aPoint1, other.aPoint1) && Objects.equals(aPoint2, other.aPoint2);
-	}
-	
-	@Override
-	public String toString()
-	{
-		return String.format("[%s, %s]", aPoint1, aPoint2);
+		return new Rectangle(min(x1(), x2()), min(y1(), y2()), 
+				abs(x2() - x1()), abs(y2() - y1()));
 	}
 }

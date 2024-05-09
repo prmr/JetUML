@@ -83,20 +83,20 @@ public class TestNoteEdgeViewer
 		assertEquals(new Rectangle(59,19,42,2), aRenderer.getBounds(aNoteEdge));
 		
 		Line connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
-		assertEquals( 60, connectionPoints.getX1());
-		assertEquals( 20, connectionPoints.getY1());
-		assertEquals( 100, connectionPoints.getX2());
-		assertEquals( 20, connectionPoints.getY2());
+		assertEquals( 60, connectionPoints.x1());
+		assertEquals( 20, connectionPoints.y1());
+		assertEquals( 100, connectionPoints.x2());
+		assertEquals( 20, connectionPoints.y2());
 		
 		
 		aPointNode.translate(20, 0);
 		assertEquals(new Rectangle(59,19,62,2), aRenderer.getBounds(aNoteEdge));
 		
 		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
-		assertEquals( 60, connectionPoints.getX1());
-		assertEquals( 20, connectionPoints.getY1());
-		assertEquals( 120, connectionPoints.getX2());
-		assertEquals( 20, connectionPoints.getY2());
+		assertEquals( 60, connectionPoints.x1());
+		assertEquals( 20, connectionPoints.y1());
+		assertEquals( 120, connectionPoints.x2());
+		assertEquals( 20, connectionPoints.y2());
 		
 		
 		aPointNode.translate(0, 20); // Now at x=120, y = 40
@@ -107,9 +107,9 @@ public class TestNoteEdgeViewer
 		assertEquals(new Rectangle(58,25,62,15), aRenderer.getBounds(aNoteEdge));
 		
 		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
-		assertEquals( 60, connectionPoints.getX1());
-		assertEquals( 27, connectionPoints.getY1());
-		assertEquals( 120, connectionPoints.getX2());
-		assertEquals( 40, connectionPoints.getY2());
+		assertEquals( 60, connectionPoints.x1());
+		assertEquals( 27, connectionPoints.y1());
+		assertEquals( 120, connectionPoints.x2());
+		assertEquals( 40, connectionPoints.y2());
 	}
 }

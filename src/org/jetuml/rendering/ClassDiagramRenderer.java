@@ -1370,9 +1370,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		if(pCorner == NodeCorner.TOP_RIGHT)
 		{
 			Line topFace = getFace(pNode, Side.TOP);
-			startPoint = new Point(topFace.getX2() - TWENTY_PIXELS, topFace.getY2());
+			startPoint = new Point(topFace.x2() - TWENTY_PIXELS, topFace.y2());
 			Line rightFace = getFace(pNode, Side.RIGHT);
-			endPoint = new Point(rightFace.getX1(), rightFace.getY1() + TWENTY_PIXELS);
+			endPoint = new Point(rightFace.x1(), rightFace.y1() + TWENTY_PIXELS);
 		}
 		else if(pCorner == NodeCorner.TOP_LEFT)
 		{

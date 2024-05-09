@@ -70,18 +70,18 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	
 	private static Path getSShape(Line pConnectionPoints)
 	{
-		final int x1 = pConnectionPoints.getX1() + ENDSIZE;
-		final int y1 = pConnectionPoints.getY1();
-		final int x2 = pConnectionPoints.getX2() - ENDSIZE;
-		final int y2 = pConnectionPoints.getY2();
-		final int xmid = (pConnectionPoints.getX1() + pConnectionPoints.getX2()) / 2;
-		final int ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
+		final int x1 = pConnectionPoints.x1() + ENDSIZE;
+		final int y1 = pConnectionPoints.y1();
+		final int x2 = pConnectionPoints.x2() - ENDSIZE;
+		final int y2 = pConnectionPoints.y2();
+		final int xmid = (pConnectionPoints.x1() + pConnectionPoints.x2()) / 2;
+		final int ymid = (pConnectionPoints.y1() + pConnectionPoints.y2()) / 2;
      
-		MoveTo moveTo = new MoveTo(pConnectionPoints.getX1(), y1);
+		MoveTo moveTo = new MoveTo(pConnectionPoints.x1(), y1);
 		LineTo lineTo1 = new LineTo(x1, y1);
 		QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
 		QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
-		LineTo lineTo2 = new LineTo(pConnectionPoints.getX2(), y2);
+		LineTo lineTo2 = new LineTo(pConnectionPoints.x2(), y2);
 		
 		Path path = new Path();
 		path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
@@ -90,17 +90,17 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	
 	private static Path getCShape(Line pConnectionPoints)
 	{
-		final int x1 = Math.max(pConnectionPoints.getX1(), pConnectionPoints.getX2()) + ENDSIZE;
-		final int y1 = pConnectionPoints.getY1();
+		final int x1 = Math.max(pConnectionPoints.x1(), pConnectionPoints.x2()) + ENDSIZE;
+		final int y1 = pConnectionPoints.y1();
 		final int x2 = x1 + ENDSIZE;
-		final int y2 = pConnectionPoints.getY2();
-		final int ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
+		final int y2 = pConnectionPoints.y2();
+		final int ymid = (pConnectionPoints.y1() + pConnectionPoints.y2()) / 2;
 		
-		MoveTo moveTo = new MoveTo(pConnectionPoints.getX1(), y1);
+		MoveTo moveTo = new MoveTo(pConnectionPoints.x1(), y1);
 		LineTo lineTo1 = new LineTo(x1, y1);
 		QuadCurveTo quadTo1 = new QuadCurveTo(x2, y1, x2, ymid);
 		QuadCurveTo quadTo2 = new QuadCurveTo(x2, y2, x1, y2);
-		LineTo lineTo2 = new LineTo(pConnectionPoints.getX2(), y2);
+		LineTo lineTo2 = new LineTo(pConnectionPoints.x2(), y2);
 		
 		Path path = new Path();
 		path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
@@ -128,14 +128,14 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		if(isSShaped(edge))
 		{
 			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
-					new Point(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
-					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
+					new Point(connectionPoints.x2() - ENDSIZE, connectionPoints.y2()), 
+					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}
 		else
 		{
 			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
-					new Point(connectionPoints.getX2() + ENDSIZE, connectionPoints.getY2()), 
-					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
+					new Point(connectionPoints.x2() + ENDSIZE, connectionPoints.y2()), 
+					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}
 	}
 

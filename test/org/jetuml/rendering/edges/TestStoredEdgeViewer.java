@@ -217,8 +217,8 @@ public class TestStoredEdgeViewer
 		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
-		assertEquals(new Point(0, 0), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).getPoint1());
-		assertEquals(new Point(0, 100), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).getPoint2());
+		assertEquals(new Point(0, 0), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).point1());
+		assertEquals(new Point(0, 100), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).point2());
 	}
 	
 	@Test

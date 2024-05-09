@@ -92,8 +92,8 @@ public final class ToolGraphics
 	 */
 	public static void drawHandles(GraphicsContext pGraphics, Line pBounds)
 	{
-		drawHandle(pGraphics, pBounds.getX1(), pBounds.getY1());
-		drawHandle(pGraphics, pBounds.getX2(), pBounds.getY2());
+		drawHandle(pGraphics, pBounds.x1(), pBounds.y1());
+		drawHandle(pGraphics, pBounds.x2(), pBounds.y2());
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public final class ToolGraphics
 	{
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setStroke(SELECTION_FILL_COLOR);
-		strokeSharpLine(pGraphics, pLine.getX1(), pLine.getY1(), pLine.getX2(), pLine.getY2());
+		strokeSharpLine(pGraphics, pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
 		pGraphics.setStroke(oldStroke);
 	}
 	

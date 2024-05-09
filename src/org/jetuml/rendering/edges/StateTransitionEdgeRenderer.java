@@ -98,22 +98,22 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( isSelfEdge(pEdge) )
 		{
-			Point connectionPoint2 = getSelfEdgeConnectionPoints(pEdge).getPoint2();
+			Point connectionPoint2 = getSelfEdgeConnectionPoints(pEdge).point2();
 			if( getPosition(pEdge) == 1 )
 			{
 				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()+SELF_EDGE_OFFSET, 
-						connectionPoint2.y()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).getPoint2());
+						connectionPoint2.y()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).point2());
 			}
 			else
 			{
 				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.y()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).getPoint2());
+						connectionPoint2.y()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).point2());
 			}
 		}
 		else
 		{
 			ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, 
-					Conversions.toPoint(getControlPoint(pEdge)), getConnectionPoints(pEdge).getPoint2());
+					Conversions.toPoint(getControlPoint(pEdge)), getConnectionPoints(pEdge).point2());
 		}
 	}
 	
@@ -175,20 +175,20 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Line line = getConnectionPoints(pEdge);
 		Point2D control = getControlPoint(pEdge);
-		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
-		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
+		double x = control.getX() / 2 + line.x1() / 4 + line.x2() / 4;
+		double y = control.getY() / 2 + line.y1() / 4 + line.y2() / 4;
 
 		String label = wrapLabel(pEdge);
 		Dimension textDimensions = getLabelBounds(label);
 
 		int gap = 3;
-		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
-				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
+		if( line.y1() >= line.y2() - VERTICAL_TOLERANCE && 
+				line.y1() <= line.y2() + VERTICAL_TOLERANCE ) 
 		{
 			// The label is centered if the edge is (mostly) horizontal
 			x -= textDimensions.width() / 2;
 		}
-		else if( line.getY1() <= line.getY2() )
+		else if( line.y1() <= line.y2() )
 		{
 			x += gap;
 		}
@@ -197,7 +197,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 			x -= textDimensions.width() + gap;
 		}
 		
-		if( line.getX1() <= line.getX2() )
+		if( line.x1() <= line.x2() )
 		{
 			y -= textDimensions.height() + gap;
 		}
@@ -211,13 +211,13 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		{
 			final double angleLowerBound = Math.atan2(1, 1);
 			final double angleUpperBound = 3 * angleLowerBound;
-			double angle = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
+			double angle = Math.abs(Math.atan2(line.x2()-line.x1(), line.y2()-line.y1()));
 			double delta = textDimensions.height();
 			if( angleLowerBound <= angle && angle <= angleUpperBound )
 			{
 				delta -= angle*RADIANS_TO_PIXELS;
 			}
-			if( line.getX1() <= line.getX2() )
+			if( line.x1() <= line.x2() )
 			{
 				y -= delta;
 			}
@@ -241,13 +241,13 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Dimension textDimensions = getLabelBounds(label);
 		if( getPosition(pEdge) == 1 )
 		{
-            return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.width()/2,  
-                    line.getY1() - SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), textDimensions.height());
+            return new Rectangle2D(line.x1() + SELF_EDGE_OFFSET - textDimensions.width()/2,  
+                    line.y1() - SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), textDimensions.height());
         }
         else
         {
-            return new Rectangle2D(line.getX1() - textDimensions.width()/2, 
-                    line.getY1() - 2*SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), 
+            return new Rectangle2D(line.x1() - textDimensions.width()/2, 
+                    line.y1() - 2*SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), 
                     textDimensions.height());
         }
 	}  
@@ -292,14 +292,14 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		arc.setType(ArcType.OPEN);
 		if( getPosition(pEdge) == 1 )
 		{
-			arc.setCenterX(line.getX1());
-			arc.setCenterY(line.getY1()-SELF_EDGE_OFFSET);
+			arc.setCenterX(line.x1());
+			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET);
 			arc.setStartAngle(DEGREES_270);
 		}
 		else
 		{		
-			arc.setCenterX(line.getX1()-SELF_EDGE_OFFSET);
-			arc.setCenterY(line.getY1()-SELF_EDGE_OFFSET*2);
+			arc.setCenterX(line.x1()-SELF_EDGE_OFFSET);
+			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET*2);
 			arc.setStartAngle(1);
 		}
 		return arc;
@@ -369,9 +369,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Line line = getConnectionPoints(pEdge);
 		Path path = new Path();
-		MoveTo moveTo = new MoveTo(line.getPoint1().x(), line.getPoint1().y());
+		MoveTo moveTo = new MoveTo(line.point1().x(), line.point1().y());
 		QuadCurveTo curveTo = new QuadCurveTo(getControlPoint(pEdge).getX(), getControlPoint(pEdge).getY(), 
-				line.getPoint2().x(), line.getPoint2().y());
+				line.point2().x(), line.point2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		return path;
 	}
@@ -389,9 +389,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		{
 			tangent = Math.tan(Math.toRadians(DEGREES_20));
 		}
-		double dx = (line.getX2() - line.getX1()) / 2;
-		double dy = (line.getY2() - line.getY1()) / 2;
-		return new Point2D((line.getX1() + line.getX2()) / 2 + tangent * dy, (line.getY1() + line.getY2()) / 2 - tangent * dx);         
+		double dx = (line.x2() - line.x1()) / 2;
+		double dy = (line.y2() - line.y1()) / 2;
+		return new Point2D((line.x1() + line.x2()) / 2 + tangent * dy, (line.y1() + line.y2()) / 2 - tangent * dx);         
 	}
 	
 	@Override
@@ -442,14 +442,14 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		graphics.scale(0.6, 0.6);
 		Line line = new Line(new Point(2,2), new Point(40,40));
 		final double tangent = Math.tan(Math.toRadians(DEGREES_10));
-		double dx = (line.getX2() - line.getX1()) / 2;
-		double dy = (line.getY2() - line.getY1()) / 2;
-		Point control = new Point((int)((line.getX1() + line.getX2()) / 2 + tangent * dy), 
-				(int)((line.getY1() + line.getY2()) / 2 - tangent * dx));         
+		double dx = (line.x2() - line.x1()) / 2;
+		double dy = (line.y2() - line.y1()) / 2;
+		Point control = new Point((int)((line.x1() + line.x2()) / 2 + tangent * dy), 
+				(int)((line.y1() + line.y2()) / 2 - tangent * dx));         
 		
 		Path path = new Path();
-		MoveTo moveTo = new MoveTo(line.getPoint1().x(), line.getPoint1().y());
-		QuadCurveTo curveTo = new QuadCurveTo(control.x(), control.y(), line.getPoint2().x(), line.getPoint2().y());
+		MoveTo moveTo = new MoveTo(line.point1().x(), line.point1().y());
+		QuadCurveTo curveTo = new QuadCurveTo(control.x(), control.y(), line.point2().x(), line.point2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		
 		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);

@@ -146,7 +146,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( CallEdge callee : getCalls(pCaller))
 		{
-			if( renderer().getConnectionPoints(callee).getY1() > pY )
+			if( renderer().getConnectionPoints(callee).y1() > pY )
 			{
 				return aDiagramRenderer.diagram().indexOf(callee);
 			}
