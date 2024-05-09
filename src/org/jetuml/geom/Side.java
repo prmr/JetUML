@@ -68,4 +68,38 @@ public enum Side
 			return RIGHT;
 		}
 	}
+	
+	/**
+	 * Returns a new Line object that corresponds to the corresponding
+	 * side of the input rectangle.
+	 * 
+	 * @param pSide The required side.
+	 * @return A line with the geometry of the required side.
+	 * @pre pSide != null
+	 */
+	public Line getCorrespondingLine(Rectangle pRectangle)
+	{
+		assert pRectangle != null;
+		if( this == Side.TOP )
+		{
+			return new Line(new Point(pRectangle.getX(), pRectangle.getY()), 
+					new Point(pRectangle.getMaxX(), pRectangle.getY()));
+		}
+		else if( this == Side.BOTTOM)
+		{
+			return new Line(new Point(pRectangle.getX(), pRectangle.getMaxY()), 
+					new Point(pRectangle.getMaxX(), pRectangle.getMaxY()));
+		}
+		else if( this == Side.RIGHT)
+		{
+			return new Line(new Point(pRectangle.getMaxX(), pRectangle.getY()), 
+					new Point(pRectangle.getMaxX(), pRectangle.getMaxY()));
+		}
+		else
+		{
+			assert this == Side.LEFT;
+			return new Line(new Point(pRectangle.getX(), pRectangle.getY()), 
+					new Point(pRectangle.getX(), pRectangle.getMaxY()));
+		}
+	}
 }

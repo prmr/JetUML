@@ -139,6 +139,6 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	public Line getFace(Node pNode, Side pSide) 
 	{
 		assert pNode != null && pSide != null;
-		return getBounds(pNode).getSide(pSide);
+		return pSide.getCorrespondingLine(getBounds(pNode));
 	}
 }

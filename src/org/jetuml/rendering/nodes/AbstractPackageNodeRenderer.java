@@ -122,7 +122,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		}
 		else if( pSide == Side.RIGHT )
 		{
-			return getBottomBounds((AbstractPackageNode)pNode).getSide(pSide);
+			return pSide.getCorrespondingLine(getBottomBounds((AbstractPackageNode)pNode));
 		}
 		else
 		{
