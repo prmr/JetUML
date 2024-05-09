@@ -21,7 +21,6 @@
 package org.jetuml.geom;
 
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 /**
@@ -30,29 +29,6 @@ import javafx.geometry.Rectangle2D;
 public final class Conversions
 {
 	private Conversions() {}
-	
-	/**
-	 * @param pPoint2D The point to convert.
-	 * @return A point created from rounding both x and y coordinate
-	 *     of the input parameter to integers.
-	 * @pre pPoint2D != null;
-	 */
-	public static Point toPoint(Point2D pPoint2D)
-	{
-		assert pPoint2D != null;
-		return new Point( GeomUtils.round(pPoint2D.getX()), GeomUtils.round(pPoint2D.getY()));
-	}
-	
-	/**
-	 * @param pPoint The point to covert.
-	 * @return A Point2D with the same coordinates as pPoint.
-	 * @pre pPoint != null;
-	 */
-	public static Point2D toPoint2D(Point pPoint)
-	{
-		assert pPoint != null;
-		return new Point2D(pPoint.x(), pPoint.y());
-	}
 	
 	/**
 	 * @param pBounds An input bounds object.

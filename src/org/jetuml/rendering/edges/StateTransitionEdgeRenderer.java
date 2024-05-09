@@ -35,10 +35,9 @@ import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.ToolGraphics;
 
-import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -113,7 +112,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		else
 		{
 			ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, 
-					Conversions.toPoint(getControlPoint(pEdge)), getConnectionPoints(pEdge).point2());
+					getControlPoint(pEdge), getConnectionPoints(pEdge).point2());
 		}
 	}
 	
@@ -174,9 +173,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private Rectangle2D getNormalEdgeLabelBounds(StateTransitionEdge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
-		Point2D control = getControlPoint(pEdge);
-		double x = control.getX() / 2 + line.x1() / 4 + line.x2() / 4;
-		double y = control.getY() / 2 + line.y1() / 4 + line.y2() / 4;
+		Point control = getControlPoint(pEdge);
+		int x = control.x() / 2 + line.x1() / 4 + line.x2() / 4;
+		int y = control.y() / 2 + line.y1() / 4 + line.y2() / 4;
 
 		String label = wrapLabel(pEdge);
 		Dimension textDimensions = getLabelBounds(label);
@@ -349,19 +348,19 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).maxX() - SELF_EDGE_OFFSET, 
+			Point point1 = new Point(parent().getBounds(pEdge.start()).maxX() - SELF_EDGE_OFFSET, 
 					parent().getBounds(pEdge.start()).y());
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).maxX(), 
+			Point point2 = new Point(parent().getBounds(pEdge.start()).maxX(), 
 					parent().getBounds(pEdge.start()).y() + SELF_EDGE_OFFSET);
-			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
+			return new Line(point1, point2);
 		}
 		else
 		{
-			Point2D point1 = new Point2D(parent().getBounds(pEdge.start()).x(), 
+			Point point1 = new Point(parent().getBounds(pEdge.start()).x(), 
 					parent().getBounds(pEdge.start()).y() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(parent().getBounds(pEdge.start()).x() + SELF_EDGE_OFFSET, 
+			Point point2 = new Point(parent().getBounds(pEdge.start()).x() + SELF_EDGE_OFFSET, 
 					parent().getBounds(pEdge.start()).y());
-			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
+			return new Line(point1, point2);
 		}
 	}
 	
@@ -370,7 +369,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Line line = getConnectionPoints(pEdge);
 		Path path = new Path();
 		MoveTo moveTo = new MoveTo(line.point1().x(), line.point1().y());
-		QuadCurveTo curveTo = new QuadCurveTo(getControlPoint(pEdge).getX(), getControlPoint(pEdge).getY(), 
+		QuadCurveTo curveTo = new QuadCurveTo(getControlPoint(pEdge).x(), getControlPoint(pEdge).y(), 
 				line.point2().x(), line.point2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		return path;
@@ -378,10 +377,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	
 	
 	/**
-     *  Gets the control point for the quadratic spline.
+     * Gets the control point for the quadratic spline.
      * @return the control point
      */
-	private Point2D getControlPoint(Edge pEdge)
+	private Point getControlPoint(Edge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
 		double tangent = Math.tan(Math.toRadians(DEGREES_10));
@@ -391,7 +390,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 		double dx = (line.x2() - line.x1()) / 2;
 		double dy = (line.y2() - line.y1()) / 2;
-		return new Point2D((line.x1() + line.x2()) / 2 + tangent * dy, (line.y1() + line.y2()) / 2 - tangent * dx);         
+		return new Point(GeomUtils.round((line.x1() + line.x2()) / 2 + tangent * dy),
+				GeomUtils.round((line.y1() + line.y2()) / 2 - tangent * dx)); 
 	}
 	
 	@Override
