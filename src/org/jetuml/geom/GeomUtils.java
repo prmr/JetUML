@@ -257,7 +257,7 @@ public final class GeomUtils
  	 */
 	private static int lengthOfOpposingSide(int pAngleInDegrees, int pAdjacentSide)
 	{
-		return (int) Math.round(pAdjacentSide * Math.tan(Math.toRadians(pAngleInDegrees)));
+		return round(pAdjacentSide * Math.tan(Math.toRadians(pAngleInDegrees)));
 	}
 	
 	/**

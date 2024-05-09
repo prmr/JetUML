@@ -40,7 +40,7 @@ public final class Conversions
 	public static Point toPoint(Point2D pPoint2D)
 	{
 		assert pPoint2D != null;
-		return new Point( (int)Math.round(pPoint2D.getX()), (int)Math.round(pPoint2D.getY()));
+		return new Point( GeomUtils.round(pPoint2D.getX()), GeomUtils.round(pPoint2D.getY()));
 	}
 	
 	/**
@@ -74,9 +74,9 @@ public final class Conversions
 	public static Rectangle toRectangle(Rectangle2D pRectangle2D)
 	{
 		assert pRectangle2D != null;
-		return new Rectangle( (int)Math.round(pRectangle2D.getMinX()),
-							  (int)Math.round(pRectangle2D.getMinY()),
-							  (int)Math.round(pRectangle2D.getWidth()),
-							  (int)Math.round(pRectangle2D.getHeight()));
+		return new Rectangle( GeomUtils.round(pRectangle2D.getMinX()),
+							  GeomUtils.round(pRectangle2D.getMinY()),
+							  GeomUtils.round(pRectangle2D.getWidth()),
+							  GeomUtils.round(pRectangle2D.getHeight()));
 	}
 }

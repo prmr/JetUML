@@ -27,6 +27,7 @@ import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
+import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -124,8 +125,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		String label = wrapLabel(pEdge);
 		Rectangle2D labelBounds = getLabelBounds(pEdge);
-		Rectangle drawingRectangle = new Rectangle((int) Math.round(labelBounds.getMinX()), (int) Math.round(labelBounds.getMinY()), 
-				(int) Math.round(labelBounds.getWidth()), (int) Math.round(labelBounds.getHeight()));
+		Rectangle drawingRectangle = new Rectangle(GeomUtils.round(labelBounds.getMinX()), GeomUtils.round(labelBounds.getMinY()), 
+				GeomUtils.round(labelBounds.getWidth()), GeomUtils.round(labelBounds.getHeight()));
 
 		STRING_VIEWER.draw(label, pGraphics, drawingRectangle);
 	}

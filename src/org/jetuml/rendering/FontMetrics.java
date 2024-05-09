@@ -21,6 +21,7 @@
 package org.jetuml.rendering;
 
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.GeomUtils;
 
 import javafx.geometry.Bounds;
 import javafx.scene.text.Font;
@@ -81,7 +82,7 @@ public class FontMetrics
 		
 		aTextNode.setText(pString);
 		Bounds bounds = aTextNode.getLayoutBounds();
-		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
+		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class FontMetrics
 		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
 		aTextNode.setText(SINGLE_LINED_TEXT);
 		double singleLineHeight = aTextNode.getLayoutBounds().getHeight();
-		return (int) Math.round(twoLineHeight - singleLineHeight);
+		return GeomUtils.round(twoLineHeight - singleLineHeight);
 	}
 	
 	/**
@@ -112,6 +113,6 @@ public class FontMetrics
 	public int getBaselineOffset()
 	{
 		aTextNode.setText(SINGLE_LINED_TEXT);
-		return (int) Math.round(aTextNode.getBaselineOffset());
+		return GeomUtils.round(aTextNode.getBaselineOffset());
 	}
 } 

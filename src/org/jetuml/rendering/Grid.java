@@ -21,6 +21,7 @@
 
 package org.jetuml.rendering;
 
+import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
@@ -74,9 +75,9 @@ public final class Grid
 	public static Rectangle snapped(Rectangle pRectangle)
 	{
 		assert pRectangle != null;
-		int x = (int)(Math.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE);
+		int x = (int)(GeomUtils.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE);
 		int width = (int)(Math.ceil(pRectangle.getWidth() / GRID_SIZE) * GRID_SIZE);
-		int y = (int)(Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(GeomUtils.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
 		int height = (int)(Math.ceil(pRectangle.getHeight() / GRID_SIZE) * GRID_SIZE);
 		return new Rectangle(x, y, width, height);
 	}
@@ -91,8 +92,8 @@ public final class Grid
 	public static Point snapped(Point pPoint)
 	{
 		assert pPoint != null;
-		int x = (int)(Math.round(pPoint.x() / GRID_SIZE) * GRID_SIZE);
-		int y = (int)(Math.round(pPoint.y() / GRID_SIZE) * GRID_SIZE);
+		int x = (int)(GeomUtils.round(pPoint.x() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(GeomUtils.round(pPoint.y() / GRID_SIZE) * GRID_SIZE);
 		return new Point(x, y);
 	}
 	

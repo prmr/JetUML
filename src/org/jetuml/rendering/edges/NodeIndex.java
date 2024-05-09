@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.rendering.edges;
 
+import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Side;
@@ -101,7 +102,7 @@ public enum NodeIndex
 			numberOfSpaces = NUM_SPACES_EW;
 		}
 		
-		int unadjustedSpace = Math.round((lengthOfSide - MARGIN * 2) / (float) numberOfSpaces);
+		int unadjustedSpace = GeomUtils.round((lengthOfSide - MARGIN * 2) / (float) numberOfSpaces);
 		// Closest further multiple of 10 at least 10
 		int result = Math.max(SPACE_INCREMENT, unadjustedSpace / SPACE_INCREMENT * SPACE_INCREMENT);
 		return result;

@@ -39,8 +39,8 @@ public class TestDirection
 	@MethodSource("angleGenerator")
 	void testAllAngles(int pAngle)
 	{
-		int x = (int) Math.round(sin(Math.toRadians(pAngle))*100);
-		int y = (int) -Math.round(cos(Math.toRadians(pAngle))*100);
+		int x = GeomUtils.round(sin(Math.toRadians(pAngle))*100);
+		int y = -GeomUtils.round(cos(Math.toRadians(pAngle))*100);
 		Direction direction = Direction.fromLine(new Point(0,0), new Point(x,y));
 		assertEquals(pAngle % 360, direction.asAngle());
 		assertEquals(sin(Math.toRadians(pAngle)), getX(direction), 0.000000001);

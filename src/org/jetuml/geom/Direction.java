@@ -19,7 +19,6 @@
 package org.jetuml.geom;
 
 import static java.lang.Math.acos;
-import static java.lang.Math.round;
 import static java.lang.Math.toDegrees;
 
 import java.util.HashMap;
@@ -215,7 +214,7 @@ public final class Direction
 		// Compute the angle. We use the arccos instead of the arcsin
 		// despite the fact that the height is the opposing side to shift
 		// the angle by 90 to align 0 with north.
-		long degrees = round(toDegrees(acos(normalizedHeight)));
+		int degrees = GeomUtils.round(toDegrees(acos(normalizedHeight)));
 		
 		// We negate the angle for the left half-plane
 		if( pWidth <= 0 )
@@ -224,7 +223,7 @@ public final class Direction
 		}
 		
 		// Position the angle in the [0, 359] range
-		return (int) (degrees + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
+		return (degrees + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
 	}
 
 	@Override

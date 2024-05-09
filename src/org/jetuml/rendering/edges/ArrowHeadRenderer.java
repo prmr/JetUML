@@ -25,6 +25,7 @@ import static org.jetuml.rendering.ArrowHead.NONE;
 import static org.jetuml.rendering.ArrowHead.V;
 
 import org.jetuml.geom.Conversions;
+import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -117,10 +118,10 @@ public final class ArrowHeadRenderer
    		int dx = pAxis.getX2() - pAxis.getX1();
    		int dy = pAxis.getY2() - pAxis.getY1();
    		final double angle = Math.atan2(dy, dx);
-   		int x1 = (int) Math.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
-   		int y1 = (int) Math.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
-   		int x2 = (int) Math.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
-   		int y2 = (int) Math.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
+   		int x1 = GeomUtils.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   		int y1 = GeomUtils.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
+   		int x2 = GeomUtils.round(pAxis.getX2() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
+   		int y2 = GeomUtils.round(pAxis.getY2() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
 
    		MoveTo moveToOrigin = new MoveTo(pAxis.getX2(), pAxis.getY2());
    		LineTo lineTo1 = new LineTo(x1, y1);
@@ -140,8 +141,8 @@ public final class ArrowHeadRenderer
    		}
    		else if(pArrowHead.isDiamond())
    		{
-   			final int x3 = (int) Math.round( x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
-   			final int y3 = (int) Math.round( y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
+   			final int x3 = GeomUtils.round( x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   			final int y3 = GeomUtils.round( y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
    			LineTo lineTo5 = new LineTo(x3, y3);
    			LineTo lineTo6 = new LineTo(x2, y2);
    			LineTo lineTo7 = new LineTo(moveToOrigin.getX(), moveToOrigin.getY());
