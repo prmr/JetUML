@@ -25,8 +25,8 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Side;
 import org.jetuml.rendering.DiagramElementRenderer;
+import org.jetuml.rendering.Side;
 
 /**
  * Abstract strategy that describes objects that can draw and

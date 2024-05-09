@@ -23,8 +23,8 @@ package org.jetuml.rendering.edges;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Side;
 import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.Side;
 
 /**
  * Represents indexed positions on the faces of nodes where edges can attach.

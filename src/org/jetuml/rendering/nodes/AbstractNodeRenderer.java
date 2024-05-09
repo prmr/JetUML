@@ -28,8 +28,8 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.Side;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.Side;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;

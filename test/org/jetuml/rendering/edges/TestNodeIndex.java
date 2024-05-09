@@ -31,7 +31,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Side;
+import org.jetuml.rendering.Side;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

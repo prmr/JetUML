@@ -22,6 +22,7 @@ package org.jetuml.geom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.jetuml.rendering.Side;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -48,7 +48,6 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.Side;
 import org.jetuml.rendering.edges.EdgeStorage;
 import org.jetuml.rendering.edges.NodeIndex;
 import org.jetuml.rendering.edges.StoredEdgeRenderer;
