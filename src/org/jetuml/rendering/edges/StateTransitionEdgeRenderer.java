@@ -24,7 +24,6 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
-import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -38,7 +37,6 @@ import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.ToolGraphics;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -123,11 +121,8 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private void drawLabel(StateTransitionEdge pEdge, GraphicsContext pGraphics)
 	{
 		String label = wrapLabel(pEdge);
-		Rectangle2D labelBounds = getLabelBounds(pEdge);
-		Rectangle drawingRectangle = new Rectangle(GeomUtils.round(labelBounds.getMinX()), GeomUtils.round(labelBounds.getMinY()), 
-				GeomUtils.round(labelBounds.getWidth()), GeomUtils.round(labelBounds.getHeight()));
-
-		STRING_VIEWER.draw(label, pGraphics, drawingRectangle);
+		Rectangle labelBounds = getLabelBounds(pEdge);
+		STRING_VIEWER.draw(label, pGraphics, labelBounds);
 	}
 	
 	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)
@@ -140,7 +135,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		pGraphics.setLineWidth(width);
 	}
 	
-	private Rectangle2D getLabelBounds(StateTransitionEdge pEdge)
+	private Rectangle getLabelBounds(StateTransitionEdge pEdge)
 	{
 		if( isSelfEdge(pEdge) )
 		{
@@ -170,7 +165,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 * Gets the bounds of the label text.
 	 * @return the bounds of the label text
 	 */
-	private Rectangle2D getNormalEdgeLabelBounds(StateTransitionEdge pEdge)
+	private Rectangle getNormalEdgeLabelBounds(StateTransitionEdge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
 		Point control = getControlPoint(pEdge);
@@ -225,7 +220,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 				y += delta;
 			}
 		}
-		return new Rectangle2D(x, y, textDimensions.width(), textDimensions.height());
+		return new Rectangle(x, y, textDimensions.width(), textDimensions.height());
 }   
 	
 	/*
@@ -233,19 +228,19 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 * in the middle of it.
 	 * @return the bounds of the label text
 	 */
-	private Rectangle2D getSelfEdgeLabelBounds(StateTransitionEdge pEdge)
+	private Rectangle getSelfEdgeLabelBounds(StateTransitionEdge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
 		String label = wrapLabel(pEdge);
 		Dimension textDimensions = getLabelBounds(label);
 		if( getPosition(pEdge) == 1 )
 		{
-            return new Rectangle2D(line.x1() + SELF_EDGE_OFFSET - textDimensions.width()/2,  
+            return new Rectangle(line.x1() + SELF_EDGE_OFFSET - textDimensions.width()/2,  
                     line.y1() - SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), textDimensions.height());
         }
         else
         {
-            return new Rectangle2D(line.x1() - textDimensions.width()/2, 
+            return new Rectangle(line.x1() - textDimensions.width()/2, 
                     line.y1() - 2*SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), 
                     textDimensions.height());
         }
@@ -397,7 +392,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	@Override
 	public Rectangle getBounds(DiagramElement pElement)
 	{
-		return super.getBounds(pElement).add(Conversions.toRectangle(getLabelBounds((StateTransitionEdge)pElement)));
+		return super.getBounds(pElement).add(getLabelBounds((StateTransitionEdge)pElement));
 	}
 	
 	@Override

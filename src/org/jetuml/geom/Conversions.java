@@ -21,7 +21,6 @@
 package org.jetuml.geom;
 
 import javafx.geometry.Bounds;
-import javafx.geometry.Rectangle2D;
 
 /**
  * Conversion utilities.
@@ -39,20 +38,5 @@ public final class Conversions
 	{
 		assert pBounds != null;
 		return new Rectangle((int)pBounds.getMinX(), (int)pBounds.getMinY(), (int)pBounds.getWidth(), (int)pBounds.getHeight());
-	}
-	
-	/**
-	 * @param pRectangle2D The rectangle to convert.
-	 * @return A rectangle created from rounding both x and y coordinate and the width
-	 *     and height of the input parameter to integers.
-	 * @pre pRectangle2D != null;
-	 */
-	public static Rectangle toRectangle(Rectangle2D pRectangle2D)
-	{
-		assert pRectangle2D != null;
-		return new Rectangle( GeomUtils.round(pRectangle2D.getMinX()),
-							  GeomUtils.round(pRectangle2D.getMinY()),
-							  GeomUtils.round(pRectangle2D.getWidth()),
-							  GeomUtils.round(pRectangle2D.getHeight()));
 	}
 }
