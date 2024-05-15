@@ -126,7 +126,7 @@ public final class Direction
 	 * 
 	 * @param pStart The start direction (exclusive)
 	 * @param pEnd The end direction (exclusive)
-	 * @return True if this direction represents an angle between pStart (inclusive) and pEnd (exclusive).
+	 * @return True if this direction represents an angle between pStart (exclusive) and pEnd (exclusive).
 	 * @pre pStart != null && pEnd != null && pStart != pEnd.
 	 */
 	public boolean isBetween( Direction pStart, Direction pEnd)

@@ -100,17 +100,17 @@ public final class GeomUtils
 		Direction diagonalSW = diagonalNE.mirrored();
 		Direction diagonalNW = diagonalSE.mirrored();
 		
-		if( pDirection.isBetween(diagonalNE, diagonalSE))
+		if( pDirection.isBetween(diagonalNE, diagonalSE.rotatedBy(1)))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.EAST.asAngle(), pRectangle.width()/2);
 			return new Point(pRectangle.maxX(), pRectangle.center().y() + offset);
 		}
-		else if( pDirection.isBetween(diagonalSE, diagonalSW))
+		else if( pDirection.isBetween(diagonalSE, diagonalSW.rotatedBy(1)))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.SOUTH.asAngle(), pRectangle.height()/2);
 			return new Point(pRectangle.center().x() - offset, pRectangle.maxY());
 		}
-		else if( pDirection.isBetween(diagonalSW, diagonalNW))
+		else if( pDirection.isBetween(diagonalSW, diagonalNW.rotatedBy(1)))
 		{
 			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.WEST.asAngle(), pRectangle.width()/2);
 			return new Point(pRectangle.x(), pRectangle.center().y() - offset);
