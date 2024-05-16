@@ -146,6 +146,30 @@ public class TestGeomUtils
 	}
 	
 	@Test
+	void testIntersectRectangle_NE_Corner()
+	{
+		assertEquals(new Point(60,0), GeomUtils.intersectRectangle(aRectangle, Direction.fromAngle(56)));
+	}
+	
+	@Test
+	void testIntersectRectangle_SE_Corner()
+	{
+		assertEquals(new Point(60,40), GeomUtils.intersectRectangle(aRectangle, Direction.fromAngle(124)));
+	}
+	
+	@Test
+	void testIntersectRectangle_SW_Corner()
+	{
+		assertEquals(new Point(0,40), GeomUtils.intersectRectangle(aRectangle, Direction.fromAngle(236)));
+	}
+	
+	@Test
+	void testIntersectRectangle_NW_Corner()
+	{
+		assertEquals(new Point(0,0), GeomUtils.intersectRectangle(aRectangle, Direction.fromAngle(304)));
+	}
+	
+	@Test
 	void testIntersectCircle_North()
 	{
 		assertEquals(new Point(10,0), GeomUtils.intersectCircle(aSquare, Direction.NORTH));
