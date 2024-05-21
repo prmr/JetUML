@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
+import org.jetuml.annotations.Singleton;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
@@ -32,19 +33,18 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 /**
- * A utility class for StringRenderer that is in sync with  
- * the user font size setting and manages font metrics calculations.
+ * A utility class for StringRenderer objects.
+ * CanvasFont is in sync with user font settings, and 
+ * it manages font metrics calculations through FontMetrics.
  */
+@Singleton
 public final class CanvasFont implements IntegerPreferenceChangeHandler, StringPreferenceChangeHandler
 {	
 	private Font aFont;
 	private Font aFontBold;
 	private Font aFontItalic;
 	private Font aFontBoldItalic;
-	private FontMetrics aFontMetrics;
-	private FontMetrics aFontBoldMetrics;
-	private FontMetrics aFontItalicMetrics;
-	private FontMetrics aFontBoldItalicMetrics;
+	private FontMetrics aFontMetrics = new FontMetrics();
 
 	/**
 	 * Initializes its attributes based on the user's preferences.
@@ -55,7 +55,6 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 		UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
 		UserPreferences.instance().addStringPreferenceChangeHandler(this);
 	}
-	
 	
 	/**
 	 * @param pBold Whether the font is bold.
@@ -79,23 +78,6 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 		return aFont;
 	}
 
-	private FontMetrics getFontMetrics(boolean pBold, boolean pItalic)
-	{
-		if( pBold && pItalic )
-		{
-			return aFontBoldItalicMetrics;
-		}
-		else if( pBold )
-		{
-			return aFontBoldMetrics;
-		}
-		else if( pItalic )
-		{
-			return aFontItalicMetrics;
-		}
-		return aFontMetrics;
-	}
-
 	/**
 	 * Returns the dimension of a given string.
 	 * 
@@ -109,13 +91,12 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	{
 		assert pString != null;
 		
-		return getFontMetrics(pBold, pItalic).getDimension(pString);
+		return aFontMetrics.getDimension(pString, getFont(pBold, pItalic));
 	}
 	
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
 	 * 
-	 * @param pString The string.
 	 * @param pBold Whether the text is in bold.
 	 * @param pItalic Whether the text is in italic.
 	 * @return The height of the string.
@@ -123,7 +104,7 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	 */
 	public int getHeight(boolean pBold, boolean pItalic)
 	{
-		return getFontMetrics(pBold, pItalic).getHeight();
+		return aFontMetrics.getHeight(getFont(pBold, pItalic));
 	}
 	
 	/**
@@ -135,7 +116,7 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 	 */
 	public int getBaselineOffset(boolean pBold, boolean pItalic)
 	{
-		return getFontMetrics(pBold, pItalic).getBaselineOffset();
+		return aFontMetrics.getBaselineOffset(getFont(pBold, pItalic));
 	}
 
 	@Override
@@ -164,10 +145,6 @@ public final class CanvasFont implements IntegerPreferenceChangeHandler, StringP
 		aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
 		aFontItalic = Font.font(aFont.getFamily(), FontPosture.ITALIC, aFont.getSize());
 		aFontBoldItalic = Font.font(aFont.getFamily(), FontWeight.BOLD, FontPosture.ITALIC, aFont.getSize());
-		aFontMetrics = new FontMetrics(aFont);
-		aFontBoldMetrics = new FontMetrics(aFontBold);
-		aFontItalicMetrics = new FontMetrics(aFontItalic);
-		aFontBoldItalicMetrics = new FontMetrics(aFontBoldItalic);
 	}
 
 }

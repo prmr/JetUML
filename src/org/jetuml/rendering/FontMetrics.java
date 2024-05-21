@@ -52,35 +52,27 @@ public class FontMetrics
 	public static final String DEFAULT_FONT_NAME = "System";
 	public static final Font DEFAULT_FONT = Font.font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE);
 	private static final String SINGLE_LINED_TEXT = "One";
-	private static final String TWO_LINED_TEXT = "One\nTwo";
-	private Text aTextNode;
-
-	/**
-	 * Creates a new FontMetrics object.
-	 * @param pFont The font to use.
-	 */
-
-	public FontMetrics(Font pFont)
-	{
-		assert pFont != null;
-		
-		aTextNode = new Text();
-		aTextNode.setFont(pFont);
-	}
+	private Text aTextNode = new Text();
 
 	/**
 	 * Returns the dimension of a given string.
 	 * For the fonts supported in JetUML, the dimension includes the leading space in the height.
-	 * However, this behavior is not consistent across all fonts.
+	 * However, it should be noted this behavior is not consistent across all fonts,
+	 * in the case additional fonts are to be supported in the future
 	 * 
 	 * @param pString The string to which the bounds pertain.
+	 * @param pFont the font of the text.
 	 * @return The dimension of the string
+	 * @pre pString != null
+	 * @pre pFont != null
 	 */
-	public Dimension getDimension(String pString)
+	public Dimension getDimension(String pString, Font pFont)
 	{
 		assert pString != null;
+		assert pFont != null;
 		
 		aTextNode.setText(pString);
+		aTextNode.setFont(pFont);
 		Bounds bounds = aTextNode.getLayoutBounds();
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
@@ -88,31 +80,35 @@ public class FontMetrics
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
 	 * Text#getLayoutBounds().getHeight() varies in its inclusion of the leading space depending on the font,
-	 * hence the subtraction approach was taken to ensure inclusion of the leading space.
+	 * but for the fonts that are currently supported, the leading space is included.
+	 * In the case additional fonts are supported in the future, this method will have to be adapted.
 	 * 
-	 * @param pString The string. 
+	 * @param pFont the font of the text.
 	 * @return The height of a single lined text.
-	 * @pre pString != null
+	 * @pre pFont != null
 	 */
-	public int getHeight()
+	public int getHeight(Font pFont)
 	{
-		aTextNode.setText(TWO_LINED_TEXT);
-		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
+		assert pFont != null;
+		
 		aTextNode.setText(SINGLE_LINED_TEXT);
-		double singleLineHeight = aTextNode.getLayoutBounds().getHeight();
-		return GeomUtils.round(twoLineHeight - singleLineHeight);
+		aTextNode.setFont(pFont);
+		return GeomUtils.round(aTextNode.getLayoutBounds().getHeight());
 	}
 	
 	/**
 	 * Returns the distance between the top and baseline of a single lined text.
 	 * 
-	 * @param pBold Whether the font is bold.
-	 * @param pItalic whether the font is italic.
+	 * @param pFont the font of the text.
 	 * @return the distance above the baseline for a single lined text.
+	 * @pre pFont != null
 	 */
-	public int getBaselineOffset()
+	public int getBaselineOffset(Font pFont)
 	{
+		assert pFont != null;
+		
 		aTextNode.setText(SINGLE_LINED_TEXT);
+		aTextNode.setFont(pFont);
 		return GeomUtils.round(aTextNode.getBaselineOffset());
 	}
 } 

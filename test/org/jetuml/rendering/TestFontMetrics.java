@@ -30,21 +30,21 @@ import org.junit.jupiter.api.condition.OS;
 
 public class TestFontMetrics {
 
-	private static final FontMetrics aMetrics = new FontMetrics(DEFAULT_FONT);
+	private static final FontMetrics aMetrics = new FontMetrics();
 	
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
 	public void testGetDimensions()
 	{
-		assertEquals(new Dimension(0, 16), aMetrics.getDimension(""));
-		assertEquals(new Dimension(95, 16), aMetrics.getDimension("Single-Line-String"));
-		assertEquals(new Dimension(31, 48), aMetrics.getDimension("Multi\nLine\nString"));
+		assertEquals(new Dimension(0, 16), aMetrics.getDimension("", DEFAULT_FONT));
+		assertEquals(new Dimension(95, 16), aMetrics.getDimension("Single-Line-String", DEFAULT_FONT));
+		assertEquals(new Dimension(31, 48), aMetrics.getDimension("Multi\nLine\nString", DEFAULT_FONT));
 	}
 	
 	@Test 
 	@EnabledOnOs(OS.WINDOWS)
 	public void testGetHeight_TwoLineString()
 	{
-		assertEquals(16, aMetrics.getHeight());	
+		assertEquals(16, aMetrics.getHeight(DEFAULT_FONT));	
 	}
 }
