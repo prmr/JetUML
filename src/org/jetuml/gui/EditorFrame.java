@@ -132,6 +132,9 @@ public class EditorFrame extends BorderPane
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
+		
+		getStylesheets().add(getClass().getResource("DarkMode.css").toExternalForm());
+		getStylesheets().remove(getClass().getResource("DarkMode.css").toExternalForm());
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
@@ -235,6 +238,11 @@ public class EditorFrame extends BorderPane
 				factory.createCheckMenuItem("view.autoedit_node", false, 
 						UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode),
 						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
+								((CheckMenuItem) event.getSource()).isSelected())),
+				
+				factory.createCheckMenuItem("view.dark_mode", false, 
+						UserPreferences.instance().getBoolean(BooleanPreference.darkMode),
+						event -> UserPreferences.instance().setBoolean(BooleanPreference.darkMode, 
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
 				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show()),
