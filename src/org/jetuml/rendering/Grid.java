@@ -35,7 +35,6 @@ import javafx.scene.paint.Paint;
  */
 public final class Grid
 {
-	private static final Color GRID_COLOR = Color.rgb(220, 220, 220);
 	private static final double GRID_SIZE = 10;
 	
 	private Grid() {}
@@ -45,10 +44,10 @@ public final class Grid
      * @param pGraphics the graphics context
      * @param pBounds the bounding rectangle
      */
-	public static void draw(GraphicsContext pGraphics, Rectangle pBounds)
+	public static void draw(GraphicsContext pGraphics, Rectangle pBounds, Color pColor)
 	{
 		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.setStroke(GRID_COLOR);
+		pGraphics.setStroke(pColor);
 		int x1 = pBounds.x();
 		int y1 = pBounds.y();
 		int x2 = pBounds.maxX();

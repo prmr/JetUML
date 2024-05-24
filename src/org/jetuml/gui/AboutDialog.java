@@ -35,6 +35,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -45,30 +46,28 @@ import javafx.stage.Stage;
  */
 public class AboutDialog
 {
-	private final Stage aStage = new Stage();
+	private final Stage aStage;
 	
 	/**
 	 * Creates a new dialog.
 	 * 
 	 * @param pOwner The stage that owns this stage.
 	 */
-	public AboutDialog( Stage pOwner )
+	public AboutDialog( Stage pDialogStage )
 	{
-		prepareStage(pOwner);
-		aStage.setScene(createScene());
+		aStage = pDialogStage;
+		prepareStage();
+		aStage.getScene().setRoot(createRoot());
 	}
 	
-	private void prepareStage(Stage pOwner) 
+	private void prepareStage() 
 	{
-		aStage.setResizable(false);
-		aStage.initModality(Modality.WINDOW_MODAL);
-		aStage.initOwner(pOwner);
 		aStage.setTitle(String.format("%s %s", RESOURCES.getString("dialog.about.title"),
 				RESOURCES.getString("application.name")));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 	}
 	
-	private Scene createScene() 
+	private Pane createRoot() 
 	{
 		final int verticalSpacing = 5;
 		
@@ -96,7 +95,7 @@ public class AboutDialog
 		
 		final int padding = 15;
 		HBox layout = new HBox(padding);
-		layout.setStyle("-fx-background-color: gainsboro;");
+		//layout.setStyle("-fx-background-color: gainsboro;");
 		layout.setPadding(new Insets(padding));
 		layout.setAlignment(Pos.CENTER_LEFT);
 		
@@ -114,7 +113,7 @@ public class AboutDialog
 			}
 		});
 		
-		return new Scene(layout);
+		return layout;
 	}
 	
 	/**

@@ -35,7 +35,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -44,7 +43,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -62,7 +61,7 @@ public class FontDialog
 	private static final ArrayList<Integer> FONT_SIZES = new ArrayList<>(
 			Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24));
 	
-	private final Stage aStage = new Stage();
+	private final Stage aStage;
 	private final GridPane aLayout = new GridPane();
 	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
@@ -74,17 +73,15 @@ public class FontDialog
 	 * 
 	 * @param pOwner The stage that owns this stage.
 	 */
-	public FontDialog( Stage pOwner )
+	public FontDialog( Stage pDialogStage )
 	{
-		prepareStage(pOwner);
-		aStage.setScene(createScene());
+		aStage = pDialogStage;
+		prepareStage();
+		aStage.getScene().setRoot(createRoot());
 	}
 	
-	private void prepareStage(Stage pOwner) 
+	private void prepareStage() 
 	{
-		aStage.setResizable(false);
-		aStage.initModality(Modality.WINDOW_MODAL);
-		aStage.initOwner(pOwner);
 		aStage.setTitle(RESOURCES.getString("dialog.font.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
@@ -95,13 +92,9 @@ public class FontDialog
 				aStage.close();
 			}
 		});
-		aStage.setOnCloseRequest(pEvent ->
-		{
-			restoreUserSettings();
-		});
 	}
 	
-	private Scene createScene() 
+	private Pane createRoot() 
 	{
 		aLayout.setHgap(HSPACE);
 		aLayout.setVgap(VSPACE);
@@ -109,7 +102,7 @@ public class FontDialog
 		createFont();
 		createSize();
 		createButton();
-		return new Scene(aLayout);
+		return aLayout;
 	}
 	
 	private void createFont()
