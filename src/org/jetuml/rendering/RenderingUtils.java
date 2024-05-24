@@ -39,7 +39,8 @@ import javafx.scene.text.Font;
  */
 public final class RenderingUtils
 {
-	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
+	//private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
+	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.web("48484AFF"));
 	private static final int ARC_SIZE = 20;
 	
 	private RenderingUtils()
@@ -139,6 +140,8 @@ public final class RenderingUtils
 	{
 		assert pGraphics != null && pRectangle != null;
 		pGraphics.setEffect(DROP_SHADOW);
+		//pGraphics.setFill(Color.web("#2C2C2EFF"));
+		pGraphics.setFill(Color.BLACK);
 		pGraphics.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		pGraphics.setEffect(null);
 		pGraphics.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
@@ -157,6 +160,7 @@ public final class RenderingUtils
 	public static void drawLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
 	{
 		double[] oldDash = pGraphics.getLineDashes();
+		pGraphics.setStroke(Color.WHITE);
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
 		pGraphics.setLineDashes(oldDash);
@@ -175,7 +179,7 @@ public final class RenderingUtils
 	{
 		Font font = pGraphics.getFont();
 		pGraphics.setFont(pFont);
-		pGraphics.setFill(Color.BLACK);
+		pGraphics.setFill(Color.WHITE);
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);

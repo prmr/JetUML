@@ -47,6 +47,7 @@ import org.jetuml.application.FileExtensions;
 import org.jetuml.application.RecentFilesQueue;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.BooleanPreference;
+import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.gui.tips.TipDialog;
@@ -75,7 +76,7 @@ import javafx.stage.Stage;
 /**
  * The main frame that contains panes that contain diagrams.
  */
-public class EditorFrame extends BorderPane
+public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHandler
 {
 	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
 	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
@@ -85,6 +86,8 @@ public class EditorFrame extends BorderPane
 	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
 	
 	private final Stage aMainStage;
+	private final Stage aDialogStage;
+	private final String aDarkThemeURL = getClass().getResource("DarkMode.css").toExternalForm();
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
@@ -98,6 +101,7 @@ public class EditorFrame extends BorderPane
 	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
+		aDialogStage = new AbstractDialog(aMainStage);
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
@@ -118,6 +122,12 @@ public class EditorFrame extends BorderPane
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTabIfNecessary();
 		
+		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
+		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
+		{
+			getStylesheets().add(aDarkThemeURL);
+		}
+		
 		setOnKeyPressed(e -> 
 		{
 			if( !isWelcomeTabShowing() && e.isShiftDown() )
@@ -132,9 +142,6 @@ public class EditorFrame extends BorderPane
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
-		
-		getStylesheets().add(getClass().getResource("DarkMode.css").toExternalForm());
-		getStylesheets().remove(getClass().getResource("DarkMode.css").toExternalForm());
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
@@ -245,9 +252,10 @@ public class EditorFrame extends BorderPane
 						event -> UserPreferences.instance().setBoolean(BooleanPreference.darkMode, 
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
-				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show()),
-				factory.createMenuItem("view.font", false, event -> new FontDialog(aMainStage).show()),
-				factory.createMenuItem("view.notifications", false, event -> new NotificationTimeDialog(aMainStage).show()),
+				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aDialogStage).show()),
+				//factory.createMenuItem("view.font", false, event -> new FontDialog(aMainStage).show()),
+				factory.createMenuItem("view.font", false, event -> new FontDialog(aDialogStage).show()),
+				factory.createMenuItem("view.notifications", false, event -> new NotificationTimeDialog(aDialogStage).show()),
 				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
 				factory.createMenuItem("view.zoom_out", true, event -> getSelectedDiagramTab().zoomOut()),
 				factory.createMenuItem("view.reset_zoom", true, event -> getSelectedDiagramTab().resetZoom())));
@@ -257,9 +265,9 @@ public class EditorFrame extends BorderPane
 	{
 		MenuFactory factory = new MenuFactory(RESOURCES);
 		pMenuBar.getMenus().add(factory.createMenu("help", false,
-				factory.createMenuItem("help.tips", false, event -> new TipDialog(aMainStage).show()),
+				factory.createMenuItem("help.tips", false, event -> new TipDialog(aDialogStage).show()),
 				factory.createMenuItem("help.guide", false, event -> JetUML.openBrowser(USER_MANUAL_URL)),
-				factory.createMenuItem("help.about", false, event -> new AboutDialog(aMainStage).show())));
+				factory.createMenuItem("help.about", false, event -> new AboutDialog(aDialogStage).show())));
 	}
 	
 	/*
@@ -735,5 +743,23 @@ public class EditorFrame extends BorderPane
 		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
+	}
+	
+
+	
+	@Override
+	public void booleanPreferenceChanged(BooleanPreference pPreference)
+	{
+		if( pPreference == BooleanPreference.darkMode )
+		{
+			if( UserPreferences.instance().getBoolean(pPreference) )
+			{
+				getStylesheets().add(aDarkThemeURL);
+			}
+			else
+			{
+				getStylesheets().remove(aDarkThemeURL);
+			}
+		}
 	}
 }
