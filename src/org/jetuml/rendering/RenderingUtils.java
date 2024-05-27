@@ -142,6 +142,7 @@ public final class RenderingUtils
 	{
 		assert pWidth > 0 && pHeight > 0 && pFill != null && pGraphics != null;
 		Paint oldFill = pGraphics.getFill();
+		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setFill(pFill);
 		pGraphics.setStroke(aStroke);
 		if( pShadow )
@@ -151,6 +152,7 @@ public final class RenderingUtils
 		pGraphics.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.setFill(oldFill);
+		pGraphics.setStroke(oldStroke);
 		pGraphics.setEffect(null);
 	}
 	
@@ -163,6 +165,8 @@ public final class RenderingUtils
 	public static void drawRoundedRectangle(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		assert pGraphics != null && pRectangle != null;
+		Paint oldFill = pGraphics.getFill();
+		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setFill(aFill);
 		pGraphics.setStroke(aStroke);
 		pGraphics.setEffect(aShadow);
@@ -171,6 +175,8 @@ public final class RenderingUtils
 		pGraphics.setEffect(null);
 		pGraphics.strokeRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
 				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE);
+		pGraphics.setFill(oldFill);
+		pGraphics.setStroke(oldStroke);
 	}
 
 	/**
@@ -208,12 +214,16 @@ public final class RenderingUtils
 	public static void drawRectangle( GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		assert pGraphics != null && pRectangle != null;
+		Paint oldFill = pGraphics.getFill();
+		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setFill(aFill);
 		pGraphics.setStroke(aStroke);
 		pGraphics.setEffect(aShadow);
 		pGraphics.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		pGraphics.setEffect(null);
 		pGraphics.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
+		pGraphics.setFill(oldFill);
+		pGraphics.setStroke(oldStroke);
 	}
 	
 	/**
@@ -228,10 +238,12 @@ public final class RenderingUtils
 	 */
 	public static void drawLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
 	{
+		Paint oldStroke = pGraphics.getStroke();
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setStroke(aStroke);
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+		pGraphics.setStroke(oldStroke);
 		pGraphics.setLineDashes(oldDash);
 	}
 	
