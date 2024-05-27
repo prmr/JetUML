@@ -8,18 +8,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * 
+ * A Stage that is to be shared by different dialogs.
+ * Different dialogs sharing a common stage 
+ * simplifies applying the dark mode theme to the dialogs.
  */
-public class AbstractDialog extends Stage
+public class DialogStage extends Stage
 {		
 	/**
-	 * s.
-	 * @param pOwner d
+	 * Creates the stage for different dialogs.
+	 * 
+	 * @param pOwner The main JetUML stage.
 	 */
-	public AbstractDialog(Stage pOwner)
+	public DialogStage(Stage pOwner)
 	{
-		Scene scenex = new Scene(new GridPane());
-		setScene(scenex);
+		Scene dialogScene = new Scene(new GridPane());
+		setScene(dialogScene);
 		setResizable(false);
 		initModality(Modality.WINDOW_MODAL);
 		initOwner(pOwner);
@@ -30,6 +33,6 @@ public class AbstractDialog extends Stage
 				close();
 			}
 		});
-		getScene().getStylesheets().add(getClass().getResource("DarkMode.css").toExternalForm());
+		setOnCloseRequest(pEvent -> close());
 	}
 }

@@ -53,6 +53,8 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.ToolGraphics;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -101,7 +103,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
-		aDialogStage = new AbstractDialog(aMainStage);
+		aDialogStage = new DialogStage(aMainStage);
+		RenderingUtils aRenderingUtility = new RenderingUtils(); // Acts as an observer for dark mode
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
@@ -126,6 +129,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
 		{
 			getStylesheets().add(aDarkThemeURL);
+			aDialogStage.getScene().getStylesheets().add(aDarkThemeURL);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -755,10 +759,12 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			if( UserPreferences.instance().getBoolean(pPreference) )
 			{
 				getStylesheets().add(aDarkThemeURL);
+				aDialogStage.getScene().getStylesheets().add(aDarkThemeURL);
 			}
 			else
 			{
 				getStylesheets().remove(aDarkThemeURL);
+				aDialogStage.getScene().getStylesheets().remove(aDarkThemeURL);
 			}
 		}
 	}

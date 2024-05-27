@@ -46,6 +46,10 @@ public final class ToolGraphics
 	private static final double LINE_WIDTH = 0.6;
 	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	
+	/**
+	 * ToolGraphics should be a unique object which manages the
+	 * color scheme of edges depending on whether dark mode is on or off. 
+	 */
 	private ToolGraphics() {}
 	
 	/**
@@ -152,6 +156,8 @@ public final class ToolGraphics
 	 */
 	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
 	{
+		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.setStroke(RenderingUtils.getStroke());
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		double width = pGraphics.getLineWidth();
@@ -160,6 +166,7 @@ public final class ToolGraphics
 		pGraphics.stroke();
 		pGraphics.setLineDashes(oldDash);
 		pGraphics.setLineWidth(width);
+		pGraphics.setStroke(oldStroke);
 	}
 	
 	private static void applyPath(GraphicsContext pGraphics, Path pPath)
@@ -195,6 +202,8 @@ public final class ToolGraphics
 	 */
 	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill, boolean pShadow)
 	{
+		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.setStroke(RenderingUtils.getStroke());
 		double width = pGraphics.getLineWidth();
 		Paint fill = pGraphics.getFill();
 		pGraphics.setLineWidth(LINE_WIDTH);
@@ -210,5 +219,6 @@ public final class ToolGraphics
 		pGraphics.setLineWidth(width);
 		pGraphics.setFill(fill);
 		pGraphics.setEffect(null);
+		//pGraphics.setStroke(oldStroke);
 	}
 }

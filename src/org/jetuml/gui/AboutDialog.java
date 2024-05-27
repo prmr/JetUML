@@ -28,6 +28,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,17 +73,17 @@ public class AboutDialog
 		final int verticalSpacing = 5;
 		
 		VBox info = new VBox(verticalSpacing);
-		Text name = new Text(RESOURCES.getString("application.name"));
+		Label name = new Label(RESOURCES.getString("application.name"));
 		name.setStyle("-fx-font-size: 18pt;");
 		
-		Text version = new Text(String.format("%s %s", RESOURCES.getString("dialog.about.version"), 
+		Label version = new Label(String.format("%s %s", RESOURCES.getString("dialog.about.version"), 
 				JetUML.VERSION));
 		
-		Text copyright = new Text(RESOURCES.getString("application.copyright"));
+		Label copyright = new Label(RESOURCES.getString("application.copyright"));
 		
-		Text license = new Text(RESOURCES.getString("dialog.about.license"));
+		Label license = new Label(RESOURCES.getString("dialog.about.license"));
 		
-		Text quotes = new Text(RESOURCES.getString("quotes.copyright"));
+		Label quotes = new Label(RESOURCES.getString("quotes.copyright"));
 		
 		Hyperlink link = new Hyperlink(RESOURCES.getString("dialog.about.link"));
 		link.setBorder(Border.EMPTY);

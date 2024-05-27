@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.BooleanPreference;
+import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -37,14 +40,66 @@ import javafx.scene.text.Font;
  * 
  * In the method names, "draw" refers to stroke and fill.
  */
-public final class RenderingUtils
+public final class RenderingUtils implements BooleanPreferenceChangeHandler
 {
-	//private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
-	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.web("48484AFF"));
+	private static Color aFill;
+	private static Color aStroke;
+	private static DropShadow aShadow;
+	private static final Color DARK_MODE_FILL_COLOR = Color.web("#1C1C1F");
+	private static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
+	private static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	private static final int ARC_SIZE = 20;
 	
-	private RenderingUtils()
-	{}
+	/**
+	 * RenderingUtils should be a unique object which manages the
+	 * color scheme of nodes depending on whether dark mode is on or off. 
+	 */
+	public RenderingUtils()
+	{
+		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
+		{
+			aFill = DARK_MODE_FILL_COLOR;
+			aStroke = Color.WHITE;
+			aShadow = DARK_MODE_DROPSHADOW;
+		}
+		else
+		{
+			aFill = Color.WHITE;
+			aStroke = DARK_MODE_FILL_COLOR;
+			aShadow = LIGHT_MODE_DROPSHADOW;
+		}
+		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
+	}
+	
+	/**
+	 * Getter for fill color.
+	 * 
+	 * @return The fill color.
+	 */
+	public static Color getFill()
+	{
+		return aFill;
+	}
+	
+	/**
+	 * Getter for stroke color.
+	 * 
+	 * @return The stroke color.
+	 */
+	public static Color getStroke()
+	{
+		return aStroke;
+	}
+	
+	/**
+	 * Getter for DropShadow.
+	 * 
+	 * @return The DropShadow.
+	 */
+	public static DropShadow getDropShadow()
+	{
+		return aShadow;
+	}
 	
 	/**
 	 * Draws a circle with default attributes, without a drop shadow.
@@ -77,9 +132,10 @@ public final class RenderingUtils
 		assert pWidth > 0 && pHeight > 0 && pFill != null && pGraphics != null;
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.setFill(pFill);
+		pGraphics.setStroke(aStroke);
 		if( pShadow )
 		{
-			pGraphics.setEffect(DROP_SHADOW);
+			pGraphics.setEffect(aShadow);
 		}
 		pGraphics.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
@@ -96,7 +152,9 @@ public final class RenderingUtils
 	public static void drawRoundedRectangle(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		assert pGraphics != null && pRectangle != null;
-		pGraphics.setEffect(DROP_SHADOW);
+		pGraphics.setFill(aFill);
+		pGraphics.setStroke(aStroke);
+		pGraphics.setEffect(aShadow);
 		pGraphics.fillRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
 				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE );
 		pGraphics.setEffect(null);
@@ -139,9 +197,9 @@ public final class RenderingUtils
 	public static void drawRectangle( GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		assert pGraphics != null && pRectangle != null;
-		pGraphics.setEffect(DROP_SHADOW);
-		//pGraphics.setFill(Color.web("#2C2C2EFF"));
-		pGraphics.setFill(Color.BLACK);
+		pGraphics.setFill(aFill);
+		pGraphics.setStroke(aStroke);
+		pGraphics.setEffect(aShadow);
 		pGraphics.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		pGraphics.setEffect(null);
 		pGraphics.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
@@ -160,7 +218,7 @@ public final class RenderingUtils
 	public static void drawLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
 	{
 		double[] oldDash = pGraphics.getLineDashes();
-		pGraphics.setStroke(Color.WHITE);
+		pGraphics.setStroke(aStroke);
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
 		pGraphics.setLineDashes(oldDash);
@@ -179,9 +237,29 @@ public final class RenderingUtils
 	{
 		Font font = pGraphics.getFont();
 		pGraphics.setFont(pFont);
-		pGraphics.setFill(Color.WHITE);
+		pGraphics.setFill(aStroke);
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);
+	}
+
+	@Override
+	public void booleanPreferenceChanged(BooleanPreference pPreference) 
+	{
+		if( pPreference == BooleanPreference.darkMode )
+		{
+			if( UserPreferences.instance().getBoolean(pPreference) )
+			{
+				aFill = DARK_MODE_FILL_COLOR;
+				aStroke = Color.WHITE;
+				aShadow = DARK_MODE_DROPSHADOW;
+			}
+			else
+			{
+				aFill = Color.WHITE;
+				aStroke = DARK_MODE_FILL_COLOR;
+				aShadow = LIGHT_MODE_DROPSHADOW;
+			}
+		}
 	}
 }

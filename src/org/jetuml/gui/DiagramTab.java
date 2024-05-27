@@ -134,6 +134,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		UserPreferences.instance().removeBooleanPreferenceChangeHandler(aDiagramCanvas);
 		UserPreferences.instance().removeBooleanPreferenceChangeHandler((DiagramTabToolBar)((BorderPane)getContent()).getRight());
 		UserPreferences.instance().removeIntegerPreferenceChangeHandler(aDiagramCanvas);
+		UserPreferences.instance().removeStringPreferenceChangeHandler(aDiagramCanvas);
 	}
 
 	/**
