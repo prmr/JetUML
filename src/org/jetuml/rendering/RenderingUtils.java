@@ -20,9 +20,6 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.BooleanPreference;
-import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -40,36 +37,20 @@ import javafx.scene.text.Font;
  * 
  * In the method names, "draw" refers to stroke and fill.
  */
-public final class RenderingUtils implements BooleanPreferenceChangeHandler
+public final class RenderingUtils
 {
-	private static Color aFill;
-	private static Color aStroke;
-	private static DropShadow aShadow;
-	private static final Color DARK_MODE_FILL_COLOR = Color.web("#1C1C1F");
-	private static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
-	private static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
+	public static final Color WHITE = Color.WHITE;
+	public static final Color BLACK = Color.BLACK;
+	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1C1C1F");
+	public static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
+	public static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
+	private static Color aFill = WHITE;
+	private static Color aStroke = BLACK;
+	private static DropShadow aShadow = LIGHT_MODE_DROPSHADOW;
 	private static final int ARC_SIZE = 20;
 	
-	/**
-	 * RenderingUtils should be a unique object which manages the
-	 * color scheme of diagram elements depending on whether dark mode is on or off. 
-	 */
-	public RenderingUtils()
-	{
-		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
-		{
-			aFill = DARK_MODE_FILL_COLOR;
-			aStroke = Color.WHITE;
-			aShadow = DARK_MODE_DROPSHADOW;
-		}
-		else
-		{
-			aFill = Color.WHITE;
-			aStroke = DARK_MODE_FILL_COLOR;
-			aShadow = LIGHT_MODE_DROPSHADOW;
-		}
-		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
-	}
+	private RenderingUtils()
+	{}
 	
 	/**
 	 * Getter for fill color.
@@ -99,6 +80,36 @@ public final class RenderingUtils implements BooleanPreferenceChangeHandler
 	public static DropShadow getDropShadow()
 	{
 		return aShadow;
+	}
+	
+	/**
+	 * Getter for fill color.
+	 * 
+	 * @return The fill color.
+	 */
+	public static void setFill(Color pColor)
+	{
+		aFill = pColor;
+	}
+	
+	/**
+	 * Getter for stroke color.
+	 * 
+	 * @return The stroke color.
+	 */
+	public static void setStroke(Color pColor)
+	{
+		aStroke = pColor;
+	}
+	
+	/**
+	 * Getter for DropShadow.
+	 * 
+	 * @return The DropShadow.
+	 */
+	public static void setDropShadow(DropShadow pShadow)
+	{
+		aShadow = pShadow;
 	}
 	
 	/**
@@ -241,25 +252,5 @@ public final class RenderingUtils implements BooleanPreferenceChangeHandler
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);
-	}
-
-	@Override
-	public void booleanPreferenceChanged(BooleanPreference pPreference) 
-	{
-		if( pPreference == BooleanPreference.darkMode )
-		{
-			if( UserPreferences.instance().getBoolean(pPreference) )
-			{
-				aFill = DARK_MODE_FILL_COLOR;
-				aStroke = Color.WHITE;
-				aShadow = DARK_MODE_DROPSHADOW;
-			}
-			else
-			{
-				aFill = Color.WHITE;
-				aStroke = DARK_MODE_FILL_COLOR;
-				aShadow = LIGHT_MODE_DROPSHADOW;
-			}
-		}
 	}
 }

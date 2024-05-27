@@ -103,7 +103,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	{
 		aMainStage = pMainStage;
 		aDialogStage = new DialogStage(aMainStage);
-		RenderingUtils aRenderingUtility = new RenderingUtils(); // Acts as an observer for dark mode
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
@@ -129,6 +128,9 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			getStylesheets().add(aDarkModeURL);
 			aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
+			RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
+			RenderingUtils.setStroke(RenderingUtils.WHITE);
+			RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -758,11 +760,18 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			{
 				getStylesheets().add(aDarkModeURL);
 				aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
+				RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
+				RenderingUtils.setStroke(RenderingUtils.WHITE);
+				RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
+				
 			}
 			else
 			{
 				getStylesheets().remove(aDarkModeURL);
 				aDialogStage.getScene().getStylesheets().remove(aDarkModeURL);
+				RenderingUtils.setFill(RenderingUtils.WHITE);
+				RenderingUtils.setStroke(RenderingUtils.BLACK);
+				RenderingUtils.setDropShadow(RenderingUtils.LIGHT_MODE_DROPSHADOW);
 			}
 		}
 	}
