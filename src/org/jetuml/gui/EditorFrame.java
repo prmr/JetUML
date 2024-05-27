@@ -54,7 +54,6 @@ import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.rendering.RenderingUtils;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -89,7 +88,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	
 	private final Stage aMainStage;
 	private final Stage aDialogStage;
-	private final String aDarkThemeURL = getClass().getResource("DarkMode.css").toExternalForm();
+	private final String aDarkModeURL = getClass().getResource("DarkMode.css").toExternalForm();
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
@@ -128,8 +127,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
 		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
 		{
-			getStylesheets().add(aDarkThemeURL);
-			aDialogStage.getScene().getStylesheets().add(aDarkThemeURL);
+			getStylesheets().add(aDarkModeURL);
+			aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -257,7 +256,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
 				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aDialogStage).show()),
-				//factory.createMenuItem("view.font", false, event -> new FontDialog(aMainStage).show()),
 				factory.createMenuItem("view.font", false, event -> new FontDialog(aDialogStage).show()),
 				factory.createMenuItem("view.notifications", false, event -> new NotificationTimeDialog(aDialogStage).show()),
 				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
@@ -758,13 +756,13 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			if( UserPreferences.instance().getBoolean(pPreference) )
 			{
-				getStylesheets().add(aDarkThemeURL);
-				aDialogStage.getScene().getStylesheets().add(aDarkThemeURL);
+				getStylesheets().add(aDarkModeURL);
+				aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
 			}
 			else
 			{
-				getStylesheets().remove(aDarkThemeURL);
-				aDialogStage.getScene().getStylesheets().remove(aDarkThemeURL);
+				getStylesheets().remove(aDarkModeURL);
+				aDialogStage.getScene().getStylesheets().remove(aDarkModeURL);
 			}
 		}
 	}

@@ -77,7 +77,7 @@ StringPreferenceChangeHandler
 	 * preferred size. */
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
-	private static final Color REGULAR_GRID_COLOR = Color.rgb(220, 220, 220);
+	private static final Color LIGHT_MODE_GRID_COLOR = Color.rgb(220, 220, 220);
 	private static final Color DARK_MODE_GRID_COLOR = Color.web("#5e6468");
 	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#373e43");
 	private static final int DIAGRAM_PADDING = 4;
@@ -260,7 +260,7 @@ StringPreferenceChangeHandler
 			}
 			else
 			{
-				Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), REGULAR_GRID_COLOR);
+				Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), LIGHT_MODE_GRID_COLOR);
 			}
 		}
 		aDiagramBuilder.renderer().draw(context);
