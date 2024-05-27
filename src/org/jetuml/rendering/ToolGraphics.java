@@ -25,7 +25,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
@@ -151,7 +150,6 @@ public final class ToolGraphics
 	 */
 	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
 	{
-		//Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setStroke(RenderingUtils.getStroke());
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
@@ -161,7 +159,6 @@ public final class ToolGraphics
 		pGraphics.stroke();
 		pGraphics.setLineDashes(oldDash);
 		pGraphics.setLineWidth(width);
-		//pGraphics.setStroke(oldStroke);
 	}
 	
 	private static void applyPath(GraphicsContext pGraphics, Path pPath)
