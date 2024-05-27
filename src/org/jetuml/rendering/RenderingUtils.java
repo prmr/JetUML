@@ -44,10 +44,10 @@ public final class RenderingUtils
 	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1C1C1F");
 	public static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	public static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
+	private static final int ARC_SIZE = 20;
 	private static Color aFill = WHITE;
 	private static Color aStroke = BLACK;
 	private static DropShadow aShadow = LIGHT_MODE_DROPSHADOW;
-	private static final int ARC_SIZE = 20;
 	
 	private RenderingUtils()
 	{}
