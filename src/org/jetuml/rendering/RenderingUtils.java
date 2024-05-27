@@ -52,7 +52,7 @@ public final class RenderingUtils implements BooleanPreferenceChangeHandler
 	
 	/**
 	 * RenderingUtils should be a unique object which manages the
-	 * color scheme of nodes depending on whether dark mode is on or off. 
+	 * color scheme of diagram elements depending on whether dark mode is on or off. 
 	 */
 	public RenderingUtils()
 	{
@@ -237,7 +237,7 @@ public final class RenderingUtils implements BooleanPreferenceChangeHandler
 	{
 		Font font = pGraphics.getFont();
 		pGraphics.setFont(pFont);
-		pGraphics.setFill(aStroke);
+		pGraphics.setFill(aStroke); // The fill color for the font is the stroke color.
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);

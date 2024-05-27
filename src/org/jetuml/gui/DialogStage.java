@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 
 /**
  * A Stage that is to be shared by different dialogs.
- * Different dialogs sharing a common stage 
- * simplifies applying the dark mode theme to the dialogs.
+ * Different dialogs sharing a common stage simplifies 
+ * applying the dark mode theme to the dialogs.
  */
 public class DialogStage extends Stage
 {		
@@ -33,6 +33,5 @@ public class DialogStage extends Stage
 				close();
 			}
 		});
-		setOnCloseRequest(pEvent -> close());
 	}
 }
