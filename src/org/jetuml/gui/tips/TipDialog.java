@@ -36,6 +36,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,6 +49,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -77,7 +79,6 @@ public class TipDialog
 	private static final String BUTTON_STYLE = "tip-menu-button";
 	
 	private Stage aStage;
-	private Stage aOwner;
 	private Tip aCurrentTip;
 	private ViewedTips aViewedTips;
 	private final ScrollPane aTipDisplay;
@@ -86,10 +87,10 @@ public class TipDialog
 	/**
 	 * Constructor for a TipDialog.
 	 * 
-	 * @param pOwner The stage of the window that generates the tip dialog.
+	 * @param pDialogStage The stage of the window that generates the tip dialog.
 	 *        pOwner can be null to get a TipDialog with no owner.
 	 */
-	public TipDialog(Stage pOwner)
+	public TipDialog(Stage pDialogStage)
 	{
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
@@ -97,7 +98,7 @@ public class TipDialog
 		aShowTipsOnStartupCheckBox.setSelected(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips));
 		aShowTipsOnStartupCheckBox.setOnAction(e -> UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, 
 				aShowTipsOnStartupCheckBox.isSelected()));
-		aOwner = pOwner;
+		aStage = pDialogStage;
 	}
 	
 	/**
@@ -106,28 +107,25 @@ public class TipDialog
 	 */
 	public void show() 
 	{
-		aStage = new Stage();
-		prepareStage(aOwner);
+		prepareStage();
 		aStage.showAndWait();
 	}
 	
-	private void prepareStage(Stage pOwner) 
+	private void prepareStage() 
 	{
-		aStage.setResizable(true);
-		aStage.setMinWidth(WINDOW_MIN_WIDTH);
-		aStage.setWidth(WINDOW_PREF_WIDTH);
-		aStage.setMinHeight(WINDOW_MIN_HEIGHT);
-		aStage.setHeight(WINDOW_PREF_HEIGHT);
-		aStage.initModality(Modality.WINDOW_MODAL);
-		aStage.initOwner(pOwner);
+		//aStage.setResizable(true);
+//		aStage.setMinWidth(WINDOW_MIN_WIDTH);
+//		aStage.setWidth(WINDOW_PREF_WIDTH);
+//		aStage.setMinHeight(WINDOW_MIN_HEIGHT);
+//		aStage.setHeight(WINDOW_PREF_HEIGHT);
 		aStage.setTitle(RESOURCES.getString("dialog.tips.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		aStage.setScene(createScene());
-		aStage.getScene().getStylesheets().add(getClass().getResource("TipDialog.css").toExternalForm());
+		aStage.getScene().setRoot(createScene());
+		//aStage.getScene().getStylesheets().add(getClass().getResource("TipDialog.css").toExternalForm());
 		aTipDisplay.requestFocus();
 	}
 	
-	private Scene createScene() 
+	private Pane createScene() 
 	{
 		BorderPane layout = new BorderPane();
 
@@ -146,21 +144,14 @@ public class TipDialog
 		setupNewTip(tip);
 		
 		aStage.requestFocus();
-		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
-		{
-			if(pEvent.getCode() == KeyCode.ESCAPE) 
-			{
-				aStage.close();
-			}
-		});
-		aStage.setOnCloseRequest(pEvent -> 
-		{
-				aStage.close();
-		});
 		
-		Scene tipDialogScene = new Scene(layout, WINDOW_PREF_WIDTH, WINDOW_PREF_HEIGHT);
+		layout.setMinWidth(WINDOW_MIN_WIDTH);
+		//layout.setWidth(WINDOW_PREF_WIDTH);
+		layout.setMinHeight(WINDOW_MIN_HEIGHT);
+		//layout.setHeight(WINDOW_PREF_HEIGHT);
+		//Scene tipDialogScene = new Scene(layout, WINDOW_PREF_WIDTH, WINDOW_PREF_HEIGHT);
 		
-		return tipDialogScene;
+		return layout;
 	}
 
 	private HBox createTipMenu()
@@ -272,12 +263,12 @@ public class TipDialog
 	 * @return Formatted Node containing the tip's title
 	 * @pre pTip!= null
 	 */
-	private static Text getTipTitleAsTextNode(Tip pTip)
+	private static Label getTipTitleAsTextNode(Tip pTip)
 	{
 		assert pTip != null;
 		
 		String title = pTip.getTitle();
-		Text titleNode = new Text(title);
+		Label titleNode = new Label(title);
 		Font titleFont = new Font(TITLE_FONT_SIZE);
 		titleNode.setFont(titleFont);
 		return titleNode;

@@ -99,10 +99,10 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * @param pMainStage The main stage used by the UMLEditor
 	 * @param pOpenWith An optional diagram to open the application with.
 	 */
-	public EditorFrame(Stage pMainStage) 
+	public EditorFrame(Stage pMainStage, Stage pDialogStage) 
 	{
 		aMainStage = pMainStage;
-		aDialogStage = new DialogStage(aMainStage);
+		aDialogStage = pDialogStage;
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();

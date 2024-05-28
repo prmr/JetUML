@@ -33,6 +33,7 @@ import org.jetuml.application.Version;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.DeserializationErrorAlert;
+import org.jetuml.gui.DialogStage;
 import org.jetuml.gui.EditorFrame;
 import org.jetuml.gui.GuiUtils;
 import org.jetuml.gui.NotificationService;
@@ -100,7 +101,8 @@ public final class JetUML extends Application
 			System.exit(0);
 		}
 		
-		EditorFrame editor = new EditorFrame(pStage);
+		DialogStage dialogStage = new DialogStage(pStage);
+		EditorFrame editor = new EditorFrame(pStage, dialogStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
 
@@ -117,7 +119,7 @@ public final class JetUML extends Application
 		
 		if(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips))
 		{
-			new TipDialog(pStage).show();
+			new TipDialog(dialogStage).show();
 		}
 	}
 	
