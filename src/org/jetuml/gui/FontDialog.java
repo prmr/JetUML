@@ -98,6 +98,7 @@ public class FontDialog
 		{
 			if( pEvent.getCode() == KeyCode.ESCAPE ) 
 			{
+				restoreUserSettings();
 				aStage.close();
 			}
 		});
