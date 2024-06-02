@@ -28,8 +28,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * A utility class to determine various font position metrics
- * for the particular font.
+ * A utility class to determine various font metrics
+ * for the particular text and font.
  * 
  * A visual diagram for why the bounds values are what they are
  * (with word "Thy"):   ____________________
@@ -46,27 +46,16 @@ import javafx.scene.text.Text;
  *                     |                   |
  * (leading)           |-------------------|
  */
-public class FontMetrics 
+public final class FontMetrics 
 {
 	public static final int DEFAULT_FONT_SIZE = 12;
 	public static final String DEFAULT_FONT_NAME = "System";
 	public static final Font DEFAULT_FONT = Font.font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE);
 	private static final String SINGLE_LINED_TEXT = "One";
 	private static final String TWO_LINED_TEXT = "One\nTwo";
-	private Text aTextNode;
+	private static Text aTextNode = new Text();
 
-	/**
-	 * Creates a new FontMetrics object.
-	 * @param pFont The font to use.
-	 */
-
-	public FontMetrics(Font pFont)
-	{
-		assert pFont != null;
-		
-		aTextNode = new Text();
-		aTextNode.setFont(pFont);
-	}
+	private FontMetrics() {}
 
 	/**
 	 * Returns the dimension of a given string.
@@ -76,10 +65,11 @@ public class FontMetrics
 	 * @param pString The string to which the bounds pertain.
 	 * @return The dimension of the string
 	 */
-	public Dimension getDimension(String pString)
+	public static Dimension getDimension(String pString, Font pFont)
 	{
 		assert pString != null;
-		
+
+		aTextNode.setFont(pFont);
 		aTextNode.setText(pString);
 		Bounds bounds = aTextNode.getLayoutBounds();
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
@@ -94,8 +84,9 @@ public class FontMetrics
 	 * @return The height of a single lined text.
 	 * @pre pString != null
 	 */
-	public int getHeight()
+	public static int getHeight(Font pFont)
 	{
+		aTextNode.setFont(pFont);
 		aTextNode.setText(TWO_LINED_TEXT);
 		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
 		aTextNode.setText(SINGLE_LINED_TEXT);
@@ -110,8 +101,9 @@ public class FontMetrics
 	 * @param pItalic whether the font is italic.
 	 * @return the distance above the baseline for a single lined text.
 	 */
-	public int getBaselineOffset()
+	public static int getBaselineOffset(Font pFont)
 	{
+		aTextNode.setFont(pFont);
 		aTextNode.setText(SINGLE_LINED_TEXT);
 		return GeomUtils.round(aTextNode.getBaselineOffset());
 	}

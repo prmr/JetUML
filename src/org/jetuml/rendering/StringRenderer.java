@@ -27,11 +27,17 @@ import java.util.Map;
 
 import org.jetuml.annotations.Flyweight;
 import org.jetuml.annotations.Immutable;
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -44,8 +50,6 @@ import javafx.scene.text.TextAlignment;
 @Flyweight
 public final class StringRenderer
 {
-	private static final CanvasFont CANVAS_FONT = new CanvasFont();
-	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
 	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 6;
@@ -144,7 +148,7 @@ public final class StringRenderer
 		{
 			return EMPTY;
 		}
-		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
+		Dimension dimension = FontMetrics.getDimension(pString, getFont());
 		return new Dimension(dimension.width() + aHorizontalPadding*2, 
 				dimension.height() + aVerticalPadding*2);
 	}
@@ -158,7 +162,7 @@ public final class StringRenderer
 	 */
 	public int getHeight()
 	{
-		return CANVAS_FONT.getHeight(aBold, aItalic);
+		return FontMetrics.getHeight(getFont());
 	}
 
 	/**
@@ -221,6 +225,27 @@ public final class StringRenderer
 		return VPos.CENTER;
 	}
 	
+	private Font getFont()
+	{
+		if( aBold && aItalic )
+		{
+			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
+					FontWeight.BOLD, FontPosture.ITALIC, UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+		}
+		else if( aBold )
+		{
+			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
+					FontWeight.BOLD, UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+		}
+		else if( aItalic )
+		{
+			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
+					FontPosture.ITALIC, UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+		}
+		return Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
+				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+	}
+	
 	/**
      * Draws the string inside a given rectangle.
      * @param pString The string to draw.
@@ -252,14 +277,14 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.x(), pRectangle.y());
-		RenderingUtils.drawText(pGraphics, textX, textY, pString, CANVAS_FONT.getFont(aBold, aItalic));
+		RenderingUtils.drawText(pGraphics, textX, textY, pString, getFont());
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold, aItalic);
-			int baselineOffset = CANVAS_FONT.getBaselineOffset(aBold, aItalic);
+			Dimension dimension = FontMetrics.getDimension(pString, getFont());
+			int baselineOffset = FontMetrics.getBaselineOffset(getFont());
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
