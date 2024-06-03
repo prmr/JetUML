@@ -30,21 +30,6 @@ import javafx.scene.text.Text;
 /**
  * A utility class to determine various font metrics
  * for the particular text and font.
- * 
- * A visual diagram for why the bounds values are what they are
- * (with word "Thy"):   ____________________
- * (ascent)            |*****  *           |
- *                     |  *    *           |
- *                     |  *    *****   *  *|
- *                     |  *    *   *   *  *|
- *                     |  *    *   *   ****|
- * (baseline)          |------------------*|
- *                     |                  *|
- *                     |                  *| 
- * (descent)           |                ***|
- *                     |                   |
- *                     |                   |
- * (leading)           |-------------------|
  */
 public final class FontMetrics 
 {
@@ -53,7 +38,7 @@ public final class FontMetrics
 	public static final Font DEFAULT_FONT = Font.font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE);
 	private static final String SINGLE_LINED_TEXT = "One";
 	private static final String TWO_LINED_TEXT = "One\nTwo";
-	private static Text aTextNode = new Text();
+	private static final Text TEXT_NODE = new Text();
 
 	private FontMetrics() {}
 
@@ -63,15 +48,19 @@ public final class FontMetrics
 	 * However, this behavior is not consistent across all fonts.
 	 * 
 	 * @param pString The string to which the bounds pertain.
+	 * @param pFont The font used for the metric.
 	 * @return The dimension of the string
+	 * @pre pString != null
+	 * @pre pFont != null
 	 */
 	public static Dimension getDimension(String pString, Font pFont)
 	{
 		assert pString != null;
+		assert pFont != null;
 
-		aTextNode.setFont(pFont);
-		aTextNode.setText(pString);
-		Bounds bounds = aTextNode.getLayoutBounds();
+		TEXT_NODE.setFont(pFont);
+		TEXT_NODE.setText(pString);
+		Bounds bounds = TEXT_NODE.getLayoutBounds();
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
@@ -80,31 +69,35 @@ public final class FontMetrics
 	 * Text#getLayoutBounds().getHeight() varies in its inclusion of the leading space depending on the font,
 	 * hence the subtraction approach was taken to ensure inclusion of the leading space.
 	 * 
-	 * @param pString The string. 
+	 * @param pFont The font used for the metric.
 	 * @return The height of a single lined text.
-	 * @pre pString != null
+	 * @pre pFont != null
 	 */
 	public static int getHeight(Font pFont)
 	{
-		aTextNode.setFont(pFont);
-		aTextNode.setText(TWO_LINED_TEXT);
-		double twoLineHeight = aTextNode.getLayoutBounds().getHeight();
-		aTextNode.setText(SINGLE_LINED_TEXT);
-		double singleLineHeight = aTextNode.getLayoutBounds().getHeight();
+		assert pFont != null;
+		
+		TEXT_NODE.setFont(pFont);
+		TEXT_NODE.setText(TWO_LINED_TEXT);
+		double twoLineHeight = TEXT_NODE.getLayoutBounds().getHeight();
+		TEXT_NODE.setText(SINGLE_LINED_TEXT);
+		double singleLineHeight = TEXT_NODE.getLayoutBounds().getHeight();
 		return GeomUtils.round(twoLineHeight - singleLineHeight);
 	}
 	
 	/**
 	 * Returns the distance between the top and baseline of a single lined text.
 	 * 
-	 * @param pBold Whether the font is bold.
-	 * @param pItalic whether the font is italic.
+	 * @param pFont The font used for the metric.
 	 * @return the distance above the baseline for a single lined text.
+	 * @pre pFont != null
 	 */
 	public static int getBaselineOffset(Font pFont)
 	{
-		aTextNode.setFont(pFont);
-		aTextNode.setText(SINGLE_LINED_TEXT);
-		return GeomUtils.round(aTextNode.getBaselineOffset());
+		assert pFont != null;
+		
+		TEXT_NODE.setFont(pFont);
+		TEXT_NODE.setText(SINGLE_LINED_TEXT);
+		return GeomUtils.round(TEXT_NODE.getBaselineOffset());
 	}
 } 
