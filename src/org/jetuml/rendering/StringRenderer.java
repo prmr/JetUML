@@ -135,6 +135,66 @@ public final class StringRenderer
 	}
 	
 	/**
+     * Draws the string inside a given rectangle.
+     * @param pString The string to draw.
+     * @param pGraphics the graphics context
+     * @param pRectangle the rectangle into which to place the string
+	 */
+	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
+	{
+		final VPos oldVPos = pGraphics.getTextBaseline();
+		final TextAlignment oldAlign = pGraphics.getTextAlign();
+		
+		pGraphics.setTextAlign(getTextAlignment());
+		pGraphics.setTextBaseline(getTextBaseline());
+		
+		int textX = 0;
+		int textY = 0;
+		if( aAlign.isHorizontallyCentered() ) 
+		{
+			textX = pRectangle.width()/2;
+		}
+		else
+		{
+			textX = aHorizontalPadding;
+		}
+		
+		if( aAlign.isVerticallyCentered() )
+		{
+			textY = pRectangle.height()/2;
+		}
+		
+		pGraphics.translate(pRectangle.x(), pRectangle.y());
+		RenderingUtils.drawText(pGraphics, textX, textY, pString, getFont());
+		
+		if(aUnderlined && pString.trim().length() > 0)
+		{
+			int xOffset = 0;
+			int yOffset = 0;
+			Dimension dimension = FontMetrics.getDimension(pString, getFont());
+			int baselineOffset = FontMetrics.getBaselineOffset(getFont());
+			if( aAlign.isHorizontallyCentered() )
+			{
+				xOffset = dimension.width()/2;
+			}
+			
+			if( aAlign.isTop() )
+			{
+				yOffset = baselineOffset + 2;
+			}
+			else if( aAlign.isVerticallyCentered() )
+			{
+				yOffset = baselineOffset/2 + 1;
+			}
+			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
+					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
+		}
+		pGraphics.translate(-pRectangle.x(), -pRectangle.y());
+		pGraphics.setTextBaseline(oldVPos);
+		pGraphics.setTextAlign(oldAlign);
+	}
+	
+	/**
      * Gets the width and height required to show pString, including
      * padding around the string.
      * @param pString The input string. 
@@ -244,65 +304,5 @@ public final class StringRenderer
 		}
 		return Font.font(UserPreferences.instance().getString(StringPreference.fontName), 
 				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
-	}
-	
-	/**
-     * Draws the string inside a given rectangle.
-     * @param pString The string to draw.
-     * @param pGraphics the graphics context
-     * @param pRectangle the rectangle into which to place the string
-	 */
-	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
-	{
-		final VPos oldVPos = pGraphics.getTextBaseline();
-		final TextAlignment oldAlign = pGraphics.getTextAlign();
-		
-		pGraphics.setTextAlign(getTextAlignment());
-		pGraphics.setTextBaseline(getTextBaseline());
-		
-		int textX = 0;
-		int textY = 0;
-		if( aAlign.isHorizontallyCentered() ) 
-		{
-			textX = pRectangle.width()/2;
-		}
-		else
-		{
-			textX = aHorizontalPadding;
-		}
-		
-		if( aAlign.isVerticallyCentered() )
-		{
-			textY = pRectangle.height()/2;
-		}
-		
-		pGraphics.translate(pRectangle.x(), pRectangle.y());
-		RenderingUtils.drawText(pGraphics, textX, textY, pString, getFont());
-		
-		if(aUnderlined && pString.trim().length() > 0)
-		{
-			int xOffset = 0;
-			int yOffset = 0;
-			Dimension dimension = FontMetrics.getDimension(pString, getFont());
-			int baselineOffset = FontMetrics.getBaselineOffset(getFont());
-			if( aAlign.isHorizontallyCentered() )
-			{
-				xOffset = dimension.width()/2;
-			}
-			
-			if( aAlign.isTop() )
-			{
-				yOffset = baselineOffset + 2;
-			}
-			else if( aAlign.isVerticallyCentered() )
-			{
-				yOffset = baselineOffset/2 + 1;
-			}
-			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
-					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
-		}
-		pGraphics.translate(-pRectangle.x(), -pRectangle.y());
-		pGraphics.setTextBaseline(oldVPos);
-		pGraphics.setTextAlign(oldAlign);
 	}
 }
