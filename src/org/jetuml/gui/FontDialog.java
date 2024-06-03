@@ -118,7 +118,6 @@ public class FontDialog
 		GridPane.setConstraints(family, 0, 0);
 		GridPane.setMargin(family, EXTRA_MARGIN);
 		
-		aFonts.getStyleClass().add("font-combobox");
 		aFonts.getSelectionModel().select(getCurrentFont());
 		aFonts.setOnAction(pEvent -> onInput());
 		GridPane.setConstraints(aFonts, 1, 0);
@@ -133,7 +132,6 @@ public class FontDialog
 		GridPane.setConstraints(size, 0, 1);
 		GridPane.setMargin(size, EXTRA_MARGIN);
 		
-		aSizes.getStyleClass().add("font-combobox");
 		aSizes.getSelectionModel().select((Integer) getCurrentFontSize());
 		aSizes.setOnAction(pEvent -> onInput());
 		GridPane.setConstraints(aSizes, 1, 1);
