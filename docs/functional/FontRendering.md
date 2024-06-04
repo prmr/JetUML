@@ -2,17 +2,17 @@
 
 ## Scope
 
-The font rendering feature concerns how different fonts, their size, and their style are managed and rendered by the font rendering system.
+The font rendering feature concerns how different fonts, their size, their style, and alignment are managed and rendered by the font rendering system.
 
 ## Design
 
-All of the text rendered in diagrams is done through StringRenderer objects.
-StringRenderer objects are flyweight and differ only in their alignment and text decorations. This way, different diagram types can obtain a StringRenderer object that fits their needs for text to be aligned to a specific position, and different font styles such as bold, italic, or underlined.
+All of the text rendered in diagrams is done through `StringRenderer` objects.
+`StringRenderer` objects are flyweight and differ only in their alignment and text decorations. This way, different diagram types can obtain a `StringRenderer` object that fits their needs for text to be aligned to a specific position, and in different font styles such as bold, italic, and underlined.
 
-StringRenderer interfaces with three classes to render text:
-* UserPreferences: The _model_ in the Model-View-Controller decomposition. User settings are stored and managed here. StringRenderer can retrieve the user font and size from here.
-* FontMetrics: A utility class to calculate various font metrics. StringRenderer will obtain the appropriate positioning of text on the GUI from FontMetrics.
-* RenderingUtils: StringRenderer delegates the actual rendering of text on the GUI to this class.
+`StringRenderer` interfaces with three classes to render text:
+* `UserPreferences`: The _model_ in the Model-View-Controller decomposition. User settings are stored and managed here. `StringRenderer` can retrieve the user font and size from here.
+* `FontMetrics`: A utility class to calculate various font metrics. `StringRenderer` will obtain the appropriate positioning of text on the GUI from FontMetrics.
+* `RenderingUtils`: `StringRenderer` delegates the actual rendering of text on the GUI to this class.
 
 The following class diagram illustrates the design of the font rendering system.
 
@@ -20,7 +20,7 @@ The following class diagram illustrates the design of the font rendering system.
 
 
 
-The following sequence diagram illustrates a scenario where text in a `TypeNode` is drawn.
+And the following sequence diagram illustrates a scenario where text in a `TypeNode` is rendered.
 
 ![JetUML Class Diagram](FontRenderingSequence.png)
 
