@@ -27,9 +27,8 @@ And the following sequence diagram illustrates a scenario where text in a `TypeN
 1. A call is made to `StringRenderer` to draw a text by some node or edge renderer. In this case, it is the `TypeNodeRenderer`.
 2. The `StringRenderer` object accesses `UserPreferences` to retrieve the font family and size that the text is to be rendered in. Using this information, and whether the `StringRenderer` object has text decorations bold, and/or italic, the corresponding Font is created.
 3. `GraphicsContext#translate` positions itself on the `Canvas` at the indicated (x, y) coordinate (this is the top-left corner of the bounding rectangle containing the text).
-4. The actual rendering of the text is delegated to the RenderingUtils class which then makes a direct method call on the GraphicsContext object of the Canvas.
-5. `RenderingUtils#drawText` will render the text in the specified font, taking into account the offset necessary for a specific alignment (e.g. Text aligned at the center will need to be shifted to the the middle, since the `GraphicsContext` is positioned at the top-left corner of the text bounds).
-6. The bottom-half section of the sequence diagram will execute if the text needs underlining. Because text is rendered on a `Canvas`, the underline must be drawn using `GraphicsContext`.
-7. A call to `FontMetrics#getDimension` and `FontMetrics#getBaselineOffset` is made to calculate the position and length of the underline.
-8. The underline is rendered in a similar fashion as the text.
-9. The `GraphicsContext` assumes its initial position on the Canvas before the text was rendered.
+4. `RenderingUtils#drawText` will render the text in the specified font, taking into account the offset necessary for a specific alignment (e.g. Text aligned at the center will need to be shifted to the the middle, since the `GraphicsContext` is positioned at the top-left corner of the text bounds).
+5. The rest of the sequence diagram will execute if the text needs underlining. Because text is rendered on a `Canvas`, the underline must be drawn using `GraphicsContext`.
+6. A call to `FontMetrics#getDimension` and `FontMetrics#getBaselineOffset` is made to calculate the length and position of the underline.
+7. The underline is rendered in a similar fashion as the text.
+8. The `GraphicsContext` assumes its initial position on the Canvas before the text was rendered.
