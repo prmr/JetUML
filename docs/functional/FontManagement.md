@@ -16,13 +16,13 @@ All of the text rendered in diagrams is done through `StringRenderer` objects.
 
 The following class diagram illustrates the design of the font rendering system.
 
-![JetUML Class Diagram](FontRenderingClass.png)
+![JetUML Class Diagram](FontManagementgClass.png)
 
 
 
 And the following sequence diagram illustrates a scenario where text in a `TypeNode` is rendered.
 
-![JetUML Class Diagram](FontRenderingSequence.png)
+![JetUML Class Diagram](FontManagementSequence.png)
 
 1. A call is made to `StringRenderer` to draw a text by some node or edge renderer. In this case, it is the `TypeNodeRenderer`.
 2. The `StringRenderer` object accesses `UserPreferences` to retrieve the font family and size that the text is to be rendered in. Using this information, and whether the `StringRenderer` object has text decorations bold, and/or italic, the corresponding Font is created.
