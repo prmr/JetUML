@@ -116,7 +116,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			boolean italic = false;
 			String paddedName = "";
-			if( nameByLine[i].length() > 2 && nameByLine[i].startsWith(ITALIC_MARKUP) && nameByLine[i].endsWith(ITALIC_MARKUP) )
+			if( containsMarkup(nameByLine[i], ITALIC_MARKUP) )
 			{
 				nameByLine[i] = removeMarkup(nameByLine[i]);
 				italic = true;
@@ -154,7 +154,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		
 		for( String attribute : attributesByLine )
 		{
-			if( attribute.length() > 2 && attribute.startsWith(UNDERLINE_MARKUP) && attribute.endsWith(UNDERLINE_MARKUP) )
+			if( containsMarkup(attribute, UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pGraphics, 
 						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pAttributeBoxHeight));
@@ -176,12 +176,12 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		
 		for( String method : methodsByLine )
 		{
-			if( method.length() > 2 && method.startsWith(UNDERLINE_MARKUP) && method.endsWith(UNDERLINE_MARKUP) )
+			if( containsMarkup(method, UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
 			}
-			else if( method.length() > 2 && method.startsWith(ITALIC_MARKUP) && method.endsWith(ITALIC_MARKUP) )
+			else if( containsMarkup(method, ITALIC_MARKUP) )
 			{
 				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pGraphics, 
 						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
@@ -193,6 +193,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	
+	}
+	
+	private static boolean containsMarkup(String pText, String pMarkup)
+	{
+		return pText.length() > 2 && pText.startsWith(pMarkup) && pText.endsWith(pMarkup);
 	}
 	
 	private static String removeMarkup(String pString)
