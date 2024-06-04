@@ -1,8 +1,8 @@
-# Font Rendering
+# Font Management
 
 ## Scope
 
-The font rendering feature concerns how different fonts, their size, their style, and alignment are managed and rendered by the font rendering system.
+The font management feature concerns how different fonts, their size, their style, and alignment are managed and rendered.
 
 ## Design
 
