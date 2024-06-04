@@ -16,7 +16,7 @@ All of the text rendered in diagrams is done through `StringRenderer` objects.
 
 The following class diagram illustrates the design of the font rendering system.
 
-![JetUML Class Diagram](FontManagementgClass.png)
+![JetUML Class Diagram](FontManagementClass.png)
 
 
 
