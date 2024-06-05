@@ -37,6 +37,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -48,34 +49,32 @@ public class PropertyEditorDialog
 {
 	private static final int LAYOUT_PADDING = 20;
 	
-	private final Stage aStage = new Stage();
+	private final Stage aStage;
 	private final DiagramElement aElement;
 	
 	/**
 	 * Creates a new dialog.
 	 * 
-	 * @param pOwner The stage that owns this stage.
+	 * @param pDialogStage The stage that owns this stage.
 	 * @param pElement The element to edit with this dialog.
 	 * @param pPropertyChangeListener A callback to run whenever a property changes.
 	 */
-	public PropertyEditorDialog( Stage pOwner, DiagramElement pElement, 
+	public PropertyEditorDialog( Stage pDialogStage, DiagramElement pElement, 
 			PropertySheet.PropertyChangeListener pPropertyChangeListener )
 	{
+		aStage = pDialogStage;
 		aElement = pElement;
-		prepareStage(pOwner);
-		aStage.setScene(createScene(pPropertyChangeListener));
+		prepareStage();
+		aStage.getScene().setRoot(createRoot(pPropertyChangeListener));
 	}
 	
-	private void prepareStage(Stage pOwner) 
+	private void prepareStage() 
 	{
-		aStage.setResizable(false);
-		aStage.initModality(Modality.APPLICATION_MODAL);
-		aStage.initOwner(pOwner);
 		aStage.setTitle(RESOURCES.getString("dialog.properties"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 	}
 	
-	private Scene createScene(PropertySheet.PropertyChangeListener pPropertyChangeListener) 
+	private Pane createRoot(PropertySheet.PropertyChangeListener pPropertyChangeListener) 
 	{
 		PropertySheet sheet = new PropertySheet(aElement, pPropertyChangeListener);
 				
@@ -92,7 +91,7 @@ public class PropertyEditorDialog
 		layout.setCenter(sheet);
 		layout.setBottom(button);
 		
-		return new Scene(layout);
+		return layout;
 	}
 	
 	private PropertySheet getPropertySheet()

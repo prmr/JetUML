@@ -209,7 +209,7 @@ StringPreferenceChangeHandler
 		Optional<DiagramElement> edited = getLastSelected();
 		if( edited.isPresent() )
 		{
-			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)getScene().getWindow(), 
+			PropertyEditorDialog dialog = new PropertyEditorDialog( ((EditorFrame) getScene().getRoot()).getDialogStage(), 
 					edited.get(), ()-> paintPanel());
 			
 			CompoundOperation operation = dialog.show();
