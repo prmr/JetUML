@@ -170,7 +170,7 @@ public class TipDialog
 	{
 		HBox tipMenu = new HBox();
 		tipMenu.setPadding(new Insets(PADDING));
-		tipMenu.setStyle("-fx-background-color: gainsboro;");
+		tipMenu.setStyle("-fx-background-color: slategrey;");
 		
 		BorderStroke bs = new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID,
 										   CornerRadii.EMPTY, BorderWidths.DEFAULT);

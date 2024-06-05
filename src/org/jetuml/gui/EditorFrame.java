@@ -320,6 +320,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new DeserializationErrorAlert(exception);
 			alert.initOwner(aMainStage);
+			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -441,6 +442,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -469,6 +471,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -507,6 +510,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
+			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -552,6 +556,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
+			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -623,6 +628,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
+			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -684,6 +690,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.exit.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
+			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -698,6 +705,16 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			System.exit(0);
 		}
 	}		
+	
+	/**
+	 * Getter for the dialog stage.
+	 * 
+	 * @return The dialog stage.
+	 */
+	public Stage getDialogStage()
+	{
+		return aDialogStage;
+	}
 	
 	private List<Tab> tabs()
 	{
@@ -749,7 +766,13 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		showWelcomeTabIfNecessary();
 	}
 	
-
+	private void applyDarkTheme(Alert pAlert)
+	{
+		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
+		{
+			pAlert.getDialogPane().getStylesheets().add(aDarkModeURL);
+		}
+	}
 	
 	@Override
 	public void booleanPreferenceChanged(BooleanPreference pPreference)
