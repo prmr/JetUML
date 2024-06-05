@@ -23,6 +23,7 @@ package org.jetuml.gui;
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.jetuml.application.UserPreferences;
@@ -38,6 +39,7 @@ import org.jetuml.rendering.nodes.AbstractNodeRenderer;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -266,13 +268,16 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	
 	private void recreateButtonIcons()
 	{
-		for( javafx.scene.Node item : getItems() )
+		List<Node> toolBarItems = getItems();
+		List<MenuItem> contextMenuItems = aPopupMenu.getItems();
+		for( int i = 0; i < toolBarItems.size(); i++ )
 		{
-			ButtonBase button = (ButtonBase) item;
-			if( item instanceof SelectableToolButton toolButton && 
+			ButtonBase button = (ButtonBase) toolBarItems.get(i);
+			if( toolBarItems.get(i) instanceof SelectableToolButton toolButton && 
 					toolButton.getPrototype().isPresent() )
 			{
 				button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
+				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
 			}
 		}
 	}
