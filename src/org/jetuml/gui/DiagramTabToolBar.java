@@ -60,6 +60,7 @@ import javafx.scene.image.ImageView;
 public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChangeHandler
 {
 	private ContextMenu aPopupMenu = new ContextMenu();
+	private DiagramRenderer aDiagramRenderer;
 
 	/**
      * Constructs the tool bar.
@@ -68,6 +69,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	 */
 	public DiagramTabToolBar(DiagramRenderer pDiagramRenderer)
 	{
+		aDiagramRenderer = pDiagramRenderer;
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		ToggleGroup toggleGroup = new ToggleGroup();
@@ -261,6 +263,19 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 			}
 		}
 	}
+	
+	private void recreateButtonIcons()
+	{
+		for( javafx.scene.Node item : getItems() )
+		{
+			ButtonBase button = (ButtonBase) item;
+			if( item instanceof SelectableToolButton toolButton && 
+					toolButton.getPrototype().isPresent() )
+			{
+				button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
+			}
+		}
+	}
 
 	@Override
 	public void booleanPreferenceChanged(BooleanPreference pPreference)
@@ -268,6 +283,10 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		if( pPreference == BooleanPreference.showToolHints )
 		{
 			showButtonLabels(UserPreferences.instance().getBoolean(BooleanPreference.showToolHints));
+		}
+		if( pPreference == BooleanPreference.darkMode )
+		{
+			recreateButtonIcons();
 		}
 	}
 }
