@@ -36,7 +36,8 @@ import javafx.scene.paint.Paint;
 public final class Grid
 {
 	public static final Color LIGHT_MODE_GRID_COLOR = Color.rgb(220, 220, 220);
-	public static final Color DARK_MODE_GRID_COLOR = Color.web("#5e6468");
+//	public static final Color DARK_MODE_GRID_COLOR = Color.web("#5e6468");
+	public static final Color DARK_MODE_GRID_COLOR = Color.web("#1f1f1f");
 	private static final double GRID_SIZE = 10;
 	
 	private Grid() {}
