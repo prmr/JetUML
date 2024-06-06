@@ -63,7 +63,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 /**
  * A canvas on which to view diagrams.
@@ -77,7 +76,8 @@ StringPreferenceChangeHandler
 	 * preferred size. */
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
-	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#373e43");
+//	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#1C1C1F");
+	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#070707");
 	private static final int DIAGRAM_PADDING = 4;
 	private static final int CONNECT_THRESHOLD = 8;
 	

@@ -41,7 +41,8 @@ public final class RenderingUtils
 {
 	public static final Color WHITE = Color.WHITE;
 	public static final Color BLACK = Color.BLACK;
-	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1C1C1F");
+//	public static final Color DARK_MODE_FILL_COLOR = Color.web("#373e43");
+	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1f1f1f");
 	public static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	public static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
 	private static final int ARC_SIZE = 20;
@@ -56,7 +57,7 @@ public final class RenderingUtils
 	 * Getter for fill color.
 	 * 
 	 * @return The fill color.
-	 */
+	 */	
 	public static Color getFill()
 	{
 		return aFill;
