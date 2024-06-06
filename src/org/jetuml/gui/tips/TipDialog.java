@@ -52,6 +52,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -249,7 +250,7 @@ public class TipDialog
 			tipVBox.getChildren().add(node);
 		}
 		
-		tipVBox.setAlignment(Pos.CENTER);
+		//tipVBox.setAlignment(Pos.CENTER);
 		
 		return tipVBox;
 	}
@@ -303,20 +304,22 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.TEXT);
 	 */
-	private Text getTextTipElementAsTextNode(TipElement pTipElement) 
+	private Label getTextTipElementAsTextNode(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT);
 		
 		String text = pTipElement.getContent();
-		Text textNode = new Text(text);
-		textNode.wrappingWidthProperty().bind(aTipDisplay.widthProperty().subtract(2 * PADDING + 4 * DEFAULT_NODE_SPACING));
+		Label textNode = new Label(text);
+		textNode.setWrapText(true);
+		textNode.setPrefWidth(570);
+		//textNode.wrappingWidthProperty().bind(aTipDisplay.widthProperty().subtract(2 * PADDING + 4 * DEFAULT_NODE_SPACING));
 		// two times the padding because of the VBox padding, and a bit extra to make up for
 		// other default spacing added between nodes
 		
 		Font textFont = new Font(TEXT_FONT_SIZE);
 		textNode.setFont(textFont);
-		textNode.setLineSpacing(TEXT_LINE_SPACING);
+		//textNode.setLineSpacing(TEXT_LINE_SPACING);
 		
 		return textNode;
 	}
@@ -326,7 +329,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private static ImageView getImageTipElementAsImageView(TipElement pTipElement) 
+	private static HBox getImageTipElementAsImageView(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.IMAGE);
@@ -344,7 +347,11 @@ public class TipDialog
 				// two times the padding because of the VBox padding, and a bit extra to make up for
 				// other default spacing added between nodes
 			}
-			return imageNode;
+			HBox imageContainer = new HBox(imageNode);
+			imageContainer.setAlignment(Pos.CENTER);
+			VBox.setMargin(imageContainer, new Insets(30, 0, 0, 0));
+			return imageContainer;
+			//return imageNode;
 		}
 		catch( IOException e )
 		{
