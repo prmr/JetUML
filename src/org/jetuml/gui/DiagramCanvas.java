@@ -55,6 +55,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
@@ -766,7 +767,8 @@ StringPreferenceChangeHandler
 				bounds.height() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
-		context.setFill(Color.WHITE);
+		context.setFill(RenderingUtils.getCanvasColor());
+		context.fillRect(0, 0, getWidth(), getHeight());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(context);
 		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 

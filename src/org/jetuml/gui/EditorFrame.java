@@ -131,6 +131,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
 			RenderingUtils.setStroke(RenderingUtils.WHITE);
 			RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
+			RenderingUtils.setNoteColor(RenderingUtils.DARK_MODE_NOTE_COLOR);
+			RenderingUtils.setCanvasColor(RenderingUtils.DARK_MODE_CANVAS_COLOR);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -786,7 +788,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 				RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
 				RenderingUtils.setStroke(RenderingUtils.WHITE);
 				RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
-				
+				RenderingUtils.setNoteColor(RenderingUtils.DARK_MODE_NOTE_COLOR);
+				RenderingUtils.setCanvasColor(RenderingUtils.DARK_MODE_CANVAS_COLOR);
 			}
 			else
 			{
@@ -795,6 +798,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 				RenderingUtils.setFill(RenderingUtils.WHITE);
 				RenderingUtils.setStroke(RenderingUtils.BLACK);
 				RenderingUtils.setDropShadow(RenderingUtils.LIGHT_MODE_DROPSHADOW);
+				RenderingUtils.setNoteColor(RenderingUtils.LIGHT_MODE_NOTE_COLOR);
+				RenderingUtils.setCanvasColor(RenderingUtils.WHITE);
 			}
 		}
 	}

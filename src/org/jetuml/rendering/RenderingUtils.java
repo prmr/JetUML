@@ -45,10 +45,15 @@ public final class RenderingUtils
 	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1f1f1f");
 	public static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	public static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
+	public static final Color LIGHT_MODE_NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
+	public static final Color DARK_MODE_NOTE_COLOR = Color.web("#1e3f66");
+	public static final Color DARK_MODE_CANVAS_COLOR = Color.web("#070707");
 	private static final int ARC_SIZE = 20;
 	private static Color aFill = WHITE;
 	private static Color aStroke = BLACK;
 	private static DropShadow aShadow = LIGHT_MODE_DROPSHADOW;
+	private static Color aNoteColor = LIGHT_MODE_NOTE_COLOR;
+	private static Color aCanvasColor = WHITE;
 	
 	private RenderingUtils()
 	{}
@@ -84,7 +89,27 @@ public final class RenderingUtils
 	}
 	
 	/**
-	 * Getter for fill color.
+	 * Getter for note color.
+	 * 
+	 * @return The note color.
+	 */
+	public static Color getNoteColor()
+	{
+		return aNoteColor;
+	}
+	
+	/**
+	 * Getter for canvas color.
+	 * 
+	 * @return The canvas color.
+	 */
+	public static Color getCanvasColor()
+	{
+		return aCanvasColor;
+	}
+	
+	/**
+	 * Setter for fill color.
 	 * 
 	 * @return The fill color.
 	 */
@@ -94,7 +119,7 @@ public final class RenderingUtils
 	}
 	
 	/**
-	 * Getter for stroke color.
+	 * Setter for stroke color.
 	 * 
 	 * @return The stroke color.
 	 */
@@ -104,13 +129,33 @@ public final class RenderingUtils
 	}
 	
 	/**
-	 * Getter for DropShadow.
+	 * Setter for DropShadow.
 	 * 
 	 * @return The DropShadow.
 	 */
 	public static void setDropShadow(DropShadow pShadow)
 	{
 		aShadow = pShadow;
+	}
+	
+	/**
+	 * Setter for note color.
+	 * 
+	 * @return The note color.
+	 */
+	public static void setNoteColor(Color pColor)
+	{
+		aNoteColor = pColor;
+	}
+	
+	/**
+	 * Setter for canvas color.
+	 * 
+	 * @return The canvas color.
+	 */
+	public static void setCanvasColor(Color pColor)
+	{
+		aCanvasColor = pColor;
 	}
 	
 	/**
