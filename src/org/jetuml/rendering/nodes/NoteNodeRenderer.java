@@ -26,6 +26,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -45,7 +46,8 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
-	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
+//	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
+	private static final Color NOTE_COLOR = Color.web("#1e3f66");
 	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	/**
@@ -66,7 +68,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		Node node = (Node) pElement;
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), NOTE_COLOR, true);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), RenderingUtils.getNoteColor(), true);
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(node), Color.WHITE, false);
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), pGraphics, 
 				new Rectangle(node.position().x(), node.position().y(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
