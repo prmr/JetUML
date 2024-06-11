@@ -12,7 +12,7 @@ All of the text rendered in diagrams is done through `StringRenderer` objects.
 `StringRenderer` interfaces with three classes to render text:
 * `UserPreferences`: The singleton _model_ in the Model-View-Controller decomposition for user preferences. User preferences data is stored and managed in this class. `StringRenderer` can retrieve the user font and size from here.
 * `FontMetrics`: A utility class to calculate various font metrics. `StringRenderer` obtains text measurements from `FontMetrics`.
-* `RenderingUtils`: `StringRenderer` delegates the actual rendering of text on the GUI to this class. Thus, it's convenient to think of `StringRenderer` as an entity that gathers all necessary information about a text (its font, alignment, decorations, position on the `Canvas`), calibrates variables based on this information, and let's `RenderingUtils` make the method call to just render the text on the `Canvas`.  
+* `RenderingUtils`: `StringRenderer` delegates the actual rendering of text on the GUI to this class. Thus, it's convenient to think of `StringRenderer` as an entity that gathers all necessary information about a text (its font, alignment, decorations, position on the `Canvas`), calibrates variables based on this information, and passes control to `RenderingUtils` to render the text on the `Canvas`.  
 
 The following class diagram illustrates the design of the font rendering system.
 
@@ -26,7 +26,7 @@ And the following sequence diagram illustrates a scenario where text in a `TypeN
 
 1. A call is made to `StringRenderer` to draw a text by some node or edge renderer. In this case, it is the `TypeNodeRenderer`.
 2. The `StringRenderer` object accesses `UserPreferences` to retrieve the font family and size that the text is to be rendered in. Using this information, and whether the `StringRenderer` object has text decorations bold, and/or italic, the corresponding Font is created.
-3. `GraphicsContext#translate` positions itself on the `Canvas` at the indicated (x, y) coordinate (this is the top-left corner of the bounding rectangle containing the text).
+3. `GraphicsContext#translate` positions itself on the `Canvas` at the indicated (x, y) coordinate, which will be the top-left corner of the rectangle containing the text.
 4. `RenderingUtils#drawText` will render the text in the specified font, taking into account the offset necessary for a specific alignment (e.g. Text aligned at the center will need to be shifted to the the middle, since the `GraphicsContext` is positioned at the top-left corner of the text bounds).
 5. The rest of the sequence diagram will execute if the text needs underlining. Because text is rendered on a `Canvas`, the underline must be drawn using `GraphicsContext`.
 6. A call to `FontMetrics#getDimension` and `FontMetrics#getBaselineOffset` is made to calculate the length and position of the underline.
