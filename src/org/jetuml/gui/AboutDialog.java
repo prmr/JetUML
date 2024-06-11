@@ -93,7 +93,6 @@ public class AboutDialog
 		
 		final int padding = 15;
 		HBox layout = new HBox(padding);
-		//layout.setStyle("-fx-background-color: gainsboro;");
 		layout.setPadding(new Insets(padding));
 		layout.setAlignment(Pos.CENTER_LEFT);
 		

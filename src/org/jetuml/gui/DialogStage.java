@@ -19,7 +19,7 @@ public class DialogStage extends Stage
 	 * Creates the stage for different dialogs.
 	 * Dialogs that use this stage should not change the scene - doing
 	 * so will stop applying the dark theme to dialogs. Instead,
-	 * dialogs can customize the UI by reassigning the root of the scene.
+	 * dialogs can customize the layout by reassigning the root of the scene.
 	 * 
 	 * @param pOwner The main JetUML stage.
 	 */
