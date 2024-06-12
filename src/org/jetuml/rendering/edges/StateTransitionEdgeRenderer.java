@@ -30,10 +30,10 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.ToolGraphics;
@@ -131,7 +131,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Arc arc = (Arc) getShape(pEdge);
 		double width = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
-		pGraphics.setStroke(RenderingUtils.getStroke());
+		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
 		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
 				arc.getLength(), arc.getType());
 		pGraphics.setLineWidth(width);

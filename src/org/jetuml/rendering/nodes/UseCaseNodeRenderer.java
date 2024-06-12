@@ -28,6 +28,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
@@ -64,7 +65,8 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		Rectangle bounds = getBounds(pElement);
-		RenderingUtils.drawOval(pGraphics, bounds.x(), bounds.y(), bounds.width(), bounds.height(), RenderingUtils.getFill(), true);
+		RenderingUtils.drawOval(pGraphics, bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
+				ColorScheme.getTheme().getFillColor(), true);
 		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pGraphics, getBounds(pElement));
 	}
 	
