@@ -151,7 +151,7 @@ public final class ToolGraphics
 	 */
 	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
 	{
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		double width = pGraphics.getLineWidth();
@@ -195,7 +195,7 @@ public final class ToolGraphics
 	 */
 	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill, boolean pShadow)
 	{
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		double width = pGraphics.getLineWidth();
 		Paint fill = pGraphics.getFill();
 		pGraphics.setLineWidth(LINE_WIDTH);
@@ -204,7 +204,7 @@ public final class ToolGraphics
 		
 		if( pShadow )
 		{
-			pGraphics.setEffect(ColorScheme.getTheme().getDropShadow());
+			pGraphics.setEffect(ColorScheme.getScheme().getDropShadow());
 		}
 		pGraphics.fill();
 		pGraphics.stroke();

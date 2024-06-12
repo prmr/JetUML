@@ -239,11 +239,11 @@ StringPreferenceChangeHandler
 	public void paintPanel()
 	{
 		GraphicsContext context = getGraphicsContext2D();
-		context.setFill(ColorScheme.getTheme().getCanvasColor());
+		context.setFill(ColorScheme.getScheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), ColorScheme.getTheme().getGridColor());
+			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), ColorScheme.getScheme().getGridColor());
 		}
 		aDiagramBuilder.renderer().draw(context);
 		synchronizeSelectionModel();
@@ -750,7 +750,7 @@ StringPreferenceChangeHandler
 				bounds.height() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
-		context.setFill(ColorScheme.getTheme().getCanvasColor());
+		context.setFill(ColorScheme.getScheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(context);

@@ -92,6 +92,10 @@ public class FontDialog
 				aStage.close();
 			}
 		});
+		aStage.setOnCloseRequest(pEvent ->
+		{
+			restoreUserSettings();
+		});
 	}
 	
 	private Pane createRoot() 
