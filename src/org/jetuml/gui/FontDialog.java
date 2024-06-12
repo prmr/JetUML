@@ -35,7 +35,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -45,7 +44,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -67,7 +65,6 @@ public class FontDialog
 	private final GridPane aLayout = new GridPane();
 	private final ComboBox<String> aFonts = new ComboBox<>(FXCollections.observableArrayList(FONT_FAMILIES));
 	private final ComboBox<Integer> aSizes = new ComboBox<>(FXCollections.observableArrayList(FONT_SIZES));
-	private final Label aPreview = new Label(RESOURCES.getString("dialog.font.preview"));
 	private final String aUserFamily = getCurrentFont();
 	private final int aUserSize = getCurrentFontSize();
 	
