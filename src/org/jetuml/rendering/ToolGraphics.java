@@ -23,6 +23,7 @@ package org.jetuml.rendering;
 
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -150,7 +151,7 @@ public final class ToolGraphics
 	 */
 	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
 	{
-		pGraphics.setStroke(RenderingUtils.getStroke());
+		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		double width = pGraphics.getLineWidth();
@@ -194,7 +195,7 @@ public final class ToolGraphics
 	 */
 	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill, boolean pShadow)
 	{
-		pGraphics.setStroke(RenderingUtils.getStroke());
+		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
 		double width = pGraphics.getLineWidth();
 		Paint fill = pGraphics.getFill();
 		pGraphics.setLineWidth(LINE_WIDTH);
@@ -203,7 +204,7 @@ public final class ToolGraphics
 		
 		if( pShadow )
 		{
-			pGraphics.setEffect(RenderingUtils.getDropShadow());
+			pGraphics.setEffect(ColorScheme.getTheme().getDropShadow());
 		}
 		pGraphics.fill();
 		pGraphics.stroke();

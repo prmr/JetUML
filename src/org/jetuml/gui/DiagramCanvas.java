@@ -55,7 +55,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.Grid;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
@@ -77,8 +76,6 @@ StringPreferenceChangeHandler
 	 * preferred size. */
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
-//	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#1C1C1F");
-	private static final Color DARK_MODE_CANVAS_COLOR = Color.web("#070707");
 	private static final int DIAGRAM_PADDING = 4;
 	private static final int CONNECT_THRESHOLD = 8;
 	
@@ -242,25 +239,11 @@ StringPreferenceChangeHandler
 	public void paintPanel()
 	{
 		GraphicsContext context = getGraphicsContext2D();
-		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
-		{
-			context.setFill(DARK_MODE_CANVAS_COLOR);
-		}
-		else
-		{
-			context.setFill(Color.WHITE);
-		} 
+		context.setFill(ColorScheme.getTheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
-			{
-				Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), Grid.DARK_MODE_GRID_COLOR);
-			}
-			else
-			{
-				Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), Grid.LIGHT_MODE_GRID_COLOR);
-			}
+			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), ColorScheme.getTheme().getGridColor());
 		}
 		aDiagramBuilder.renderer().draw(context);
 		synchronizeSelectionModel();
@@ -767,7 +750,7 @@ StringPreferenceChangeHandler
 				bounds.height() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
-		context.setFill(RenderingUtils.getCanvasColor());
+		context.setFill(ColorScheme.getTheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(context);

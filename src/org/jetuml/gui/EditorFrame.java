@@ -53,7 +53,6 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
-import org.jetuml.rendering.RenderingUtils;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -128,11 +127,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			getStylesheets().add(aDarkModeURL);
 			aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
-			RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
-			RenderingUtils.setStroke(RenderingUtils.WHITE);
-			RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
-			RenderingUtils.setNoteColor(RenderingUtils.DARK_MODE_NOTE_COLOR);
-			RenderingUtils.setCanvasColor(RenderingUtils.DARK_MODE_CANVAS_COLOR);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -785,21 +779,11 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			{
 				getStylesheets().add(aDarkModeURL);
 				aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
-				RenderingUtils.setFill(RenderingUtils.DARK_MODE_FILL_COLOR);
-				RenderingUtils.setStroke(RenderingUtils.WHITE);
-				RenderingUtils.setDropShadow(RenderingUtils.DARK_MODE_DROPSHADOW);
-				RenderingUtils.setNoteColor(RenderingUtils.DARK_MODE_NOTE_COLOR);
-				RenderingUtils.setCanvasColor(RenderingUtils.DARK_MODE_CANVAS_COLOR);
 			}
 			else
 			{
 				getStylesheets().remove(aDarkModeURL);
 				aDialogStage.getScene().getStylesheets().remove(aDarkModeURL);
-				RenderingUtils.setFill(RenderingUtils.WHITE);
-				RenderingUtils.setStroke(RenderingUtils.BLACK);
-				RenderingUtils.setDropShadow(RenderingUtils.LIGHT_MODE_DROPSHADOW);
-				RenderingUtils.setNoteColor(RenderingUtils.LIGHT_MODE_NOTE_COLOR);
-				RenderingUtils.setCanvasColor(RenderingUtils.WHITE);
 			}
 		}
 	}
