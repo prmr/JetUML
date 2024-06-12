@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 public enum ColorScheme 
 {
 	LIGHT(Color.WHITE, Color.rgb(220, 220, 220), Color.WHITE, Color.BLACK, Color.color(0.9f, 0.9f, 0.6f), Color.LIGHTGRAY), 
-	DARK(Color.web("#070707"), Color.web("#1f1f1f"), Color.web("#1f1f1f"), Color.WHITE, Color.web("#1e3f66")/*Color.DARKGOLDENROD*/, 
+	DARK(Color.rgb(7, 7, 7), Color.rgb(39, 39, 39), Color.rgb(31, 31, 31), Color.WHITE, Color.rgb(30, 63, 102), 
 			Color.TRANSPARENT);
 
 	private final Color aCanvas;
