@@ -7,7 +7,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
 /**
- * 
+ * An enum that defines two color schemes, Light and Dark,
+ * for the Canvas and the elements inside the Canvas.
  */
 public enum ColorScheme 
 {
@@ -82,7 +83,7 @@ public enum ColorScheme
 	/**
 	 * @return The color scheme for the user UI theme.
 	 */
-	public static ColorScheme getTheme()
+	public static ColorScheme getScheme()
 	{
 		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
 		{

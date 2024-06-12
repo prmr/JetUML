@@ -91,10 +91,10 @@ public final class RenderingUtils
 		Paint oldFill = pGraphics.getFill();
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setFill(pFill);
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		if( pShadow )
 		{
-			pGraphics.setEffect(ColorScheme.getTheme().getDropShadow());
+			pGraphics.setEffect(ColorScheme.getScheme().getDropShadow());
 		}
 		pGraphics.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
@@ -114,9 +114,9 @@ public final class RenderingUtils
 		assert pGraphics != null && pRectangle != null;
 		Paint oldFill = pGraphics.getFill();
 		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.setFill(ColorScheme.getTheme().getFillColor());
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
-		pGraphics.setEffect(ColorScheme.getTheme().getDropShadow());
+		pGraphics.setFill(ColorScheme.getScheme().getFillColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
+		pGraphics.setEffect(ColorScheme.getScheme().getDropShadow());
 		pGraphics.fillRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
 				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE );
 		pGraphics.setEffect(null);
@@ -163,9 +163,9 @@ public final class RenderingUtils
 		assert pGraphics != null && pRectangle != null;
 		Paint oldFill = pGraphics.getFill();
 		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.setFill(ColorScheme.getTheme().getFillColor());
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
-		pGraphics.setEffect(ColorScheme.getTheme().getDropShadow());
+		pGraphics.setFill(ColorScheme.getScheme().getFillColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
+		pGraphics.setEffect(ColorScheme.getScheme().getDropShadow());
 		pGraphics.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		pGraphics.setEffect(null);
 		pGraphics.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
@@ -187,7 +187,7 @@ public final class RenderingUtils
 	{
 		Paint oldStroke = pGraphics.getStroke();
 		double[] oldDash = pGraphics.getLineDashes();
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
 		pGraphics.setStroke(oldStroke);
@@ -207,7 +207,7 @@ public final class RenderingUtils
 	{
 		Font font = pGraphics.getFont();
 		pGraphics.setFont(pFont);
-		pGraphics.setFill(ColorScheme.getTheme().getStrokeColor()); // The fill color for the font is the stroke color.
+		pGraphics.setFill(ColorScheme.getScheme().getStrokeColor()); // The fill color for the font is the stroke color.
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);

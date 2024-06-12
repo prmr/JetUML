@@ -131,7 +131,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Arc arc = (Arc) getShape(pEdge);
 		double width = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
-		pGraphics.setStroke(ColorScheme.getTheme().getStrokeColor());
+		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
 				arc.getLength(), arc.getType());
 		pGraphics.setLineWidth(width);
