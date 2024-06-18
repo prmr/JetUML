@@ -55,7 +55,7 @@ public class NotificationTimeDialog
 	/**
 	 * Creates a new dialog.
 	 * 
-	 * @param pDialogStage The stage that owns this stage.
+	 * @param pDialogStage The stage that owns this dialog.
 	 */
 	public NotificationTimeDialog( Stage pDialogStage )
 	{

@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 
 /**
  * An enum that defines two color schemes, Light and Dark,
- * for the Canvas and the elements inside the Canvas.
+ * for the Canvas and diagram elements.
  */
 public enum ColorScheme 
 {

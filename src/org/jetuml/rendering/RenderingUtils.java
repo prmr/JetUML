@@ -24,7 +24,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -40,21 +39,7 @@ import javafx.scene.text.Font;
  */
 public final class RenderingUtils
 {
-	public static final Color WHITE = Color.WHITE;
-	public static final Color BLACK = Color.BLACK;
-//	public static final Color DARK_MODE_FILL_COLOR = Color.web("#373e43");
-	public static final Color DARK_MODE_FILL_COLOR = Color.web("#1f1f1f");
-	public static final DropShadow LIGHT_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
-	public static final DropShadow DARK_MODE_DROPSHADOW = new DropShadow(3, 3, 3, Color.web("#2f2f34"));
-	public static final Color LIGHT_MODE_NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
-	public static final Color DARK_MODE_NOTE_COLOR = Color.web("#1e3f66");
-	public static final Color DARK_MODE_CANVAS_COLOR = Color.web("#070707");
 	private static final int ARC_SIZE = 20;
-//	private static Color aFill = ColorScheme.LIGHT.getFillColor();
-//	private static Color aStroke = ColorScheme.LIGHT.getStrokeColor();
-//	private static DropShadow aShadow = ColorScheme.LIGHT.getDropShadow();
-//	private static Color aNoteColor = ColorScheme.LIGHT.getNoteColor();
-//	private static Color aCanvasColor = ColorScheme.LIGHT.getCanvasColor();
 	
 	private RenderingUtils()
 	{}

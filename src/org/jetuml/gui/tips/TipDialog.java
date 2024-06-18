@@ -114,7 +114,7 @@ public class TipDialog
 
 		//Removing the focus highlight on the ScrollPane
 		aTipDisplay.setStyle("-fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;" + 
-							 "-fx-background-insets: 0, 1;");
+							 "-fx-background-insets: 0, 1, 2;");
 		
 		aTipDisplay.setFitToWidth(true);
 		layout.setCenter(aTipDisplay);
