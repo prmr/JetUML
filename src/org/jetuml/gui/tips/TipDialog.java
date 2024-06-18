@@ -71,9 +71,9 @@ public class TipDialog
 	private static final double TITLE_FONT_SIZE = 23;
 	private static final double TEXT_FONT_SIZE = 13.5;
 	private static final double TEXT_LINE_SPACING = 2;
+	private static final double TEXT_WIDTH = 570;
+	private static final Insets IMAGE_PADDING = new Insets(25, 0, 25, 0);
 	private static final double DEFAULT_NODE_SPACING = 10;
-	private static final String NEXT_TIP_BUTTON_STYLE = "next-tip-button";
-	private static final String BUTTON_STYLE = "tip-menu-button";
 	
 	private Stage aStage;
 	private Tip aCurrentTip;
@@ -89,13 +89,13 @@ public class TipDialog
 	 */
 	public TipDialog(Stage pDialogStage)
 	{
+		aStage = pDialogStage;
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
 		aShowTipsOnStartupCheckBox = new CheckBox(RESOURCES.getString("dialog.tips.checkbox.text"));
 		aShowTipsOnStartupCheckBox.setSelected(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips));
 		aShowTipsOnStartupCheckBox.setOnAction(e -> UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, 
 				aShowTipsOnStartupCheckBox.isSelected()));
-		aStage = pDialogStage;
 	}
 	
 	/**
@@ -110,25 +110,19 @@ public class TipDialog
 	
 	private void prepareStage() 
 	{
-		//aStage.setResizable(true);
-//		aStage.setMinWidth(WINDOW_MIN_WIDTH);
-//		aStage.setWidth(WINDOW_PREF_WIDTH);
-//		aStage.setMinHeight(WINDOW_MIN_HEIGHT);
-//		aStage.setHeight(WINDOW_PREF_HEIGHT);
 		aStage.setTitle(RESOURCES.getString("dialog.tips.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		aStage.getScene().setRoot(createScene());
-		//aStage.getScene().getStylesheets().add(getClass().getResource("TipDialog.css").toExternalForm());
+		aStage.getScene().setRoot(createRoot());
 		aTipDisplay.requestFocus();
 	}
 	
-	private Pane createScene() 
+	private Pane createRoot() 
 	{
 		BorderPane layout = new BorderPane();
 
 		//Removing the focus highlight on the ScrollPane
 		aTipDisplay.setStyle("-fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;" + 
-							 "-fx-background-insets: 0, 1, 2;");
+							 "-fx-background-insets: 0, 1;");
 		
 		aTipDisplay.setFitToWidth(true);
 		layout.setCenter(aTipDisplay);
@@ -140,13 +134,10 @@ public class TipDialog
 		setUserPrefNextTip(aViewedTips.getNewNextTipOfTheDayId());
 		setupNewTip(tip);
 		
-		aStage.requestFocus();
-		
 		layout.setMinWidth(WINDOW_MIN_WIDTH);
-		//layout.setWidth(WINDOW_PREF_WIDTH);
+		layout.setMaxWidth(WINDOW_PREF_WIDTH);
 		layout.setMinHeight(WINDOW_MIN_HEIGHT);
-		//layout.setHeight(WINDOW_PREF_HEIGHT);
-		//Scene tipDialogScene = new Scene(layout, WINDOW_PREF_WIDTH, WINDOW_PREF_HEIGHT);
+		layout.setMaxHeight(WINDOW_PREF_HEIGHT);
 		
 		return layout;
 	}
@@ -167,24 +158,17 @@ public class TipDialog
 	{
 		HBox tipMenu = new HBox();
 		tipMenu.setPadding(new Insets(PADDING));
-		//tipMenu.setStyle("-fx-background-color: slategrey;");
-		
-		BorderStroke bs = new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID,
-										   CornerRadii.EMPTY, BorderWidths.DEFAULT);
-		tipMenu.setBorder(new Border(bs));
+		tipMenu.getStyleClass().add("tip-menu");
 		return tipMenu;
 	}
 	
 	private HBox createTipMenuButtons()
 	{
 		Button nextTipButton = new Button(RESOURCES.getString("dialog.tips.button.next.text"));
-		nextTipButton.getStyleClass().add(NEXT_TIP_BUTTON_STYLE);
-		
+
 		Button previousTipButton = new Button(RESOURCES.getString("dialog.tips.button.previous.text"));
-		previousTipButton.getStyleClass().add(BUTTON_STYLE);
 		
 		Button closeButton = new Button(RESOURCES.getString("dialog.tips.button.close.text"));
-		closeButton.getStyleClass().add(BUTTON_STYLE);
 		
 		nextTipButton.setOnAction(e -> 
 		{ 
@@ -250,8 +234,6 @@ public class TipDialog
 			tipVBox.getChildren().add(node);
 		}
 		
-		//tipVBox.setAlignment(Pos.CENTER);
-		
 		return tipVBox;
 	}
 	
@@ -312,14 +294,11 @@ public class TipDialog
 		String text = pTipElement.getContent();
 		Label textNode = new Label(text);
 		textNode.setWrapText(true);
-		textNode.setPrefWidth(570);
-		//textNode.wrappingWidthProperty().bind(aTipDisplay.widthProperty().subtract(2 * PADDING + 4 * DEFAULT_NODE_SPACING));
-		// two times the padding because of the VBox padding, and a bit extra to make up for
-		// other default spacing added between nodes
+		textNode.setPrefWidth(TEXT_WIDTH);
 		
 		Font textFont = new Font(TEXT_FONT_SIZE);
 		textNode.setFont(textFont);
-		//textNode.setLineSpacing(TEXT_LINE_SPACING);
+		textNode.setLineSpacing(TEXT_LINE_SPACING);
 		
 		return textNode;
 	}
@@ -349,7 +328,7 @@ public class TipDialog
 			}
 			HBox imageContainer = new HBox(imageNode);
 			imageContainer.setAlignment(Pos.CENTER);
-			VBox.setMargin(imageContainer, new Insets(30, 0, 0, 0));
+			VBox.setMargin(imageContainer, IMAGE_PADDING);
 			return imageContainer;
 			//return imageNode;
 		}

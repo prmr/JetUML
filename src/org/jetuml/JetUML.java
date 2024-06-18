@@ -102,6 +102,7 @@ public final class JetUML extends Application
 		}
 		
 		DialogStage dialogStage = new DialogStage(pStage);
+		dialogStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 		EditorFrame editor = new EditorFrame(pStage, dialogStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
@@ -109,7 +110,6 @@ public final class JetUML extends Application
 		NotificationService.instance().setMainStage(pStage);
 		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
-
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
