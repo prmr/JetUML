@@ -12,6 +12,10 @@
     -fx-text-fill: lightgray;
 }
 
+.context-menu {
+    -fx-border-color: derive(-fx-base, 60%);
+}
+
 .separator .line 
 { 
     -fx-background-color: #3C3C3C;
@@ -21,7 +25,7 @@
 
 .scroll-bar
 {
-    -fx-background-color: derive(-fx-base, 45%)
+    -fx-background-color: derive(-fx-base, 45%);
 }
 
 .button:default 
