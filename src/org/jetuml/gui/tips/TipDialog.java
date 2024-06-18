@@ -39,20 +39,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -225,7 +217,7 @@ public class TipDialog
 		
 		List<TipElement> tipElements = pTip.getElements();
 		
-		Node titleNode = getTipTitleAsTextNode(pTip);
+		Node titleNode = getTipTitleAsLabel(pTip);
 		tipVBox.getChildren().add(titleNode);
 		
 		for(TipElement tipElement : tipElements)
@@ -242,7 +234,7 @@ public class TipDialog
 	 * @return Formatted Node containing the tip's title
 	 * @pre pTip!= null
 	 */
-	private static Label getTipTitleAsTextNode(Tip pTip)
+	private static Label getTipTitleAsLabel(Tip pTip)
 	{
 		assert pTip != null;
 		
@@ -273,11 +265,14 @@ public class TipDialog
 		Media media = pTipElement.getMedia();
 		if(media.equals(Media.TEXT))
 		{
-			return this.getTextTipElementAsTextNode(pTipElement);
+			return this.getTextTipElementAsLabel(pTipElement);
 		}
 		else // media.equals(Media.IMAGE) by @pre
 		{
-			return getImageTipElementAsImageView(pTipElement);
+			HBox imageContainer = new HBox(getImageTipElementAsImageView(pTipElement));
+			imageContainer.setAlignment(Pos.CENTER);
+			VBox.setMargin(imageContainer, IMAGE_PADDING);
+			return imageContainer;
 		}
 	}
 	
@@ -286,7 +281,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.TEXT);
 	 */
-	private Label getTextTipElementAsTextNode(TipElement pTipElement) 
+	private Label getTextTipElementAsLabel(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT);
@@ -308,7 +303,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private static HBox getImageTipElementAsImageView(TipElement pTipElement) 
+	private static ImageView getImageTipElementAsImageView(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.IMAGE);
@@ -326,11 +321,7 @@ public class TipDialog
 				// two times the padding because of the VBox padding, and a bit extra to make up for
 				// other default spacing added between nodes
 			}
-			HBox imageContainer = new HBox(imageNode);
-			imageContainer.setAlignment(Pos.CENTER);
-			VBox.setMargin(imageContainer, IMAGE_PADDING);
-			return imageContainer;
-			//return imageNode;
+			return imageNode;
 		}
 		catch( IOException e )
 		{
