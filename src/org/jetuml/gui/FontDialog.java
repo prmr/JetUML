@@ -71,7 +71,7 @@ public class FontDialog
 	/**
 	 * Creates a new font dialog.
 	 * 
-	 * @param pOwner The stage that owns this stage.
+	 * @param pDialogStage The stage that owns this dialog.
 	 */
 	public FontDialog( Stage pDialogStage )
 	{

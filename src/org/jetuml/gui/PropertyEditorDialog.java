@@ -53,7 +53,7 @@ public class PropertyEditorDialog
 	/**
 	 * Creates a new dialog.
 	 * 
-	 * @param pDialogStage The stage that owns this stage.
+	 * @param pDialogStage The stage that owns this dialog.
 	 * @param pElement The element to edit with this dialog.
 	 * @param pPropertyChangeListener A callback to run whenever a property changes.
 	 */

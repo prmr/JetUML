@@ -110,6 +110,7 @@ public final class JetUML extends Application
 		NotificationService.instance().setMainStage(pStage);
 		
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
+		
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
