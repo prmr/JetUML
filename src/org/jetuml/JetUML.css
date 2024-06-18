@@ -31,3 +31,10 @@
 	-fx-alignment: center;	
 	-fx-padding: 0 0 10px 0;
 }
+
+.tip-menu
+{
+	-fx-background-color: gainsboro;
+	-fx-border-color: darkgrey; 
+	-fx-border-style: solid;
+}
