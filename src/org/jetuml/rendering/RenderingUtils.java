@@ -24,7 +24,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
@@ -83,7 +82,6 @@ public final class RenderingUtils
 		pGraphics.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.restore();
-		pGraphics.setEffect(null);
 	}
 	
 	/**
