@@ -1,0 +1,7 @@
+{ 
+  "title": "Dark Mode",
+  "content": [ 
+    { "text": "You can turn [on/off] dark mode by navigating to the menu command View | Dark Mode." },
+    { "image": "tip38.png"}
+  ]
+}
