@@ -46,6 +46,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
+	private static final int TOP_MARGIN = 3;
 	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	/**
@@ -69,7 +70,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), ColorScheme.getScheme().getNoteColor(), true);
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(node), Color.WHITE, false);
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), pGraphics, 
-				new Rectangle(node.position().x(), node.position().y(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
+				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	private Path createNotePath(Node pNode)
