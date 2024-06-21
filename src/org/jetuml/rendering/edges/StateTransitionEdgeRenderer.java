@@ -40,7 +40,6 @@ import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.MoveTo;
@@ -81,7 +80,6 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		if(isSelfEdge(edge))
 		{
-			pGraphics.setStroke(Color.BLACK);
 			drawSelfEdge(edge, pGraphics);
 		}
 		else 
@@ -128,13 +126,13 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	
 	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)
 	{
+		pGraphics.save();
 		Arc arc = (Arc) getShape(pEdge);
-		double width = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
 		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
 				arc.getLength(), arc.getType());
-		pGraphics.setLineWidth(width);
+		pGraphics.restore();
 	}
 	
 	private Rectangle getLabelBounds(StateTransitionEdge pEdge)

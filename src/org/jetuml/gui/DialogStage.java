@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 
 /**
  * A Stage that is to be shared by different dialogs.
- * Different dialogs sharing a common stage simplifies applying 
- * the dark mode theme to the dialogs. There is only one DialogStage
- * in the program's life cycle.
+ * Different dialogs sharing a common stage simplifies 
+ * applying the dark mode theme to the dialogs. 
+ * There should only be one DialogStage in the program's life cycle.
  */
 public class DialogStage extends Stage
 {		
@@ -20,6 +20,8 @@ public class DialogStage extends Stage
 	 * Dialogs that use this stage should not change the scene - doing
 	 * so will stop applying the dark theme to dialogs. Instead,
 	 * dialogs can customize the layout by reassigning the root of the scene.
+	 * Making modifications to the stage should be done with caution, since 
+	 * changes, which are undesirable, may persist across different dialogs.
 	 * 
 	 * @param pOwner The main JetUML stage.
 	 */

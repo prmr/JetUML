@@ -142,9 +142,7 @@ public final class StringRenderer
 	 */
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		final VPos oldVPos = pGraphics.getTextBaseline();
-		final TextAlignment oldAlign = pGraphics.getTextAlign();
-		
+		pGraphics.save();
 		pGraphics.setTextAlign(getTextAlignment());
 		pGraphics.setTextBaseline(getTextBaseline());
 		
@@ -189,9 +187,7 @@ public final class StringRenderer
 			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
-		pGraphics.translate(-pRectangle.x(), -pRectangle.y());
-		pGraphics.setTextBaseline(oldVPos);
-		pGraphics.setTextAlign(oldAlign);
+		pGraphics.restore();
 	}
 	
 	/**

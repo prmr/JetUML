@@ -57,14 +57,12 @@ public final class ToolGraphics
 	 */
 	private static void drawHandle(GraphicsContext pGraphics, int pX, int pY)
 	{
-		Paint oldStroke = pGraphics.getStroke();
-		Paint oldFill = pGraphics.getFill();
+		pGraphics.save();
 		pGraphics.setStroke(SELECTION_COLOR);
 		pGraphics.strokeRect((int)(pX - HANDLE_SIZE / 2.0) + 0.5, (int)(pY - HANDLE_SIZE / 2.0)+ 0.5, HANDLE_SIZE, HANDLE_SIZE);
 		pGraphics.setFill(SELECTION_FILL_COLOR);
 		pGraphics.fillRect((int)(pX - HANDLE_SIZE / 2.0)+0.5, (int)(pY - HANDLE_SIZE / 2.0)+0.5, HANDLE_SIZE, HANDLE_SIZE);
-		pGraphics.setStroke(oldStroke);
-		pGraphics.setFill(oldFill);
+		pGraphics.restore();
 	}
 	
 	/**
@@ -104,10 +102,10 @@ public final class ToolGraphics
 	 */
 	public static void drawRubberband(GraphicsContext pGraphics, Line pLine)
 	{
-		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.save();
 		pGraphics.setStroke(SELECTION_FILL_COLOR);
 		strokeSharpLine(pGraphics, pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
-		pGraphics.setStroke(oldStroke);
+		pGraphics.restore();
 	}
 	
 	/**
@@ -151,15 +149,13 @@ public final class ToolGraphics
 	 */
 	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
 	{
+		pGraphics.save();
 		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
-		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
-		double width = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
 		applyPath(pGraphics, pPath);
 		pGraphics.stroke();
-		pGraphics.setLineDashes(oldDash);
-		pGraphics.setLineWidth(width);
+		pGraphics.restore();
 	}
 	
 	private static void applyPath(GraphicsContext pGraphics, Path pPath)
@@ -195,9 +191,8 @@ public final class ToolGraphics
 	 */
 	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill, boolean pShadow)
 	{
+		pGraphics.save();
 		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
-		double width = pGraphics.getLineWidth();
-		Paint fill = pGraphics.getFill();
 		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.setFill(pFill);
 		applyPath(pGraphics, pPath);
@@ -208,8 +203,6 @@ public final class ToolGraphics
 		}
 		pGraphics.fill();
 		pGraphics.stroke();
-		pGraphics.setLineWidth(width);
-		pGraphics.setFill(fill);
-		pGraphics.setEffect(null);
+		pGraphics.restore();
 	}
 }
