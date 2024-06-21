@@ -266,6 +266,10 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		}
 	}
 	
+	/**
+	 * Recreates the tool bar button and pop-up menu icons 
+	 * when turning dark mode on or off.
+	 */
 	private void recreateButtonIcons()
 	{
 		List<Node> toolBarItems = getItems();

@@ -243,7 +243,7 @@ StringPreferenceChangeHandler
 		context.fillRect(0, 0, getWidth(), getHeight());
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()), ColorScheme.getScheme().getGridColor());
+			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
 		aDiagramBuilder.renderer().draw(context);
 		synchronizeSelectionModel();

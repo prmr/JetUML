@@ -87,7 +87,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	
 	private final Stage aMainStage;
 	private final Stage aDialogStage;
-	private final String aDarkModeURL = getClass().getResource("DarkMode.css").toExternalForm();
+	private final String aDarkModeCSSPath = getClass().getResource("DarkMode.css").toExternalForm();
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
@@ -96,7 +96,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
 	 * @param pMainStage The main stage used by the UMLEditor
-	 * @param pOpenWith An optional diagram to open the application with.
+	 * @param pDialogStage The stage for all dialogs.
 	 */
 	public EditorFrame(Stage pMainStage, Stage pDialogStage) 
 	{
@@ -125,8 +125,8 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
 		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
 		{
-			getStylesheets().add(aDarkModeURL);
-			aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
+			getStylesheets().add(aDarkModeCSSPath);
+			aDialogStage.getScene().getStylesheets().add(aDarkModeCSSPath);
 		}
 		
 		setOnKeyPressed(e -> 
@@ -766,7 +766,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	{
 		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
 		{
-			pAlert.getDialogPane().getStylesheets().add(aDarkModeURL);
+			pAlert.getDialogPane().getStylesheets().add(aDarkModeCSSPath);
 		}
 	}
 	
@@ -777,13 +777,13 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			if( UserPreferences.instance().getBoolean(pPreference) )
 			{
-				getStylesheets().add(aDarkModeURL);
-				aDialogStage.getScene().getStylesheets().add(aDarkModeURL);
+				getStylesheets().add(aDarkModeCSSPath);
+				aDialogStage.getScene().getStylesheets().add(aDarkModeCSSPath);
 			}
 			else
 			{
-				getStylesheets().remove(aDarkModeURL);
-				aDialogStage.getScene().getStylesheets().remove(aDarkModeURL);
+				getStylesheets().remove(aDarkModeCSSPath);
+				aDialogStage.getScene().getStylesheets().remove(aDarkModeCSSPath);
 			}
 		}
 	}

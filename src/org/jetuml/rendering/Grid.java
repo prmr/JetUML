@@ -24,10 +24,9 @@ package org.jetuml.rendering;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * A grid to which points and rectangles can be "snapped". The
@@ -44,10 +43,10 @@ public final class Grid
      * @param pGraphics the graphics context
      * @param pBounds the bounding rectangle
      */
-	public static void draw(GraphicsContext pGraphics, Rectangle pBounds, Color pColor)
+	public static void draw(GraphicsContext pGraphics, Rectangle pBounds)
 	{
-		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.setStroke(pColor);
+		pGraphics.save();
+		pGraphics.setStroke(ColorScheme.getScheme().getGridColor());
 		int x1 = pBounds.x();
 		int y1 = pBounds.y();
 		int x2 = pBounds.maxX();
@@ -60,7 +59,7 @@ public final class Grid
 		{
 			ToolGraphics.strokeSharpLine(pGraphics, x1, y, x2, y);
 		}
-		pGraphics.setStroke(oldStroke);
+		pGraphics.restore();
 	}
 
 	

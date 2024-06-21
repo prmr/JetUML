@@ -84,17 +84,10 @@ public class FontDialog
 	{
 		aStage.setTitle(RESOURCES.getString("dialog.font.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
-		{
-			if( pEvent.getCode() == KeyCode.ESCAPE ) 
-			{
-				restoreUserSettings();
-				aStage.close();
-			}
-		});
 		aStage.setOnCloseRequest(pEvent ->
 		{
 			restoreUserSettings();
+			aStage.setOnCloseRequest(null); // So the handler does not persist across different dialogs.
 		});
 	}
 	
@@ -103,9 +96,18 @@ public class FontDialog
 		aLayout.setHgap(HSPACE);
 		aLayout.setVgap(VSPACE);
 		aLayout.setPadding(new Insets(SPACING));
+		aLayout.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
+		{
+			if( pEvent.getCode() == KeyCode.ESCAPE ) 
+			{
+				restoreUserSettings();
+			}
+		});
+		
 		createFont();
 		createSize();
 		createButton();
+		
 		return aLayout;
 	}
 	
