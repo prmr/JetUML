@@ -25,7 +25,7 @@ In JetUML, the CSS file is `DarkMode.css`, and it is applied to the scene of the
 }
 ```
 
-CSS style classes can be implemented in two ways, and both are used in `DarkMode.css`. One way is to use predefined JavaFX names mapped to CSS names. For instance, the `root` style class and its properties with the prefix `-fx-` are predefined JavaFX names derived from CSS names, and together, they provide the overall default colors for a node. Simply defining the style class and adding the stylesheet is enough. The other way is to define a custom style class. This requires an extra step, and the style class needs to be added by calling `Node#getStyleClass().add(String). 
+CSS style classes can be implemented in two ways, and both are used in `DarkMode.css`. One way is to use predefined JavaFX names mapped to CSS names. For instance, the `root` style class and its properties with the prefix `-fx-` are predefined JavaFX names derived from CSS names, and together, they provide the overall default colors for a node. Simply defining the style class and adding the stylesheet is enough. The other way is to define a custom style class. This requires an extra step, and the style class needs to be added by calling `Node#getStyleClass().add(String)` on the `Node` which requires the specific styling. 
 
 ### Canvas and Diagram Elements
 
@@ -52,7 +52,9 @@ public enum ColorScheme
 ```
 
 The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is used to render text in diagrams:
+
 ![JetUML Sequence Diagram](DarkMode.sequence.png)
+
 
 1. A StringRenderer object calls RenderingUtils#drawText. 
 2. The attributes of the GraphicsContext is saved.

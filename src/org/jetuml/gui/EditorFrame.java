@@ -123,11 +123,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		showWelcomeTabIfNecessary();
 		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
-		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
-		{
-			getStylesheets().add(aDarkModeCSSPath);
-			aDialogStage.getScene().getStylesheets().add(aDarkModeCSSPath);
-		}
 		
 		setOnKeyPressed(e -> 
 		{
@@ -316,7 +311,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new DeserializationErrorAlert(exception);
 			alert.initOwner(aMainStage);
-			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -438,7 +432,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
-			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -467,7 +460,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
-			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -506,7 +498,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
-			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -552,7 +543,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
-			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -624,7 +614,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
-			applyDarkTheme(alert);
 			alert.showAndWait();
 		}
 	}
@@ -686,7 +675,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.exit.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
-			applyDarkTheme(alert);
 			alert.showAndWait();
 
 			if(alert.getResult() == ButtonType.YES) 
@@ -762,14 +750,6 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		showWelcomeTabIfNecessary();
 	}
 	
-	private void applyDarkTheme(Alert pAlert)
-	{
-		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
-		{
-			pAlert.getDialogPane().getStylesheets().add(aDarkModeCSSPath);
-		}
-	}
-	
 	@Override
 	public void booleanPreferenceChanged(BooleanPreference pPreference)
 	{
@@ -777,12 +757,12 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		{
 			if( UserPreferences.instance().getBoolean(pPreference) )
 			{
-				getStylesheets().add(aDarkModeCSSPath);
+				getScene().getStylesheets().add(aDarkModeCSSPath);
 				aDialogStage.getScene().getStylesheets().add(aDarkModeCSSPath);
 			}
 			else
 			{
-				getStylesheets().remove(aDarkModeCSSPath);
+				getScene().getStylesheets().remove(aDarkModeCSSPath);
 				aDialogStage.getScene().getStylesheets().remove(aDarkModeCSSPath);
 			}
 		}
