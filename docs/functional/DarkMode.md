@@ -50,8 +50,8 @@ public enum ColorScheme
 	...
 }
 ```
-The following sequence diagram shows a common use case of `ColorScheme` and `GraphicsContext` to render text in diagrams:
-![JetUML Class Diagram](properties1o.png)
+The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is used to render text in diagrams:
+![JetUML Sequence Diagram](DarkMode.sequence.png)
 1. A StringRenderer object calls RenderingUtils#drawText. 
 2. The attributes of the GraphicsContext is saved.
 3. The font is set
@@ -59,13 +59,11 @@ The following sequence diagram shows a common use case of `ColorScheme` and `Gra
 5. The text is rendered.
 6. The attributes of the GraphicsContext is restored to its state before the operation.
 	
-### Tool Bar Icons
+### Tool Bar
 
-The `ToolBar` is a special case, which is a Control component, but with Canvases as the icons
--DiagramTabToolBar (Object or Sequence)
-	- The background color and buttons are style by CSS
-	- The icons of the toolbar buttons and the popup menu items, which appear when right-clicking on the canvas, are done using the GraphicsContext.
+`DiagramTabToolBar` is a special case, in that it is styled using a combination of `DarkMode.css`, and `ColorScheme`. The background and `SelectableToolButton`s in the `DiagramTabToolBar` is styled using CSS, while the button icons are `Canvas` objects, so they depend on `ColorScheme` and `GraphicsContext` in the same way the main `Canvas` does.  `DiagramTabToolBar` also aggregates a `ContextMenu`, which appears with the same tools as the `DIagramTabToolBar` when right-clicking on the `Canvas`, and it is styled in the same way as the `DiagramTabToolBar`.
 
+Whenever dark mode is turned on or off, the icons of the tool bar buttons, which represent diagram elements such as nodes and edges, also need to be updated. This is done by calling `recreateButtonIcons()`, which collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates new `Canvas` instances for the icon of each `SelectableToolButton`. 
 
 ```java
 private void recreateButtonIcons()
@@ -84,5 +82,3 @@ private void recreateButtonIcons()
 		}
 	}
 ```
-
-***future changes need to consider whether dark mode feature will be relevant.
