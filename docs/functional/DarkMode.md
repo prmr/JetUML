@@ -6,7 +6,7 @@ The Dark Mode feature concerns the components which define the color scheme, the
 
 ## Design
 
-There are two components that define the color scheme of the dark mode for the application: `ColorScheme`, an enum class, and a CSS file called `DarkMode.css`. Then, there are the scene graph components the color schemes are applied to. The graph components can also be categorized into two parts: the `Canvas` (and its diagram elements), and everything else. The everything else refers to components such as the `WelcomeTab`, `MenuBar`, and `ToolBar` - basically, everything that is outside the `Canvas`. Though broad, this is an appropriate categorization because the color scheme of the first is handled by `ColorScheme`, and the latter by `DarkMode.css`.
+There are two components that define the color scheme of the dark mode feature: `ColorScheme`, an enum class, and a CSS file called `DarkMode.css`. Then, there are the scene graph components the color schemes are applied to. The graph components can also be categorized into two parts: the `Canvas` (and its diagram elements), and everything else. The everything else refers to components such as the `WelcomeTab`, `MenuBar`, and `ToolBar` - basically, everything that resides outside the `Canvas`. Though broad, this is an appropriate categorization because the color scheme of the first is handled by `ColorScheme`, and the latter by `DarkMode.css`.
 
 ### Scene Graph
 
@@ -63,9 +63,9 @@ The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is 
 	
 ### Tool Bar
 
-`DiagramTabToolBar` is a special case, in that it is styled using a combination of `DarkMode.css`, and `ColorScheme`. The background and `SelectableToolButton`s in the `DiagramTabToolBar` is styled using CSS, while the button icons are `Canvas` objects, so they depend on `ColorScheme` and `GraphicsContext` in the same way the main `Canvas` does.  `DiagramTabToolBar` also aggregates a `ContextMenu`, which appears with the same tools as the `DIagramTabToolBar` when right-clicking on the `Canvas`, and it is styled in the same way as the `DiagramTabToolBar`.
+`DiagramTabToolBar` is a special case, in that it is styled using a combination of `DarkMode.css` and `ColorScheme`. The background and `SelectableToolButton`s in the `DiagramTabToolBar` is styled using CSS, while the button icons are `Canvas` objects, so they depend on `ColorScheme` and `GraphicsContext` in the same way the main `Canvas` does.  `DiagramTabToolBar` also aggregates a `ContextMenu`, which appears with the same tools as the `DiagramTabToolBar` when right-clicking on the `Canvas`, and it is styled in the same way as the `DiagramTabToolBar`.
 
-Whenever dark mode is turned on or off, the icons of the tool bar buttons, which represent diagram elements such as nodes and edges, also need to be updated. This is done by calling `recreateButtonIcons()`: 
+Whenever dark mode is turned on or off, the tool bar button icons, which represent diagram elements such as nodes and edges, also need to be updated. This is done by calling `recreateButtonIcons()`: 
 
 ```java
 private void recreateButtonIcons()
@@ -85,4 +85,4 @@ private void recreateButtonIcons()
 }
 ```
 
-To summarize, the method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for the icon of each button. 
+To summarize, the method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for each button icon. 
