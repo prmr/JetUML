@@ -69,20 +69,20 @@ Whenever dark mode is turned on or off, the icons of the tool bar buttons, which
 
 ```java
 private void recreateButtonIcons()
+{
+	List<Node> toolBarItems = getItems();
+	List<MenuItem> contextMenuItems = aPopupMenu.getItems();
+	for( int i = 0; i < toolBarItems.size(); i++ )
 	{
-		List<Node> toolBarItems = getItems();
-		List<MenuItem> contextMenuItems = aPopupMenu.getItems();
-		for( int i = 0; i < toolBarItems.size(); i++ )
+		ButtonBase button = (ButtonBase) toolBarItems.get(i);
+		if( toolBarItems.get(i) instanceof SelectableToolButton toolButton && 
+				toolButton.getPrototype().isPresent() )
 		{
-			ButtonBase button = (ButtonBase) toolBarItems.get(i);
-			if( toolBarItems.get(i) instanceof SelectableToolButton toolButton && 
-					toolButton.getPrototype().isPresent() )
-			{
-				button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
-				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
-			}
+			button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
+			contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
 		}
 	}
+}
 ```
 
 To summarize, the method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for the icon of each button. 
