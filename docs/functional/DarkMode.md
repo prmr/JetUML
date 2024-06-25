@@ -50,12 +50,14 @@ public enum ColorScheme
 	...
 }
 ```
+
 The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is used to render text in diagrams:
 ![JetUML Sequence Diagram](DarkMode.sequence.png)
+
 1. A StringRenderer object calls RenderingUtils#drawText. 
 2. The attributes of the GraphicsContext is saved.
-3. The font is set
-4. The Fill color is obtained by first retrieving the current ColorScheme (LIGHT or DARK), which depends on the user setting, and getting the stroke color of the text. In the case of text, its fill color is the stroke color of the ColorScheme.
+3. The font is set.
+4. The fill color is obtained by first retrieving the current ColorScheme (LIGHT or DARK), which depends on the user setting, and getting the stroke color of the text. In the case of text, its fill color is the stroke color of the ColorScheme.
 5. The text is rendered.
 6. The attributes of the GraphicsContext is restored to its state before the operation.
 	
@@ -63,7 +65,7 @@ The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is 
 
 `DiagramTabToolBar` is a special case, in that it is styled using a combination of `DarkMode.css`, and `ColorScheme`. The background and `SelectableToolButton`s in the `DiagramTabToolBar` is styled using CSS, while the button icons are `Canvas` objects, so they depend on `ColorScheme` and `GraphicsContext` in the same way the main `Canvas` does.  `DiagramTabToolBar` also aggregates a `ContextMenu`, which appears with the same tools as the `DIagramTabToolBar` when right-clicking on the `Canvas`, and it is styled in the same way as the `DiagramTabToolBar`.
 
-Whenever dark mode is turned on or off, the icons of the tool bar buttons, which represent diagram elements such as nodes and edges, also need to be updated. This is done by calling `recreateButtonIcons()`, which collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates new `Canvas` instances for the icon of each `SelectableToolButton`. 
+Whenever dark mode is turned on or off, the icons of the tool bar buttons, which represent diagram elements such as nodes and edges, also need to be updated. This is done by calling `recreateButtonIcons()`: 
 
 ```java
 private void recreateButtonIcons()
@@ -77,8 +79,11 @@ private void recreateButtonIcons()
 					toolButton.getPrototype().isPresent() )
 			{
 				button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
-				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
+				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon
+				(toolButton.getPrototype().get()));
 			}
 		}
 	}
 ```
+
+The method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for the icon of each `SelectableToolButton`. 
