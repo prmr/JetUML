@@ -2,40 +2,66 @@
 
 ## Scope
 
-The Dark Mode feature concerns the core components responsible for the color scheme, and how they are integrated with the rest of the application.
+The Dark Mode feature concerns the components which define the color scheme, the scene graph that the color scheme is applied to, and how the color scheme is integrated in the program.
 
 ## Design
 
--To the scene of the main stage and dialog stage
-- GraphicsContext is responsible for the color of all diagram elements
-- CSS is responsible for all UI components like the color of the layout, menus, and toolbar.
+There are two components that define the color scheme of the dark mode for the application: `ColorScheme`, an enum class, and a CSS file called `DarkMode.css`. Then, there are the scene graph components the color schemes are applied to. The graph components can also be categorized into two: the `Canvas` (and its diagram elements), and everything else. The everything else refers to components such as the `WelcomeTab`, `MenuBar`, and `ToolBar` - basically, everything that is outside the `Canvas`. Though broad, this is an appropriate categorization because the color scheme of the first is handled by `ColorScheme`, and the latter by `DarkMode.css`.
 
-![JetUML Class Diagram](properties1.png)
+### Scene Graph
 
-### UI Controls 
+In JavaFX, CSS is applied to `Node` objects hierarchically. That is, once CSS is applied to a `Node`, the styling will cascade down to all its children nodes. Thus, coloring all graph components following a specific color scheme is a simple feat. It is done by adding the CSS file to the `Scene`, the top level container of the application.
+ 
+In JetUML, the CSS file is `DarkMode.css`, and it is applied to the scene of the JetUML application stage, and `DialogStage` by adding the path of the CSS file using `Stage#getScene().getStylesheets().add(String)`. The following defines the `root` style class in `DarkMode.css`:
 
-- CSS is applied at the Scene level of the main JetUML stage and DialogStage. This ensures the styling will propagate to all children nodes of the Scene.
--CSS:
-	-JetUML stage and DialogStage: simply add CSS to the scene by calling Scene#getStylesheets() on the respective stages.
-	-DialogStage is a unique Stage for all dialogs. This is possible because there can only be one dialog open at a time, and different dialogs can appear on the stage by assigning themselves as the root of the DialogStage. However, modifying the DialogStage within a specific dialog should be done with care because the DialogStage is shared with all dialogs and unwanted changes can persist as different dialogs take control of the DialogStage.
+```css
+.root 
+{ 
+    -fx-accent: #1e74c6;
+    -fx-focus-color: -fx-accent;
+    -fx-base: #1b1f21;
+    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-control-inner-background-alt: -fx-control-inner-background ;
+}
+```
 
+CSS style classes can be implemented in two ways, and both are used in `DarkMode.css`. One way is to use predefined JavaFX names mapped to CSS names. For instance, the `root` style class and its properties with the prefix `-fx-` are predefined JavaFX names derived from CSS names, and together, they provide the overall default colors for a node. Simply defining the style class and adding the stylesheet is enough. The other way is to define a custom style class. This requires an extra step, and the style class needs to be added by calling `Node#getStyleClass().add(String). 
+
+### Canvas and Diagram Elements
+
+Unfortunately, CSS does not apply to the `Canvas`, so the elements in the `Canvas` must be colored by modifying the color properties of its `GraphicsContext`. The color scheme of the `Canvas` and diagram elements are defined in the enum `ColorScheme` as `LIGHT` and `DARK`. The idea behind using an enum here is that it captures the colors of all diagram elements corresponding to a scheme in a single place, and is made globally available so that it can be accessed by unrelated parts of the program.
+
+```java
+public enum ColorScheme 
+{
+	LIGHT(Color.WHITE, Color.rgb(220, 220, 220), Color.WHITE, Color.BLACK, Color.color(0.9f, 0.9f, 0.6f), Color.LIGHTGRAY), 
+	DARK(Color.rgb(7, 7, 7), Color.rgb(40, 40, 40), Color.rgb(31, 31, 31), Color.WHITE, Color.rgb(30, 63, 102), Color.TRANSPARENT);
+
+	private final Color aCanvas;
+	private final Color aGrid;
+	private final Color aFill;
+	private final Color aStroke;
+	private final Color aNote;
+	private final DropShadow aShadow;
+	
+	// constructor
+
+	// getters
+	...
+}
+```
+The following sequence diagram shows a common use case of `ColorScheme` and `GraphicsContext` to render text in diagrams:
 ![JetUML Class Diagram](properties1o.png)
-
-### Diagram Elements
-
-- GraphicsContext uses ColorScheme is an Enum class which defines the colors of various diagram elements such as the color of the canvas, fill color of nodes, and stroke color of text and edges, for each ColorScheme, LIGHT and DARK. to set the appropriate colors of diagram elements
-
--ColorScheme(Sequence Diagram):
-	-For example, the sequence diagram below illustrates how in dark mode, the text is rendered in white:
-	1. A StringRenderer object calls RenderingUtils#drawText. 
-	2. The attributes of the GraphicsContext is saved.
-	3. The font is set
-	4. The Fill color is obtained by first retrieving the current ColorScheme (LIGHT or DARK), which depends on the user setting, and getting the stroke color of the text. In the case of text, its fill color is the stroke color of the ColorScheme.
-	5. The text is rendered.
-	6. The attributes of the GraphicsContext is restored to its state before the operation.
+1. A StringRenderer object calls RenderingUtils#drawText. 
+2. The attributes of the GraphicsContext is saved.
+3. The font is set
+4. The Fill color is obtained by first retrieving the current ColorScheme (LIGHT or DARK), which depends on the user setting, and getting the stroke color of the text. In the case of text, its fill color is the stroke color of the ColorScheme.
+5. The text is rendered.
+6. The attributes of the GraphicsContext is restored to its state before the operation.
 	
 ### Tool Bar Icons
 
+The `ToolBar` is a special case, which is a Control component, but with Canvases as the icons
 -DiagramTabToolBar (Object or Sequence)
 	- The background color and buttons are style by CSS
 	- The icons of the toolbar buttons and the popup menu items, which appear when right-clicking on the canvas, are done using the GraphicsContext.
