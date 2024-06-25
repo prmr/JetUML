@@ -6,13 +6,13 @@ The Dark Mode feature concerns the components which define the color scheme, the
 
 ## Design
 
-There are two components that define the color scheme of the dark mode for the application: `ColorScheme`, an enum class, and a CSS file called `DarkMode.css`. Then, there are the scene graph components the color schemes are applied to. The graph components can also be categorized into two: the `Canvas` (and its diagram elements), and everything else. The everything else refers to components such as the `WelcomeTab`, `MenuBar`, and `ToolBar` - basically, everything that is outside the `Canvas`. Though broad, this is an appropriate categorization because the color scheme of the first is handled by `ColorScheme`, and the latter by `DarkMode.css`.
+There are two components that define the color scheme of the dark mode for the application: `ColorScheme`, an enum class, and a CSS file called `DarkMode.css`. Then, there are the scene graph components the color schemes are applied to. The graph components can also be categorized into two parts: the `Canvas` (and its diagram elements), and everything else. The everything else refers to components such as the `WelcomeTab`, `MenuBar`, and `ToolBar` - basically, everything that is outside the `Canvas`. Though broad, this is an appropriate categorization because the color scheme of the first is handled by `ColorScheme`, and the latter by `DarkMode.css`.
 
 ### Scene Graph
 
-In JavaFX, CSS is applied to `Node` objects hierarchically. That is, once CSS is applied to a `Node`, the styling will cascade down to all its children nodes. Thus, coloring all graph components following a specific color scheme is a simple feat. It is done by adding the CSS file to the `Scene`, the top level container of the application.
+In JavaFX, CSS is applied to `Node` objects hierarchically. That is, when CSS is applied to a `Node`, the styling will cascade down to all its children nodes. Thus, coloring all graph components following a specific color scheme is a simple feat. It is done by adding the CSS file to the `Scene`, the top level container of the application.
  
-In JetUML, the CSS file is `DarkMode.css`, and it is applied to the scene of the JetUML application stage, and `DialogStage` by adding the path of the CSS file using `Stage#getScene().getStylesheets().add(String)`. The following defines the `root` style class in `DarkMode.css`:
+In JetUML, the CSS file is `DarkMode.css`, and it is applied to the `Scene` of the JetUML application stage and `DialogStage` by adding the path of the CSS file through `getStylesheets().add(String)`. The following defines the `root` style class in `DarkMode.css`:
 
 ```css
 .root 
@@ -25,7 +25,7 @@ In JetUML, the CSS file is `DarkMode.css`, and it is applied to the scene of the
 }
 ```
 
-CSS style classes can be implemented in two ways, and both are used in `DarkMode.css`. One way is to use predefined JavaFX names mapped to CSS names. For instance, the `root` style class and its properties with the prefix `-fx-` are predefined JavaFX names derived from CSS names, and together, they provide the overall default colors for a node. Simply defining the style class and adding the stylesheet is enough. The other way is to define a custom style class. This requires an extra step, and the style class needs to be added by calling `Node#getStyleClass().add(String)` on the `Node` which requires the specific styling. 
+CSS style classes can be implemented in two ways, and both are used in `DarkMode.css`. One way is to use predefined JavaFX names mapped to CSS names. For instance, the `root` style class and its properties with the prefix `-fx-` are predefined JavaFX names derived from CSS names, and together, they provide the overall default colors for a node. Simply defining the style class and adding the stylesheet is enough. The other way is to define a custom style class. This requires an extra step, and the style class needs to be added by calling `getStyleClass().add(String)` on the `Node` which requires the specific styling. 
 
 ### Canvas and Diagram Elements
 
@@ -51,17 +51,15 @@ public enum ColorScheme
 }
 ```
 
-The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is used to render text in diagrams:
+The following sequence diagram shows how `ColorScheme` and `GraphicsContext` is used to render text in dark mode:
 
 ![JetUML Sequence Diagram](DarkMode.sequence.png)
 
 
-1. A StringRenderer object calls RenderingUtils#drawText. 
-2. The attributes of the GraphicsContext is saved.
-3. The font is set.
-4. The fill color is obtained by first retrieving the current ColorScheme (LIGHT or DARK), which depends on the user setting, and getting the stroke color of the text. In the case of text, its fill color is the stroke color of the ColorScheme.
-5. The text is rendered.
-6. The attributes of the GraphicsContext is restored to its state before the operation.
+1. The text to be rendered is processed by `StringRenderer`, and this results in a call to `RenderingUtils#drawText` to calibrate the `GraphicsContext` attributes to the user setting, and perform the rendering onto the gui. 
+2. The `save()` method saves the attributes of the `GraphicsContext` onto a stack. This easily allows restoring the state of the `GraphicsContext` after making changes to it. 
+3. The middle section involving `ColorScheme` represents a key operation that is repeated whenever diagram elements are rendered. To render text (or any diagram element) in the correct color, the color scheme that the user has selected needs to be first obtained by a call to `ColorScheme#getScheme()`. Because it is the color of the text that is needed, `getStrokeColor()` is called, but it can be easily replaced by any of the other getters depending on the diagram element.
+4. The text is rendered, and the `GraphicsContext` is restored to its state when `save()` was called.
 	
 ### Tool Bar
 
@@ -81,11 +79,10 @@ private void recreateButtonIcons()
 					toolButton.getPrototype().isPresent() )
 			{
 				button.setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
-				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon
-				(toolButton.getPrototype().get()));
+				contextMenuItems.get(i).setGraphic(aDiagramRenderer.createIcon(toolButton.getPrototype().get()));
 			}
 		}
 	}
 ```
 
-The method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for the icon of each `SelectableToolButton`. 
+To summarize, the method collects all the buttons in `DiagramTabToolBar` and `ContextMenu`, and creates a new `Canvas` instance for the icon of each button. 
