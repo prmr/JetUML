@@ -43,6 +43,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -192,7 +193,11 @@ public class PropertySheet extends GridPane
 		   aListener.propertyChanged();
 		});
 		
-		return new ScrollPane(textArea);
+		// Necessary to fix scroll bar problem. See issue #553.
+		ScrollPane sp = new ScrollPane(textArea);
+		sp.setFitToHeight(true);
+		sp.setFitToWidth(true);
+		return sp;
 	}
 	
 	/*
