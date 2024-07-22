@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use the menu command View | Change Font to change the font and size of the font used in the diagram. This setting only affects how the diagram looks." },
     { "image": "tip35.png"}
+  ],
+  "view": [
+    { "topic": "settings"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

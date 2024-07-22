@@ -27,7 +27,7 @@ package org.jetuml.gui.tips;
  */
 enum TipFieldName
 {
-	TITLE, CONTENT;
+	TITLE, CONTENT, VIEW;
 	
 	public String asString()
 	{

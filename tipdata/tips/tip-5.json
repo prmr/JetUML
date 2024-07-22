@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "To select all elements in a region of the diagram, enable the Selection Tool, then click and drag from an empty space in the diagram. This will enable the Lasso tool. " },
   	{ "image": "tip5.png"}
+  ],
+  "view": [
+    { "topic": "selecting"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

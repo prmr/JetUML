@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use the Open Bottom property of the activation box in a sequence diagram to represent an incomplete sequence of calls." },
     { "image": "tip32.png"}
+  ],
+  "view": [
+    { "topic": "modifying"},
+    { "level": "advanced"},
+    { "diagram": "sequence"}
   ]
 }
