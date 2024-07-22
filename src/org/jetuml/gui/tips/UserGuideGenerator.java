@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 
 import org.jetuml.gui.tips.TipLoader.Tip;
@@ -44,7 +46,10 @@ import org.jetuml.gui.tips.TipLoader.Tip;
 public final class UserGuideGenerator
 {
 	private static final Path INPUT_FILE = Paths.get("docs", "user-guide-template.txt");
-	private static final Path OUTPUT_FILE = Paths.get("docs", "user-guide.md");
+	private static final Path INPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics-template.txt");
+	private static final Path OUTPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics.md");
+	private static final Path OUTPUT_FILE_LEVELS = Paths.get("docs", "user-guide-levels.md");
+	private static final Path OUTPUT_FILE_DIAGRAMS = Paths.get("docs", "user-guide-diagrams.md");
 
 	private static final String PLACEHOLDER = "$TEXT$";
 	private static final String TEMPLATE_BUTTON = "<button class=\"collapsible\">$TEXT$</button>";
@@ -52,6 +57,10 @@ public final class UserGuideGenerator
 	private static final String TEMPLATE_TEXT = "<p>$TEXT$</p>";
 	private static final String TEMPLATE_IMAGE = "<img src=\"../tipdata/tip_images/$TEXT$\">";
 	private static final String TEMPLATE_DIV_CLOSE = "</div>";
+	
+	private static final Map<String, List<String>> TOPICS = new HashMap<>();
+	private static final Map<String, List<String>> LEVELS = new HashMap<>();
+	private static final Map<String, List<String>> DIAGRAMS = new HashMap<>();
 	
 	private UserGuideGenerator() {}
 	
@@ -62,9 +71,50 @@ public final class UserGuideGenerator
 	 */
 	public static void main(String[] pArgs) throws IOException
 	{
-		String template = lines(INPUT_FILE, UTF_8).collect(joining("\n"));
-		write(OUTPUT_FILE, template.replace(PLACEHOLDER,  tipsAsHtml()).getBytes(UTF_8));
+		topicsAsHtml();
 		System.out.println("The User Guide was generated sucessfully.");
+	}
+	
+	private static void topicsAsHtml() throws IOException
+	{
+		String template = lines(INPUT_FILE_TOPICS, UTF_8).collect(joining("\n"));
+		creatingTipsAsHtml();
+		template = template.replace("$CREATING$", TOPICS.get("creating").stream().collect(joining("\n")))
+				.replace("$MODIFYING$", TOPICS.get("modifying").stream().collect(joining("\n")))
+				.replace("$SELECTING$", TOPICS.get("selecting").stream().collect(joining("\n")))
+				.replace("$COPYING$", TOPICS.get("copying").stream().collect(joining("\n")))
+				.replace("$SEMANTICS$", TOPICS.get("semantics").stream().collect(joining("\n")))
+				.replace("$SETTINGS$", TOPICS.get("settings").stream().collect(joining("\n")));
+		write(OUTPUT_FILE_TOPICS, template.getBytes(UTF_8));
+	}
+	
+	private static void creatingTipsAsHtml()
+	{
+		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
+		{
+			Tip tip = loadTip(tipNumber);
+			for( TipCategory category : tip.getCategories() )
+			{
+				if( category.getView() == View.TOPIC )
+				{
+					TOPICS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = TOPICS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+				else if( category.getView() == View.LEVEL )
+				{
+					LEVELS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = LEVELS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+				else
+				{
+					DIAGRAMS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = DIAGRAMS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+			}
+		}
 	}
 	
 	/*

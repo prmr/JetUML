@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use Note elements to annotate the diagram with complementary information." },
   	{ "image": "tip13.png"}
+  ],
+  "view": [
+    { "topic": "creating"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

@@ -3,5 +3,10 @@
   "content": [
     { "text": "You can create a new diagram at any point using the menu command File | New. The diagram will open in a new tab."},
     { "image": "tip1.png"}
+  ],
+  "view": [
+    { "topic": "Creating"},
+    { "level": "Beginner"},
+    { "diagram": "General"}
   ]
 }

@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use the Copy to Clipboard feature to copy a snapshot of the entire diagram to the system clipboard. The diagram can then be pasted easily into other applications. The feature is accessed using the File menu, the toolbar, or using the shortcut Ctrl-B." },
   	{ "image": "tip22.png"}
+  ],
+  "view": [
+    { "topic": "copying"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

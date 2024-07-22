@@ -5,5 +5,10 @@
     { "image": "tip28a.png"},
     { "text": "The call will be shown with the label «create» and the implicit parameter will be positioned vertically aligned with the call. An activation box will be attached to the implicit parameter: use it to model calls that originate from the constructor." },
     { "image": "tip28b.png"}
+  ],
+  "view": [
+    { "topic": "creating"},
+    { "level": "advanced"},
+    { "diagram": "sequence"}
   ]
 }

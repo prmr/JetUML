@@ -91,6 +91,7 @@ final class TipLoader
 		private final int aId;
 		private final String aTitle;
 		private final List<TipElement> aElements;
+		private final List<TipCategory> aCategories;
 
 		/**
 		 * @param pId the id associated with the tip (number in the tip's file's
@@ -104,6 +105,7 @@ final class TipLoader
 			aId = pId;
 			aTitle = (String) pTip.get(TipFieldName.TITLE.asString());
 			aElements = convertJsonObjectToTipElements(pTip);
+			aCategories = convertJsonObjectToTipCategories(pTip);
 		}
 
 		/**
@@ -129,6 +131,11 @@ final class TipLoader
 		{
 			return new ArrayList<>(aElements);
 		}
+		
+		public List<TipCategory> getCategories()
+		{
+			return new ArrayList<>(aCategories);
+		}
 
 		/**
 		 * @param pTip A JsonObject obtained from the JsonArray gotten by
@@ -147,6 +154,19 @@ final class TipLoader
 			return elements;
 		}
 		
+		private static List<TipCategory> convertJsonObjectToTipCategories(JsonObject pTip)
+		{
+			List<TipCategory> categories = new ArrayList<>();
+			
+			for(Object contentObject : pTip.getJsonArray(TipFieldName.VIEW.asString()))
+			{
+				JsonObject contentJsonObject = (JsonObject) contentObject;
+				View view = discoverViewUsed(contentJsonObject);
+				categories.add(new TipCategory(view, contentJsonObject.getString(view.name().toLowerCase())));
+			}
+			return categories;
+		}
+		
 		/*
 	     * A tip content contains one property whose name is any Media value
 	     * in lower case: discover which one it is.
@@ -158,6 +178,19 @@ final class TipLoader
 				if(pTipContent.hasProperty(media.name().toLowerCase()))
 				{
 					return media;
+				}
+			}
+			assert false;
+			return null;
+		}
+		
+		private static View discoverViewUsed(JsonObject pTipContent)
+		{
+			for(View view : View.values())
+			{
+				if(pTipContent.hasProperty(view.name().toLowerCase()))
+				{
+					return view;
 				}
 			}
 			assert false;

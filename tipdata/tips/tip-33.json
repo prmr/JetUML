@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "It is possible to zoom the diagram in and out up to a maximum of two levels in both directions. The commands are available through the View menu and through the shortcuts Ctrl-= (Zoom In), Ctrl-- (Zoom Out), and Ctrl-0 (Reset Zoom)." },
     { "image": "tip33.png"}
+  ],
+  "view": [
+    { "topic": "settings"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }
