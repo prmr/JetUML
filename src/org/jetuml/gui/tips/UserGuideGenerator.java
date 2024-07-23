@@ -45,8 +45,9 @@ import org.jetuml.gui.tips.TipLoader.Tip;
  */
 public final class UserGuideGenerator
 {
-	private static final Path INPUT_FILE = Paths.get("docs", "user-guide-template.txt");
 	private static final Path INPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics-template.txt");
+	private static final Path INPUT_FILE_LEVELS = Paths.get("docs", "user-guide-levels-template.txt");
+	private static final Path INPUT_FILE_DIAGRAMS = Paths.get("docs", "user-guide-diagrams-template.txt");
 	private static final Path OUTPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics.md");
 	private static final Path OUTPUT_FILE_LEVELS = Paths.get("docs", "user-guide-levels.md");
 	private static final Path OUTPUT_FILE_DIAGRAMS = Paths.get("docs", "user-guide-diagrams.md");
@@ -71,14 +72,16 @@ public final class UserGuideGenerator
 	 */
 	public static void main(String[] pArgs) throws IOException
 	{
-		topicsAsHtml();
+		tipsAsHtml();
+		generateTopicsAsMd();
+		generateLevelsAsMd();
+		generateDiagramsAsMd();
 		System.out.println("The User Guide was generated sucessfully.");
 	}
 	
-	private static void topicsAsHtml() throws IOException
+	private static void generateTopicsAsMd() throws IOException
 	{
 		String template = lines(INPUT_FILE_TOPICS, UTF_8).collect(joining("\n"));
-		creatingTipsAsHtml();
 		template = template.replace("$CREATING$", TOPICS.get("creating").stream().collect(joining("\n")))
 				.replace("$MODIFYING$", TOPICS.get("modifying").stream().collect(joining("\n")))
 				.replace("$SELECTING$", TOPICS.get("selecting").stream().collect(joining("\n")))
@@ -88,7 +91,27 @@ public final class UserGuideGenerator
 		write(OUTPUT_FILE_TOPICS, template.getBytes(UTF_8));
 	}
 	
-	private static void creatingTipsAsHtml()
+	private static void generateLevelsAsMd() throws IOException
+	{
+		String template = lines(INPUT_FILE_LEVELS, UTF_8).collect(joining("\n"));
+		template = template.replace("$BEGINNER$", LEVELS.get("beginner").stream().collect(joining("\n")))
+				.replace("$INTERMEDIATE$", LEVELS.get("intermediate").stream().collect(joining("\n")))
+				.replace("$ADVANCED$", LEVELS.get("advanced").stream().collect(joining("\n")));
+		write(OUTPUT_FILE_LEVELS, template.getBytes(UTF_8));
+	}
+	
+	private static void generateDiagramsAsMd() throws IOException
+	{
+		String template = lines(INPUT_FILE_DIAGRAMS, UTF_8).collect(joining("\n"));
+		template = template.replace("$CLASS$", DIAGRAMS.get("class").stream().collect(joining("\n")))
+				.replace("$SEQUENCE$", DIAGRAMS.get("sequence").stream().collect(joining("\n")))
+				.replace("$OBJECT$", DIAGRAMS.get("object").stream().collect(joining("\n")))
+				.replace("$STATE$", DIAGRAMS.get("state").stream().collect(joining("\n")))
+				.replace("$GENERAL$", DIAGRAMS.get("general").stream().collect(joining("\n")));
+		write(OUTPUT_FILE_DIAGRAMS, template.getBytes(UTF_8));
+	}
+	
+	private static void tipsAsHtml()
 	{
 		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
 		{
@@ -120,15 +143,15 @@ public final class UserGuideGenerator
 	/*
 	 * Creates an html representation of all available tips.
 	 */
-	private static String tipsAsHtml()
-	{
-		List<String> tips = new ArrayList<>();
-		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
-		{
-			tips.add(toHtml(loadTip(tipNumber)));
-		}
-		return tips.stream().collect(joining("\n"));
-	}
+//	private static String tipsAsHtml()
+//	{
+//		List<String> tips = new ArrayList<>();
+//		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
+//		{
+//			tips.add(toHtml(loadTip(tipNumber)));
+//		}
+//		return tips.stream().collect(joining("\n"));
+//	}
 	
 	/* 
 	 * Obtains the number of tips for the application's properties.

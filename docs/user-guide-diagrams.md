@@ -3,11 +3,80 @@
 This page contains the complete list of "tips" available through JetUML's "Tip of the Day" dialog. Click on an entry to expand with details.
 
 <div id="body">
-<button class="collapsible">Creating a New Diagram</button>
+
+<button class="collapsible">Class Diagram</button>
 <div class="content">
-<p>You can create a new diagram at any point using the menu command File | New. The diagram will open in a new tab.</p>
-<img src="../tipdata/tip_images/tip1.png">
+<button class="collapsible">Adding Self-Edges</button>
+<div class="content">
+<p>Certain types of edges can be added from an element to itself. To create a self-edge, select a valid edge type and drag the rubber band within a compatible node.</p>
+<img src="../tipdata/tip_images/tip10.png">
 </div>
+<button class="collapsible">Changing the Type of an Edge</button>
+<div class="content">
+<p>Certain types of edges can be changed through the edge's properties. Access the edge properties by double-clicking an edge or selecting it and typing Ctrl-Enter.</p>
+<img src="../tipdata/tip_images/tip11.png">
+</div>
+<button class="collapsible">Adding Child Nodes to Packages</button>
+<div class="content">
+<p>Package nodes can contain child nodes. To add a child node to a package, select the desired Node Creation tool and click within a package to add this node directly as a child node. To add an existing node to a package, position the node on top of the package and hit the Shift key. To detach a node from a package, also hit the Shift key.</p>
+<img src="../tipdata/tip_images/tip30.png">
+</div>
+</div>
+<button class="collapsible">Sequence Diagram</button>
+<div class="content">
+<button class="collapsible">Creating Call Edges</button>
+<div class="content">
+<p>To create the initial call edge in a sequence diagram, select the Call Edge Creation tool and drag the rubber band from the life-line of the caller to the life-line of the callee.</p>
+<img src="../tipdata/tip_images/tip23a.png">
+<p>This will create the activation box for both the caller and the callee. To create additional call edges, drag from an activation box to a life-line.</p>
+<img src="../tipdata/tip_images/tip23b.png">
+</div>
+<button class="collapsible">Sequence Diagram Validation</button>
+<div class="content">
+<p>JetUML verifies that call and return edges added to a sequence diagram result in a valid control sequence. Trying to add edges at arbitrary points that would result in a jump in the control flow will fail silently.</p>
+<img src="../tipdata/tip_images/tip26.png">
+</div>
+<button class="collapsible">Adding Self-Calls in Sequence Diagrams</button>
+<div class="content">
+<p>JetUML supports self-calls in sequence diagrams. To create a self-call, select the Call Edge Creation tool and drag the rubber band within an activation box.</p>
+<img src="../tipdata/tip_images/tip27.png">
+</div>
+<button class="collapsible">Adding Constructor Calls in Sequence Diagrams</button>
+<div class="content">
+<p>With JetUML you can represent constructor calls in sequence diagrams. To add a constructor call, select the Call Edge Creation tool and drag the rubber band from a source life-line or activation box to the implicit parameter node.</p>
+<img src="../tipdata/tip_images/tip28a.png">
+<p>The call will be shown with the label «create» and the implicit parameter will be positioned vertically aligned with the call. An activation box will be attached to the implicit parameter: use it to model calls that originate from the constructor.</p>
+<img src="../tipdata/tip_images/tip28b.png">
+</div>
+<button class="collapsible">Representing Incomplete Call Sequences</button>
+<div class="content">
+<p>Use the Open Bottom property of the activation box in a sequence diagram to represent an incomplete sequence of calls.</p>
+<img src="../tipdata/tip_images/tip32.png">
+</div>
+</div>
+<button class="collapsible">Object Diagram</button>
+<div class="content">
+<button class="collapsible">Adding Fields to Objects</button>
+<div class="content">
+<p>To add a field to an object, select the Field Creation tool from the toolbar and click within the desired object node. Accessing the fields' properties (Ctrl-Enter) allows to change the field's name and value.</p>
+<img src="../tipdata/tip_images/tip19.png">
+</div>
+<button class="collapsible">Adding Object References</button>
+<div class="content">
+<p>To add a reference to an object, select the Reference Creation tool from the toolbar, then drag a rubber band from the Value part of a field to the destination object node.</p>
+<img src="../tipdata/tip_images/tip20.png">
+</div>
+</div>
+<button class="collapsible">State Diagram</button>
+<div class="content">
+<button class="collapsible">Transitions in State Diagrams</button>
+<div class="content">
+<p>State diagrams support up to two transitions between nodes in either direction, as well as two self-transitions.</p>
+<img src="../tipdata/tip_images/tip21.png">
+</div>
+</div>
+<button class="collapsible">General</button>
+<div class="content">
 <button class="collapsible">Creating Nodes</button>
 <div class="content">
 <p>Selecting a node type in the toolbar enables the corresponding Node Creation tool. With a Node Creation tool enabled, click on an empty space in the diagram to create a new node of that type. Rolling over the tool in the toolbar shows a tooltip with the name of the node type.</p>
@@ -48,16 +117,6 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>The toolbar is also available as a popup menu. Right-click anywhere to show it.</p>
 <img src="../tipdata/tip_images/tip9.png">
 </div>
-<button class="collapsible">Adding Self-Edges</button>
-<div class="content">
-<p>Certain types of edges can be added from an element to itself. To create a self-edge, select a valid edge type and drag the rubber band within a compatible node.</p>
-<img src="../tipdata/tip_images/tip10.png">
-</div>
-<button class="collapsible">Changing the Type of an Edge</button>
-<div class="content">
-<p>Certain types of edges can be changed through the edge's properties. Access the edge properties by double-clicking an edge or selecting it and typing Ctrl-Enter.</p>
-<img src="../tipdata/tip_images/tip11.png">
-</div>
 <button class="collapsible">Selecting Everything</button>
 <div class="content">
 <p>Use the menu command Edit | Select All (Ctrl-A) to select all elements in a diagram, for example to move the entire diagram as one.</p>
@@ -93,32 +152,10 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>Use the menu command View | Verbose Tooltips to toggle verbose tooltips in the toolbar. Verbose tooltips provide an extended description of the meaning of UML elements available in the toolbar.</p>
 <img src="../tipdata/tip_images/tip18.png">
 </div>
-<button class="collapsible">Adding Fields to Objects</button>
-<div class="content">
-<p>To add a field to an object, select the Field Creation tool from the toolbar and click within the desired object node. Accessing the fields' properties (Ctrl-Enter) allows to change the field's name and value.</p>
-<img src="../tipdata/tip_images/tip19.png">
-</div>
-<button class="collapsible">Adding Object References</button>
-<div class="content">
-<p>To add a reference to an object, select the Reference Creation tool from the toolbar, then drag a rubber band from the Value part of a field to the destination object node.</p>
-<img src="../tipdata/tip_images/tip20.png">
-</div>
-<button class="collapsible">Transitions in State Diagrams</button>
-<div class="content">
-<p>State diagrams support up to two transitions between nodes in either direction, as well as two self-transitions.</p>
-<img src="../tipdata/tip_images/tip21.png">
-</div>
 <button class="collapsible">Copying the Diagram to the Clipboard</button>
 <div class="content">
 <p>Use the Copy to Clipboard feature to copy a snapshot of the entire diagram to the system clipboard. The diagram can then be pasted easily into other applications. The feature is accessed using the File menu, the toolbar, or using the shortcut Ctrl-B.</p>
 <img src="../tipdata/tip_images/tip22.png">
-</div>
-<button class="collapsible">Creating Call Edges</button>
-<div class="content">
-<p>To create the initial call edge in a sequence diagram, select the Call Edge Creation tool and drag the rubber band from the life-line of the caller to the life-line of the callee.</p>
-<img src="../tipdata/tip_images/tip23a.png">
-<p>This will create the activation box for both the caller and the callee. To create additional call edges, drag from an activation box to a life-line.</p>
-<img src="../tipdata/tip_images/tip23b.png">
 </div>
 <button class="collapsible">Automatically Editing Newly Created Nodes</button>
 <div class="content">
@@ -130,42 +167,15 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>Use the menu command File | Duplicate (Ctrl-D) to quickly make a duplicate of the current diagram. The duplicate diagram will be open in a new tab. This feature is especially useful when exploring different variants of a design.</p>
 <img src="../tipdata/tip_images/tip25.png">
 </div>
-<button class="collapsible">Sequence Diagram Validation</button>
-<div class="content">
-<p>JetUML verifies that call and return edges added to a sequence diagram result in a valid control sequence. Trying to add edges at arbitrary points that would result in a jump in the control flow will fail silently.</p>
-<img src="../tipdata/tip_images/tip26.png">
-</div>
-<button class="collapsible">Adding Self-Calls in Sequence Diagrams</button>
-<div class="content">
-<p>JetUML supports self-calls in sequence diagrams. To create a self-call, select the Call Edge Creation tool and drag the rubber band within an activation box.</p>
-<img src="../tipdata/tip_images/tip27.png">
-</div>
-<button class="collapsible">Adding Constructor Calls in Sequence Diagrams</button>
-<div class="content">
-<p>With JetUML you can represent constructor calls in sequence diagrams. To add a constructor call, select the Call Edge Creation tool and drag the rubber band from a source life-line or activation box to the implicit parameter node.</p>
-<img src="../tipdata/tip_images/tip28a.png">
-<p>The call will be shown with the label «create» and the implicit parameter will be positioned vertically aligned with the call. An activation box will be attached to the implicit parameter: use it to model calls that originate from the constructor.</p>
-<img src="../tipdata/tip_images/tip28b.png">
-</div>
 <button class="collapsible">Setting the Size of Diagrams</button>
 <div class="content">
 <p>In JetUML diagrams have a fixed size. To change this size, use the menu command View | Set Diagram Size. The size will be used when creating new diagrams or opening diagram files. When opening a diagram, the size is automatically increased to fit the diagram if necessary. Larger diagrams decrease the tool's performance. The default values are in relation to the display size.</p>
 <img src="../tipdata/tip_images/tip29.png">
 </div>
-<button class="collapsible">Adding Child Nodes to Packages</button>
-<div class="content">
-<p>Package nodes can contain child nodes. To add a child node to a package, select the desired Node Creation tool and click within a package to add this node directly as a child node. To add an existing node to a package, position the node on top of the package and hit the Shift key. To detach a node from a package, also hit the Shift key.</p>
-<img src="../tipdata/tip_images/tip30.png">
-</div>
 <button class="collapsible">Showing or Hiding the Grid</button>
 <div class="content">
 <p>It is possible to control whether the grid is visible or not in a diagram. Use the menu command View | Show Grid to toggle this option. Diagram elements automatically snap to the grid whether it is visible or not.</p>
 <img src="../tipdata/tip_images/tip31.png">
-</div>
-<button class="collapsible">Representing Incomplete Call Sequences</button>
-<div class="content">
-<p>Use the Open Bottom property of the activation box in a sequence diagram to represent an incomplete sequence of calls.</p>
-<img src="../tipdata/tip_images/tip32.png">
 </div>
 <button class="collapsible">Zooming the Diagram</button>
 <div class="content">
@@ -197,6 +207,8 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>You can turn dark mode on or off by navigating to the menu command View | Dark Mode.</p>
 <img src="../tipdata/tip_images/tip38.png">
 </div>
+</div>
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -235,10 +247,12 @@ var i;
 
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
+  	var parent = this.parentElement;
     var content = this.nextElementSibling;
     if (content.style.maxHeight){
       content.style.maxHeight = null;
     } else {
+      parent.style.maxHeight = parseInt(parent.style.maxHeight) + content.scrollHeight + "px";
       content.style.maxHeight = content.scrollHeight + "px";
     }
   });
