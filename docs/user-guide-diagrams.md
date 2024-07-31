@@ -1,10 +1,9 @@
-# User Guide
-
-This page contains the complete list of "tips" available through JetUML's "Tip of the Day" dialog. Click on an entry to expand with details.
+---
+layout: user-guide
+---
 
 <div id="body">
-
-<button class="collapsible">Class Diagram</button>
+<button class="collapsible category">Class</button>
 <div class="content">
 <button class="collapsible">Adding Self-Edges</button>
 <div class="content">
@@ -22,7 +21,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <img src="../tipdata/tip_images/tip30.png">
 </div>
 </div>
-<button class="collapsible">Sequence Diagram</button>
+<button class="collapsible category">Sequence</button>
 <div class="content">
 <button class="collapsible">Creating Call Edges</button>
 <div class="content">
@@ -54,7 +53,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <img src="../tipdata/tip_images/tip32.png">
 </div>
 </div>
-<button class="collapsible">Object Diagram</button>
+<button class="collapsible category">Object</button>
 <div class="content">
 <button class="collapsible">Adding Fields to Objects</button>
 <div class="content">
@@ -67,7 +66,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <img src="../tipdata/tip_images/tip20.png">
 </div>
 </div>
-<button class="collapsible">State Diagram</button>
+<button class="collapsible category">State</button>
 <div class="content">
 <button class="collapsible">Transitions in State Diagrams</button>
 <div class="content">
@@ -75,8 +74,13 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <img src="../tipdata/tip_images/tip21.png">
 </div>
 </div>
-<button class="collapsible">General</button>
+<button class="collapsible category">General</button>
 <div class="content">
+<button class="collapsible">Creating a New Diagram</button>
+<div class="content">
+<p>You can create a new diagram at any point using the menu command File | New. The diagram will open in a new tab.</p>
+<img src="../tipdata/tip_images/tip1.png">
+</div>
 <button class="collapsible">Creating Nodes</button>
 <div class="content">
 <p>Selecting a node type in the toolbar enables the corresponding Node Creation tool. With a Node Creation tool enabled, click on an empty space in the diagram to create a new node of that type. Rolling over the tool in the toolbar shows a tooltip with the name of the node type.</p>
@@ -208,37 +212,9 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <img src="../tipdata/tip_images/tip38.png">
 </div>
 </div>
-
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<style>
-  .collapsible 
-  {
-    background-color: #DCDCDC;
-    color: black;
-    cursor: pointer;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-  }
-.collapsible:hover 
-  {
-    background-color: #8e8e8e;
-  }
-.content 
-  {
-    padding: 0px 10px;
-    overflow: hidden;
-    background-color: #f1f1f1;
-    max-height: 0;
-    transition: max-height 0.2s ease-out;
-  }
-</style>
 
 <!-- Source: https://www.w3schools.com/ -->
 <script>
@@ -247,6 +223,7 @@ var i;
 
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
+  	this.classList.toggle("active");
   	var parent = this.parentElement;
     var content = this.nextElementSibling;
     if (content.style.maxHeight){

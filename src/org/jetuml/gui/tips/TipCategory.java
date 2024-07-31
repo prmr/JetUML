@@ -1,15 +1,18 @@
 package org.jetuml.gui.tips;
 
+/**
+ * Tip category represented as a View/category pair.
+ */
 public class TipCategory 
 {
 	private final View aView;
 	private final String aCategory;
 	
 	/**
-	 * @param pMedia Media of the tip element
-	 * @param pContent content that will be displayed by the tip (image name with file
-	 * 		  extension if the Media is IMAGE). 
-	 * @pre pMedia != null && pContent != null
+	 * @param pView The View of the tip category.
+	 * @param pCategory The category that the tip belongs to,
+	 * associated with its particular View.
+	 * @pre pView != null && pCategory != null.
 	 */
 	TipCategory(View pView, String pCategory)
 	{
@@ -19,7 +22,7 @@ public class TipCategory
 	}
 	
 	/**
-	 * @return String containing the tip content
+	 * @return String containing the tip's category.
 	 */
 	public String getCategory()
 	{
@@ -27,7 +30,7 @@ public class TipCategory
 	}
 	
 	/**
-	 * @return Media type of the TipElement
+	 * @return View type of the tip.
 	 */
 	public View getView()
 	{
