@@ -5,8 +5,8 @@
     { "image": "tip1.png"}
   ],
   "view": [
-    { "topic": "Creating"},
-    { "level": "Beginner"},
-    { "diagram": "General"}
+    { "topic": "creating"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

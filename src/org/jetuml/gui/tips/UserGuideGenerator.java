@@ -54,6 +54,7 @@ public final class UserGuideGenerator
 
 	private static final String PLACEHOLDER = "$TEXT$";
 	private static final String TEMPLATE_BUTTON = "<button class=\"collapsible\">$TEXT$</button>";
+	private static final String TEMPLATE_CATEGORY_BUTTON = "<button class=\"collapsible category\">$TEXT$</button>";
 	private static final String TEMPLATE_DIV_OPEN = "<div class=\"content\">";
 	private static final String TEMPLATE_TEXT = "<p>$TEXT$</p>";
 	private static final String TEMPLATE_IMAGE = "<img src=\"../tipdata/tip_images/$TEXT$\">";
@@ -62,6 +63,30 @@ public final class UserGuideGenerator
 	private static final Map<String, List<String>> TOPICS = new HashMap<>();
 	private static final Map<String, List<String>> LEVELS = new HashMap<>();
 	private static final Map<String, List<String>> DIAGRAMS = new HashMap<>();
+	
+	/*
+	 * The categories in the topic view in the user guide.
+	 */
+	enum Topic
+	{
+		CREATING, MODIFYING, SELECTING, COPYING, SEMANTICS, SETTINGS
+	}
+	
+	/*
+	 * The categories in the level view in the user guide.
+	 */
+	enum Level
+	{
+		BEGINNER, INTERMEDIATE, ADVANCED
+	}
+	
+	/*
+	 * The categories in the diagram view in the user guide.
+	 */
+	enum Diagram
+	{
+		CLASS, SEQUENCE, OBJECT, STATE, GENERAL
+	}
 	
 	private UserGuideGenerator() {}
 	
@@ -79,38 +104,73 @@ public final class UserGuideGenerator
 		System.out.println("The User Guide was generated sucessfully.");
 	}
 	
+	/*
+	 * Generates the user guide organized by topics.
+	 */
 	private static void generateTopicsAsMd() throws IOException
 	{
 		String template = lines(INPUT_FILE_TOPICS, UTF_8).collect(joining("\n"));
-		template = template.replace("$CREATING$", TOPICS.get("creating").stream().collect(joining("\n")))
-				.replace("$MODIFYING$", TOPICS.get("modifying").stream().collect(joining("\n")))
-				.replace("$SELECTING$", TOPICS.get("selecting").stream().collect(joining("\n")))
-				.replace("$COPYING$", TOPICS.get("copying").stream().collect(joining("\n")))
-				.replace("$SEMANTICS$", TOPICS.get("semantics").stream().collect(joining("\n")))
-				.replace("$SETTINGS$", TOPICS.get("settings").stream().collect(joining("\n")));
+		List<String> tipCategories = new ArrayList<>();
+		for( Topic topic : Topic.values() )
+		{
+			tipCategories.add(toHtml(topic.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Topic topic : Topic.values() )
+		{
+			template = template.replace("$" + topic.toString() + "$", 
+					TOPICS.get(topic.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
 		write(OUTPUT_FILE_TOPICS, template.getBytes(UTF_8));
 	}
 	
+	/*
+	 * Generates the user guide organized by levels.
+	 */
 	private static void generateLevelsAsMd() throws IOException
-	{
+	{		
 		String template = lines(INPUT_FILE_LEVELS, UTF_8).collect(joining("\n"));
-		template = template.replace("$BEGINNER$", LEVELS.get("beginner").stream().collect(joining("\n")))
-				.replace("$INTERMEDIATE$", LEVELS.get("intermediate").stream().collect(joining("\n")))
-				.replace("$ADVANCED$", LEVELS.get("advanced").stream().collect(joining("\n")));
+		List<String> tipCategories = new ArrayList<>();
+		for( Level level : Level.values() )
+		{
+			tipCategories.add(toHtml(level.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Level level : Level.values() )
+		{
+			template = template.replace("$" + level.toString() + "$", 
+					LEVELS.get(level.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
 		write(OUTPUT_FILE_LEVELS, template.getBytes(UTF_8));
 	}
 	
+	/*
+	 * Generates the user guide organized by diagram type.
+	 */
 	private static void generateDiagramsAsMd() throws IOException
 	{
 		String template = lines(INPUT_FILE_DIAGRAMS, UTF_8).collect(joining("\n"));
-		template = template.replace("$CLASS$", DIAGRAMS.get("class").stream().collect(joining("\n")))
-				.replace("$SEQUENCE$", DIAGRAMS.get("sequence").stream().collect(joining("\n")))
-				.replace("$OBJECT$", DIAGRAMS.get("object").stream().collect(joining("\n")))
-				.replace("$STATE$", DIAGRAMS.get("state").stream().collect(joining("\n")))
-				.replace("$GENERAL$", DIAGRAMS.get("general").stream().collect(joining("\n")));
+		List<String> tipCategories = new ArrayList<>();
+		for( Diagram diagram : Diagram.values() )
+		{
+			tipCategories.add(toHtml(diagram.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Diagram diagram : Diagram.values() )
+		{
+			template = template.replace("$" + diagram.toString() + "$", 
+					DIAGRAMS.get(diagram.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
 		write(OUTPUT_FILE_DIAGRAMS, template.getBytes(UTF_8));
 	}
 	
+	/*
+	 * Creates an html representation of all available tips, 
+	 * grouped by view, and their respective categories in each view.
+	 */
 	private static void tipsAsHtml()
 	{
 		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
@@ -140,25 +200,27 @@ public final class UserGuideGenerator
 		}
 	}
 	
-	/*
-	 * Creates an html representation of all available tips.
-	 */
-//	private static String tipsAsHtml()
-//	{
-//		List<String> tips = new ArrayList<>();
-//		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
-//		{
-//			tips.add(toHtml(loadTip(tipNumber)));
-//		}
-//		return tips.stream().collect(joining("\n"));
-//	}
-	
 	/* 
 	 * Obtains the number of tips for the application's properties.
 	 */
 	private static int numberOfTips()
 	{
 		return Integer.parseInt(RESOURCES.getString("tips.quantity"));
+	}
+	
+	/*
+	 * Creates an html representation of pCategory suitable for display in the user guide.
+	 */
+	private static String toHtml(String pCategory)
+	{
+		StringJoiner html = new StringJoiner("\n");
+		html.add(TEMPLATE_CATEGORY_BUTTON.replace(PLACEHOLDER, 
+				pCategory.substring(0, 1).toUpperCase() + pCategory.substring(1).toLowerCase()));
+		html.add(TEMPLATE_DIV_OPEN);
+		html.add("$" + pCategory + "$");
+		html.add(TEMPLATE_DIV_CLOSE);
+		
+		return html.toString();
 	}
 	
 	/*
