@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "You can edit an element's properties by double-clicking it or by using the shortcut Ctrl-Enter on a selected element." },
   	{ "image": "tip6.png"}
+  ],
+  "view": [
+    { "topic": "modifying"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

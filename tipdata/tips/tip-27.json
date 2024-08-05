@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "JetUML supports self-calls in sequence diagrams. To create a self-call, select the Call Edge Creation tool and drag the rubber band within an activation box." },
   	{ "image": "tip27.png"}
+  ],
+  "view": [
+    { "topic": "creating"},
+    { "level": "intermediate"},
+    { "diagram": "sequence"}
   ]
 }

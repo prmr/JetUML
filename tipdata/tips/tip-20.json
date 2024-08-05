@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "To add a reference to an object, select the Reference Creation tool from the toolbar, then drag a rubber band from the Value part of a field to the destination object node." },
   	{ "image": "tip20.png"}
+  ],
+  "view": [
+    { "topic": "modifying"},
+    { "level": "beginner"},
+    { "diagram": "object"}
   ]
 }

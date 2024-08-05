@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use the menu command Edit | Select All (Ctrl-A) to select all elements in a diagram, for example to move the entire diagram as one." },
   	{ "image": "tip12.png"}
+  ],
+  "view": [
+    { "topic": "selecting"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

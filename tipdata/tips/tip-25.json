@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "Use the menu command File | Duplicate (Ctrl-D) to quickly make a duplicate of the current diagram. The duplicate diagram will be open in a new tab. This feature is especially useful when exploring different variants of a design." },
   	{ "image": "tip25.png"}
+  ],
+  "view": [
+    { "topic": "copying"},
+    { "level": "intermediate"},
+    { "diagram": "general"}
   ]
 }

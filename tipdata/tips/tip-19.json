@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "To add a field to an object, select the Field Creation tool from the toolbar and click within the desired object node. Accessing the fields' properties (Ctrl-Enter) allows to change the field's name and value." },
   	{ "image": "tip19.png"}
+  ],
+  "view": [
+    { "topic": "modifying"},
+    { "level": "beginner"},
+    { "diagram": "object"}
   ]
 }

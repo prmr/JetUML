@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 
 import org.jetuml.gui.tips.TipLoader.Tip;
@@ -43,15 +45,48 @@ import org.jetuml.gui.tips.TipLoader.Tip;
  */
 public final class UserGuideGenerator
 {
-	private static final Path INPUT_FILE = Paths.get("docs", "user-guide-template.txt");
-	private static final Path OUTPUT_FILE = Paths.get("docs", "user-guide.md");
+	private static final Path INPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics-template.txt");
+	private static final Path INPUT_FILE_LEVELS = Paths.get("docs", "user-guide-levels-template.txt");
+	private static final Path INPUT_FILE_DIAGRAMS = Paths.get("docs", "user-guide-diagrams-template.txt");
+	private static final Path OUTPUT_FILE_TOPICS = Paths.get("docs", "user-guide-topics.md");
+	private static final Path OUTPUT_FILE_LEVELS = Paths.get("docs", "user-guide-levels.md");
+	private static final Path OUTPUT_FILE_DIAGRAMS = Paths.get("docs", "user-guide-diagrams.md");
 
 	private static final String PLACEHOLDER = "$TEXT$";
 	private static final String TEMPLATE_BUTTON = "<button class=\"collapsible\">$TEXT$</button>";
+	private static final String TEMPLATE_CATEGORY_BUTTON = "<button class=\"collapsible category\">$TEXT$</button>";
 	private static final String TEMPLATE_DIV_OPEN = "<div class=\"content\">";
 	private static final String TEMPLATE_TEXT = "<p>$TEXT$</p>";
 	private static final String TEMPLATE_IMAGE = "<img src=\"../tipdata/tip_images/$TEXT$\">";
 	private static final String TEMPLATE_DIV_CLOSE = "</div>";
+	
+	private static final Map<String, List<String>> TOPICS = new HashMap<>();
+	private static final Map<String, List<String>> LEVELS = new HashMap<>();
+	private static final Map<String, List<String>> DIAGRAMS = new HashMap<>();
+	
+	/*
+	 * The categories in the topic view in the user guide.
+	 */
+	enum Topic
+	{
+		CREATING, MODIFYING, SELECTING, COPYING, SEMANTICS, SETTINGS
+	}
+	
+	/*
+	 * The categories in the level view in the user guide.
+	 */
+	enum Level
+	{
+		BEGINNER, INTERMEDIATE, ADVANCED
+	}
+	
+	/*
+	 * The categories in the diagram view in the user guide.
+	 */
+	enum Diagram
+	{
+		CLASS, SEQUENCE, OBJECT, STATE, GENERAL
+	}
 	
 	private UserGuideGenerator() {}
 	
@@ -62,22 +97,107 @@ public final class UserGuideGenerator
 	 */
 	public static void main(String[] pArgs) throws IOException
 	{
-		String template = lines(INPUT_FILE, UTF_8).collect(joining("\n"));
-		write(OUTPUT_FILE, template.replace(PLACEHOLDER,  tipsAsHtml()).getBytes(UTF_8));
+		tipsAsHtml();
+		generateTopicsAsMd();
+		generateLevelsAsMd();
+		generateDiagramsAsMd();
 		System.out.println("The User Guide was generated sucessfully.");
 	}
 	
 	/*
-	 * Creates an html representation of all available tips.
+	 * Generates the user guide organized by topics.
 	 */
-	private static String tipsAsHtml()
+	private static void generateTopicsAsMd() throws IOException
 	{
-		List<String> tips = new ArrayList<>();
+		String template = lines(INPUT_FILE_TOPICS, UTF_8).collect(joining("\n"));
+		List<String> tipCategories = new ArrayList<>();
+		for( Topic topic : Topic.values() )
+		{
+			tipCategories.add(toHtml(topic.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Topic topic : Topic.values() )
+		{
+			template = template.replace("$" + topic.toString() + "$", 
+					TOPICS.get(topic.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
+		write(OUTPUT_FILE_TOPICS, template.getBytes(UTF_8));
+	}
+	
+	/*
+	 * Generates the user guide organized by levels.
+	 */
+	private static void generateLevelsAsMd() throws IOException
+	{		
+		String template = lines(INPUT_FILE_LEVELS, UTF_8).collect(joining("\n"));
+		List<String> tipCategories = new ArrayList<>();
+		for( Level level : Level.values() )
+		{
+			tipCategories.add(toHtml(level.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Level level : Level.values() )
+		{
+			template = template.replace("$" + level.toString() + "$", 
+					LEVELS.get(level.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
+		write(OUTPUT_FILE_LEVELS, template.getBytes(UTF_8));
+	}
+	
+	/*
+	 * Generates the user guide organized by diagram type.
+	 */
+	private static void generateDiagramsAsMd() throws IOException
+	{
+		String template = lines(INPUT_FILE_DIAGRAMS, UTF_8).collect(joining("\n"));
+		List<String> tipCategories = new ArrayList<>();
+		for( Diagram diagram : Diagram.values() )
+		{
+			tipCategories.add(toHtml(diagram.toString()));
+		}
+		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
+		
+		for( Diagram diagram : Diagram.values() )
+		{
+			template = template.replace("$" + diagram.toString() + "$", 
+					DIAGRAMS.get(diagram.toString().toLowerCase()).stream().collect(joining("\n")));
+		}
+		write(OUTPUT_FILE_DIAGRAMS, template.getBytes(UTF_8));
+	}
+	
+	/*
+	 * Creates an html representation of all available tips, 
+	 * grouped by Views, and their respective categories in each View.
+	 */
+	private static void tipsAsHtml()
+	{
 		for( int tipNumber = 1; tipNumber <= numberOfTips(); tipNumber++ )
 		{
-			tips.add(toHtml(loadTip(tipNumber)));
+			Tip tip = loadTip(tipNumber);
+			for( TipCategory category : tip.getCategories() )
+			{
+				if( category.getView() == View.TOPIC )
+				{
+					TOPICS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = TOPICS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+				else if( category.getView() == View.LEVEL )
+				{
+					LEVELS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = LEVELS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+				else
+				{
+					DIAGRAMS.putIfAbsent(category.getCategory(), new ArrayList<>());
+					List<String> html = DIAGRAMS.get(category.getCategory());
+					html.add(toHtml(tip));
+				}
+			}
 		}
-		return tips.stream().collect(joining("\n"));
 	}
 	
 	/* 
@@ -86,6 +206,21 @@ public final class UserGuideGenerator
 	private static int numberOfTips()
 	{
 		return Integer.parseInt(RESOURCES.getString("tips.quantity"));
+	}
+	
+	/*
+	 * Creates an html representation of pCategory suitable for display in the user guide.
+	 */
+	private static String toHtml(String pCategory)
+	{
+		StringJoiner html = new StringJoiner("\n");
+		html.add(TEMPLATE_CATEGORY_BUTTON.replace(PLACEHOLDER, 
+				pCategory.substring(0, 1).toUpperCase() + pCategory.substring(1).toLowerCase()));
+		html.add(TEMPLATE_DIV_OPEN);
+		html.add("$" + pCategory + "$");
+		html.add(TEMPLATE_DIV_CLOSE);
+		
+		return html.toString();
 	}
 	
 	/*

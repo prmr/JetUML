@@ -3,5 +3,10 @@
   "content": [ 
     { "text": "It is possible to view the name of each tool in the toolbar in full next to its icon. To toggle this feature, use the menu command View | Show Tool Hint." },
   	{ "image": "tip8.png"}
+  ],
+  "view": [
+    { "topic": "settings"},
+    { "level": "beginner"},
+    { "diagram": "general"}
   ]
 }

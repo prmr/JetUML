@@ -5,5 +5,10 @@
     { "image": "tip23a.png"},
     { "text": "This will create the activation box for both the caller and the callee. To create additional call edges, drag from an activation box to a life-line." },
     { "image": "tip23b.png"}
+  ],
+  "view": [
+    { "topic": "creating"},
+    { "level": "beginner"},
+    { "diagram": "sequence"}
   ]
 }
