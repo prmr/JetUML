@@ -169,7 +169,7 @@ public final class UserGuideGenerator
 	
 	/*
 	 * Creates an html representation of all available tips, 
-	 * grouped by view, and their respective categories in each view.
+	 * grouped by Views, and their respective categories in each View.
 	 */
 	private static void tipsAsHtml()
 	{
