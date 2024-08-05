@@ -184,6 +184,10 @@ final class TipLoader
 			return null;
 		}
 		
+		/*
+	     * A tip view contains one property whose name is any View value
+	     * in lower case: discover which one it is.
+		 */
 		private static View discoverViewUsed(JsonObject pTipContent)
 		{
 			for(View view : View.values())
