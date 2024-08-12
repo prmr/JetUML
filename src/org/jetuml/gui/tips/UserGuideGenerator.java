@@ -60,33 +60,9 @@ public final class UserGuideGenerator
 	private static final String TEMPLATE_IMAGE = "<img src=\"../tipdata/tip_images/$TEXT$\">";
 	private static final String TEMPLATE_DIV_CLOSE = "</div>";
 	
-	private static final Map<String, List<String>> TOPICS = new HashMap<>();
-	private static final Map<String, List<String>> LEVELS = new HashMap<>();
-	private static final Map<String, List<String>> DIAGRAMS = new HashMap<>();
-	
-	/*
-	 * The categories in the topic view in the user guide.
-	 */
-	enum Topic
-	{
-		CREATING, MODIFYING, SELECTING, COPYING, SEMANTICS, SETTINGS
-	}
-	
-	/*
-	 * The categories in the level view in the user guide.
-	 */
-	enum Level
-	{
-		BEGINNER, INTERMEDIATE, ADVANCED
-	}
-	
-	/*
-	 * The categories in the diagram view in the user guide.
-	 */
-	enum Diagram
-	{
-		CLASS, SEQUENCE, OBJECT, STATE, GENERAL
-	}
+	private static final Map<TipCategory, List<String>> TOPICS = new HashMap<>();
+	private static final Map<TipCategory, List<String>> LEVELS = new HashMap<>();
+	private static final Map<TipCategory, List<String>> DIAGRAMS = new HashMap<>();
 	
 	private UserGuideGenerator() {}
 	
@@ -98,29 +74,35 @@ public final class UserGuideGenerator
 	public static void main(String[] pArgs) throws IOException
 	{
 		tipsAsHtml();
-		generateTopicsAsMd();
-		generateLevelsAsMd();
-		generateDiagramsAsMd();
+		generateTopics();
+		generateLevels();
+		generateDiagrams();
 		System.out.println("The User Guide was generated sucessfully.");
 	}
 	
 	/*
 	 * Generates the user guide organized by topics.
 	 */
-	private static void generateTopicsAsMd() throws IOException
+	private static void generateTopics() throws IOException
 	{
 		String template = lines(INPUT_FILE_TOPICS, UTF_8).collect(joining("\n"));
 		List<String> tipCategories = new ArrayList<>();
-		for( Topic topic : Topic.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			tipCategories.add(toHtml(topic.toString()));
+			if( category.getView() == View.TOPIC )
+			{
+				tipCategories.add(toHtml(category.toString()));
+			}
 		}
 		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
 		
-		for( Topic topic : Topic.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			template = template.replace("$" + topic.toString() + "$", 
-					TOPICS.get(topic.toString().toLowerCase()).stream().collect(joining("\n")));
+			if( category.getView() == View.TOPIC )
+			{
+				template = template.replace("$" + category.toString() + "$", 
+						TOPICS.get(category).stream().collect(joining("\n")));
+			}
 		}
 		write(OUTPUT_FILE_TOPICS, template.getBytes(UTF_8));
 	}
@@ -128,20 +110,26 @@ public final class UserGuideGenerator
 	/*
 	 * Generates the user guide organized by levels.
 	 */
-	private static void generateLevelsAsMd() throws IOException
+	private static void generateLevels() throws IOException
 	{		
 		String template = lines(INPUT_FILE_LEVELS, UTF_8).collect(joining("\n"));
 		List<String> tipCategories = new ArrayList<>();
-		for( Level level : Level.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			tipCategories.add(toHtml(level.toString()));
+			if( category.getView() == View.LEVEL )
+			{
+				tipCategories.add(toHtml(category.toString()));
+			}
 		}
 		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
 		
-		for( Level level : Level.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			template = template.replace("$" + level.toString() + "$", 
-					LEVELS.get(level.toString().toLowerCase()).stream().collect(joining("\n")));
+			if( category.getView() == View.LEVEL )
+			{
+				template = template.replace("$" + category.toString() + "$", 
+						LEVELS.get(category).stream().collect(joining("\n")));
+			}
 		}
 		write(OUTPUT_FILE_LEVELS, template.getBytes(UTF_8));
 	}
@@ -149,20 +137,26 @@ public final class UserGuideGenerator
 	/*
 	 * Generates the user guide organized by diagram type.
 	 */
-	private static void generateDiagramsAsMd() throws IOException
+	private static void generateDiagrams() throws IOException
 	{
 		String template = lines(INPUT_FILE_DIAGRAMS, UTF_8).collect(joining("\n"));
 		List<String> tipCategories = new ArrayList<>();
-		for( Diagram diagram : Diagram.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			tipCategories.add(toHtml(diagram.toString()));
+			if( category.getView() == View.DIAGRAM )
+			{
+				tipCategories.add(toHtml(category.toString()));
+			}
 		}
 		template = template.replace(PLACEHOLDER, tipCategories.stream().collect(joining("\n")));
 		
-		for( Diagram diagram : Diagram.values() )
+		for( TipCategory category : TipCategory.values() )
 		{
-			template = template.replace("$" + diagram.toString() + "$", 
-					DIAGRAMS.get(diagram.toString().toLowerCase()).stream().collect(joining("\n")));
+			if( category.getView() == View.DIAGRAM )
+			{
+				template = template.replace("$" + category.toString() + "$", 
+						DIAGRAMS.get(category).stream().collect(joining("\n")));
+			}
 		}
 		write(OUTPUT_FILE_DIAGRAMS, template.getBytes(UTF_8));
 	}
@@ -180,20 +174,20 @@ public final class UserGuideGenerator
 			{
 				if( category.getView() == View.TOPIC )
 				{
-					TOPICS.putIfAbsent(category.getCategory(), new ArrayList<>());
-					List<String> html = TOPICS.get(category.getCategory());
+					TOPICS.putIfAbsent(category, new ArrayList<>());
+					List<String> html = TOPICS.get(category);
 					html.add(toHtml(tip));
 				}
 				else if( category.getView() == View.LEVEL )
 				{
-					LEVELS.putIfAbsent(category.getCategory(), new ArrayList<>());
-					List<String> html = LEVELS.get(category.getCategory());
+					LEVELS.putIfAbsent(category, new ArrayList<>());
+					List<String> html = LEVELS.get(category);
 					html.add(toHtml(tip));
 				}
 				else
 				{
-					DIAGRAMS.putIfAbsent(category.getCategory(), new ArrayList<>());
-					List<String> html = DIAGRAMS.get(category.getCategory());
+					DIAGRAMS.putIfAbsent(category, new ArrayList<>());
+					List<String> html = DIAGRAMS.get(category);
 					html.add(toHtml(tip));
 				}
 			}

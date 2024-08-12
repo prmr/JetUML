@@ -4,9 +4,9 @@
     { "text": "To speed up diagramming, use the Auto Edit Node feature to automatically open the properties page whenever a new node is created. This feature is only available for nodes." },
   	{ "image": "tip24.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "settings"},
     { "level": "intermediate"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

@@ -158,11 +158,11 @@ final class TipLoader
 		{
 			List<TipCategory> categories = new ArrayList<>();
 			
-			for(Object contentObject : pTip.getJsonArray(TipFieldName.VIEW.asString()))
+			for(Object tagsObject : pTip.getJsonArray(TipFieldName.TAGS.asString()))
 			{
-				JsonObject contentJsonObject = (JsonObject) contentObject;
-				View view = discoverViewUsed(contentJsonObject);
-				categories.add(new TipCategory(view, contentJsonObject.getString(view.name().toLowerCase())));
+				JsonObject tagsJsonObject = (JsonObject) tagsObject;
+				TipCategory category = discoverCategory(tagsJsonObject);
+				categories.add(category);
 			}
 			return categories;
 		}
@@ -188,13 +188,13 @@ final class TipLoader
 	     * A tip view contains one property whose name is any View value
 	     * in lower case: discover which one it is.
 		 */
-		private static View discoverViewUsed(JsonObject pTipContent)
+		private static TipCategory discoverCategory(JsonObject pTipContent)
 		{
 			for(View view : View.values())
 			{
 				if(pTipContent.hasProperty(view.name().toLowerCase()))
 				{
-					return view;
+					return TipCategory.valueOf(pTipContent.getString(view.name().toLowerCase()).toUpperCase());
 				}
 			}
 			assert false;

@@ -74,7 +74,7 @@ layout: user-guide
 <img src="../tipdata/tip_images/tip21.png">
 </div>
 </div>
-<button class="collapsible category">General</button>
+<button class="collapsible category">All</button>
 <div class="content">
 <button class="collapsible">Creating a New Diagram</button>
 <div class="content">

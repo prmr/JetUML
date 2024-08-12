@@ -4,9 +4,9 @@
     { "text": "You can create a new diagram at any point using the menu command File | New. The diagram will open in a new tab."},
     { "image": "tip1.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "creating"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

@@ -1,36 +1,24 @@
 package org.jetuml.gui.tips;
 
 /**
- * Tip category represented as a View/category pair.
+ *  An enum declared with a View parameter to define
+ *  all tip categories and the View that the category belongs to.
  */
-public class TipCategory 
+public enum TipCategory 
 {
+	CREATING(View.TOPIC), MODIFYING(View.TOPIC), SELECTING(View.TOPIC), COPYING(View.TOPIC), SEMANTICS(View.TOPIC), SETTINGS(View.TOPIC),
+	BEGINNER(View.LEVEL), INTERMEDIATE(View.LEVEL), ADVANCED(View.LEVEL),
+	CLASS(View.DIAGRAM), SEQUENCE(View.DIAGRAM), OBJECT(View.DIAGRAM), STATE(View.DIAGRAM), ALL(View.DIAGRAM);
+	
 	private final View aView;
-	private final String aCategory;
 	
-	/**
-	 * @param pView The View of the tip category.
-	 * @param pCategory The category that the tip belongs to,
-	 * associated with its particular View.
-	 * @pre pView != null && pCategory != null.
-	 */
-	TipCategory(View pView, String pCategory)
+	TipCategory(View pView)
 	{
-		assert pView != null && pCategory != null;
 		aView = pView;
-		aCategory = pCategory;
 	}
 	
 	/**
-	 * @return String containing the tip's category.
-	 */
-	public String getCategory()
-	{
-		return aCategory;
-	}
-	
-	/**
-	 * @return View type of the tip.
+	 * @return The View that the tip belongs to.
 	 */
 	public View getView()
 	{

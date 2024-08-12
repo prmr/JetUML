@@ -4,7 +4,7 @@
     { "text": "Package nodes can contain child nodes. To add a child node to a package, select the desired Node Creation tool and click within a package to add this node directly as a child node. To add an existing node to a package, position the node on top of the package and hit the Shift key. To detach a node from a package, also hit the Shift key." },
     { "image": "tip30.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "creating"},
     { "level": "advanced"},
     { "diagram": "class"}
