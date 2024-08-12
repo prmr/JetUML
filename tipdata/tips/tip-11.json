@@ -4,7 +4,7 @@
     { "text": "Certain types of edges can be changed through the edge's properties. Access the edge properties by double-clicking an edge or selecting it and typing Ctrl-Enter." },
   	{ "image": "tip11.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "modifying"},
     { "level": "intermediate"},
     { "diagram": "class"}

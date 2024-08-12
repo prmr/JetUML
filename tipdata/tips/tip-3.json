@@ -4,9 +4,9 @@
     { "text": "To create an edge between two nodes, select an Edge Creation tool in the toolbar, click in the start edge, then start dragging with the mouse. This will enable a rubber band view of the start and end nodes for the edge. Release the mouse on the destination edge to complete the operation. Edges are laid out automatically: to control their path it is necessary to move their start and end nodes. The edge creation operation will not have any effect if the edge type is not a valid way to connect the selected nodes." },
   	{ "image": "tip3.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "creating"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

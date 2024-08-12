@@ -4,9 +4,9 @@
     { "text": "It is possible to control whether the grid is visible or not in a diagram. Use the menu command View | Show Grid to toggle this option. Diagram elements automatically snap to the grid whether it is visible or not." },
     { "image": "tip31.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "settings"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

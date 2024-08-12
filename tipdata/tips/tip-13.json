@@ -4,9 +4,9 @@
     { "text": "Use Note elements to annotate the diagram with complementary information." },
   	{ "image": "tip13.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "creating"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

@@ -4,9 +4,9 @@
     { "text": "The toolbar is also available as a popup menu. Right-click anywhere to show it." },
   	{ "image": "tip9.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "settings"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

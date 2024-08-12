@@ -4,9 +4,9 @@
     { "text": "Use the menu command View | Verbose Tooltips to toggle verbose tooltips in the toolbar. Verbose tooltips provide an extended description of the meaning of UML elements available in the toolbar." },
   	{ "image": "tip18.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "settings"},
     { "level": "beginner"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }

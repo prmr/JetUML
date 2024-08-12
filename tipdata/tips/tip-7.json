@@ -4,9 +4,9 @@
     { "text": "When attempting to create a new edge, the operation will only succeed if the edge is a valid connection between two elements according to the syntax of the diagram. Invalid attempts to create edges get reported as notifications." },
   	{ "image": "tip3.png"}
   ],
-  "view": [
+  "tags": [
     { "topic": "semantics"},
     { "level": "intermediate"},
-    { "diagram": "general"}
+    { "diagram": "all"}
   ]
 }
