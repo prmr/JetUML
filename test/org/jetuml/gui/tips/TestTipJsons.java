@@ -105,7 +105,7 @@ public class TestTipJsons
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
 			JsonObject jObj = loadTipAsJsonObject(id);
-			assertEquals(jObj.numberOfProperties(), 2);
+			assertEquals(jObj.numberOfProperties(), 3);
 		}
 	}
 
