@@ -1,0 +1,12 @@
+{ 
+  "title": "Underlining or Italicizing Text",
+  "content": [ 
+    { "text": "To show a line of text in italics, surround it with forward slashes (e.g., /abstract/). To show a line of text underlined, surround it with underscores (e.g., _underlined_)."},
+    { "image": "tip39.png"}
+  ],
+  "tags": [
+    { "topic": "creating"},
+    { "level": "intermediate"},
+    { "diagram": "class"}
+  ]
+}
