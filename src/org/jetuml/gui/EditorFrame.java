@@ -81,7 +81,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
 	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
 	private static final String KEY_LAST_IMAGE_FORMAT = "lastImageFormat";
-	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide.html";
+	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide-topics.html";
 	
 	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
 	
