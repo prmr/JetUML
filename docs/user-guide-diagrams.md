@@ -20,6 +20,11 @@ layout: user-guide
 <p>Package nodes can contain child nodes. To add a child node to a package, select the desired Node Creation tool and click within a package to add this node directly as a child node. To add an existing node to a package, position the node on top of the package and hit the Shift key. To detach a node from a package, also hit the Shift key.</p>
 <img src="../tipdata/tip_images/tip30.png">
 </div>
+<button class="collapsible">Underlining or Italicizing Text</button>
+<div class="content">
+<p>To show a line of text in italics, surround it with forward slashes (e.g., /abstract/). To show a line of text underlined, surround it with underscores (e.g., _underlined_).</p>
+<img src="../tipdata/tip_images/tip39.png">
+</div>
 </div>
 <button class="collapsible category">Sequence</button>
 <div class="content">

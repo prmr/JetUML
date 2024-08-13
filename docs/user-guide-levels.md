@@ -180,6 +180,11 @@ layout: user-guide
 <p>In the Properties editor for any diagram element, use the shortcut key combination Ctrl-Q to insert the characters « », which are the delimiters for UML stereotypes. The cursor will be positioned between the delimiters, so you can just continue typing the name of your stereotype.</p>
 <img src="../tipdata/tip_images/tip36.png">
 </div>
+<button class="collapsible">Underlining or Italicizing Text</button>
+<div class="content">
+<p>To show a line of text in italics, surround it with forward slashes (e.g., /abstract/). To show a line of text underlined, surround it with underscores (e.g., _underlined_).</p>
+<img src="../tipdata/tip_images/tip39.png">
+</div>
 </div>
 <button class="collapsible category">Advanced</button>
 <div class="content">
