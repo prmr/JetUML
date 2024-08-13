@@ -207,7 +207,7 @@ public class TipDialog
 	/**
 	 * @pre pTip != null
 	 */
-	private VBox getTipAsVBox(Tip pTip) 
+	private static VBox getTipAsVBox(Tip pTip) 
 	{
 		assert pTip != null;
 		
@@ -222,7 +222,7 @@ public class TipDialog
 		
 		for(TipElement tipElement : tipElements)
 		{
-			Node node = this.getTipElementAsNode(tipElement, tipVBox);
+			Node node = getTipElementAsNode(tipElement, tipVBox);
 			tipVBox.getChildren().add(node);
 		}
 		
@@ -257,7 +257,7 @@ public class TipDialog
 	 * @pre pTipElement != null;
 	 * @pre pTipElement.getMedia().equals(Media.TEXT) || pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private Node getTipElementAsNode(TipElement pTipElement, VBox pParent)
+	private static Node getTipElementAsNode(TipElement pTipElement, VBox pParent)
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT) || pTipElement.getMedia().equals(Media.IMAGE);
@@ -265,7 +265,7 @@ public class TipDialog
 		Media media = pTipElement.getMedia();
 		if(media.equals(Media.TEXT))
 		{
-			return this.getTextTipElementAsLabel(pTipElement);
+			return getTextTipElementAsLabel(pTipElement);
 		}
 		else // media.equals(Media.IMAGE) by @pre
 		{
@@ -281,7 +281,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.TEXT);
 	 */
-	private Label getTextTipElementAsLabel(TipElement pTipElement) 
+	private static Label getTextTipElementAsLabel(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT);
