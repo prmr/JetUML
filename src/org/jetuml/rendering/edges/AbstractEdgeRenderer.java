@@ -31,7 +31,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.geometry.Bounds;
 import javafx.scene.shape.LineTo;
@@ -137,7 +136,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 	@Override
 	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
 	{
-		ToolGraphics.drawHandles(pContext.context(), getConnectionPoints((Edge)pElement));		
+		pContext.drawHandles(getConnectionPoints((Edge)pElement));		
 	}
 	
 	protected String wrapLabel(String pString, int pDistanceInX, int pDistanceInY)

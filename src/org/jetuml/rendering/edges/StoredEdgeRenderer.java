@@ -471,7 +471,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		EdgePath path = getStoredEdgePath((Edge)pElement);
 		if(path != null) 
 		{
-			ToolGraphics.drawHandles(pContext.context(), new Line(path.getStartPoint(), path.getEndPoint()));
+			pContext.drawHandles(new Line(path.getStartPoint(), path.getEndPoint()));
 		}
 	}
 

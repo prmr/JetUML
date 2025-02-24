@@ -34,7 +34,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.nodes.AbstractNodeRenderer;
 
 import javafx.geometry.Orientation;
@@ -99,7 +99,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		int offset = AbstractNodeRenderer.OFFSET + 3;
 		Canvas canvas = new Canvas(AbstractNodeRenderer.BUTTON_SIZE, AbstractNodeRenderer.BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		ToolGraphics.drawHandles(graphics, new Rectangle(offset, offset, 
+		new RenderingContext(graphics).drawHandles(new Rectangle(offset, offset, 
 				AbstractNodeRenderer.BUTTON_SIZE - (offset*2), AbstractNodeRenderer.BUTTON_SIZE-(offset*2) ));
 		return canvas;
 	}

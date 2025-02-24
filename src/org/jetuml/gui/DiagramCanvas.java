@@ -56,7 +56,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.Grid;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -250,8 +249,8 @@ StringPreferenceChangeHandler
 		aDiagramBuilder.renderer().draw(renderingContext);
 		synchronizeSelectionModel();
 		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, renderingContext));
-		aRubberband.ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
-		aLasso.ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
+		aRubberband.ifPresent( rubberband -> renderingContext.drawRubberband(rubberband));
+		aLasso.ifPresent( lasso -> renderingContext.drawLasso(lasso));
 	}
 	
 	/**

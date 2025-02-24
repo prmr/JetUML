@@ -31,7 +31,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -83,7 +82,7 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	@Override
 	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
 	{
-		ToolGraphics.drawHandles(pContext.context(), getBounds(pElement));		
+		pContext.drawHandles(getBounds(pElement));		
 	}
 	
 	@Override
