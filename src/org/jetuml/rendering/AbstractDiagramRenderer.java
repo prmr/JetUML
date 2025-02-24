@@ -41,7 +41,6 @@ import org.jetuml.rendering.nodes.NoteNodeRenderer;
 import org.jetuml.rendering.nodes.PointNodeRenderer;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Default implementation of the rendering operations.
@@ -166,7 +165,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	@Override
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
-		aRenderers.get(pElement.getClass()).draw(pElement, pContext.context());
+		aRenderers.get(pElement.getClass()).draw(pElement, pContext);
 	}
 
 	@Override
@@ -203,10 +202,10 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
+	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
 	{
-		assert pElement != null && pGraphics != null;
-		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
+		assert pElement != null && pContext != null;
+		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pContext);
 	}
 
 	@Override

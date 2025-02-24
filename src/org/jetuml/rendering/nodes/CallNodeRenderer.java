@@ -30,10 +30,10 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
@@ -62,28 +62,28 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		if(((CallNode)pElement).isOpenBottom())
 		{
-			pGraphics.setStroke(Color.WHITE);
-			RenderingUtils.drawRectangle(pGraphics, getBounds(pElement));
-			pGraphics.setStroke(Color.BLACK);
+			pContext.context().setStroke(Color.WHITE);
+			RenderingUtils.drawRectangle(pContext.context(), getBounds(pElement));
+			pContext.context().setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
 			int x2 = bounds.maxX();
 			int y1 = bounds.y();
 			int y3 = bounds.maxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			RenderingUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
-			RenderingUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
-			RenderingUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
-			RenderingUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
-			RenderingUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
+			RenderingUtils.drawLine(pContext.context(), x1, y1, x2, y1, LineStyle.SOLID);
+			RenderingUtils.drawLine(pContext.context(), x1, y1, x1, y2, LineStyle.SOLID);
+			RenderingUtils.drawLine(pContext.context(), x2, y1, x2, y2, LineStyle.SOLID);
+			RenderingUtils.drawLine(pContext.context(), x1, y2, x1, y3, LineStyle.DOTTED);
+			RenderingUtils.drawLine(pContext.context(), x2, y2, x2, y3, LineStyle.DOTTED);
 		}
 		else
 		{
-			RenderingUtils.drawRectangle(pGraphics, getBounds(pElement));
+			RenderingUtils.drawRectangle(pContext.context(), getBounds(pElement));
 		}
 	}
 

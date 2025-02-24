@@ -27,8 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-
-import javafx.scene.canvas.GraphicsContext;
+import org.jetuml.rendering.RenderingContext;
 
 /**
  * An object to render a PointNode.
@@ -70,7 +69,7 @@ public final class PointNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics) 
+	public void draw(DiagramElement pElement, RenderingContext pContext) 
 	{
 		// Do nothing, a point is invisible.
 	}

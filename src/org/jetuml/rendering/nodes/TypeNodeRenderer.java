@@ -29,6 +29,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -74,7 +75,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{	
 		assert pElement instanceof TypeNode;
 		TypeNode node = (TypeNode) pElement;
@@ -83,26 +84,26 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		RenderingUtils.drawRectangle(pGraphics, bounds);	
-		drawName(node, bounds, bounds.y(), nameHeight, pGraphics);
+		RenderingUtils.drawRectangle(pContext.context(), bounds);	
+		drawName(node, bounds, bounds.y(), nameHeight, pContext.context());
 		
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			RenderingUtils.drawLine(pGraphics, bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
-			drawAttribute(node, bounds, splitY, attributeHeight, pGraphics);
+			RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			drawAttribute(node, bounds, splitY, attributeHeight, pContext.context());
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				RenderingUtils.drawLine(pGraphics, bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
-				drawMethod(node, bounds, splitY2, methodHeight, pGraphics);
+				RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
+				drawMethod(node, bounds, splitY2, methodHeight, pContext.context());
 			}
 		}
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			RenderingUtils.drawLine(pGraphics, bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
-			drawMethod(node, bounds, splitY, methodHeight, pGraphics);
+			RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			drawMethod(node, bounds, splitY, methodHeight, pContext.context());
 		}
 	}
 	

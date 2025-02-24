@@ -45,6 +45,7 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.EdgePath;
 import org.jetuml.rendering.EdgePriority;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.ToolGraphics;
@@ -409,18 +410,18 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics) 
+	public void draw(DiagramElement pElement, RenderingContext pContext) 
 	{
-		assert pElement !=null && pGraphics != null;
+		assert pElement !=null && pContext.context() != null;
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
-		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(edge), getLineStyle(edge));
-		ArrowHeadRenderer.draw(pGraphics, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
-		ArrowHeadRenderer.draw(pGraphics, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
+		ToolGraphics.strokeSharpPath(pContext.context(), getSegmentPath(edge), getLineStyle(edge));
+		ArrowHeadRenderer.draw(pContext.context(), getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
+		ArrowHeadRenderer.draw(pContext.context(), getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
-		drawLabel(pGraphics, segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
-		drawLabel(pGraphics, segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
-		drawLabel(pGraphics, segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
+		drawLabel(pContext.context(), segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
+		drawLabel(pContext.context(), segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
+		drawLabel(pContext.context(), segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
 	}
 	
 	/*
@@ -465,12 +466,12 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics) 
+	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext) 
 	{
 		EdgePath path = getStoredEdgePath((Edge)pElement);
 		if(path != null) 
 		{
-			ToolGraphics.drawHandles(pGraphics, new Line(path.getStartPoint(), path.getEndPoint()));
+			ToolGraphics.drawHandles(pContext.context(), new Line(path.getStartPoint(), path.getEndPoint()));
 		}
 	}
 

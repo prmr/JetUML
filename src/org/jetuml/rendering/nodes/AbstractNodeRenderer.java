@@ -29,6 +29,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.ToolGraphics;
 
@@ -80,9 +81,9 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	}
 	
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
+	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
 	{
-		ToolGraphics.drawHandles(pGraphics, getBounds(pElement));		
+		ToolGraphics.drawHandles(pContext.context(), getBounds(pElement));		
 	}
 	
 	@Override
@@ -101,7 +102,7 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		draw(node, canvas.getGraphicsContext2D());
+		draw(node, new RenderingContext(canvas.getGraphicsContext2D()));
 		return canvas;
 	}
 	

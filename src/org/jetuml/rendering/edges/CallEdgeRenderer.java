@@ -37,6 +37,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -122,17 +123,17 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
+		ToolGraphics.strokeSharpPath(pContext.context(), (Path) getShape(edge), LineStyle.SOLID);
 		
 		Point[] points = getPoints(edge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
-		ArrowHeadRenderer.draw(pGraphics, getArrowHead((CallEdge)edge), points[points.length - 2], points[points.length - 1]);
+		ArrowHeadRenderer.draw(pContext.context(), getArrowHead((CallEdge)edge), points[points.length - 2], points[points.length - 1]);
 		String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			drawLabel((CallEdge)edge, pGraphics, label);
+			drawLabel((CallEdge)edge, pContext.context(), label);
 		}
 	}
 	

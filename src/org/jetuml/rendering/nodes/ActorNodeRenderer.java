@@ -27,12 +27,12 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.ToolGraphics;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -80,15 +80,15 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)node).getName());
 		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
 				bounds.y() + HEIGHT, nameBounds.width(), nameBounds.height());
-		NAME_VIEWER.draw(((ActorNode)node).getName(), pGraphics, nameBox);
-		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(node), LineStyle.SOLID);
+		NAME_VIEWER.draw(((ActorNode)node).getName(), pContext.context(), nameBox);
+		ToolGraphics.strokeSharpPath(pContext.context(), createStickManPath(node), LineStyle.SOLID);
 	}
 	
 	private static Path createStickManPath(Node pNode)

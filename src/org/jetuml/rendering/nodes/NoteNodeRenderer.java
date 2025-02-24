@@ -27,12 +27,12 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.ToolGraphics;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -64,12 +64,12 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Node node = (Node) pElement;
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), ColorScheme.getScheme().getNoteColor(), true);
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(node), Color.WHITE, false);
-		NOTE_VIEWER.draw(((NoteNode)node).getName(), pGraphics, 
+		ToolGraphics.strokeAndFillSharpPath(pContext.context(), createNotePath(node), ColorScheme.getScheme().getNoteColor(), true);
+		ToolGraphics.strokeAndFillSharpPath(pContext.context(), createFoldPath(node), Color.WHITE, false);
+		NOTE_VIEWER.draw(((NoteNode)node).getName(), pContext.context(), 
 				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	

@@ -29,12 +29,12 @@ import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a package in a class diagram.
@@ -52,11 +52,11 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
-		super.draw(pElement, pGraphics);
+		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pGraphics, new Rectangle(bottomBounds.x() + NAME_GAP, 
+		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pContext.context(), new Rectangle(bottomBounds.x() + NAME_GAP, 
 				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()));
 	}
 	

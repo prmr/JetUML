@@ -29,10 +29,10 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -62,13 +62,13 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		Path shape = (Path) getShape(edge);
-		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
+		ToolGraphics.strokeSharpPath(pContext.context(), shape, aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
-		ArrowHeadRenderer.draw(pGraphics, aArrowHead, connectionPoints);
+		ArrowHeadRenderer.draw(pContext.context(), aArrowHead, connectionPoints);
 	}
 	
 	@Override

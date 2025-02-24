@@ -30,12 +30,11 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a UseCaseNode.
@@ -62,12 +61,12 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Rectangle bounds = getBounds(pElement);
-		RenderingUtils.drawOval(pGraphics, bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
+		RenderingUtils.drawOval(pContext.context(), bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
 				ColorScheme.getScheme().getFillColor(), true);
-		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pGraphics, getBounds(pElement));
+		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pContext.context(), getBounds(pElement));
 	}
 	
 	@Override

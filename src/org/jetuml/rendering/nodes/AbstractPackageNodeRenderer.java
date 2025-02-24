@@ -31,13 +31,12 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Common functionality to view the different types of package nodes.
@@ -67,14 +66,14 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		assert pElement instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		RenderingUtils.drawRectangle(pGraphics, topBounds );
-		RenderingUtils.drawRectangle(pGraphics, bottomBounds );
-		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pGraphics, new Rectangle(topBounds.x() + NAME_GAP, 
+		RenderingUtils.drawRectangle(pContext.context(), topBounds );
+		RenderingUtils.drawRectangle(pContext.context(), bottomBounds );
+		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext.context(), new Rectangle(topBounds.x() + NAME_GAP, 
 				topBounds.y(), topBounds.width(), topBounds.height()));
 	}
 	

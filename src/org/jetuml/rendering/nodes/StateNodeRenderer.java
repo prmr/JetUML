@@ -29,12 +29,11 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a StateNode.
@@ -60,11 +59,11 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		RenderingUtils.drawRoundedRectangle(pGraphics, bounds);
-		NAME_VIEWER.draw(((StateNode)pElement).getName(), pGraphics, bounds);
+		RenderingUtils.drawRoundedRectangle(pContext.context(), bounds);
+		NAME_VIEWER.draw(((StateNode)pElement).getName(), pContext.context(), bounds);
 	}
 	
 	@Override

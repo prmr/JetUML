@@ -34,6 +34,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.ToolGraphics;
@@ -75,19 +76,19 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		if(isSelfEdge(edge))
 		{
-			drawSelfEdge(edge, pGraphics);
+			drawSelfEdge(edge, pContext.context());
 		}
 		else 
 		{
-			ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
+			ToolGraphics.strokeSharpPath(pContext.context(), (Path) getShape(edge), LineStyle.SOLID);
 		}
-		drawLabel((StateTransitionEdge)edge, pGraphics);
-		drawArrowHead(edge, pGraphics);
+		drawLabel((StateTransitionEdge)edge, pContext.context());
+		drawArrowHead(edge, pContext.context());
 	}
 	
 	private void drawArrowHead(Edge pEdge, GraphicsContext pGraphics)

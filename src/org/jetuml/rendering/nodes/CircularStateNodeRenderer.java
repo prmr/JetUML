@@ -28,9 +28,9 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
@@ -57,19 +57,19 @@ public final class CircularStateNodeRenderer extends AbstractNodeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
 		if( aFinal )
 		{
-			RenderingUtils.drawCircle(pGraphics, bounds.x(), bounds.y(), DIAMETER, Color.WHITE, true);
+			RenderingUtils.drawCircle(pContext.context(), bounds.x(), bounds.y(), DIAMETER, Color.WHITE, true);
 			int innerDiameter = DIAMETER/2;
-			RenderingUtils.drawCircle(pGraphics, bounds.x() + innerDiameter/2, 
+			RenderingUtils.drawCircle(pContext.context(), bounds.x() + innerDiameter/2, 
 					bounds.y() + innerDiameter/2, innerDiameter, Color.BLACK, false);
 		}
 		else
 		{
-			RenderingUtils.drawCircle(pGraphics, bounds.x(), bounds.y(), DIAMETER, Color.BLACK, true);
+			RenderingUtils.drawCircle(pContext.context(), bounds.x(), bounds.y(), DIAMETER, Color.BLACK, true);
 		}
 	}
 	

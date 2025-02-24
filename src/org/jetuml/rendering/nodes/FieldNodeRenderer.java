@@ -30,6 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
@@ -71,18 +72,18 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
 		final int split = getSplitPosition(node);
 		final int leftWidth = leftWidth(node);
 		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
-		NAME_VIEWER.draw(((FieldNode)node).getName(), pGraphics, 
+		NAME_VIEWER.draw(((FieldNode)node).getName(), pContext.context(), 
 				new Rectangle(split - leftWidth, bounds.y(), leftWidth, bounds.height()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - midOffset, bounds.y(), midOffset * 2, bounds.height()));
+		EQUALS_VIEWER.draw(EQUALS, pContext.context(), new Rectangle(split - midOffset, bounds.y(), midOffset * 2, bounds.height()));
 		VALUE_VIEWER.draw(((FieldNode)node).getValue(), 
-				pGraphics, new Rectangle(split + midOffset, bounds.y(), rightWidth(node), bounds.height()));
+				pContext.context(), new Rectangle(split + midOffset, bounds.y(), rightWidth(node), bounds.height()));
 	}
 	
 	private static int getSplitPosition(Node pNode)

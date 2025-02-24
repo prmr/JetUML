@@ -32,6 +32,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
@@ -75,13 +76,13 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
-		RenderingUtils.drawRectangle(pGraphics, top);
-		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pGraphics, top);
+		RenderingUtils.drawRectangle(pContext.context(), top);
+		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext.context(), top);
 		int xmid = top.center().x();
-		RenderingUtils.drawLine(pGraphics, xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
+		RenderingUtils.drawLine(pContext.context(), xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
 	}
 	
 	@Override

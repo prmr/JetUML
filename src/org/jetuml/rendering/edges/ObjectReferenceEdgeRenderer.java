@@ -30,6 +30,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
@@ -119,21 +120,21 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
+		ToolGraphics.strokeSharpPath(pContext.context(), (Path) getShape(edge), LineStyle.SOLID);
 		Line connectionPoints = getConnectionPoints(edge);
 		
 		if(isSShaped(edge))
 		{
-			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
+			ArrowHeadRenderer.draw(pContext.context(), ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.x2() - ENDSIZE, connectionPoints.y2()), 
 					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}
 		else
 		{
-			ArrowHeadRenderer.draw(pGraphics, ArrowHead.BLACK_TRIANGLE,
+			ArrowHeadRenderer.draw(pContext.context(), ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.x2() + ENDSIZE, connectionPoints.y2()), 
 					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}

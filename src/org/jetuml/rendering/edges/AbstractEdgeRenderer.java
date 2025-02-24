@@ -28,12 +28,12 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.ToolGraphics;
 
 import javafx.geometry.Bounds;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -135,9 +135,9 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 	}
 
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
+	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
 	{
-		ToolGraphics.drawHandles(pGraphics, getConnectionPoints((Edge)pElement));		
+		ToolGraphics.drawHandles(pContext.context(), getConnectionPoints((Edge)pElement));		
 	}
 	
 	protected String wrapLabel(String pString, int pDistanceInX, int pDistanceInY)

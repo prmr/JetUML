@@ -246,9 +246,10 @@ StringPreferenceChangeHandler
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		aDiagramBuilder.renderer().draw(new RenderingContext(context));
+		RenderingContext renderingContext = new RenderingContext(context);
+		aDiagramBuilder.renderer().draw(renderingContext);
 		synchronizeSelectionModel();
-		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, context));
+		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, renderingContext));
 		aRubberband.ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aLasso.ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}

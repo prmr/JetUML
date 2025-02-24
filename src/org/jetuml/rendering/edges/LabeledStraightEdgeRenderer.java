@@ -30,11 +30,10 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
@@ -60,15 +59,15 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
-		super.draw(pElement, pGraphics);
+		super.draw(pElement, pContext);
 		Edge edge = (Edge) pElement;
 		String label = wrapLabel(edge);
 		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints(edge).spanning().translated(0, -labelHeight/2));
+			STRING_VIEWER.draw(label, pContext.context(), getConnectionPoints(edge).spanning().translated(0, -labelHeight/2));
 		}
 	}
 	

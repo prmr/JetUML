@@ -33,7 +33,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object responsible for computing the geometry of a diagram. This class is 
@@ -113,10 +112,10 @@ public interface DiagramRenderer
 	 * Draw selection handles around the element.
 	 * 
 	 * @param pElement The target element
-	 * @param pGraphics The graphics context
+	 * @param pContext The rendering context on which to draw the handles.
 	 * @pre pElement != null && pGraphics != null
 	 */
-	void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics);
+	void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext);
 
 	/**
 	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
