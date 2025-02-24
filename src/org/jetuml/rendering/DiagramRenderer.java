@@ -53,18 +53,18 @@ public interface DiagramRenderer
 	 * Computes the geometry of the diagram and draws the diagram onto 
 	 * the graphics context.
 	 * 
-	 * @param pGraphics The graphics context where the diagram should be drawn.
+	 * @param pContext The rendering context where the diagram should be drawn.
 	 * @pre pGraphics != null.
 	 */
-	void draw(GraphicsContext pGraphics);
+	void draw(RenderingContext pContext);
 	
 	/**
      * Draws the element.
      * @param pElement The element to draw.
-     * @param pGraphics the graphics context
+     * @param pContext The rendering context where the diagram should be drawn.
      * @pre pElement != null
 	 */
-   	void draw(DiagramElement pElement, GraphicsContext pGraphics);
+   	void draw(DiagramElement pElement, RenderingContext pContext);
 	
 	/**
 	 * Returns the edge underneath the given point, if it exists.

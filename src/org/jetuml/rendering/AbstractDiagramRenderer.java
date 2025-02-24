@@ -99,10 +99,10 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 				.map(NodeRenderer.class::cast).forEach(NodeRenderer::deactivateAndClearNodeStorage);
 	}
 
-	protected void drawNode(Node pNode, GraphicsContext pGraphics)
+	protected void drawNode(Node pNode, RenderingContext pContext)
 	{
-		draw(pNode, pGraphics);
-		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
+		draw(pNode, pContext);
+		pNode.getChildren().forEach(node -> drawNode(node, pContext));
 	}
 	
 	protected Optional<Node> deepFindNode(Node pNode, Point pPoint)
@@ -154,19 +154,19 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void draw(GraphicsContext pGraphics)
+	public void draw(RenderingContext pContext)
 	{
-		assert pGraphics != null;
+		assert pContext != null;
 		activateNodeStorages();
-		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		aDiagram.rootNodes().forEach(node -> drawNode(node, pContext));
+		aDiagram.edges().forEach(edge -> draw(edge, pContext));
 		deactivateAndClearNodeStorages();
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
-		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+		aRenderers.get(pElement.getClass()).draw(pElement, pContext.context());
 	}
 
 	@Override

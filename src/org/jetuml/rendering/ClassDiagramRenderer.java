@@ -56,8 +56,6 @@ import org.jetuml.rendering.nodes.PackageDescriptionNodeRenderer;
 import org.jetuml.rendering.nodes.PackageNodeRenderer;
 import org.jetuml.rendering.nodes.TypeNodeRenderer;
 
-import javafx.scene.canvas.GraphicsContext;
-
 /**
  * The renderer for class diagrams.
  */
@@ -87,25 +85,18 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		addElementRenderer(AggregationEdge.class, storedEdgeViewer);
 	}
 
-	/**
-	 * Draws pDiagram onto pGraphics.
-	 * 
-	 * @param pGraphics the graphics context where the diagram should be drawn.
-	 * @param pDiagram the diagram to draw.
-	 * @pre pDiagram != null && pGraphics != null.
-	 */
 	@Override
-	public void draw(GraphicsContext pGraphics)
+	public void draw(RenderingContext pContext)
 	{
 		//draw and store nodes 
 		activateNodeStorages();
-		diagram().rootNodes().forEach(node -> drawNode(node, pGraphics));
+		diagram().rootNodes().forEach(node -> drawNode(node, pContext));
 		
 		//plan edge paths using Layouter
 		layout();
 		
 		//draw edges using plan from EdgeStorage
-		diagram().edges().forEach(edge -> draw(edge, pGraphics));
+		diagram().edges().forEach(edge -> draw(edge, pContext));
 		deactivateAndClearNodeStorages();
 	}
 	

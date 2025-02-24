@@ -48,8 +48,6 @@ import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
 import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
-import javafx.scene.canvas.GraphicsContext;
-
 /**
  * The renderer for sequence diagrams. The implementation of this renderer assumes
  * that any sequence diagram has either zero call nodes or a single root call node, namely, 
@@ -102,10 +100,10 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
+	public void draw(RenderingContext pContext)
 	{
 		layout();
-		super.draw(pGraphics); 
+		super.draw(pContext); 
 	}
 	
 	/*

@@ -55,6 +55,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
@@ -245,7 +246,7 @@ StringPreferenceChangeHandler
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		aDiagramBuilder.renderer().draw(context);
+		aDiagramBuilder.renderer().draw(new RenderingContext(context));
 		synchronizeSelectionModel();
 		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, context));
 		aRubberband.ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
@@ -753,7 +754,7 @@ StringPreferenceChangeHandler
 		context.setFill(ColorScheme.getScheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
-		aDiagramBuilder.renderer().draw(context);
+		aDiagramBuilder.renderer().draw(new RenderingContext(context));
 		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 
 				bounds.height() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);
