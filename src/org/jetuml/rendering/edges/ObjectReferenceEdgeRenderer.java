@@ -31,7 +31,6 @@ import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -123,18 +122,18 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		ToolGraphics.strokeSharpPath(pContext.context(), (Path) getShape(edge), LineStyle.SOLID);
+		pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
 		Line connectionPoints = getConnectionPoints(edge);
 		
 		if(isSShaped(edge))
 		{
-			ArrowHeadRenderer.draw(pContext.context(), ArrowHead.BLACK_TRIANGLE,
+			ArrowHeadRenderer.draw(pContext, ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.x2() - ENDSIZE, connectionPoints.y2()), 
 					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}
 		else
 		{
-			ArrowHeadRenderer.draw(pContext.context(), ArrowHead.BLACK_TRIANGLE,
+			ArrowHeadRenderer.draw(pContext, ArrowHead.BLACK_TRIANGLE,
 					new Point(connectionPoints.x2() + ENDSIZE, connectionPoints.y2()), 
 					new Point(connectionPoints.x2(), connectionPoints.y2()));      
 		}
@@ -161,8 +160,9 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(0.6, 0.6);
 		Path path = getCShape(new Line(new Point(5, 5), new Point(15,25)));
-		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
-		ArrowHeadRenderer.draw(graphics, ArrowHead.BLACK_TRIANGLE, new Point(20,25), new Point(15, 25));
+		RenderingContext context = new RenderingContext(graphics);
+		context.strokeSharpPath(path, LineStyle.SOLID);
+		ArrowHeadRenderer.draw(context, ArrowHead.BLACK_TRIANGLE, new Point(20,25), new Point(15, 25));
 		return canvas;
 	}
 }

@@ -30,7 +30,6 @@ import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.shape.LineTo;
@@ -66,9 +65,9 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Edge edge = (Edge) pElement;
 		Path shape = (Path) getShape(edge);
-		ToolGraphics.strokeSharpPath(pContext.context(), shape, aLineStyle);
+		pContext.strokeSharpPath(shape, aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
-		ArrowHeadRenderer.draw(pContext.context(), aArrowHead, connectionPoints);
+		ArrowHeadRenderer.draw(pContext, aArrowHead, connectionPoints);
 	}
 	
 	@Override
@@ -89,8 +88,9 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyle);
-		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), aArrowHead, 
+		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		context.strokeSharpPath(path, aLineStyle);
+		ArrowHeadRenderer.draw(context, aArrowHead, 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
 		return canvas;
 	}

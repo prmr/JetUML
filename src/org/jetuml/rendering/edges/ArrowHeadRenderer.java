@@ -29,10 +29,9 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
-import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.RenderingContext;
 
 import javafx.geometry.Bounds;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -51,42 +50,42 @@ public final class ArrowHeadRenderer
 	/**
 	 * Draws an arrow head at the end of the axis.
 	 * 
-	 * @param pGraphics the graphics context
+	 * @param pContext The rendering context on which to draw.
 	 * @param pArrowHead The type of arrow head to draw
 	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
 	 */
-	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Line pAxis)
+	public static void draw(RenderingContext pContext, ArrowHead pArrowHead, Line pAxis)
 	{
-		assert pGraphics != null && pArrowHead != null && pAxis != null;
+		assert pContext != null && pArrowHead != null && pAxis != null;
 		
 		if(pArrowHead.isFilled()) 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pAxis), Color.BLACK, false);
+			pContext.strokeAndFillSharpPath(getPath(pArrowHead, pAxis), Color.BLACK, false);
 		}
 		else 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, pAxis), Color.WHITE, false);
+			pContext.strokeAndFillSharpPath(getPath(pArrowHead, pAxis), Color.WHITE, false);
 		}
 	}
 	
 	/**
 	 * Draws an arrow head at pPoint2 for a direction given from pPoint2.
 	 * 
-	 * @param pGraphics the graphics context
+	 * @param pContext The rendering context on which to draw.
 	 * @param pArrowHead The type of arrow head to draw
 	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
 	 */
-	public static void draw(GraphicsContext pGraphics, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
+	public static void draw(RenderingContext pContext, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
 	{
-		assert pGraphics != null && pArrowHead != null && pPoint1 != null && pPoint2 != null;
+		assert pContext != null && pArrowHead != null && pPoint1 != null && pPoint2 != null;
 		
 		if(pArrowHead.isFilled()) 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, false);
+			pContext.strokeAndFillSharpPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, false);
 		}
 		else 
 		{
-			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, false);
+			pContext.strokeAndFillSharpPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, false);
 		}
 	}
 	

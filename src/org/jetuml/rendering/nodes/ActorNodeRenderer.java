@@ -31,7 +31,6 @@ import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -88,7 +87,7 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
 				bounds.y() + HEIGHT, nameBounds.width(), nameBounds.height());
 		NAME_VIEWER.draw(((ActorNode)node).getName(), pContext.context(), nameBox);
-		ToolGraphics.strokeSharpPath(pContext.context(), createStickManPath(node), LineStyle.SOLID);
+		pContext.strokeSharpPath(createStickManPath(node), LineStyle.SOLID);
 	}
 	
 	private static Path createStickManPath(Node pNode)

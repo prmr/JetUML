@@ -37,7 +37,6 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -85,31 +84,31 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 		else 
 		{
-			ToolGraphics.strokeSharpPath(pContext.context(), (Path) getShape(edge), LineStyle.SOLID);
+			pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
 		}
 		drawLabel((StateTransitionEdge)edge, pContext.context());
-		drawArrowHead(edge, pContext.context());
+		drawArrowHead(edge, pContext);
 	}
 	
-	private void drawArrowHead(Edge pEdge, GraphicsContext pGraphics)
+	private void drawArrowHead(Edge pEdge, RenderingContext pContext)
 	{
 		if( isSelfEdge(pEdge) )
 		{
 			Point connectionPoint2 = getSelfEdgeConnectionPoints(pEdge).point2();
 			if( getPosition(pEdge) == 1 )
 			{
-				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()+SELF_EDGE_OFFSET, 
+				ArrowHeadRenderer.draw(pContext, ArrowHead.V, new Point(connectionPoint2.x()+SELF_EDGE_OFFSET, 
 						connectionPoint2.y()-SELF_EDGE_OFFSET/4), getConnectionPoints(pEdge).point2());
 			}
 			else
 			{
-				ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, new Point(connectionPoint2.x()-SELF_EDGE_OFFSET/4, 
+				ArrowHeadRenderer.draw(pContext, ArrowHead.V, new Point(connectionPoint2.x()-SELF_EDGE_OFFSET/4, 
 						connectionPoint2.y()-SELF_EDGE_OFFSET), getConnectionPoints(pEdge).point2());
 			}
 		}
 		else
 		{
-			ArrowHeadRenderer.draw(pGraphics, ArrowHead.V, 
+			ArrowHeadRenderer.draw(pContext, ArrowHead.V, 
 					getControlPoint(pEdge), getConnectionPoints(pEdge).point2());
 		}
 	}
@@ -448,8 +447,9 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		QuadCurveTo curveTo = new QuadCurveTo(control.x(), control.y(), line.point2().x(), line.point2().y());
 		path.getElements().addAll(moveTo, curveTo);
 		
-		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
-		ArrowHeadRenderer.draw(graphics, ArrowHead.V, control, new Point(40, 40));
+		RenderingContext context = new RenderingContext(graphics);
+		context.strokeSharpPath(path, LineStyle.SOLID);
+		ArrowHeadRenderer.draw(context, ArrowHead.V, control, new Point(40, 40));
 		return canvas;
 	}
 }

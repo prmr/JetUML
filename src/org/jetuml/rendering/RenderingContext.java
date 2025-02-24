@@ -26,6 +26,12 @@ import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
+import javafx.scene.shape.QuadCurveTo;
 
 /**
  * Wrapper for the canvas to serve as a target for all
@@ -34,6 +40,7 @@ import javafx.scene.paint.Color;
 public class RenderingContext
 {
 	private static final int HANDLE_SIZE = 6; // The length in pixel of one side of the handle.
+	private static final double LINE_WIDTH = 0.6;
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
@@ -113,7 +120,7 @@ public class RenderingContext
 	{
 		aContext.save();
 		aContext.setStroke(SELECTION_FILL_COLOR);
-		ToolGraphics.strokeSharpLine(aContext, pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
+		strokeSharpLine(pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
 		aContext.restore();
 	}
 	
@@ -143,12 +150,94 @@ public class RenderingContext
 		int y2 = pBounds.maxY();
 		for(int x = x1; x < x2; x += GRID_SIZE)
 		{
-			ToolGraphics.strokeSharpLine(aContext, x, y1, x, y2);
+			strokeSharpLine(x, y1, x, y2);
 		}
 		for(int y = y1; y < y2; y += GRID_SIZE)
 		{
-			ToolGraphics.strokeSharpLine(aContext, x1, y, x2, y);
+			strokeSharpLine(x1, y, x2, y);
 		}
+		aContext.restore();
+	}
+	
+	/**
+	 * Strokes a line, originally in integer coordinates, so that it aligns precisely
+	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
+	 * the documentation for javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pX1 The x-coordinate of the first point.
+	 * @param pY1 The y-coordinate of the first point.
+	 * @param pX2 The x-coordinate of the second point.
+	 * @param pY2 The y-coordinate of the second point.
+	 */
+	public void strokeSharpLine(int pX1, int pY1, int pX2, int pY2)
+	{
+		aContext.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+	}
+	
+	/**
+	 * Strokes a path, by converting the elements to integer coordinates and then
+	 * aligning them to the center of the pixels, so that it aligns precisely
+	 * with the JavaFX coordinate system. See the documentation for 
+	 * javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pPath The path to stroke
+	 * @param pStyle The line style for the path.
+	 */
+	public void strokeSharpPath(Path pPath, LineStyle pStyle)
+	{
+		aContext.save();
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setLineDashes(pStyle.getLineDashes());
+		aContext.setLineWidth(LINE_WIDTH);
+		applyPath(pPath);
+		aContext.stroke();
+		aContext.restore();
+	}
+	
+	private void applyPath(Path pPath)
+	{
+		aContext.beginPath();
+		for(PathElement element : pPath.getElements())
+		{
+			if(element instanceof MoveTo moveTo)
+			{
+				aContext.moveTo(((int)moveTo.getX()) + 0.5, ((int)moveTo.getY()) + 0.5);
+			}
+			else if(element instanceof LineTo lineTo)
+			{
+				aContext.lineTo(((int)lineTo.getX()) + 0.5, ((int)lineTo.getY()) + 0.5);
+			}
+			else if(element instanceof QuadCurveTo curve)
+			{
+				aContext.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
+						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);
+			}
+		}
+	}
+	/**
+	 * Strokes and fills a path, by converting the elements to integer coordinates and then
+	 * aligning them to the center of the pixels, so that it aligns precisely
+	 * with the JavaFX coordinate system. See the documentation for 
+	 * javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pPath The path to stroke
+	 * @param pFill The fill color for the path.
+	 * @param pShadow True to include a drop shadow.
+	 */
+	public void strokeAndFillSharpPath(Path pPath, Paint pFill, boolean pShadow)
+	{
+		aContext.save();
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setLineWidth(LINE_WIDTH);
+		aContext.setFill(pFill);
+		applyPath(pPath);
+		
+		if( pShadow )
+		{
+			aContext.setEffect(ColorScheme.getScheme().getDropShadow());
+		}
+		aContext.fill();
+		aContext.stroke();
 		aContext.restore();
 	}
 }

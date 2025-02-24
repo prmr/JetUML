@@ -31,7 +31,6 @@ import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -67,8 +66,8 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Node node = (Node) pElement;
-		ToolGraphics.strokeAndFillSharpPath(pContext.context(), createNotePath(node), ColorScheme.getScheme().getNoteColor(), true);
-		ToolGraphics.strokeAndFillSharpPath(pContext.context(), createFoldPath(node), Color.WHITE, false);
+		pContext.strokeAndFillSharpPath(createNotePath(node), ColorScheme.getScheme().getNoteColor(), true);
+		pContext.strokeAndFillSharpPath(createFoldPath(node), Color.WHITE, false);
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), pContext.context(), 
 				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}

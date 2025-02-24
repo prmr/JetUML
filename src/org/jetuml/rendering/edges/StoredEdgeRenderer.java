@@ -48,7 +48,6 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -415,9 +414,9 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		assert pElement !=null && pContext.context() != null;
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
-		ToolGraphics.strokeSharpPath(pContext.context(), getSegmentPath(edge), getLineStyle(edge));
-		ArrowHeadRenderer.draw(pContext.context(), getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
-		ArrowHeadRenderer.draw(pContext.context(), getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
+		pContext.strokeSharpPath(getSegmentPath(edge), getLineStyle(edge));
+		ArrowHeadRenderer.draw(pContext, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
+		ArrowHeadRenderer.draw(pContext, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
 		drawLabel(pContext.context(), segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
 		drawLabel(pContext.context(), segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
@@ -456,11 +455,12 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, getLineStyle(edge));
+		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		context.strokeSharpPath(path, getLineStyle(edge));
 		
-		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), getArrowEnd(edge), 
+		ArrowHeadRenderer.draw(context, getArrowEnd(edge), 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
-		ArrowHeadRenderer.draw(canvas.getGraphicsContext2D(), getArrowStart(edge), 
+		ArrowHeadRenderer.draw(context, getArrowStart(edge), 
 				new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET), new Point(OFFSET, OFFSET));
 		return canvas;
 	}
