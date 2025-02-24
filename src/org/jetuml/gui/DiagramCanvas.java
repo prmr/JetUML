@@ -241,11 +241,11 @@ StringPreferenceChangeHandler
 		GraphicsContext context = getGraphicsContext2D();
 		context.setFill(ColorScheme.getScheme().getCanvasColor());
 		context.fillRect(0, 0, getWidth(), getHeight());
+		RenderingContext renderingContext = new RenderingContext(context);
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
+			renderingContext.drawGrid(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		RenderingContext renderingContext = new RenderingContext(context);
 		aDiagramBuilder.renderer().draw(renderingContext);
 		synchronizeSelectionModel();
 		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, renderingContext));

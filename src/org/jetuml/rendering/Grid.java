@@ -24,9 +24,6 @@ package org.jetuml.rendering;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.gui.ColorScheme;
-
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A grid to which points and rectangles can be "snapped". The
@@ -37,31 +34,6 @@ public final class Grid
 	private static final double GRID_SIZE = 10;
 	
 	private Grid() {}
-	
-	/**
-     * Draws this grid inside a rectangle.
-     * @param pGraphics the graphics context
-     * @param pBounds the bounding rectangle
-     */
-	public static void draw(GraphicsContext pGraphics, Rectangle pBounds)
-	{
-		pGraphics.save();
-		pGraphics.setStroke(ColorScheme.getScheme().getGridColor());
-		int x1 = pBounds.x();
-		int y1 = pBounds.y();
-		int x2 = pBounds.maxX();
-		int y2 = pBounds.maxY();
-		for(int x = x1; x < x2; x += GRID_SIZE)
-		{
-			ToolGraphics.strokeSharpLine(pGraphics, x, y1, x, y2);
-		}
-		for(int y = y1; y < y2; y += GRID_SIZE)
-		{
-			ToolGraphics.strokeSharpLine(pGraphics, x1, y, x2, y);
-		}
-		pGraphics.restore();
-	}
-
 	
 	/**
      * Creates a rectangle that is the original rectangle, snapped to

@@ -22,6 +22,7 @@ package org.jetuml.rendering;
 
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -36,6 +37,7 @@ public class RenderingContext
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
+	private static final int GRID_SIZE = 10;
 	
 	private final GraphicsContext aContext;
 	
@@ -125,5 +127,28 @@ public class RenderingContext
 	{
 		RenderingUtils.drawRectangle(aContext, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
 				pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
+	}
+	
+	/**
+     * Draws this grid inside a rectangle.
+     * @param pBounds the bounding rectangle
+     */
+	public void drawGrid(Rectangle pBounds)
+	{
+		aContext.save();
+		aContext.setStroke(ColorScheme.getScheme().getGridColor());
+		int x1 = pBounds.x();
+		int y1 = pBounds.y();
+		int x2 = pBounds.maxX();
+		int y2 = pBounds.maxY();
+		for(int x = x1; x < x2; x += GRID_SIZE)
+		{
+			ToolGraphics.strokeSharpLine(aContext, x, y1, x, y2);
+		}
+		for(int y = y1; y < y2; y += GRID_SIZE)
+		{
+			ToolGraphics.strokeSharpLine(aContext, x1, y, x2, y);
+		}
+		aContext.restore();
 	}
 }
