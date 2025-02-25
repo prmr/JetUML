@@ -410,7 +410,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	@Override
 	public void draw(DiagramElement pElement, RenderingContext pContext) 
 	{
-		assert pElement !=null && pContext.context() != null;
+		assert pElement !=null && pContext != null;
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
 		pContext.strokeSharpPath(getSegmentPath(edge), getLineStyle(edge));

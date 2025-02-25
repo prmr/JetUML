@@ -30,7 +30,6 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -57,7 +56,6 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_20 = 20;
 	private static final int DEGREES_270 = 270;
-	private static final double LINE_WIDTH = 0.6;
 	
 	private static final int RADIANS_TO_PIXELS = 7;
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER);
@@ -78,13 +76,13 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		if(isSelfEdge(edge))
+		if (isSelfEdge(edge))
 		{
-			drawSelfEdge(edge, pContext.context());
+			pContext.drawArc(getSelfEdgeShape(edge));
 		}
 		else 
 		{
-			pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
+			pContext.strokeSharpPath(getNormalEdgeShape(edge), LineStyle.SOLID);
 		}
 		drawLabel((StateTransitionEdge)edge, pContext);
 		drawArrowHead(edge, pContext);
@@ -122,17 +120,6 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		String label = wrapLabel(pEdge);
 		Rectangle labelBounds = getLabelBounds(pEdge);
 		STRING_VIEWER.draw(label, pContext, labelBounds);
-	}
-	
-	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)
-	{
-		pGraphics.save();
-		Arc arc = (Arc) getShape(pEdge);
-		pGraphics.setLineWidth(LINE_WIDTH);
-		pGraphics.setStroke(ColorScheme.getScheme().getStrokeColor());
-		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
-				arc.getLength(), arc.getType());
-		pGraphics.restore();
 	}
 	
 	private Rectangle getLabelBounds(StateTransitionEdge pEdge)
@@ -276,7 +263,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		return pEdge.start() == pEdge.end();
 	}
 	
-	private Shape getSelfEdgeShape(Edge pEdge)
+	private Arc getSelfEdgeShape(Edge pEdge)
 	{
 		Line line = getSelfEdgeConnectionPoints(pEdge);
 		Arc arc = new Arc();
@@ -359,7 +346,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 	
-	private Shape getNormalEdgeShape(Edge pEdge)
+	private Path getNormalEdgeShape(Edge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
 		Path path = new Path();

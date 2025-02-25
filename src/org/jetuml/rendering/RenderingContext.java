@@ -28,6 +28,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -393,6 +394,22 @@ public class RenderingContext
 		aContext.setFont(pFont);
 		aContext.setFill(ColorScheme.getScheme().getStrokeColor());
 		aContext.fillText(pText, pRelativeX + 0.5, pRelativeY + 0.5);
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws an arc.
+	 * 
+	 * @param pArc The arc to draw.
+	 * @pre pArc != null.
+	 */
+	public void drawArc(Arc pArc)
+	{
+		assert pArc != null;
+		aContext.save();
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
+				pArc.getLength(), pArc.getType());
 		aContext.restore();
 	}
 }
