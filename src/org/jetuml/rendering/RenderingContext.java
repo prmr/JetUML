@@ -64,14 +64,6 @@ public class RenderingContext
 		aContext = pContext;
 	}
 	
-	/**
-	 * @return The graphics context on which to draw.
-	 */
-	public GraphicsContext context()
-	{
-		return aContext;
-	}
-	
 	/*
 	 * Draws a handle on pGraphics that is centered at the position
 	 * (pX, pY).
@@ -351,6 +343,20 @@ public class RenderingContext
 		aContext.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		aContext.setEffect(null);
 		aContext.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
+		aContext.restore();
+	}
+	
+	/**
+	 * Fills a rectangle without stroking it.
+	 * 
+	 * @param pRectangle The rectangle to fill.
+	 */
+	public void fillRectangle(Rectangle pRectangle)
+	{
+		assert pRectangle != null;
+		aContext.save();
+		applyShapeProperties();
+		aContext.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
 		aContext.restore();
 	}
 	

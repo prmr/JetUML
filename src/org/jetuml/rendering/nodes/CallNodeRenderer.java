@@ -33,8 +33,6 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 
-import javafx.scene.paint.Color;
-
 /**
  * An object to render a call node in a Sequence diagram.
  */
@@ -65,9 +63,7 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	{
 		if(((CallNode)pElement).isOpenBottom())
 		{
-			pContext.context().setStroke(Color.WHITE);
-			pContext.drawRectangle(getBounds(pElement));
-			pContext.context().setStroke(Color.BLACK);
+			pContext.fillRectangle(getBounds(pElement));
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
 			int x2 = bounds.maxX();
