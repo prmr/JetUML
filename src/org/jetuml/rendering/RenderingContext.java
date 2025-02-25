@@ -44,7 +44,6 @@ import javafx.scene.text.TextAlignment;
 public class RenderingContext
 {
 	private static final int HANDLE_SIZE = 6; // The length in pixel of one side of the handle.
-	private static final double LINE_WIDTH = 0.6;
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
@@ -185,7 +184,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
 		aContext.setLineDashes(pStyle.getLineDashes());
-		aContext.setLineWidth(LINE_WIDTH);
 		applyPath(pPath);
 		aContext.stroke();
 		aContext.restore();
@@ -225,7 +223,6 @@ public class RenderingContext
 	{
 		aContext.save();
 		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
-		aContext.setLineWidth(LINE_WIDTH);
 		aContext.setFill(pFill);
 		applyPath(pPath);
 		
