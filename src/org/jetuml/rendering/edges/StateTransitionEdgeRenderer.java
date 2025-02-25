@@ -86,7 +86,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		{
 			pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
 		}
-		drawLabel((StateTransitionEdge)edge, pContext.context());
+		drawLabel((StateTransitionEdge)edge, pContext);
 		drawArrowHead(edge, pContext);
 	}
 	
@@ -117,11 +117,11 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 *  Draws the label.
 	 *  @param pGraphics2D the graphics context
 	 */
-	private void drawLabel(StateTransitionEdge pEdge, GraphicsContext pGraphics)
+	private void drawLabel(StateTransitionEdge pEdge, RenderingContext pContext)
 	{
 		String label = wrapLabel(pEdge);
 		Rectangle labelBounds = getLabelBounds(pEdge);
-		STRING_VIEWER.draw(label, pGraphics, labelBounds);
+		STRING_VIEWER.draw(label, pContext, labelBounds);
 	}
 	
 	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)

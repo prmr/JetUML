@@ -73,7 +73,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		{
 			pContext.drawLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);
 		}
-		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext.context(), 
+		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext, 
 				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()));
 	}
 	

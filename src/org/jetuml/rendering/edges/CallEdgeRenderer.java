@@ -132,7 +132,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			drawLabel((CallEdge)edge, pContext.context(), label);
+			drawLabel((CallEdge)edge, pContext, label);
 		}
 	}
 	
@@ -156,15 +156,15 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 
-	private void drawLabel(CallEdge pEdge, GraphicsContext pGraphics, String pLabel)
+	private void drawLabel(CallEdge pEdge, RenderingContext pContext, String pLabel)
 	{
 		if( pEdge.isSelfEdge() )
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pContext, getStringBounds(pEdge));
 		}
 		else
 		{
-			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
+			CENTERED_STRING_VIEWER.draw(pLabel, pContext, getStringBounds(pEdge));
 		}
 	}
 	

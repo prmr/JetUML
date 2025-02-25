@@ -72,7 +72,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
 		pContext.drawRectangle(topBounds );
 		pContext.drawRectangle(bottomBounds );
-		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext.context(), new Rectangle(topBounds.x() + NAME_GAP, 
+		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext, new Rectangle(topBounds.x() + NAME_GAP, 
 				topBounds.y(), topBounds.width(), topBounds.height()));
 	}
 	

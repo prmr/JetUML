@@ -79,11 +79,11 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		final int split = getSplitPosition(node);
 		final int leftWidth = leftWidth(node);
 		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
-		NAME_VIEWER.draw(((FieldNode)node).getName(), pContext.context(), 
+		NAME_VIEWER.draw(((FieldNode)node).getName(), pContext, 
 				new Rectangle(split - leftWidth, bounds.y(), leftWidth, bounds.height()));
-		EQUALS_VIEWER.draw(EQUALS, pContext.context(), new Rectangle(split - midOffset, bounds.y(), midOffset * 2, bounds.height()));
+		EQUALS_VIEWER.draw(EQUALS, pContext, new Rectangle(split - midOffset, bounds.y(), midOffset * 2, bounds.height()));
 		VALUE_VIEWER.draw(((FieldNode)node).getValue(), 
-				pContext.context(), new Rectangle(split + midOffset, bounds.y(), rightWidth(node), bounds.height()));
+				pContext, new Rectangle(split + midOffset, bounds.y(), rightWidth(node), bounds.height()));
 	}
 	
 	private static int getSplitPosition(Node pNode)
@@ -177,7 +177,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		graphics.translate(Math.max((height - width) / 2, 0), 0);
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		EQUALS_VIEWER.draw(ICON_LABEL, graphics, 
+		EQUALS_VIEWER.draw(ICON_LABEL, new RenderingContext(graphics), 
 				new Rectangle(0, BUTTON_SIZE/2 - height/2+OFFSET, width, height));
 		return canvas;
 	}

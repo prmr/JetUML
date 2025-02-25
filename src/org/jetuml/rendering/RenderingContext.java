@@ -24,6 +24,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -33,6 +34,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Wrapper for the canvas to serve as a target for all
@@ -370,19 +372,27 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Draw pText in black with the given font, at point pX, pY.
+	 * Draw pText.
 	 * 
-	 * @param pX The x-coordinate where to draw the text.
-	 * @param pY The y-coordinate where to draw the text.
-	 * @param pText The text to draw.
+	 * @param pText The text to draw
+	 * @param pBoundingX The left coordinate of the top-left point for the text.
+	 * @param pBoundingY The top coordinate of the top-left point for the text.
+	 * @param pRelativeX The x-coordinate where to draw the text, relative to the bounding box.
+	 * @param pRelativeY The y-coordinate where to draw the text, relative to the bounding box.
+	 * @param pAlignment The alignment.
+	 * @param pBaseline The baseline.
 	 * @param pFont The font to use.
 	 */
-	public void drawText(int pX, int pY, String pText, Font pFont)
+	public void drawText(String pText, int pBoundingX, int pBoundingY, int pRelativeX, int pRelativeY,
+			TextAlignment pAlignment, VPos pBaseline, Font pFont)
 	{
 		aContext.save();
+		aContext.setTextAlign(pAlignment);
+		aContext.setTextBaseline(pBaseline);
+		aContext.translate(pBoundingX, pBoundingY);
 		aContext.setFont(pFont);
-		aContext.setFill(ColorScheme.getScheme().getStrokeColor()); // The fill color for the font is the stroke color.
-		aContext.fillText(pText, pX + 0.5, pY + 0.5);
+		aContext.setFill(ColorScheme.getScheme().getStrokeColor());
+		aContext.fillText(pText, pRelativeX + 0.5, pRelativeY + 0.5);
 		aContext.restore();
 	}
 }

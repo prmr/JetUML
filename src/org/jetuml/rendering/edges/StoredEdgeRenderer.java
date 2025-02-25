@@ -50,7 +50,6 @@ import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -207,7 +206,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private static void drawLabel(GraphicsContext pGraphics, Line pSegment, 
+	private static void drawLabel(RenderingContext pContext, Line pSegment, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if(pString == null || pString.length() == 0)
@@ -220,16 +219,16 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		{
 			if( pSegment.y2() >= pSegment.y1() )
 			{
-				TOP_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
+				TOP_CENTERED_STRING_VIEWER.draw(label, pContext, bounds);
 			}
 			else
 			{
-				BOTTOM_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
+				BOTTOM_CENTERED_STRING_VIEWER.draw(label, pContext, bounds);
 			}
 		}
 		else
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(label, pGraphics, bounds);
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(label, pContext, bounds);
 		}
 	}
 	
@@ -418,9 +417,9 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		ArrowHeadRenderer.draw(pContext, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
 		ArrowHeadRenderer.draw(pContext, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
-		drawLabel(pContext.context(), segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
-		drawLabel(pContext.context(), segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
-		drawLabel(pContext.context(), segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
+		drawLabel(pContext, segmentForStartLabel(path), getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge));
+		drawLabel(pContext, segmentForMiddleLabel(path), ArrowHead.NONE, getMiddleLabel(edge), true, isStepUp(edge));
+		drawLabel(pContext, segmentForEndLabel(path), getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
 	}
 	
 	/*

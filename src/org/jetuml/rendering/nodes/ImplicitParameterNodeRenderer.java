@@ -79,7 +79,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
 		pContext.drawRectangle(top);
-		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext.context(), top);
+		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext, top);
 		int xmid = top.center().x();
 		pContext.drawLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
 	}

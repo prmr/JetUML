@@ -67,7 +67,7 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, pContext.context(), getConnectionPoints(edge).spanning().translated(0, -labelHeight/2));
+			STRING_VIEWER.draw(label, pContext, getConnectionPoints(edge).spanning().translated(0, -labelHeight/2));
 		}
 	}
 	
