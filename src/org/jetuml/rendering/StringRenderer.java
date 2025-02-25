@@ -163,7 +163,7 @@ public final class StringRenderer
 		}
 		
 		pGraphics.translate(pRectangle.x(), pRectangle.y());
-		RenderingUtils.drawText(pGraphics, textX, textY, pString, getFont());
+		new RenderingContext(pGraphics).drawText(textX, textY, pString, getFont()); // TODO Fix
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
@@ -184,8 +184,8 @@ public final class StringRenderer
 			{
 				yOffset = baselineOffset/2 + 1;
 			}
-			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
-					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
+			new RenderingContext(pGraphics).drawLine(textX-xOffset, textY+yOffset, 
+					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID); // TODO fix
 		}
 		pGraphics.restore();
 	}

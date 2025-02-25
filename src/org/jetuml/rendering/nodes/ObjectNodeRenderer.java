@@ -30,7 +30,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.Grid;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -69,10 +68,10 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		Node node = (Node) pElement;
 		final Rectangle topRectangle = getTopRectangle(node);
 		int dividerPosition = topRectangle.maxY();
-		RenderingUtils.drawRectangle(pContext.context(), bounds);
+		pContext.drawRectangle(bounds);
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
-			RenderingUtils.drawLine(pContext.context(), bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);
+			pContext.drawLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext.context(), 
 				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()));

@@ -32,7 +32,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -71,8 +70,8 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		assert pElement instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		RenderingUtils.drawRectangle(pContext.context(), topBounds );
-		RenderingUtils.drawRectangle(pContext.context(), bottomBounds );
+		pContext.drawRectangle(topBounds );
+		pContext.drawRectangle(bottomBounds );
 		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext.context(), new Rectangle(topBounds.x() + NAME_GAP, 
 				topBounds.y(), topBounds.width(), topBounds.height()));
 	}

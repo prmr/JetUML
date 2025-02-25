@@ -32,6 +32,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.text.Font;
 
 /**
  * Wrapper for the canvas to serve as a target for all
@@ -45,6 +46,7 @@ public class RenderingContext
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int GRID_SIZE = 10;
+	private static final int ARC_SIZE = 20;
 	
 	private final GraphicsContext aContext;
 	
@@ -132,7 +134,7 @@ public class RenderingContext
 	 */
 	public void drawLasso(Rectangle pRectangle)
 	{
-		RenderingUtils.drawRectangle(aContext, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
+		drawRectangle(SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
 				pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 	}
 	
@@ -238,6 +240,149 @@ public class RenderingContext
 		}
 		aContext.fill();
 		aContext.stroke();
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws a circle with default attributes.
+	 * 
+	 * @param pX The x-coordinate of the top-left of the circle.
+	 * @param pY The y-coordinate of the top-left of the circle.
+	 * @param pFill The color with which to fill the circle.
+	 * @param pDiameter The diameter of the circle.
+	 * @param pShadow True to include a drop shadow.
+	 */
+	public void drawCircle(int pX, int pY, int pDiameter, Paint pFill, boolean pShadow)
+	{
+		drawOval(pX, pY, pDiameter, pDiameter, pFill, pShadow);
+	}
+	
+	/**
+	 * Draws a circle with default attributes, without a drop shadow.
+	 * 
+	 * @param pX The x-coordinate of the top-left of the circle.
+	 * @param pY The y-coordinate of the top-left of the circle.
+	 * @param pFill The color with which to fill the circle.
+	 * @param pWidth The width of the oval to draw
+	 * @param pHeight The height of the oval to draw.
+	 * @param pShadow True to include a drop shadow.
+	 */
+	public void drawOval(int pX, int pY, int pWidth, int pHeight, Paint pFill, boolean pShadow)
+	{
+		assert pWidth > 0 && pHeight > 0 && pFill != null;
+		aContext.save();
+		aContext.setFill(pFill);
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		if( pShadow )
+		{
+			aContext.setEffect(ColorScheme.getScheme().getDropShadow());
+		}
+		aContext.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		aContext.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws a white rounded rectangle with a drop shadow.
+	 * 
+	 * @param pRectangle The rectangle to draw.
+	 */
+	public void drawRoundedRectangle(Rectangle pRectangle)
+	{
+		assert pRectangle != null;
+		aContext.save();
+		applyShapeProperties();
+		aContext.fillRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
+				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE );
+		aContext.setEffect(null);
+		aContext.strokeRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
+				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE);
+		aContext.restore();
+	}
+	
+	/**
+	 * Apply the fill, stroke and effect property of the graphics context.
+	 * 
+	 * @param pGraphics The graphics context.
+	 */
+	private void applyShapeProperties()
+	{
+		aContext.setFill(ColorScheme.getScheme().getFillColor());
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setEffect(ColorScheme.getScheme().getDropShadow());
+	}
+	
+	/**
+	 * Strokes and fills a rectangle, originally in integer coordinates, so that it aligns precisely
+	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
+	 * the documentation for javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pStroke The stroke (border) color for the rectangle.
+	 * @param pFill The fill (background) color for the rectangle.
+	 * @param pX The x-coordinate of the origin.
+	 * @param pY The y-coordinate of the origin.
+	 * @param pWidth The width.
+	 * @param pHeight The height.
+	 */
+	public void drawRectangle(Paint pStroke, Paint pFill, 
+			int pX, int pY, int pWidth, int pHeight)
+	{
+		aContext.save();
+		aContext.setFill(pFill);
+		aContext.setStroke(pStroke);
+		aContext.fillRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		aContext.strokeRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws a rectangle with default attributes.
+	 * 
+	 * @param pRectangle The rectangle to draw.
+	 */
+	public void drawRectangle(Rectangle pRectangle)
+	{
+		assert pRectangle != null;
+		aContext.save();
+		applyShapeProperties();
+		aContext.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
+		aContext.setEffect(null);
+		aContext.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws a line with default attributes and a specified line style.
+	 * 
+	 * @param pX1 The x-coordinate of the first point
+	 * @param pY1 The y-coordinate of the first point
+	 * @param pX2 The x-coordinate of the second point
+	 * @param pY2 The y-coordinate of the second point
+	 * @param pStyle The line style for the path.
+	 */
+	public void drawLine(int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
+	{
+		aContext.save();
+		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setLineDashes(pStyle.getLineDashes());
+		aContext.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+		aContext.restore();
+	}
+	
+	/**
+	 * Draw pText in black with the given font, at point pX, pY.
+	 * 
+	 * @param pX The x-coordinate where to draw the text.
+	 * @param pY The y-coordinate where to draw the text.
+	 * @param pText The text to draw.
+	 * @param pFont The font to use.
+	 */
+	public void drawText(int pX, int pY, String pText, Font pFont)
+	{
+		aContext.save();
+		aContext.setFont(pFont);
+		aContext.setFill(ColorScheme.getScheme().getStrokeColor()); // The fill color for the font is the stroke color.
+		aContext.fillText(pText, pX + 0.5, pY + 0.5);
 		aContext.restore();
 	}
 }

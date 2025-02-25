@@ -30,7 +30,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -62,7 +61,7 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		RenderingUtils.drawRoundedRectangle(pContext.context(), bounds);
+		pContext.drawRoundedRectangle(bounds);
 		NAME_VIEWER.draw(((StateNode)pElement).getName(), pContext.context(), bounds);
 	}
 	

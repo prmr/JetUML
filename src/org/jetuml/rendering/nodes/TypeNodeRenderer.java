@@ -30,7 +30,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -84,25 +83,25 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		RenderingUtils.drawRectangle(pContext.context(), bounds);	
+		pContext.drawRectangle(bounds);	
 		drawName(node, bounds, bounds.y(), nameHeight, pContext.context());
 		
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			pContext.drawLine(bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
 			drawAttribute(node, bounds, splitY, attributeHeight, pContext.context());
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
+				pContext.drawLine(bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
 				drawMethod(node, bounds, splitY2, methodHeight, pContext.context());
 			}
 		}
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			RenderingUtils.drawLine(pContext.context(), bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			pContext.drawLine(bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
 			drawMethod(node, bounds, splitY, methodHeight, pContext.context());
 		}
 	}

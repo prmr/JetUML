@@ -33,7 +33,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -79,10 +78,10 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
-		RenderingUtils.drawRectangle(pContext.context(), top);
+		pContext.drawRectangle(top);
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext.context(), top);
 		int xmid = top.center().x();
-		RenderingUtils.drawLine(pContext.context(), xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
+		pContext.drawLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
 	}
 	
 	@Override
@@ -179,9 +178,10 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
-		RenderingUtils.drawRectangle(canvas.getGraphicsContext2D(), top);
+		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		context.drawRectangle(top);
 		int xmid = DEFAULT_WIDTH/2;
-		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.maxY(), xmid, height, LineStyle.DOTTED);
+		context.drawLine(xmid,  top.maxY(), xmid, height, LineStyle.DOTTED);
 		return canvas;
 	}
 }

@@ -31,7 +31,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 
 import javafx.scene.paint.Color;
@@ -67,7 +66,7 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 		if(((CallNode)pElement).isOpenBottom())
 		{
 			pContext.context().setStroke(Color.WHITE);
-			RenderingUtils.drawRectangle(pContext.context(), getBounds(pElement));
+			pContext.drawRectangle(getBounds(pElement));
 			pContext.context().setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
@@ -75,15 +74,15 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 			int y1 = bounds.y();
 			int y3 = bounds.maxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			RenderingUtils.drawLine(pContext.context(), x1, y1, x2, y1, LineStyle.SOLID);
-			RenderingUtils.drawLine(pContext.context(), x1, y1, x1, y2, LineStyle.SOLID);
-			RenderingUtils.drawLine(pContext.context(), x2, y1, x2, y2, LineStyle.SOLID);
-			RenderingUtils.drawLine(pContext.context(), x1, y2, x1, y3, LineStyle.DOTTED);
-			RenderingUtils.drawLine(pContext.context(), x2, y2, x2, y3, LineStyle.DOTTED);
+			pContext.drawLine(x1, y1, x2, y1, LineStyle.SOLID);
+			pContext.drawLine(x1, y1, x1, y2, LineStyle.SOLID);
+			pContext.drawLine(x2, y1, x2, y2, LineStyle.SOLID);
+			pContext.drawLine(x1, y2, x1, y3, LineStyle.DOTTED);
+			pContext.drawLine(x2, y2, x2, y3, LineStyle.DOTTED);
 		}
 		else
 		{
-			RenderingUtils.drawRectangle(pContext.context(), getBounds(pElement));
+			pContext.drawRectangle(getBounds(pElement));
 		}
 	}
 
