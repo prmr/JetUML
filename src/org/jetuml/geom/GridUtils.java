@@ -19,21 +19,17 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package org.jetuml.rendering;
-
-import org.jetuml.geom.GeomUtils;
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
+package org.jetuml.geom;
 
 /**
  * A grid to which points and rectangles can be "snapped". The
  * snapping operation moves a point to the nearest grid point.
  */
-public final class Grid
+public final class GridUtils
 {
 	private static final double GRID_SIZE = 10;
 	
-	private Grid() {}
+	private GridUtils() {}
 	
 	/**
      * Creates a rectangle that is the original rectangle, snapped to

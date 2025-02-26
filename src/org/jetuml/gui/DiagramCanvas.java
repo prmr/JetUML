@@ -51,10 +51,11 @@ import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.diagram.validator.Violation;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
+import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.GridRenderer;
 import org.jetuml.rendering.RenderingContext;
 
 import javafx.scene.canvas.Canvas;
@@ -62,7 +63,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 /**
  * A canvas on which to view diagrams.
@@ -84,6 +84,8 @@ StringPreferenceChangeHandler
 	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
+	private final RenderingContext aRenderingContext;
+	private final GridRenderer aGridRenderer;
 	
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
@@ -117,8 +119,8 @@ StringPreferenceChangeHandler
 		setWidth(dimension.width());
 		setHeight(dimension.height());
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
-		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
-		getGraphicsContext2D().setFill(Color.WHITE);
+		aRenderingContext = new RenderingContext(getGraphicsContext2D());
+		aGridRenderer = new GridRenderer(aRenderingContext);
 		aHandler = pHandler;
 		setOnMousePressed(this::mousePressed);
 		setOnMouseReleased(this::mouseReleased);
@@ -238,19 +240,16 @@ StringPreferenceChangeHandler
 	 */
 	public void paintPanel()
 	{
-		GraphicsContext context = getGraphicsContext2D();
-		context.setFill(ColorScheme.getScheme().getCanvasColor());
-		context.fillRect(0, 0, getWidth(), getHeight());
-		RenderingContext renderingContext = new RenderingContext(context);
+		aRenderingContext.fillRectangle(new Rectangle(0, 0, (int)getWidth(), (int)getHeight()));
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			renderingContext.drawGrid(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
+			aGridRenderer.draw(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		aDiagramBuilder.renderer().draw(renderingContext);
+		aDiagramBuilder.renderer().draw(aRenderingContext);
 		synchronizeSelectionModel();
-		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, renderingContext));
-		aRubberband.ifPresent( rubberband -> renderingContext.drawRubberband(rubberband));
-		aLasso.ifPresent( lasso -> renderingContext.drawLasso(lasso));
+		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, aRenderingContext));
+		aRubberband.ifPresent( rubberband -> aRenderingContext.drawRubberband(rubberband));
+		aLasso.ifPresent( lasso -> aRenderingContext.drawLasso(lasso));
 	}
 	
 	/**
@@ -540,7 +539,7 @@ StringPreferenceChangeHandler
 	{
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
-		Point point = Grid.snapped(getMousePoint(pEvent));
+		Point point = GridUtils.snapped(getMousePoint(pEvent));
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.x(), point.y())));
 		Optional<Violation> violation = aDiagramValidator.validate();
 		
@@ -622,7 +621,7 @@ StringPreferenceChangeHandler
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
 			Rectangle bounds = aDiagramBuilder.renderer().getBounds(firstSelected);
-			Rectangle snappedPosition = Grid.snapped(bounds);
+			Rectangle snappedPosition = GridUtils.snapped(bounds);
 			
 			int dx = snappedPosition.x() - bounds.x();
 			int dy = snappedPosition.y() - bounds.y();

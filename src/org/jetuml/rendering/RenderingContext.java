@@ -38,16 +38,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 /**
- * Wrapper for the canvas to serve as a target for all
- * drawing operations.
+ * Wrapper for the canvas to serve as a target for all drawing operations. This
+ * class contains rendering operations of three types: stroking a line, filling
+ * a space, or drawing a figure, which is equivalent to filling and stroking.
+ * All the operations, originally in integer coordinates, are corrected by
+ * moving the coordinates by 0.5 in each direction so that they align precisely
+ * with the JavaFX coordinate system, which is 0.5 away from the pixel. See the
+ * documentation for javafx.scene.shape.Shape for details.
+ * 
+ * The signature of the various methods takes coordinates instead of geometric elements
+ * (e.g., lines) for performance reasons: to avoid creating an object for every call
+ * to a rendering primitive.
  */
 public class RenderingContext
 {
 	private static final int HANDLE_SIZE = 6; // The length in pixel of one side of the handle.
+	private static final double LINE_WIDTH = 0.5;
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
-	private static final int GRID_SIZE = 10;
 	private static final int ARC_SIZE = 20;
 	
 	private final GraphicsContext aContext;
@@ -61,6 +70,27 @@ public class RenderingContext
 	public RenderingContext(GraphicsContext pContext)
 	{
 		aContext = pContext;
+		aContext.setLineWidth(LINE_WIDTH);
+	}
+	
+	/**
+	 * Stroke a line with a specified color and line style.
+	 * 
+	 * @param pX1 The x-coordinate of the first point.
+	 * @param pY1 The y-coordinate of the first point.
+	 * @param pX2 The x-coordinate of the second point.
+	 * @param pY2 The y-coordinate of the second point.
+	 * @param pColor The color for the line.
+	 * @param pStyle The line style for the path.
+	 */
+	public void strokeLine(int pX1, int pY1, int pX2, int pY2, Color pColor, LineStyle pStyle)
+	{
+		aContext.save();
+		aContext.setStroke(pColor);
+		aContext.setLineDashes(pStyle.getLineDashes());
+		aContext.translate(0.5, 0.5);
+		aContext.strokeLine(pX1, pY1, pX2, pY2);
+		aContext.restore();
 	}
 	
 	/*
@@ -116,7 +146,8 @@ public class RenderingContext
 	{
 		aContext.save();
 		aContext.setStroke(SELECTION_FILL_COLOR);
-		strokeSharpLine(pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
+		aContext.translate(0.5, 0.5);
+		aContext.strokeLine(pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
 		aContext.restore();
 	}
 	
@@ -130,44 +161,6 @@ public class RenderingContext
 	{
 		drawRectangle(SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
 				pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
-	}
-	
-	/**
-     * Draws this grid inside a rectangle.
-     * @param pBounds the bounding rectangle
-     */
-	public void drawGrid(Rectangle pBounds)
-	{
-		aContext.save();
-		aContext.setStroke(ColorScheme.getScheme().getGridColor());
-		int x1 = pBounds.x();
-		int y1 = pBounds.y();
-		int x2 = pBounds.maxX();
-		int y2 = pBounds.maxY();
-		for(int x = x1; x < x2; x += GRID_SIZE)
-		{
-			strokeSharpLine(x, y1, x, y2);
-		}
-		for(int y = y1; y < y2; y += GRID_SIZE)
-		{
-			strokeSharpLine(x1, y, x2, y);
-		}
-		aContext.restore();
-	}
-	
-	/**
-	 * Strokes a line, originally in integer coordinates, so that it aligns precisely
-	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
-	 * the documentation for javafx.scene.shape.Shape for details.
-	 * 
-	 * @param pX1 The x-coordinate of the first point.
-	 * @param pY1 The y-coordinate of the first point.
-	 * @param pX2 The x-coordinate of the second point.
-	 * @param pY2 The y-coordinate of the second point.
-	 */
-	public void strokeSharpLine(int pX1, int pY1, int pX2, int pY2)
-	{
-		aContext.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
 	}
 	
 	/**

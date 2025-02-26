@@ -25,9 +25,9 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.Grid;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
@@ -117,8 +117,8 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 			rightWidth = Math.max(rightWidth, FieldNodeRenderer.rightWidth(field));
 		}
 		int width = Math.max(bounds.width(), leftWidth + rightWidth + 2 * XGAP);
-		width = Grid.toMultiple(width);
-		return new Rectangle(bounds.x(), bounds.y(), width, Grid.toMultiple(bounds.height() + height));
+		width = GridUtils.toMultiple(width);
+		return new Rectangle(bounds.x(), bounds.y(), width, GridUtils.toMultiple(bounds.height() + height));
 	}
 	
 	/**

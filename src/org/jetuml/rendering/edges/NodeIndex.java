@@ -21,9 +21,9 @@
 package org.jetuml.rendering.edges;
 
 import org.jetuml.geom.GeomUtils;
+import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.Grid;
 import org.jetuml.rendering.Side;
 
 /**
@@ -63,13 +63,13 @@ public enum NodeIndex
 		//Determine center point and add the offset to the center point
 		if(pAttachmentSide.isHorizontal())
 		{
-			Point center = Grid.snappedHorizontally(
+			Point center = GridUtils.snappedHorizontally(
 					new Point(((pNodeFace.x2() - pNodeFace.x1())/2) + pNodeFace.x1(), pNodeFace.y1()));
 			return new Point(center.x() + offset, center.y());
 		}
 		else 
 		{
-			Point center = Grid.snappedVertically( 
+			Point center = GridUtils.snappedVertically( 
 					new Point(pNodeFace.x1(), ((pNodeFace.y2() - pNodeFace.y1())/2) + pNodeFace.y1()));
 			return new Point(center.x(), center.y() + offset);
 		}
