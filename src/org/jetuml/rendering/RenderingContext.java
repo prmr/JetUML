@@ -23,7 +23,6 @@ package org.jetuml.rendering;
 import java.util.Optional;
 
 import org.jetuml.geom.Rectangle;
-import org.jetuml.gui.ColorScheme;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -54,7 +53,7 @@ import javafx.scene.text.TextAlignment;
 public class RenderingContext
 {
 	private static final double LINE_WIDTH = 0.5;
-	private static final int ARC_SIZE = 20;
+	private static final int ROUNDED_RECTANGLE_ARC = 20;
 	
 	private final GraphicsContext aContext;
 	
@@ -82,6 +81,7 @@ public class RenderingContext
 	 */
 	public void strokeLine(int pX1, int pY1, int pX2, int pY2, Color pColor, LineStyle pStyle)
 	{
+		assert pColor != null && pStyle != null;
 		aContext.save();
 		aContext.setStroke(pColor);
 		aContext.setLineDashes(pStyle.getLineDashes());
@@ -214,36 +214,26 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Draws a white rounded rectangle with a drop shadow.
+	 * Draws a rounded rectangle.
 	 * 
 	 * @param pRectangle The rectangle to draw.
 	 */
-	public void drawRoundedRectangle(Rectangle pRectangle)
+	public void drawRoundedRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
 	{
-		assert pRectangle != null;
+		assert pRectangle != null && pFillColor != null && pStrokeColor != null && pDropShadow != null;
 		aContext.save();
-		applyShapeProperties();
-		aContext.fillRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
-				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE );
-		aContext.setEffect(null);
-		aContext.strokeRoundRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, 
-				pRectangle.width(), pRectangle.height(), ARC_SIZE, ARC_SIZE);
+		aContext.setFill(pFillColor);
+		aContext.setStroke(pStrokeColor);
+		aContext.translate(0.5, 0.5);
+		
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(shadow));
+		aContext.fillRoundRect(pRectangle.x(), pRectangle.y(), 
+				pRectangle.width(), pRectangle.height(), ROUNDED_RECTANGLE_ARC, ROUNDED_RECTANGLE_ARC);
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
+		aContext.strokeRoundRect(pRectangle.x(), pRectangle.y(), 
+				pRectangle.width(), pRectangle.height(), ROUNDED_RECTANGLE_ARC, ROUNDED_RECTANGLE_ARC);
 		aContext.restore();
 	}
-	
-	/**
-	 * Apply the fill, stroke and effect property of the graphics context.
-	 * 
-	 * @param pGraphics The graphics context.
-	 */
-	private void applyShapeProperties()
-	{
-		aContext.setFill(ColorScheme.get().fill());
-		aContext.setStroke(ColorScheme.get().stroke());
-		aContext.setEffect(ColorScheme.get().dropShadow());
-	}
-	
-
 	
 	/**
 	 * Draw pText.
@@ -255,20 +245,21 @@ public class RenderingContext
 	 * @param pRelativeY The y-coordinate where to draw the text, relative to the bounding box.
 	 * @param pAlignment The alignment.
 	 * @param pBaseline The baseline.
+	 * @param pTextColor The color of the text.
 	 * @param pFont The font to use.
 	 */
 	public void drawText(String pText, int pBoundingX, int pBoundingY, int pRelativeX, int pRelativeY,
-			TextAlignment pAlignment, VPos pBaseline, Font pFont)
+			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
 	{
+		assert pText != null && pAlignment != null && pBaseline != null;
+		assert pTextColor != null && pFont != null;
 		aContext.save();
 		aContext.setTextAlign(pAlignment);
 		aContext.setTextBaseline(pBaseline);
-		aContext.translate(pBoundingX, pBoundingY);
+		aContext.translate(pBoundingX + 0.5, pBoundingY + 0.5);
 		aContext.setFont(pFont);
-		aContext.setFill(ColorScheme.get().stroke());
-		aContext.fillText(pText, pRelativeX + 0.5, pRelativeY + 0.5);
+		aContext.setFill(pTextColor);
+		aContext.fillText(pText, pRelativeX, pRelativeY);
 		aContext.restore();
 	}
-	
-
 }

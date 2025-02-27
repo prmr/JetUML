@@ -159,7 +159,9 @@ public final class StringRenderer
 			textY = pRectangle.height() / 2;
 		}
 
-		pContext.drawText(pString, pRectangle.x(), pRectangle.y(), textX, textY, getTextAlignment(), getTextBaseline(), getFont());
+		pContext.drawText(pString, pRectangle.x(), pRectangle.y(), textX, textY, getTextAlignment(), getTextBaseline(), 
+				ColorScheme.get().stroke(),
+				getFont());
 
 		if( aUnderlined && pString.trim().length() > 0 )
 		{

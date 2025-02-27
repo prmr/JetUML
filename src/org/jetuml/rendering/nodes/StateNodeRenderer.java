@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.StateNode;
@@ -28,6 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
@@ -61,7 +64,8 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		pContext.drawRoundedRectangle(bounds);
+		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(), 
+				Optional.of(ColorScheme.get().dropShadow()));
 		NAME_VIEWER.draw(((StateNode)pElement).getName(), pContext, bounds);
 	}
 	
