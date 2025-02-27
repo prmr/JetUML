@@ -91,19 +91,25 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			pContext.drawLine(bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
+					ColorScheme.getScheme().getStrokeColor(),
+					LineStyle.SOLID);
 			drawAttribute(node, bounds, splitY, attributeHeight, pContext);
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				pContext.drawLine(bounds.x(), splitY2, bounds.maxX(), splitY2, LineStyle.SOLID);
+				pContext.strokeLine(bounds.x(), splitY2, bounds.maxX(), splitY2, 
+						ColorScheme.getScheme().getStrokeColor(),
+						LineStyle.SOLID);
 				drawMethod(node, bounds, splitY2, methodHeight, pContext);
 			}
 		}
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
-			pContext.drawLine(bounds.x(), splitY, bounds.maxX(), splitY, LineStyle.SOLID);
+			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
+					ColorScheme.getScheme().getStrokeColor(),
+					LineStyle.SOLID);
 			drawMethod(node, bounds, splitY, methodHeight, pContext);
 		}
 	}

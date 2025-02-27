@@ -32,6 +32,7 @@ import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 
 import javafx.geometry.VPos;
 import javafx.scene.text.Font;
@@ -179,8 +180,10 @@ public final class StringRenderer
 			{
 				yOffset = baselineOffset / 2 + 1;
 			}
-			pContext.drawLine(pRectangle.x() + textX - xOffset, pRectangle.y() + textY + yOffset,
-					pRectangle.x()+ textX - xOffset + dimension.width(), pRectangle.y() + textY + yOffset, LineStyle.SOLID);
+			pContext.strokeLine(pRectangle.x() + textX - xOffset, pRectangle.y() + textY + yOffset,
+					pRectangle.x()+ textX - xOffset + dimension.width(), pRectangle.y() + textY + yOffset, 
+					ColorScheme.getScheme().getStrokeColor(),
+					LineStyle.SOLID);
 		}
 	}
 

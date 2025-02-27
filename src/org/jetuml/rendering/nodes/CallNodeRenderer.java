@@ -74,11 +74,11 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 			int y1 = bounds.y();
 			int y3 = bounds.maxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			pContext.drawLine(x1, y1, x2, y1, LineStyle.SOLID);
-			pContext.drawLine(x1, y1, x1, y2, LineStyle.SOLID);
-			pContext.drawLine(x2, y1, x2, y2, LineStyle.SOLID);
-			pContext.drawLine(x1, y2, x1, y3, LineStyle.DOTTED);
-			pContext.drawLine(x2, y2, x2, y3, LineStyle.DOTTED);
+			pContext.strokeLine(x1, y1, x2, y1, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
+			pContext.strokeLine(x1, y1, x1, y2, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
+			pContext.strokeLine(x2, y1, x2, y2, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
+			pContext.strokeLine(x1, y2, x1, y3, ColorScheme.getScheme().getStrokeColor(), LineStyle.DOTTED);
+			pContext.strokeLine(x2, y2, x2, y3, ColorScheme.getScheme().getStrokeColor(), LineStyle.DOTTED);
 		}
 		else
 		{

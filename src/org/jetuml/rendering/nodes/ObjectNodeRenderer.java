@@ -75,7 +75,9 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 				Optional.of(ColorScheme.getScheme().getDropShadow()));
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
-			pContext.drawLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);
+			pContext.strokeLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, 
+					ColorScheme.getScheme().getStrokeColor(),
+					LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext, 
 				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()));

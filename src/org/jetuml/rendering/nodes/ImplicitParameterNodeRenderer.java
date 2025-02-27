@@ -85,7 +85,9 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext, top);
 		int xmid = top.center().x();
-		pContext.drawLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), LineStyle.DOTTED);
+		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
+				ColorScheme.getScheme().getStrokeColor(),
+				LineStyle.DOTTED);
 	}
 	
 	@Override
@@ -186,7 +188,9 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		context.drawRectangle(top, ColorScheme.getScheme().getFillColor(), 
 				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
 		int xmid = DEFAULT_WIDTH/2;
-		context.drawLine(xmid,  top.maxY(), xmid, height, LineStyle.DOTTED);
+		context.strokeLine(xmid,  top.maxY(), xmid, height, 
+				ColorScheme.getScheme().getStrokeColor(),
+				LineStyle.DOTTED);
 		return canvas;
 	}
 }

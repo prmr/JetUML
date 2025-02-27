@@ -230,23 +230,7 @@ public class RenderingContext
 		aContext.setEffect(ColorScheme.getScheme().getDropShadow());
 	}
 	
-	/**
-	 * Draws a line with default attributes and a specified line style.
-	 * 
-	 * @param pX1 The x-coordinate of the first point
-	 * @param pY1 The y-coordinate of the first point
-	 * @param pX2 The x-coordinate of the second point
-	 * @param pY2 The y-coordinate of the second point
-	 * @param pStyle The line style for the path.
-	 */
-	public void drawLine(int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
-	{
-		aContext.save();
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
-		aContext.setLineDashes(pStyle.getLineDashes());
-		aContext.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
-		aContext.restore();
-	}
+
 	
 	/**
 	 * Draw pText.
