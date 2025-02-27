@@ -33,6 +33,7 @@ import javafx.scene.paint.Color;
  */
 public class AccessoriesRenderer
 {
+	private static final int HANDLE_SIZE = 6; // The length in pixel of one side of the handle.
 	private static final int GRID_SIZE = 10;
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
@@ -89,5 +90,44 @@ public class AccessoriesRenderer
 	public void drawLasso(Rectangle pRectangle)
 	{
 		aContext.drawRectangle(pRectangle, SELECTION_FILL_TRANSPARENT, SELECTION_COLOR, Optional.empty());
+	}
+	
+	/**
+	 * Draws four handles on pGraphics centered at the four corners of 
+	 * pBounds.
+	 * 
+	 * @param pBounds Defines the four points where to draw the handles
+	 */
+	public void drawHandles(Rectangle pBounds)
+	{
+		drawHandle(pBounds.x(), pBounds.y());
+		drawHandle(pBounds.x(), pBounds.maxY());
+		drawHandle(pBounds.maxX(), pBounds.y());
+		drawHandle(pBounds.maxX(), pBounds.maxY());
+	}
+	
+	/**
+	 * Draws two handles on pGraphics centered at the two ends of 
+	 * pBounds.
+	 * 
+	 * @param pBounds Defines the two points where to draw the handles
+	 */
+	public void drawHandles(Line pBounds)
+	{
+		drawHandle(pBounds.x1(), pBounds.y1());
+		drawHandle(pBounds.x2(), pBounds.y2());
+	}
+	
+	/*
+	 * Draws a handle on pGraphics that is centered at the position
+	 * (pX, pY).
+	 * 
+	 * @param pX The x-coordinate of the center of the handle.
+	 * @param pY The y-coordinate of the center of the handle.
+	 */
+	private void drawHandle(int pX, int pY)
+	{
+		Rectangle handle = new Rectangle(pX - HANDLE_SIZE / 2, pY - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
+		aContext.drawRectangle(handle, SELECTION_FILL_COLOR, SELECTION_COLOR, Optional.empty());
 	}
 }

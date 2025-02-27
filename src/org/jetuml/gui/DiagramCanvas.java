@@ -247,9 +247,26 @@ StringPreferenceChangeHandler
 		}
 		aDiagramBuilder.renderer().draw(aRenderingContext);
 		synchronizeSelectionModel();
-		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, aRenderingContext));
+		drawHandlesOnSelectedEdges();
+		drawHandlesOnSelectedNodes();
 		aRubberband.ifPresent( rubberband -> aAccessoriesRenderer.drawRubberband(rubberband));
 		aLasso.ifPresent( lasso -> aAccessoriesRenderer.drawLasso(lasso));
+	}
+	
+	private void drawHandlesOnSelectedEdges()
+	{
+		aSelected.stream()
+		.filter(Edge.class::isInstance)
+		.map(Edge.class::cast)
+		.forEach(edge -> aAccessoriesRenderer.drawHandles(aDiagramBuilder.renderer().getConnectionPoints(edge)));
+	}
+	
+	private void drawHandlesOnSelectedNodes()
+	{
+		aSelected.stream()
+		.filter(Node.class::isInstance)
+		.map(Node.class::cast)
+		.forEach(node -> aAccessoriesRenderer.drawHandles(aDiagramBuilder.renderer().getBounds(node)));
 	}
 	
 	/**
