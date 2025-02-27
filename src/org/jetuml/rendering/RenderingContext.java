@@ -29,7 +29,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -170,6 +169,28 @@ public class RenderingContext
 		aContext.restore();
 	}
 	
+	/**
+	 * Strokes and fills a path assumed to be closed.
+	 * 
+	 * @param pPath The path to stroke
+	 * @param pFillColor The fill color for the path.
+	 * @param pStrokeColor The stroke color.
+	 * @param pShadow The drop shadow
+	 */
+	public void drawClosedPath(Path pPath, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
+	{
+		assert pPath != null && pFillColor != null && pStrokeColor != null && pDropShadow != null;
+		aContext.save();
+		aContext.setStroke(pStrokeColor);
+		aContext.setFill(pFillColor);
+		aContext.translate(0.5, 0.5);
+		strokePath(pPath);
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(pDropShadow.get()));
+		aContext.fill();
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
+		aContext.restore();
+	}
+	
 	private void strokePath(Path pPath)
 	{
 		aContext.beginPath();
@@ -191,54 +212,6 @@ public class RenderingContext
 		}
 		aContext.stroke();
 	}
-	
-	private void applyPath(Path pPath)
-	{
-		aContext.beginPath();
-		for(PathElement element : pPath.getElements())
-		{
-			if (element instanceof MoveTo moveTo)
-			{
-				aContext.moveTo(((int)moveTo.getX()) + 0.5, ((int)moveTo.getY()) + 0.5);
-			}
-			else if (element instanceof LineTo lineTo)
-			{
-				aContext.lineTo(((int)lineTo.getX()) + 0.5, ((int)lineTo.getY()) + 0.5);
-			}
-			else if (element instanceof QuadCurveTo curve)
-			{
-				aContext.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
-						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);
-			}
-		}
-	}
-	/**
-	 * Strokes and fills a path, by converting the elements to integer coordinates and then
-	 * aligning them to the center of the pixels, so that it aligns precisely
-	 * with the JavaFX coordinate system. See the documentation for 
-	 * javafx.scene.shape.Shape for details.
-	 * 
-	 * @param pPath The path to stroke
-	 * @param pFill The fill color for the path.
-	 * @param pShadow True to include a drop shadow.
-	 */
-	public void strokeAndFillSharpPath(Path pPath, Paint pFill, boolean pShadow)
-	{
-		aContext.save();
-		aContext.setStroke(ColorScheme.get().stroke());
-		aContext.setFill(pFill);
-		applyPath(pPath);
-		
-		if( pShadow )
-		{
-			aContext.setEffect(ColorScheme.get().dropShadow());
-		}
-		aContext.fill();
-		aContext.stroke();
-		aContext.restore();
-	}
-	
-	
 	
 	/**
 	 * Draws a white rounded rectangle with a drop shadow.

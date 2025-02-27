@@ -24,10 +24,13 @@ package org.jetuml.rendering.edges;
 import static org.jetuml.rendering.ArrowHead.NONE;
 import static org.jetuml.rendering.ArrowHead.V;
 
+import java.util.Optional;
+
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.RenderingContext;
 
@@ -60,11 +63,11 @@ public final class ArrowHeadRenderer
 		
 		if(pArrowHead.isFilled()) 
 		{
-			pContext.strokeAndFillSharpPath(getPath(pArrowHead, pAxis), Color.BLACK, false);
+			pContext.drawClosedPath(getPath(pArrowHead, pAxis), Color.BLACK, ColorScheme.get().stroke(), Optional.empty());
 		}
 		else 
 		{
-			pContext.strokeAndFillSharpPath(getPath(pArrowHead, pAxis), Color.WHITE, false);
+			pContext.drawClosedPath(getPath(pArrowHead, pAxis), Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
 		}
 	}
 	
@@ -81,11 +84,13 @@ public final class ArrowHeadRenderer
 		
 		if(pArrowHead.isFilled()) 
 		{
-			pContext.strokeAndFillSharpPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, false);
+			pContext.drawClosedPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, 
+					ColorScheme.get().stroke(), Optional.empty());
 		}
 		else 
 		{
-			pContext.strokeAndFillSharpPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, false);
+			pContext.drawClosedPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, 
+					ColorScheme.get().stroke(), Optional.empty());
 		}
 	}
 	

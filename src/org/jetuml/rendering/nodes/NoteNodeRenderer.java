@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -66,8 +68,9 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Node node = (Node) pElement;
-		pContext.strokeAndFillSharpPath(createNotePath(node), ColorScheme.get().note(), true);
-		pContext.strokeAndFillSharpPath(createFoldPath(node), Color.WHITE, false);
+		pContext.drawClosedPath(createNotePath(node), ColorScheme.get().note(), ColorScheme.get().stroke(),  
+				Optional.of(ColorScheme.get().dropShadow()));
+		pContext.drawClosedPath(createFoldPath(node), Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), pContext, 
 				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
