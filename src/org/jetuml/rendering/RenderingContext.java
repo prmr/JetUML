@@ -231,20 +231,6 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Fills a rectangle without stroking it.
-	 * 
-	 * @param pRectangle The rectangle to fill.
-	 */
-	public void fillRectangle(Rectangle pRectangle)
-	{
-		assert pRectangle != null;
-		aContext.save();
-		applyShapeProperties();
-		aContext.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
-		aContext.restore();
-	}
-	
-	/**
 	 * Draws a line with default attributes and a specified line style.
 	 * 
 	 * @param pX1 The x-coordinate of the first point

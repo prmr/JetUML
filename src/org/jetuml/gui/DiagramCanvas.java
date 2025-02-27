@@ -251,7 +251,8 @@ StringPreferenceChangeHandler
 	public void paintPanel()
 	{
 		Rectangle area = new Rectangle(0, 0, width(), height());
-		aRenderingContext.fillRectangle(area);
+		aRenderingContext.drawRectangle(area, ColorScheme.getScheme().getCanvasColor(), 
+				ColorScheme.getScheme().getCanvasColor(), Optional.empty());
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
 			aAccessoriesRenderer.drawGrid(area);

@@ -66,7 +66,8 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	{
 		if(((CallNode)pElement).isOpenBottom())
 		{
-			pContext.fillRectangle(getBounds(pElement));
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.getScheme().getFillColor(), 
+					ColorScheme.getScheme().getFillColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
 			int x2 = bounds.maxX();
