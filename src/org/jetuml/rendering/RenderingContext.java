@@ -176,20 +176,6 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Draws a circle with default attributes.
-	 * 
-	 * @param pX The x-coordinate of the top-left of the circle.
-	 * @param pY The y-coordinate of the top-left of the circle.
-	 * @param pFill The color with which to fill the circle.
-	 * @param pDiameter The diameter of the circle.
-	 * @param pShadow True to include a drop shadow.
-	 */
-	public void drawCircle(int pX, int pY, int pDiameter, Paint pFill, boolean pShadow)
-	{
-		drawOval(pX, pY, pDiameter, pDiameter, pFill, pShadow);
-	}
-	
-	/**
 	 * Draws a circle with default attributes, without a drop shadow.
 	 * 
 	 * @param pX The x-coordinate of the top-left of the circle.

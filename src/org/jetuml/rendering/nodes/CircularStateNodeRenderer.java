@@ -61,14 +61,14 @@ public final class CircularStateNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		if( aFinal )
 		{
-			pContext.drawCircle(bounds.x(), bounds.y(), DIAMETER, Color.WHITE, true);
+			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.WHITE, true);
 			int innerDiameter = DIAMETER/2;
-			pContext.drawCircle(bounds.x() + innerDiameter/2, 
-					bounds.y() + innerDiameter/2, innerDiameter, Color.BLACK, false);
+			pContext.drawOval(bounds.x() + innerDiameter/2, 
+					bounds.y() + innerDiameter/2, innerDiameter, innerDiameter, Color.BLACK, false);
 		}
 		else
 		{
-			pContext.drawCircle(bounds.x(), bounds.y(), DIAMETER, Color.BLACK, true);
+			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.BLACK, true);
 		}
 	}
 	
