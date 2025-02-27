@@ -135,6 +135,24 @@ public class RenderingContext
 	}
 	
 	/**
+	 * Strokes an arc.
+	 * 
+	 * @param pArc The arc to stroke.
+	 * @param pStrokeColor The color of the stroke
+	 * @pre pArc != null && pStrokeColor != null
+	 */
+	public void strokeArc(Arc pArc, Color pStrokeColor)
+	{
+		assert pArc != null && pStrokeColor != null;
+		aContext.save();
+		aContext.setStroke(pStrokeColor);
+		aContext.translate(0.5, 0.5);
+		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
+				pArc.getLength(), pArc.getType());
+		aContext.restore();
+	}
+	
+	/**
 	 * Strokes a path, by converting the elements to integer coordinates and then
 	 * aligning them to the center of the pixels, so that it aligns precisely
 	 * with the JavaFX coordinate system. See the documentation for 
@@ -258,19 +276,5 @@ public class RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Draws an arc.
-	 * 
-	 * @param pArc The arc to draw.
-	 * @pre pArc != null.
-	 */
-	public void drawArc(Arc pArc)
-	{
-		assert pArc != null;
-		aContext.save();
-		aContext.setStroke(ColorScheme.get().stroke());
-		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
-				pArc.getLength(), pArc.getType());
-		aContext.restore();
-	}
+
 }

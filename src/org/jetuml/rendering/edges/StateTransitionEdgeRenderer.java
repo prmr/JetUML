@@ -30,6 +30,7 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -78,7 +79,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		if (isSelfEdge(edge))
 		{
-			pContext.drawArc(getSelfEdgeShape(edge));
+			pContext.strokeArc(getSelfEdgeShape(edge), ColorScheme.get().stroke());
 		}
 		else 
 		{
