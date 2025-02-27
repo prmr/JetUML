@@ -7,8 +7,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
 /**
- * An enum that defines two color schemes, Light and Dark,
- * for the Canvas and diagram elements.
+ * Defines the color schemes that can be applied to the diagram.
  */
 public enum ColorScheme 
 {
@@ -35,7 +34,7 @@ public enum ColorScheme
 	/**
 	 * @return The canvas color.
 	 */
-	public Color getCanvasColor()
+	public Color background()
 	{
 		return aCanvas;
 	}
@@ -43,7 +42,7 @@ public enum ColorScheme
 	/**
 	 * @return The canvas color.
 	 */
-	public Color getGridColor()
+	public Color grid()
 	{
 		return aGrid;
 	}
@@ -51,7 +50,7 @@ public enum ColorScheme
 	/**
 	 * @return The fill color.
 	 */
-	public Color getFillColor()
+	public Color fill()
 	{
 		return aFill;
 	}
@@ -59,7 +58,7 @@ public enum ColorScheme
 	/**
 	 * @return The stroke color.
 	 */
-	public Color getStrokeColor()
+	public Color stroke()
 	{
 		return aStroke;
 	}
@@ -67,7 +66,7 @@ public enum ColorScheme
 	/**
 	 * @return The note color.
 	 */
-	public Color getNoteColor()
+	public Color note()
 	{
 		return aNote;
 	}
@@ -75,7 +74,7 @@ public enum ColorScheme
 	/**
 	 * @return The drop shadow.
 	 */
-	public DropShadow getDropShadow()
+	public DropShadow dropShadow()
 	{
 		return aShadow;
 	}
@@ -83,9 +82,9 @@ public enum ColorScheme
 	/**
 	 * @return The color scheme for the user UI theme.
 	 */
-	public static ColorScheme getScheme()
+	public static ColorScheme get()
 	{
-		if( UserPreferences.instance().getBoolean(BooleanPreference.darkMode) )
+		if (UserPreferences.instance().getBoolean(BooleanPreference.darkMode))
 		{
 			return DARK;
 		}

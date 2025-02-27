@@ -66,8 +66,8 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle bounds = getBounds(pElement);
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
-				ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(), 
-				Optional.of(ColorScheme.getScheme().getDropShadow()));
+				ColorScheme.get().fill(), ColorScheme.get().stroke(), 
+				Optional.of(ColorScheme.get().dropShadow()));
 		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pContext, getBounds(pElement));
 	}
 	

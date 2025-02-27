@@ -182,7 +182,7 @@ public final class StringRenderer
 			}
 			pContext.strokeLine(pRectangle.x() + textX - xOffset, pRectangle.y() + textY + yOffset,
 					pRectangle.x()+ textX - xOffset + dimension.width(), pRectangle.y() + textY + yOffset, 
-					ColorScheme.getScheme().getStrokeColor(),
+					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
 	}

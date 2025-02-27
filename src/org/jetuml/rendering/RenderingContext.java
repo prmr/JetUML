@@ -146,7 +146,7 @@ public class RenderingContext
 	public void strokeSharpPath(Path pPath, LineStyle pStyle)
 	{
 		aContext.save();
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setStroke(ColorScheme.get().stroke());
 		aContext.setLineDashes(pStyle.getLineDashes());
 		applyPath(pPath);
 		aContext.stroke();
@@ -186,13 +186,13 @@ public class RenderingContext
 	public void strokeAndFillSharpPath(Path pPath, Paint pFill, boolean pShadow)
 	{
 		aContext.save();
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setStroke(ColorScheme.get().stroke());
 		aContext.setFill(pFill);
 		applyPath(pPath);
 		
 		if( pShadow )
 		{
-			aContext.setEffect(ColorScheme.getScheme().getDropShadow());
+			aContext.setEffect(ColorScheme.get().dropShadow());
 		}
 		aContext.fill();
 		aContext.stroke();
@@ -226,9 +226,9 @@ public class RenderingContext
 	 */
 	private void applyShapeProperties()
 	{
-		aContext.setFill(ColorScheme.getScheme().getFillColor());
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
-		aContext.setEffect(ColorScheme.getScheme().getDropShadow());
+		aContext.setFill(ColorScheme.get().fill());
+		aContext.setStroke(ColorScheme.get().stroke());
+		aContext.setEffect(ColorScheme.get().dropShadow());
 	}
 	
 
@@ -253,7 +253,7 @@ public class RenderingContext
 		aContext.setTextBaseline(pBaseline);
 		aContext.translate(pBoundingX, pBoundingY);
 		aContext.setFont(pFont);
-		aContext.setFill(ColorScheme.getScheme().getStrokeColor());
+		aContext.setFill(ColorScheme.get().stroke());
 		aContext.fillText(pText, pRelativeX + 0.5, pRelativeY + 0.5);
 		aContext.restore();
 	}
@@ -268,7 +268,7 @@ public class RenderingContext
 	{
 		assert pArc != null;
 		aContext.save();
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
+		aContext.setStroke(ColorScheme.get().stroke());
 		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
 				pArc.getLength(), pArc.getType());
 		aContext.restore();

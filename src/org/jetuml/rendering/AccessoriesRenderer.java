@@ -62,11 +62,11 @@ public class AccessoriesRenderer
 		
 		for (int x = pBounds.x(); x < pBounds.maxX(); x += GRID_SIZE)
 		{
-			aContext.strokeLine(x, pBounds.y(), x, pBounds.maxY(), ColorScheme.getScheme().getGridColor(), LineStyle.SOLID);
+			aContext.strokeLine(x, pBounds.y(), x, pBounds.maxY(), ColorScheme.get().grid(), LineStyle.SOLID);
 		}
 		for (int y = pBounds.y(); y < pBounds.maxY(); y += GRID_SIZE)
 		{
-			aContext.strokeLine(pBounds.x(), y, pBounds.maxX(), y, ColorScheme.getScheme().getGridColor(), LineStyle.SOLID);
+			aContext.strokeLine(pBounds.x(), y, pBounds.maxX(), y, ColorScheme.get().grid(), LineStyle.SOLID);
 		}
 	}
 	

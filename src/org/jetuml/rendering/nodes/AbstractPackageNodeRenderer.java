@@ -73,10 +73,10 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		assert pElement instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		pContext.drawRectangle(topBounds, ColorScheme.getScheme().getFillColor(), 
-				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
-		pContext.drawRectangle(bottomBounds, ColorScheme.getScheme().getFillColor(), 
-				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+		pContext.drawRectangle(topBounds, ColorScheme.get().fill(), 
+				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
+		pContext.drawRectangle(bottomBounds, ColorScheme.get().fill(), 
+				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext, new Rectangle(topBounds.x() + NAME_GAP, 
 				topBounds.y(), topBounds.width(), topBounds.height()));
 	}

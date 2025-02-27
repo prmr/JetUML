@@ -71,12 +71,12 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		Node node = (Node) pElement;
 		final Rectangle topRectangle = getTopRectangle(node);
 		int dividerPosition = topRectangle.maxY();
-		pContext.drawRectangle(bounds, ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(),
-				Optional.of(ColorScheme.getScheme().getDropShadow()));
+		pContext.drawRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(),
+				Optional.of(ColorScheme.get().dropShadow()));
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
 			pContext.strokeLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, 
-					ColorScheme.getScheme().getStrokeColor(),
+					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext, 

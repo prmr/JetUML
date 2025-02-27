@@ -66,24 +66,24 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	{
 		if(((CallNode)pElement).isOpenBottom())
 		{
-			pContext.drawRectangle(getBounds(pElement), ColorScheme.getScheme().getFillColor(), 
-					ColorScheme.getScheme().getFillColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), 
+					ColorScheme.get().fill(), Optional.of(ColorScheme.get().dropShadow()));
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
 			int x2 = bounds.maxX();
 			int y1 = bounds.y();
 			int y3 = bounds.maxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			pContext.strokeLine(x1, y1, x2, y1, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
-			pContext.strokeLine(x1, y1, x1, y2, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
-			pContext.strokeLine(x2, y1, x2, y2, ColorScheme.getScheme().getStrokeColor(), LineStyle.SOLID);
-			pContext.strokeLine(x1, y2, x1, y3, ColorScheme.getScheme().getStrokeColor(), LineStyle.DOTTED);
-			pContext.strokeLine(x2, y2, x2, y3, ColorScheme.getScheme().getStrokeColor(), LineStyle.DOTTED);
+			pContext.strokeLine(x1, y1, x2, y1, ColorScheme.get().stroke(), LineStyle.SOLID);
+			pContext.strokeLine(x1, y1, x1, y2, ColorScheme.get().stroke(), LineStyle.SOLID);
+			pContext.strokeLine(x2, y1, x2, y2, ColorScheme.get().stroke(), LineStyle.SOLID);
+			pContext.strokeLine(x1, y2, x1, y3, ColorScheme.get().stroke(), LineStyle.DOTTED);
+			pContext.strokeLine(x2, y2, x2, y3, ColorScheme.get().stroke(), LineStyle.DOTTED);
 		}
 		else
 		{
-			pContext.drawRectangle(getBounds(pElement), ColorScheme.getScheme().getFillColor(), 
-					ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), 
+					ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		}
 	}
 

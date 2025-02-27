@@ -251,8 +251,8 @@ StringPreferenceChangeHandler
 	public void paintPanel()
 	{
 		Rectangle area = new Rectangle(0, 0, width(), height());
-		aRenderingContext.drawRectangle(area, ColorScheme.getScheme().getCanvasColor(), 
-				ColorScheme.getScheme().getCanvasColor(), Optional.empty());
+		aRenderingContext.drawRectangle(area, ColorScheme.get().background(), 
+				ColorScheme.get().background(), Optional.empty());
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
 			aAccessoriesRenderer.drawGrid(area);
@@ -779,7 +779,7 @@ StringPreferenceChangeHandler
 				bounds.height() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
-		context.setFill(ColorScheme.getScheme().getCanvasColor());
+		context.setFill(ColorScheme.get().background());
 		context.fillRect(0, 0, width(), height());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(new RenderingContext(context));

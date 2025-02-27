@@ -84,22 +84,22 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		pContext.drawRectangle(bounds, ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(),
-				Optional.of(ColorScheme.getScheme().getDropShadow()));	
+		pContext.drawRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(),
+				Optional.of(ColorScheme.get().dropShadow()));	
 		drawName(node, bounds, bounds.y(), nameHeight, pContext);
 		
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.y() + nameHeight;
 			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
-					ColorScheme.getScheme().getStrokeColor(),
+					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 			drawAttribute(node, bounds, splitY, attributeHeight, pContext);
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
 				pContext.strokeLine(bounds.x(), splitY2, bounds.maxX(), splitY2, 
-						ColorScheme.getScheme().getStrokeColor(),
+						ColorScheme.get().stroke(),
 						LineStyle.SOLID);
 				drawMethod(node, bounds, splitY2, methodHeight, pContext);
 			}
@@ -108,7 +108,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			final int splitY = bounds.y() + nameHeight;
 			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
-					ColorScheme.getScheme().getStrokeColor(),
+					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 			drawMethod(node, bounds, splitY, methodHeight, pContext);
 		}

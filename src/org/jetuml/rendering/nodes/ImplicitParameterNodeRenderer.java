@@ -81,12 +81,12 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
-		pContext.drawRectangle(top, ColorScheme.getScheme().getFillColor(), 
-				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+		pContext.drawRectangle(top, ColorScheme.get().fill(), 
+				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext, top);
 		int xmid = top.center().x();
 		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
-				ColorScheme.getScheme().getStrokeColor(),
+				ColorScheme.get().stroke(),
 				LineStyle.DOTTED);
 	}
 	
@@ -185,11 +185,11 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		graphics.setStroke(Color.BLACK);
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
 		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
-		context.drawRectangle(top, ColorScheme.getScheme().getFillColor(), 
-				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+		context.drawRectangle(top, ColorScheme.get().fill(), 
+				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		int xmid = DEFAULT_WIDTH/2;
 		context.strokeLine(xmid,  top.maxY(), xmid, height, 
-				ColorScheme.getScheme().getStrokeColor(),
+				ColorScheme.get().stroke(),
 				LineStyle.DOTTED);
 		return canvas;
 	}
