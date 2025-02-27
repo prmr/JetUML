@@ -49,6 +49,8 @@ import javafx.scene.text.TextAlignment;
  * The signature of some methods takes coordinates instead of geometric elements
  * (e.g., lines) for performance reasons: to avoid creating an object for every call
  * to a rendering primitive.
+ * 
+ * Only a single RenderingContext should ever be associated with any GraphicsContext.
  */
 public class RenderingContext
 {
@@ -67,6 +69,9 @@ public class RenderingContext
 	{
 		aContext = pContext;
 		aContext.setLineWidth(LINE_WIDTH);
+		// This tranlation is necessary to align pixels in integer coodinates 
+		// To the JavaFX coordinate system.
+		aContext.translate(0.5, 0.5);
 	}
 	
 	/**
@@ -85,7 +90,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(pColor);
 		aContext.setLineDashes(pStyle.getLineDashes());
-		aContext.translate(0.5, 0.5);
 		aContext.strokeLine(pX1, pY1, pX2, pY2);
 		aContext.restore();
 	}
@@ -101,7 +105,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setFill(pFillColor);
-		aContext.translate(0.5, 0.5);
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(shadow));
 		aContext.fillRect(pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
@@ -125,7 +128,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setFill(pFillColor);
-		aContext.translate(0.5, 0.5);
 		pShadow.ifPresent(shadow -> aContext.setEffect(shadow));
 		aContext.fillOval(pX, pY, pWidth, pHeight);
 		aContext.strokeOval(pX, pY, pWidth, pHeight);
@@ -145,7 +147,6 @@ public class RenderingContext
 		assert pArc != null && pStrokeColor != null;
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
-		aContext.translate(0.5, 0.5);
 		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
 				pArc.getLength(), pArc.getType());
 		aContext.restore();
@@ -164,7 +165,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setLineDashes(pStyle.getLineDashes());
-		aContext.translate(0.5, 0.5);
 		strokePath(pPath);
 		aContext.restore();
 	}
@@ -183,7 +183,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setFill(pFillColor);
-		aContext.translate(0.5, 0.5);
 		strokePath(pPath);
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(pDropShadow.get()));
 		aContext.fill();
@@ -224,7 +223,6 @@ public class RenderingContext
 		aContext.save();
 		aContext.setFill(pFillColor);
 		aContext.setStroke(pStrokeColor);
-		aContext.translate(0.5, 0.5);
 		
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(shadow));
 		aContext.fillRoundRect(pRectangle.x(), pRectangle.y(), 
@@ -256,7 +254,7 @@ public class RenderingContext
 		aContext.save();
 		aContext.setTextAlign(pAlignment);
 		aContext.setTextBaseline(pBaseline);
-		aContext.translate(pBoundingX + 0.5, pBoundingY + 0.5);
+		aContext.translate(pBoundingX, pBoundingY);
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
 		aContext.fillText(pText, pRelativeX, pRelativeY);
