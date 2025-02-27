@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Dimension;
@@ -27,6 +29,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 
@@ -61,14 +64,16 @@ public final class CircularStateNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		if( aFinal )
 		{
-			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.WHITE, true);
+			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.WHITE, ColorScheme.getScheme().getStrokeColor(),
+					Optional.of(ColorScheme.getScheme().getDropShadow()));
 			int innerDiameter = DIAMETER/2;
 			pContext.drawOval(bounds.x() + innerDiameter/2, 
-					bounds.y() + innerDiameter/2, innerDiameter, innerDiameter, Color.BLACK, false);
+					bounds.y() + innerDiameter/2, innerDiameter, innerDiameter, Color.BLACK, Color.BLACK, Optional.empty());
 		}
 		else
 		{
-			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.BLACK, true);
+			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.BLACK, ColorScheme.getScheme().getStrokeColor(),
+					Optional.of(ColorScheme.getScheme().getDropShadow()));
 		}
 	}
 	

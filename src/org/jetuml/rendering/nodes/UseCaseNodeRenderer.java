@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.UseCaseNode;
@@ -64,7 +66,8 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle bounds = getBounds(pElement);
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
-				ColorScheme.getScheme().getFillColor(), true);
+				ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(), 
+				Optional.of(ColorScheme.getScheme().getDropShadow()));
 		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pContext, getBounds(pElement));
 	}
 	

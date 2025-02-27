@@ -48,7 +48,7 @@ import javafx.scene.text.TextAlignment;
  * with the JavaFX coordinate system, which is 0.5 away from the pixel. See the
  * documentation for javafx.scene.shape.Shape for details.
  * 
- * The signature of the various methods takes coordinates instead of geometric elements
+ * The signature of some methods takes coordinates instead of geometric elements
  * (e.g., lines) for performance reasons: to avoid creating an object for every call
  * to a rendering primitive.
  */
@@ -107,6 +107,30 @@ public class RenderingContext
 		aContext.fillRect(pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
 		aContext.strokeRect(pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws an oval.
+	 * 
+	 * @param pX The x-coordinate of the top-left of the oval.
+	 * @param pY The y-coordinate of the top-left of the oval.
+	 * @param pFillColor The color with which to fill the oval.
+	 * @param pWidth The width of the oval to draw
+	 * @param pHeight The height of the oval to draw.
+	 * @param pShadow The drop shadow, if there is one.
+	 */
+	public void drawOval(int pX, int pY, int pWidth, int pHeight, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pShadow)
+	{
+		assert pWidth > 0 && pHeight > 0 && pFillColor != null;
+		aContext.save();
+		aContext.setStroke(pStrokeColor);
+		aContext.setFill(pFillColor);
+		aContext.translate(0.5, 0.5);
+		pShadow.ifPresent(shadow -> aContext.setEffect(shadow));
+		aContext.fillOval(pX, pY, pWidth, pHeight);
+		aContext.strokeOval(pX, pY, pWidth, pHeight);
+		pShadow.ifPresent(shadow -> aContext.setEffect(null));
 		aContext.restore();
 	}
 	
@@ -175,30 +199,7 @@ public class RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Draws a circle with default attributes, without a drop shadow.
-	 * 
-	 * @param pX The x-coordinate of the top-left of the circle.
-	 * @param pY The y-coordinate of the top-left of the circle.
-	 * @param pFill The color with which to fill the circle.
-	 * @param pWidth The width of the oval to draw
-	 * @param pHeight The height of the oval to draw.
-	 * @param pShadow True to include a drop shadow.
-	 */
-	public void drawOval(int pX, int pY, int pWidth, int pHeight, Paint pFill, boolean pShadow)
-	{
-		assert pWidth > 0 && pHeight > 0 && pFill != null;
-		aContext.save();
-		aContext.setFill(pFill);
-		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
-		if( pShadow )
-		{
-			aContext.setEffect(ColorScheme.getScheme().getDropShadow());
-		}
-		aContext.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		aContext.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		aContext.restore();
-	}
+	
 	
 	/**
 	 * Draws a white rounded rectangle with a drop shadow.
