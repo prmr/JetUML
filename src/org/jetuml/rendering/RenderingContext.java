@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2025 by McGill University.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ ******************************************************************************/
 package org.jetuml.rendering;
 
 import java.util.Optional;
@@ -12,9 +32,17 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Object that can serve as a target for all drawing operations. This
+ * interface contains rendering operations of two types: stroking a line or
+ * drawing a figure, which is equivalent to filling and stroking.
+ * 
+ * The signature of some methods takes coordinates instead of geometric elements
+ * (e.g., lines) for performance reasons: to avoid creating an object for every call
+ * to a rendering primitive. 
+ */
 public interface RenderingContext
 {
-
 	/**
 	 * Stroke a line with a specified color and line style.
 	 * 

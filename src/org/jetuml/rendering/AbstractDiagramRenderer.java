@@ -98,7 +98,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 				.map(NodeRenderer.class::cast).forEach(NodeRenderer::deactivateAndClearNodeStorage);
 	}
 
-	protected void drawNode(Node pNode, GraphicsRenderingContext pContext)
+	protected void drawNode(Node pNode, RenderingContext pContext)
 	{
 		draw(pNode, pContext);
 		pNode.getChildren().forEach(node -> drawNode(node, pContext));
@@ -153,7 +153,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void draw(GraphicsRenderingContext pContext)
+	public void draw(RenderingContext pContext)
 	{
 		assert pContext != null;
 		activateNodeStorages();
@@ -163,7 +163,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		aRenderers.get(pElement.getClass()).draw(pElement, pContext);
 	}

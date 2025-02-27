@@ -100,7 +100,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	@Override
-	public void draw(GraphicsRenderingContext pContext)
+	public void draw(RenderingContext pContext)
 	{
 		layout();
 		super.draw(pContext); 

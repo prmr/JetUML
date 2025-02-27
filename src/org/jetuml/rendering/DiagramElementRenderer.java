@@ -67,5 +67,5 @@ public interface DiagramElementRenderer
      * @param pContext The rendering context on which to draw the element.
      * @pre pElement != null
 	 */
-   	void draw(DiagramElement pElement, GraphicsRenderingContext pContext);
+   	void draw(DiagramElement pElement, RenderingContext pContext);
 }

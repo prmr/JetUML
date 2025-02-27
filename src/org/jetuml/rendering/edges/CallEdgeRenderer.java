@@ -38,6 +38,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -123,7 +124,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		pContext.strokePath((Path) getShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
@@ -157,7 +158,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 
-	private void drawLabel(CallEdge pEdge, GraphicsRenderingContext pContext, String pLabel)
+	private void drawLabel(CallEdge pEdge, RenderingContext pContext, String pLabel)
 	{
 		if( pEdge.isSelfEdge() )
 		{

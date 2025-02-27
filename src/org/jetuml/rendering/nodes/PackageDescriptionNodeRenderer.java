@@ -30,6 +30,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -52,7 +53,7 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);

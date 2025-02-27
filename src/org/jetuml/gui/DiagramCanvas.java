@@ -57,6 +57,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.AccessoriesRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -84,7 +85,7 @@ StringPreferenceChangeHandler
 	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
-	private final GraphicsRenderingContext aRenderingContext;
+	private final RenderingContext aRenderingContext;
 	private final AccessoriesRenderer aAccessoriesRenderer;
 	
 	private enum DragMode 

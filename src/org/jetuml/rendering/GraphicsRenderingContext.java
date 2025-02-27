@@ -38,17 +38,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 /**
- * Wrapper for a graphics context to serve as a target for all drawing operations. This
- * class contains rendering operations of three types: stroking a line, filling
- * a space, or drawing a figure, which is equivalent to filling and stroking.
+ * Wrapper for a graphics context to serve as a target for all drawing operations. 
+ * 
  * All the operations, originally in integer coordinates, are corrected by
  * moving the coordinates by 0.5 in each direction so that they align precisely
  * with the JavaFX coordinate system, which is 0.5 away from the pixel. See the
  * documentation for javafx.scene.shape.Shape for details.
- * 
- * The signature of some methods takes coordinates instead of geometric elements
- * (e.g., lines) for performance reasons: to avoid creating an object for every call
- * to a rendering primitive.
  * 
  * Only a single RenderingContext should ever be associated with any GraphicsContext.
  */

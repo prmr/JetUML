@@ -141,7 +141,7 @@ public final class StringRenderer
 	 * @param pContext The rendering context on which to draw the text.
 	 * @param pRectangle the rectangle into which to place the string
 	 */
-	public void draw(String pString, GraphicsRenderingContext pContext, Rectangle pRectangle)
+	public void draw(String pString, RenderingContext pContext, Rectangle pRectangle)
 	{
 		int textX = 0;
 		int textY = 0;

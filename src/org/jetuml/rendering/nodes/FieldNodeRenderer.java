@@ -31,6 +31,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
@@ -72,7 +73,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;

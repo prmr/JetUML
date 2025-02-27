@@ -30,7 +30,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -59,7 +59,7 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		super.draw(pElement, pContext);
 		Edge edge = (Edge) pElement;

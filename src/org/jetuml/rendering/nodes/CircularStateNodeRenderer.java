@@ -31,7 +31,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 
 import javafx.scene.paint.Color;
 
@@ -59,7 +59,7 @@ public final class CircularStateNodeRenderer extends AbstractNodeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
 		if( aFinal )

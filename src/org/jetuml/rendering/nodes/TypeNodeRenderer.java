@@ -32,7 +32,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -75,7 +75,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{	
 		assert pElement instanceof TypeNode;
 		TypeNode node = (TypeNode) pElement;
@@ -114,7 +114,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, GraphicsRenderingContext pContext)
+	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, RenderingContext pContext)
 	{
 		String name = getNameText(pNode).trim();
 		String[] nameByLine = name.split("\n");
@@ -154,7 +154,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, GraphicsRenderingContext pContext)
+	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, RenderingContext pContext)
 	{
 		String attributes = pNode.getAttributes().trim();
 		String[] attributesByLine = attributes.split("\n");
@@ -176,7 +176,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		}	
 	}
 	
-	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, GraphicsRenderingContext pContext)
+	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, RenderingContext pContext)
 	{
 		String methods = pNode.getMethods().trim();
 		String[] methodsByLine = methods.split("\n");

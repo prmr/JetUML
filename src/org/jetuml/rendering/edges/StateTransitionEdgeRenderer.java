@@ -34,6 +34,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -74,7 +75,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
+	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		if (isSelfEdge(edge))
@@ -89,7 +90,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		drawArrowHead(edge, pContext);
 	}
 	
-	private void drawArrowHead(Edge pEdge, GraphicsRenderingContext pContext)
+	private void drawArrowHead(Edge pEdge, RenderingContext pContext)
 	{
 		if( isSelfEdge(pEdge) )
 		{
@@ -116,7 +117,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	 *  Draws the label.
 	 *  @param pGraphics2D the graphics context
 	 */
-	private void drawLabel(StateTransitionEdge pEdge, GraphicsRenderingContext pContext)
+	private void drawLabel(StateTransitionEdge pEdge, RenderingContext pContext)
 	{
 		String label = wrapLabel(pEdge);
 		Rectangle labelBounds = getLabelBounds(pEdge);

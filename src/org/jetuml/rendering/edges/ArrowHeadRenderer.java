@@ -32,7 +32,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
-import org.jetuml.rendering.GraphicsRenderingContext;
+import org.jetuml.rendering.RenderingContext;
 
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
@@ -57,7 +57,7 @@ public final class ArrowHeadRenderer
 	 * @param pArrowHead The type of arrow head to draw
 	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
 	 */
-	public static void draw(GraphicsRenderingContext pContext, ArrowHead pArrowHead, Line pAxis)
+	public static void draw(RenderingContext pContext, ArrowHead pArrowHead, Line pAxis)
 	{
 		assert pContext != null && pArrowHead != null && pAxis != null;
 		
@@ -78,7 +78,7 @@ public final class ArrowHeadRenderer
 	 * @param pArrowHead The type of arrow head to draw
 	 * @param pAxis A line in the direction of the arrow ending a pAxis.getPoint2()
 	 */
-	public static void draw(GraphicsRenderingContext pContext, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
+	public static void draw(RenderingContext pContext, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
 	{
 		assert pContext != null && pArrowHead != null && pPoint1 != null && pPoint2 != null;
 		
