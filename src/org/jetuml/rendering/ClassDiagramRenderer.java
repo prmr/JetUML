@@ -86,7 +86,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 
 	@Override
-	public void draw(RenderingContext pContext)
+	public void draw(GraphicsRenderingContext pContext)
 	{
 		//draw and store nodes 
 		activateNodeStorages();

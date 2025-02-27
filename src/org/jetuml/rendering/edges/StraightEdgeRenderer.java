@@ -30,7 +30,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.shape.LineTo;
@@ -62,7 +62,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		Path shape = (Path) getShape(edge);
@@ -89,7 +89,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		GraphicsRenderingContext context = new GraphicsRenderingContext(canvas.getGraphicsContext2D());
 		context.strokePath(path, ColorScheme.get().stroke(), aLineStyle);
 		ArrowHeadRenderer.draw(context, aArrowHead, 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));

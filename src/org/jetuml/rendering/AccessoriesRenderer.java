@@ -39,14 +39,14 @@ public class AccessoriesRenderer
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	
-	private final RenderingContext aContext;
+	private final GraphicsRenderingContext aContext;
 	
 	/**
 	 * Creates a new grid renderer for a given context.
 	 * 
 	 * @param pContext The rendering context.
 	 */
-	public AccessoriesRenderer(RenderingContext pContext)
+	public AccessoriesRenderer(GraphicsRenderingContext pContext)
 	{
 		assert pContext != null;
 		aContext = pContext;

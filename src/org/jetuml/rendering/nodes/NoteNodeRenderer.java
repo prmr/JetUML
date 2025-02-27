@@ -29,7 +29,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -65,7 +65,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Node node = (Node) pElement;
 		pContext.drawClosedPath(createNotePath(node), ColorScheme.get().note(), ColorScheme.get().stroke(),  

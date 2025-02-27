@@ -56,7 +56,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.AccessoriesRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -84,7 +84,7 @@ StringPreferenceChangeHandler
 	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
-	private final RenderingContext aRenderingContext;
+	private final GraphicsRenderingContext aRenderingContext;
 	private final AccessoriesRenderer aAccessoriesRenderer;
 	
 	private enum DragMode 
@@ -119,7 +119,7 @@ StringPreferenceChangeHandler
 		setWidth(dimension.width());
 		setHeight(dimension.height());
 		aDiagramBuilder.setCanvasDimension(new Dimension(width(), height()));
-		aRenderingContext = new RenderingContext(getGraphicsContext2D());
+		aRenderingContext = new GraphicsRenderingContext(getGraphicsContext2D());
 		aAccessoriesRenderer = new AccessoriesRenderer(aRenderingContext);
 		aHandler = pHandler;
 		setOnMousePressed(this::mousePressed);
@@ -782,7 +782,7 @@ StringPreferenceChangeHandler
 		context.setFill(ColorScheme.get().background());
 		context.fillRect(0, 0, width(), height());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
-		aDiagramBuilder.renderer().draw(new RenderingContext(context));
+		aDiagramBuilder.renderer().draw(new GraphicsRenderingContext(context));
 		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 
 				bounds.height() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);

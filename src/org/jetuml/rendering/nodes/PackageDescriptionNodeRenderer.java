@@ -29,7 +29,7 @@ import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -52,7 +52,7 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
@@ -82,7 +82,7 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		assert pElement instanceof AbstractPackageNode;
 		Canvas icon = super.createIcon(pDiagramType, pElement);
-		CONTENTS_VIEWER.draw("description", new RenderingContext(icon.getGraphicsContext2D()), 
+		CONTENTS_VIEWER.draw("description", new GraphicsRenderingContext(icon.getGraphicsContext2D()), 
 				getBottomBounds((AbstractPackageNode)pElement));
 		return icon;
 	}

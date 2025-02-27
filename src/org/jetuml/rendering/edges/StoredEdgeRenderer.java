@@ -46,7 +46,7 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.EdgePath;
 import org.jetuml.rendering.EdgePriority;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
@@ -207,7 +207,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private static void drawLabel(RenderingContext pContext, Line pSegment, 
+	private static void drawLabel(GraphicsRenderingContext pContext, Line pSegment, 
 			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if(pString == null || pString.length() == 0)
@@ -409,7 +409,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext) 
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext) 
 	{
 		assert pElement !=null && pContext != null;
 		Edge edge = (Edge) pElement;
@@ -455,7 +455,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		GraphicsRenderingContext context = new GraphicsRenderingContext(canvas.getGraphicsContext2D());
 		context.strokePath(path, ColorScheme.get().stroke(), getLineStyle(edge));
 		
 		ArrowHeadRenderer.draw(context, getArrowEnd(edge), 

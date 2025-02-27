@@ -32,7 +32,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -62,7 +62,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Rectangle bounds = getBounds(pElement);
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 

@@ -35,7 +35,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
@@ -78,7 +78,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
 		pContext.drawRectangle(top, ColorScheme.get().fill(), 
@@ -184,7 +184,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
-		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
+		GraphicsRenderingContext context = new GraphicsRenderingContext(canvas.getGraphicsContext2D());
 		context.drawRectangle(top, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		int xmid = DEFAULT_WIDTH/2;

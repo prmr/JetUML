@@ -29,7 +29,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.Side;
 
 import javafx.scene.canvas.Canvas;
@@ -95,7 +95,7 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		draw(node, new RenderingContext(canvas.getGraphicsContext2D()));
+		draw(node, new GraphicsRenderingContext(canvas.getGraphicsContext2D()));
 		return canvas;
 	}
 	

@@ -32,7 +32,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -84,7 +84,7 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 		canvas.getGraphicsContext2D().scale(scale, scale);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
-		RenderingContext context = new RenderingContext(graphics);
+		GraphicsRenderingContext context = new GraphicsRenderingContext(graphics);
 		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.DOTTED);
 		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
 		return canvas;

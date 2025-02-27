@@ -30,7 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
@@ -72,7 +72,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		final Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
@@ -177,7 +177,7 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		graphics.translate(Math.max((height - width) / 2, 0), 0);
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		EQUALS_VIEWER.draw(ICON_LABEL, new RenderingContext(graphics), 
+		EQUALS_VIEWER.draw(ICON_LABEL, new GraphicsRenderingContext(graphics), 
 				new Rectangle(0, BUTTON_SIZE/2 - height/2+OFFSET, width, height));
 		return canvas;
 	}

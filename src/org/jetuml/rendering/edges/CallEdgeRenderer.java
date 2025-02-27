@@ -38,7 +38,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -123,7 +123,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		pContext.strokePath((Path) getShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
@@ -157,7 +157,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		}
 	}
 
-	private void drawLabel(CallEdge pEdge, RenderingContext pContext, String pLabel)
+	private void drawLabel(CallEdge pEdge, GraphicsRenderingContext pContext, String pLabel)
 	{
 		if( pEdge.isSelfEdge() )
 		{
@@ -224,7 +224,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		canvas.getGraphicsContext2D().scale(scale, scale);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
-		RenderingContext context = new RenderingContext(graphics);
+		GraphicsRenderingContext context = new GraphicsRenderingContext(graphics);
 		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.SOLID);
 		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point(1, offset), new Point((int)(BUTTON_SIZE*(1/scale)-1), offset));
 		return canvas;

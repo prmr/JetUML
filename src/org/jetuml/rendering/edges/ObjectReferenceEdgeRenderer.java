@@ -31,7 +31,7 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -120,7 +120,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
+	public void draw(DiagramElement pElement, GraphicsRenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
 		pContext.strokePath((Path) getShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
@@ -161,7 +161,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(0.6, 0.6);
 		Path path = getCShape(new Line(new Point(5, 5), new Point(15,25)));
-		RenderingContext context = new RenderingContext(graphics);
+		GraphicsRenderingContext context = new GraphicsRenderingContext(graphics);
 		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.SOLID);
 		ArrowHeadRenderer.draw(context, ArrowHead.BLACK_TRIANGLE, new Point(20,25), new Point(15, 25));
 		return canvas;

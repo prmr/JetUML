@@ -55,7 +55,7 @@ public interface DiagramRenderer
 	 * @param pContext The rendering context where the diagram should be drawn.
 	 * @pre pGraphics != null.
 	 */
-	void draw(RenderingContext pContext);
+	void draw(GraphicsRenderingContext pContext);
 	
 	/**
      * Draws the element.
@@ -63,7 +63,7 @@ public interface DiagramRenderer
      * @param pContext The rendering context where the diagram should be drawn.
      * @pre pElement != null
 	 */
-   	void draw(DiagramElement pElement, RenderingContext pContext);
+   	void draw(DiagramElement pElement, GraphicsRenderingContext pContext);
 	
 	/**
 	 * Returns the edge underneath the given point, if it exists.

@@ -28,7 +28,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.GraphicsRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -56,7 +56,7 @@ import javafx.scene.canvas.GraphicsContext;
  		for(int i = 0; i < NUMBER_OF_TRIALS+1; i++)
  		{
  			Instant start = Instant.now();
- 			renderer.draw(new RenderingContext(graphicContext));
+ 			renderer.draw(new GraphicsRenderingContext(graphicContext));
  			Instant stop = Instant.now();
 
  			if (i == 0)
