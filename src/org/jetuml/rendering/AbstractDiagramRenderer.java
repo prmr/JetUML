@@ -202,13 +202,6 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
-	{
-		assert pElement != null && pContext != null;
-		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pContext);
-	}
-
-	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
 		assert pEdge != null;

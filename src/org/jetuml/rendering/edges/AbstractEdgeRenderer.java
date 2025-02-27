@@ -28,7 +28,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 
@@ -133,12 +132,6 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 				parent().getConnectionPoints(pEdge.end(), toEnd.rotatedBy(DEGREES_180)));
 	}
 
-	@Override
-	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
-	{
-		pContext.drawHandles(getConnectionPoints((Edge)pElement));		
-	}
-	
 	protected String wrapLabel(String pString, int pDistanceInX, int pDistanceInY)
 	{
 		final int singleCharWidth = SIZE_TESTER.getDimension(" ").width();

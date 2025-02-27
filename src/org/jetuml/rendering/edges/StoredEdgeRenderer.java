@@ -465,16 +465,6 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 	}
 
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext) 
-	{
-		EdgePath path = getStoredEdgePath((Edge)pElement);
-		if(path != null) 
-		{
-			pContext.drawHandles(new Line(path.getStartPoint(), path.getEndPoint()));
-		}
-	}
-
-	@Override
 	public boolean contains(DiagramElement pElement, Point pPoint) 
 	{
 		// Purposefully does not include the arrow head and labels, which create large bounds.

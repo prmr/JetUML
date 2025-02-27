@@ -109,15 +109,6 @@ public interface DiagramRenderer
 	Canvas createIcon(DiagramElement pElement);
 	
 	/**
-	 * Draw selection handles around the element.
-	 * 
-	 * @param pElement The target element
-	 * @param pContext The rendering context on which to draw the handles.
-	 * @pre pElement != null && pGraphics != null
-	 */
-	void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext);
-
-	/**
 	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
 	 * 
 	 * @param pElement The element whose bounds we wish to compute.

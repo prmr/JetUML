@@ -80,12 +80,6 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	}
 	
 	@Override
-	public void drawSelectionHandles(DiagramElement pElement, RenderingContext pContext)
-	{
-		pContext.drawHandles(getBounds(pElement));		
-	}
-	
-	@Override
 	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		Node node = (Node) pElement;
