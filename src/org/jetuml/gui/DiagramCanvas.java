@@ -55,7 +55,7 @@ import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.GridRenderer;
+import org.jetuml.rendering.AccessoriesRenderer;
 import org.jetuml.rendering.RenderingContext;
 
 import javafx.scene.canvas.Canvas;
@@ -85,7 +85,7 @@ StringPreferenceChangeHandler
 	private final DiagramTabToolBar aToolBar;
 	private MouseDraggedGestureHandler aHandler;
 	private final RenderingContext aRenderingContext;
-	private final GridRenderer aGridRenderer;
+	private final AccessoriesRenderer aAccessoriesRenderer;
 	
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
@@ -120,7 +120,7 @@ StringPreferenceChangeHandler
 		setHeight(dimension.height());
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
 		aRenderingContext = new RenderingContext(getGraphicsContext2D());
-		aGridRenderer = new GridRenderer(aRenderingContext);
+		aAccessoriesRenderer = new AccessoriesRenderer(aRenderingContext);
 		aHandler = pHandler;
 		setOnMousePressed(this::mousePressed);
 		setOnMouseReleased(this::mouseReleased);
@@ -243,13 +243,13 @@ StringPreferenceChangeHandler
 		aRenderingContext.fillRectangle(new Rectangle(0, 0, (int)getWidth(), (int)getHeight()));
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			aGridRenderer.draw(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
+			aAccessoriesRenderer.drawGrid(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
 		aDiagramBuilder.renderer().draw(aRenderingContext);
 		synchronizeSelectionModel();
 		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, aRenderingContext));
-		aRubberband.ifPresent( rubberband -> aRenderingContext.drawRubberband(rubberband));
-		aLasso.ifPresent( lasso -> aRenderingContext.drawLasso(lasso));
+		aRubberband.ifPresent( rubberband -> aAccessoriesRenderer.drawRubberband(rubberband));
+		aLasso.ifPresent( lasso -> aAccessoriesRenderer.drawLasso(lasso));
 	}
 	
 	/**

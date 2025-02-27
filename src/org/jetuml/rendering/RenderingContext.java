@@ -20,12 +20,15 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
+import java.util.Optional;
+
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
@@ -56,7 +59,6 @@ public class RenderingContext
 	private static final double LINE_WIDTH = 0.5;
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
-	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int ARC_SIZE = 20;
 	
 	private final GraphicsContext aContext;
@@ -90,6 +92,25 @@ public class RenderingContext
 		aContext.setLineDashes(pStyle.getLineDashes());
 		aContext.translate(0.5, 0.5);
 		aContext.strokeLine(pX1, pY1, pX2, pY2);
+		aContext.restore();
+	}
+	
+	/**
+	 * Draws a rectangle with default attributes.
+	 * 
+	 * @param pRectangle The rectangle to draw.
+	 */
+	public void drawRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
+	{
+		assert pRectangle != null;
+		aContext.save();
+		aContext.setStroke(pStrokeColor);
+		aContext.setFill(pFillColor);
+		aContext.translate(0.5, 0.5);
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(shadow));
+		aContext.fillRect(pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
+		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
+		aContext.strokeRect(pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 		aContext.restore();
 	}
 	
@@ -134,33 +155,6 @@ public class RenderingContext
 	{
 		drawHandle(pBounds.x1(), pBounds.y1());
 		drawHandle(pBounds.x2(), pBounds.y2());
-	}
-	
-	/**
-	 * Draws a "rubberband" line on pGraphics. A rubberband line is a straight line
-	 * in the color of the selection tools.
-	 * 
-	 * @param pLine The line that represents the rubberband.
-	 */
-	public void drawRubberband(Line pLine)
-	{
-		aContext.save();
-		aContext.setStroke(SELECTION_FILL_COLOR);
-		aContext.translate(0.5, 0.5);
-		aContext.strokeLine(pLine.x1(), pLine.y1(), pLine.x2(), pLine.y2());
-		aContext.restore();
-	}
-	
-	/**
-	 * Draws a "lasso" rectangle on pGraphics. A lasso rectangle is a semi-transparent
-	 * rectangle in the color of the selection tools.
-	 * 
-	 * @param pRectangle The rectangle that defines the lasso.
-	 */
-	public void drawLasso(Rectangle pRectangle)
-	{
-		drawRectangle(SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
-				pRectangle.x(), pRectangle.y(), pRectangle.width(), pRectangle.height());
 	}
 	
 	/**
@@ -295,29 +289,6 @@ public class RenderingContext
 		aContext.setFill(ColorScheme.getScheme().getFillColor());
 		aContext.setStroke(ColorScheme.getScheme().getStrokeColor());
 		aContext.setEffect(ColorScheme.getScheme().getDropShadow());
-	}
-	
-	/**
-	 * Strokes and fills a rectangle, originally in integer coordinates, so that it aligns precisely
-	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
-	 * the documentation for javafx.scene.shape.Shape for details.
-	 * 
-	 * @param pStroke The stroke (border) color for the rectangle.
-	 * @param pFill The fill (background) color for the rectangle.
-	 * @param pX The x-coordinate of the origin.
-	 * @param pY The y-coordinate of the origin.
-	 * @param pWidth The width.
-	 * @param pHeight The height.
-	 */
-	public void drawRectangle(Paint pStroke, Paint pFill, 
-			int pX, int pY, int pWidth, int pHeight)
-	{
-		aContext.save();
-		aContext.setFill(pFill);
-		aContext.setStroke(pStroke);
-		aContext.fillRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		aContext.strokeRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		aContext.restore();
 	}
 	
 	/**
