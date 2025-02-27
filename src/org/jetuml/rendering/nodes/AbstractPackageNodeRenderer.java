@@ -22,6 +22,8 @@ package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
@@ -30,6 +32,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
@@ -70,8 +73,10 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		assert pElement instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		pContext.drawRectangle(topBounds );
-		pContext.drawRectangle(bottomBounds );
+		pContext.drawRectangle(topBounds, ColorScheme.getScheme().getFillColor(), 
+				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
+		pContext.drawRectangle(bottomBounds, ColorScheme.getScheme().getFillColor(), 
+				ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
 		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext, new Rectangle(topBounds.x() + NAME_GAP, 
 				topBounds.y(), topBounds.width(), topBounds.height()));
 	}

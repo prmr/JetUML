@@ -22,11 +22,14 @@ package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -81,7 +84,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		pContext.drawRectangle(bounds);	
+		pContext.drawRectangle(bounds, ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(),
+				Optional.of(ColorScheme.getScheme().getDropShadow()));	
 		drawName(node, bounds, bounds.y(), nameHeight, pContext);
 		
 		if( attributeHeight > 0 )

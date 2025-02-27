@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
@@ -27,6 +29,7 @@ import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -68,7 +71,8 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 		Node node = (Node) pElement;
 		final Rectangle topRectangle = getTopRectangle(node);
 		int dividerPosition = topRectangle.maxY();
-		pContext.drawRectangle(bounds);
+		pContext.drawRectangle(bounds, ColorScheme.getScheme().getFillColor(), ColorScheme.getScheme().getStrokeColor(),
+				Optional.of(ColorScheme.getScheme().getDropShadow()));
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
 			pContext.drawLine(bounds.x(), dividerPosition, bounds.maxX(), dividerPosition, LineStyle.SOLID);

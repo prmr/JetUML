@@ -245,22 +245,6 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Draws a rectangle with default attributes.
-	 * 
-	 * @param pRectangle The rectangle to draw.
-	 */
-	public void drawRectangle(Rectangle pRectangle)
-	{
-		assert pRectangle != null;
-		aContext.save();
-		applyShapeProperties();
-		aContext.fillRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
-		aContext.setEffect(null);
-		aContext.strokeRect(pRectangle.x() + 0.5, pRectangle.y() + 0.5, pRectangle.width(), pRectangle.height());
-		aContext.restore();
-	}
-	
-	/**
 	 * Fills a rectangle without stroking it.
 	 * 
 	 * @param pRectangle The rectangle to fill.

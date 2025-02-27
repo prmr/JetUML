@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
@@ -28,6 +30,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -78,7 +81,8 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 		}
 		else
 		{
-			pContext.drawRectangle(getBounds(pElement));
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.getScheme().getFillColor(), 
+					ColorScheme.getScheme().getStrokeColor(), Optional.of(ColorScheme.getScheme().getDropShadow()));
 		}
 	}
 
