@@ -25,6 +25,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -87,7 +88,7 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
 				bounds.y() + HEIGHT, nameBounds.width(), nameBounds.height());
 		NAME_VIEWER.draw(((ActorNode)node).getName(), pContext, nameBox);
-		pContext.strokeSharpPath(createStickManPath(node), LineStyle.SOLID);
+		pContext.strokePath(createStickManPath(node), ColorScheme.get().stroke(), LineStyle.SOLID);
 	}
 	
 	private static Path createStickManPath(Node pNode)

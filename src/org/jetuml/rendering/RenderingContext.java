@@ -153,22 +153,43 @@ public class RenderingContext
 	}
 	
 	/**
-	 * Strokes a path, by converting the elements to integer coordinates and then
-	 * aligning them to the center of the pixels, so that it aligns precisely
-	 * with the JavaFX coordinate system. See the documentation for 
-	 * javafx.scene.shape.Shape for details.
+	 * Strokes a path.
 	 * 
 	 * @param pPath The path to stroke
+	 * @param pStrokeColor The color of the path.
 	 * @param pStyle The line style for the path.
 	 */
-	public void strokeSharpPath(Path pPath, LineStyle pStyle)
+	public void strokePath(Path pPath, Color pStrokeColor, LineStyle pStyle)
 	{
+		assert pPath != null && pStrokeColor != null && pStyle != null;
 		aContext.save();
-		aContext.setStroke(ColorScheme.get().stroke());
+		aContext.setStroke(pStrokeColor);
 		aContext.setLineDashes(pStyle.getLineDashes());
-		applyPath(pPath);
-		aContext.stroke();
+		aContext.translate(0.5, 0.5);
+		strokePath(pPath);
 		aContext.restore();
+	}
+	
+	private void strokePath(Path pPath)
+	{
+		aContext.beginPath();
+		for(PathElement element : pPath.getElements())
+		{
+			if (element instanceof MoveTo moveTo)
+			{
+				aContext.moveTo(moveTo.getX(), moveTo.getY());
+			}
+			else if (element instanceof LineTo lineTo)
+			{
+				aContext.lineTo(lineTo.getX(), lineTo.getY());
+			}
+			else if (element instanceof QuadCurveTo curve)
+			{
+				aContext.quadraticCurveTo(curve.getControlX(), curve.getControlY(), 
+						curve.getX(), curve.getY());
+			}
+		}
+		aContext.stroke();
 	}
 	
 	private void applyPath(Path pPath)
@@ -176,15 +197,15 @@ public class RenderingContext
 		aContext.beginPath();
 		for(PathElement element : pPath.getElements())
 		{
-			if(element instanceof MoveTo moveTo)
+			if (element instanceof MoveTo moveTo)
 			{
 				aContext.moveTo(((int)moveTo.getX()) + 0.5, ((int)moveTo.getY()) + 0.5);
 			}
-			else if(element instanceof LineTo lineTo)
+			else if (element instanceof LineTo lineTo)
 			{
 				aContext.lineTo(((int)lineTo.getX()) + 0.5, ((int)lineTo.getY()) + 0.5);
 			}
-			else if(element instanceof QuadCurveTo curve)
+			else if (element instanceof QuadCurveTo curve)
 			{
 				aContext.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
 						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);

@@ -26,6 +26,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -65,7 +66,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 	{
 		Edge edge = (Edge) pElement;
 		Path shape = (Path) getShape(edge);
-		pContext.strokeSharpPath(shape, aLineStyle);
+		pContext.strokePath(shape, ColorScheme.get().stroke(), aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
 		ArrowHeadRenderer.draw(pContext, aArrowHead, connectionPoints);
 	}
@@ -89,7 +90,7 @@ public class StraightEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
 		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
-		context.strokeSharpPath(path, aLineStyle);
+		context.strokePath(path, ColorScheme.get().stroke(), aLineStyle);
 		ArrowHeadRenderer.draw(context, aArrowHead, 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
 		return canvas;

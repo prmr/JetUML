@@ -34,6 +34,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -125,7 +126,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
+		pContext.strokePath((Path) getShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
 		
 		Point[] points = getPoints(edge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
 		ArrowHeadRenderer.draw(pContext, getArrowHead((CallEdge)edge), points[points.length - 2], points[points.length - 1]);
@@ -224,7 +225,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
 		RenderingContext context = new RenderingContext(graphics);
-		context.strokeSharpPath(path, LineStyle.SOLID);
+		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.SOLID);
 		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point(1, offset), new Point((int)(BUTTON_SIZE*(1/scale)-1), offset));
 		return canvas;
 	}

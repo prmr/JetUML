@@ -39,6 +39,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
@@ -413,7 +414,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		assert pElement !=null && pContext != null;
 		Edge edge = (Edge) pElement;
 		EdgePath path = getStoredEdgePath(edge);
-		pContext.strokeSharpPath(getSegmentPath(edge), getLineStyle(edge));
+		pContext.strokePath(getSegmentPath(edge), ColorScheme.get().stroke(), getLineStyle(edge));
 		ArrowHeadRenderer.draw(pContext, getArrowStart(edge), path.getPointByIndex(1), path.getStartPoint());
 		ArrowHeadRenderer.draw(pContext, getArrowEnd(edge), path.getPointByIndex(path.size()-2), path.getEndPoint());
 
@@ -455,7 +456,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
 		RenderingContext context = new RenderingContext(canvas.getGraphicsContext2D());
-		context.strokeSharpPath(path, getLineStyle(edge));
+		context.strokePath(path, ColorScheme.get().stroke(), getLineStyle(edge));
 		
 		ArrowHeadRenderer.draw(context, getArrowEnd(edge), 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));

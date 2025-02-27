@@ -28,6 +28,7 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -84,7 +85,7 @@ public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
 		RenderingContext context = new RenderingContext(graphics);
-		context.strokeSharpPath(path, LineStyle.DOTTED);
+		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.DOTTED);
 		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
 		return canvas;
 	}

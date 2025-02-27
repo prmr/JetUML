@@ -27,6 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -122,7 +123,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{
 		Edge edge = (Edge) pElement;
-		pContext.strokeSharpPath((Path) getShape(edge), LineStyle.SOLID);
+		pContext.strokePath((Path) getShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
 		Line connectionPoints = getConnectionPoints(edge);
 		
 		if(isSShaped(edge))
@@ -161,7 +162,7 @@ public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 		graphics.scale(0.6, 0.6);
 		Path path = getCShape(new Line(new Point(5, 5), new Point(15,25)));
 		RenderingContext context = new RenderingContext(graphics);
-		context.strokeSharpPath(path, LineStyle.SOLID);
+		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.SOLID);
 		ArrowHeadRenderer.draw(context, ArrowHead.BLACK_TRIANGLE, new Point(20,25), new Point(15, 25));
 		return canvas;
 	}

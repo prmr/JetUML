@@ -83,7 +83,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		}
 		else 
 		{
-			pContext.strokeSharpPath(getNormalEdgeShape(edge), LineStyle.SOLID);
+			pContext.strokePath(getNormalEdgeShape(edge), ColorScheme.get().stroke(), LineStyle.SOLID);
 		}
 		drawLabel((StateTransitionEdge)edge, pContext);
 		drawArrowHead(edge, pContext);
@@ -436,7 +436,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		path.getElements().addAll(moveTo, curveTo);
 		
 		RenderingContext context = new RenderingContext(graphics);
-		context.strokeSharpPath(path, LineStyle.SOLID);
+		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.SOLID);
 		ArrowHeadRenderer.draw(context, ArrowHead.V, control, new Point(40, 40));
 		return canvas;
 	}
