@@ -118,13 +118,23 @@ StringPreferenceChangeHandler
 		Dimension dimension = getDiagramCanvasWidth();
 		setWidth(dimension.width());
 		setHeight(dimension.height());
-		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
+		aDiagramBuilder.setCanvasDimension(new Dimension(width(), height()));
 		aRenderingContext = new RenderingContext(getGraphicsContext2D());
 		aAccessoriesRenderer = new AccessoriesRenderer(aRenderingContext);
 		aHandler = pHandler;
 		setOnMousePressed(this::mousePressed);
 		setOnMouseReleased(this::mouseReleased);
 		setOnMouseDragged(this::mouseDragged);
+	}
+	
+	private int width()
+	{
+		return (int) getWidth();
+	}
+	
+	private int height()
+	{
+		return (int) getHeight();
 	}
 	
 	/**
@@ -240,10 +250,11 @@ StringPreferenceChangeHandler
 	 */
 	public void paintPanel()
 	{
-		aRenderingContext.fillRectangle(new Rectangle(0, 0, (int)getWidth(), (int)getHeight()));
+		Rectangle area = new Rectangle(0, 0, width(), height());
+		aRenderingContext.fillRectangle(area);
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			aAccessoriesRenderer.drawGrid(new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
+			aAccessoriesRenderer.drawGrid(area);
 		}
 		aDiagramBuilder.renderer().draw(aRenderingContext);
 		synchronizeSelectionModel();
@@ -644,7 +655,7 @@ StringPreferenceChangeHandler
 			int dy = snappedPosition.y() - bounds.y();
 			
 			//ensure the bounds of the entire selection are not outside the walls of the canvas
-			if(entireBounds.maxX() + dx > getWidth()) 
+			if(entireBounds.maxX() + dx > width()) 
 			{
 				dx -= GRID_SIZE;
 			}
@@ -652,7 +663,7 @@ StringPreferenceChangeHandler
 			{
 				dx += GRID_SIZE;
 			}
-			if(entireBounds.maxY() + dy > getHeight()) 
+			if(entireBounds.maxY() + dy > height()) 
 			{
 				dy -= GRID_SIZE;
 			}
@@ -747,9 +758,9 @@ StringPreferenceChangeHandler
 		// If this translation results in exceeding the canvas bounds, roll back.
 		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
 		int dxCorrection = Math.max(-bounds.x(), 0) 
-				+ Math.min((int)getWidth() - bounds.maxX(), 0);
+				+ Math.min(width() - bounds.maxX(), 0);
 		int dyCorrection = Math.max(-bounds.y(), 0) 
-				+ Math.min((int)getHeight() - bounds.maxY(), 0);
+				+ Math.min(height() - bounds.maxY(), 0);
 		selectedNodes().forEach(selected -> selected.translate(dxCorrection, dyCorrection));
 		
 		aLastMousePoint = pMousePoint; 
@@ -768,7 +779,7 @@ StringPreferenceChangeHandler
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(ColorScheme.getScheme().getCanvasColor());
-		context.fillRect(0, 0, getWidth(), getHeight());
+		context.fillRect(0, 0, width(), height());
 		context.translate(-bounds.x()+DIAGRAM_PADDING, -bounds.y()+DIAGRAM_PADDING);
 		aDiagramBuilder.renderer().draw(new RenderingContext(context));
 		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 
