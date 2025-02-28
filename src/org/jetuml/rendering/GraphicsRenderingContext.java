@@ -28,7 +28,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -49,6 +49,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class GraphicsRenderingContext implements RenderingContext
 {
+	private static final int FULL_CIRCLE = 360;
 	private static final double LINE_WIDTH = 0.5;
 	private static final int ROUNDED_RECTANGLE_ARC = 20;
 	
@@ -69,16 +70,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.translate(0.5, 0.5);
 	}
 	
-	/**
-	 * Stroke a line with a specified color and line style.
-	 * 
-	 * @param pX1 The x-coordinate of the first point.
-	 * @param pY1 The y-coordinate of the first point.
-	 * @param pX2 The x-coordinate of the second point.
-	 * @param pY2 The y-coordinate of the second point.
-	 * @param pColor The color for the line.
-	 * @param pStyle The line style for the path.
-	 */
 	@Override
 	public void strokeLine(int pX1, int pY1, int pX2, int pY2, Color pColor, LineStyle pStyle)
 	{
@@ -90,11 +81,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Draws a rectangle with default attributes.
-	 * 
-	 * @param pRectangle The rectangle to draw.
-	 */
 	@Override
 	public void drawRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
 	{
@@ -109,16 +95,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Draws an oval.
-	 * 
-	 * @param pX The x-coordinate of the top-left of the oval.
-	 * @param pY The y-coordinate of the top-left of the oval.
-	 * @param pFillColor The color with which to fill the oval.
-	 * @param pWidth The width of the oval to draw
-	 * @param pHeight The height of the oval to draw.
-	 * @param pShadow The drop shadow, if there is one.
-	 */
 	@Override
 	public void drawOval(int pX, int pY, int pWidth, int pHeight, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pShadow)
 	{
@@ -133,31 +109,19 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Strokes an arc.
-	 * 
-	 * @param pArc The arc to stroke.
-	 * @param pStrokeColor The color of the stroke
-	 * @pre pArc != null && pStrokeColor != null
-	 */
 	@Override
-	public void strokeArc(Arc pArc, Color pStrokeColor)
+	public void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor)
 	{
-		assert pArc != null && pStrokeColor != null;
+		assert pCenterX >=0 && pCenterY >= 0 && pRadius > 0;
+		assert pStartAngle >= 0 && pStartAngle < FULL_CIRCLE;
+		assert pLength > 0 && pLength <= FULL_CIRCLE;
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
-		aContext.strokeArc(pArc.getCenterX(), pArc.getCenterY(), pArc.getRadiusX(), pArc.getRadiusY(), pArc.getStartAngle(), 
-				pArc.getLength(), pArc.getType());
+		aContext.strokeArc(pCenterX, pCenterY, pRadius * 2, pRadius * 2, pStartAngle, 
+				pLength, ArcType.OPEN);
 		aContext.restore();
 	}
 	
-	/**
-	 * Strokes a path.
-	 * 
-	 * @param pPath The path to stroke
-	 * @param pStrokeColor The color of the path.
-	 * @param pStyle The line style for the path.
-	 */
 	@Override
 	public void strokePath(Path pPath, Color pStrokeColor, LineStyle pStyle)
 	{
@@ -169,14 +133,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Strokes and fills a path assumed to be closed.
-	 * 
-	 * @param pPath The path to stroke
-	 * @param pFillColor The fill color for the path.
-	 * @param pStrokeColor The stroke color.
-	 * @param pShadow The drop shadow
-	 */
 	@Override
 	public void drawClosedPath(Path pPath, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
 	{
@@ -213,11 +169,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.stroke();
 	}
 	
-	/**
-	 * Draws a rounded rectangle.
-	 * 
-	 * @param pRectangle The rectangle to draw.
-	 */
 	@Override
 	public void drawRoundedRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
 	{
@@ -235,19 +186,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	/**
-	 * Draw pText.
-	 * 
-	 * @param pText The text to draw
-	 * @param pBoundingX The left coordinate of the top-left point for the text.
-	 * @param pBoundingY The top coordinate of the top-left point for the text.
-	 * @param pRelativeX The x-coordinate where to draw the text, relative to the bounding box.
-	 * @param pRelativeY The y-coordinate where to draw the text, relative to the bounding box.
-	 * @param pAlignment The alignment.
-	 * @param pBaseline The baseline.
-	 * @param pTextColor The color of the text.
-	 * @param pFont The font to use.
-	 */
 	@Override
 	public void drawText(String pText, int pBoundingX, int pBoundingY, int pRelativeX, int pRelativeY,
 			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)

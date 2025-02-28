@@ -80,7 +80,10 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		Edge edge = (Edge) pElement;
 		if (isSelfEdge(edge))
 		{
-			pContext.strokeArc(getSelfEdgeShape(edge), ColorScheme.get().stroke());
+			Arc arc = getSelfEdgeShape(edge);
+			pContext.strokeArc((int) arc.getCenterX(), (int) arc.getCenterY(), 
+					(int) arc.getRadiusX(), (int) arc.getStartAngle(), (int) arc.getLength(), 
+					ColorScheme.get().stroke());
 		}
 		else 
 		{
@@ -267,10 +270,15 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	
 	private Arc getSelfEdgeShape(Edge pEdge)
 	{
+		/*
+		 * The starting position is determined from the bottom middle
+		 * (0 degrees) and going counter-clockwise. The extent runs
+		 * clockwise.
+		 */
 		Line line = getSelfEdgeConnectionPoints(pEdge);
 		Arc arc = new Arc();
-		arc.setRadiusX(SELF_EDGE_OFFSET*2);
-		arc.setRadiusY(SELF_EDGE_OFFSET*2);
+		arc.setRadiusX(SELF_EDGE_OFFSET);
+		arc.setRadiusY(SELF_EDGE_OFFSET);
 		arc.setLength(DEGREES_270);
 		arc.setType(ArcType.OPEN);
 		if( getPosition(pEdge) == 1 )
@@ -283,7 +291,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		{		
 			arc.setCenterX(line.x1()-SELF_EDGE_OFFSET);
 			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET*2);
-			arc.setStartAngle(1);
+			arc.setStartAngle(0);
 		}
 		return arc;
 	}

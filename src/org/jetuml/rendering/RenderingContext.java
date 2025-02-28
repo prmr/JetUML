@@ -27,7 +27,6 @@ import org.jetuml.geom.Rectangle;
 import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -76,13 +75,16 @@ public interface RenderingContext
 			Optional<DropShadow> pShadow);
 
 	/**
-	 * Strokes an arc.
+	 * Strokes an open arc.
 	 * 
-	 * @param pArc The arc to stroke.
+	 * @param pCenterX The x coordinate of the center of the arc
+	 * @param pCenterY The y coordinate of the center of the arc
+	 * @param pRadius The radius of the arc, in pixels.
+	 * @param pStartAngle The start angle in degrees, 0 being at the bottom middle of the circle.
+	 * @param pLength The length of the arc in degrees, moving counter-clockwise from the start angle.
 	 * @param pStrokeColor The color of the stroke
-	 * @pre pArc != null && pStrokeColor != null
 	 */
-	void strokeArc(Arc pArc, Color pStrokeColor);
+	void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor);
 
 	/**
 	 * Strokes a path.
