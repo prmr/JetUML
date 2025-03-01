@@ -80,44 +80,48 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		assert pElement instanceof TypeNode;
 		TypeNode node = (TypeNode) pElement;
 		final Rectangle bounds = getBounds(pElement);
-		final int attributeHeight = attributeBoxHeight(node);
-		final int methodHeight = methodBoxHeight(node);
-		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
+		final int attributeBoxHeight = attributeBoxHeight(node);
+		final int methodBoxHeight = methodBoxHeight(node);
+		final int nameBoxHeight = nameBoxHeight(node, attributeBoxHeight, methodBoxHeight);
 
 		pContext.drawRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(),
 				Optional.of(ColorScheme.get().dropShadow()));	
-		drawName(node, bounds, bounds.y(), nameHeight, pContext);
+		drawName(getNameText(node), new Rectangle(bounds.x(), bounds.y(), bounds.width(), nameBoxHeight), pContext);
 		
-		if( attributeHeight > 0 )
+		if( attributeBoxHeight > 0 )
 		{
-			final int splitY = bounds.y() + nameHeight;
+			final int splitY = bounds.y() + nameBoxHeight;
 			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
-			drawAttribute(node, bounds, splitY, attributeHeight, pContext);
-			if( methodHeight > 0 )
+			drawAttribute(node.getAttributes(), new Rectangle(bounds.x(), splitY, bounds.width(), attributeBoxHeight), pContext);
+			if( methodBoxHeight > 0 )
 			{
-				final int splitY2 = splitY + attributeHeight;
+				final int splitY2 = splitY + attributeBoxHeight;
 				pContext.strokeLine(bounds.x(), splitY2, bounds.maxX(), splitY2, 
 						ColorScheme.get().stroke(),
 						LineStyle.SOLID);
-				drawMethod(node, bounds, splitY2, methodHeight, pContext);
+				drawMethod(node.getMethods(), new Rectangle(bounds.x(), splitY2, bounds.width(), methodBoxHeight), pContext);
 			}
 		}
-		else if( methodHeight > 0 )
+		else if( methodBoxHeight > 0 )
 		{
-			final int splitY = bounds.y() + nameHeight;
+			final int splitY = bounds.y() + nameBoxHeight;
 			pContext.strokeLine(bounds.x(), splitY, bounds.maxX(), splitY, 
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
-			drawMethod(node, bounds, splitY, methodHeight, pContext);
+			drawMethod(node.getMethods(), new Rectangle(bounds.x(), splitY, bounds.width(), methodBoxHeight), pContext);
 		}
 	}
 	
-	private void drawName(TypeNode pNode, Rectangle pBounds, int pSplitY, int pNameBoxHeight, RenderingContext pContext)
+	/*
+	 * @param pName The possibly multi-line text to draw in the name box.
+	 * @param pBounds The bounds of the name box.
+	 * @param pContext The rendering context
+	 */
+	private static void drawName(String pName, Rectangle pBounds, RenderingContext pContext)
 	{
-		String name = getNameText(pNode).trim();
-		String[] nameByLine = name.split("\n");
+		String[] nameByLine = pName.trim().split("\n");
 		int numLines = nameByLine.length;
 		
 		for( int i = 0; i < numLines; i++ )
@@ -143,21 +147,23 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			if( italic )
 			{
-				ITALIC_NAME_VIEWER.draw(paddedName, pContext, 
-						new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
+				ITALIC_NAME_VIEWER.draw(paddedName, pContext, pBounds);
 			}
 			else
 			{
-				NAME_VIEWER.draw(paddedName, pContext, 
-						new Rectangle(pBounds.x(), pSplitY, pBounds.width(), pNameBoxHeight));
+				NAME_VIEWER.draw(paddedName, pContext, pBounds);
 			}
 		}
 	}
 	
-	private static void drawAttribute(TypeNode pNode, Rectangle pBounds, int pSplitY, int pAttributeBoxHeight, RenderingContext pContext)
+	/*
+	 * @param pText The possibly multi-line text to draw in the attribute box.
+	 * @param pBounds The bounds of the attribute box.
+	 * @param pContext The rendering context
+	 */
+	private static void drawAttribute(String pText, Rectangle pBounds, RenderingContext pContext)
 	{
-		String attributes = pNode.getAttributes().trim();
-		String[] attributesByLine = attributes.split("\n");
+		String[] attributesByLine = pText.trim().split("\n");
 		int lineSpacing = TOP_MARGIN;
 		
 		for( String attribute : attributesByLine )
@@ -165,21 +171,25 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			if( containsMarkup(attribute, UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pContext, 
-						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pAttributeBoxHeight));
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
 			}
 			else
 			{
 				STRING_VIEWER.draw(attribute, pContext, 
-						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pAttributeBoxHeight));
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	
 	}
 	
-	private static void drawMethod(TypeNode pNode, Rectangle pBounds, int pSplitY, int pMethodBoxHeight, RenderingContext pContext)
+	/*
+	 * @param pText The possibly multi-line text to draw in the method box.
+	 * @param pBounds The bounds of the method box.
+	 * @param pContext The rendering context
+	 */
+	private static void drawMethod(String pText, Rectangle pBounds, RenderingContext pContext)
 	{
-		String methods = pNode.getMethods().trim();
-		String[] methodsByLine = methods.split("\n");
+		String[] methodsByLine = pText.trim().split("\n");
 		int lineSpacing = TOP_MARGIN;
 		
 		for( String method : methodsByLine )
@@ -187,17 +197,17 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			if( containsMarkup(method, UNDERLINE_MARKUP) )
 			{
 				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pContext, 
-						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
 			}
 			else if( containsMarkup(method, ITALIC_MARKUP) )
 			{
 				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pContext, 
-						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
 			}
 			else
 			{
 				STRING_VIEWER.draw(method, pContext, 
-						new Rectangle(pBounds.x(), pSplitY + lineSpacing, pBounds.width(), pMethodBoxHeight));
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	
