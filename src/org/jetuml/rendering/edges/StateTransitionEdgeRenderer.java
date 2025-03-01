@@ -283,14 +283,14 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 		arc.setType(ArcType.OPEN);
 		if( getPosition(pEdge) == 1 )
 		{
-			arc.setCenterX(line.x1());
-			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET);
+			arc.setCenterX(line.x1() + SELF_EDGE_OFFSET);
+			arc.setCenterY(line.y1());
 			arc.setStartAngle(DEGREES_270);
 		}
 		else
 		{		
-			arc.setCenterX(line.x1()-SELF_EDGE_OFFSET);
-			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET*2);
+			arc.setCenterX(line.x1());
+			arc.setCenterY(line.y1()-SELF_EDGE_OFFSET);
 			arc.setStartAngle(0);
 		}
 		return arc;

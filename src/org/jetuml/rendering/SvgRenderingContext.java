@@ -34,6 +34,9 @@ public class SvgRenderingContext implements RenderingContext
 			+ " stroke=\"black\" fill=\"%s\"/>";
 	private static final String TEMPLATE_ROUNDED_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
 			+ " stroke=\"black\" fill=\"white\"/>";
+	private static final String TEMPLATE_ARC = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
+	private static final int DEGREES_270 = 270;
+	private static final int DEGREES_360 = 360;
 	
 	private final StringJoiner aSvg = new StringJoiner("\n");
 	
@@ -87,8 +90,15 @@ public class SvgRenderingContext implements RenderingContext
 	}
 
 	@Override
-	public void strokeArc(Arc pArc, Color pStrokeColor)
+	public void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor)
 	{
+		double startAngle = Math.toRadians(pStartAngle);
+		double endAngle = Math.toRadians((pStartAngle - pLength) % DEGREES_360);
+		int x1 = (int) (pCenterX + Math.round(Math.sin(startAngle) * pRadius));
+		int y1 = (int) (pCenterY + Math.round(Math.cos(startAngle) * pRadius));
+		int x2 = (int) (pCenterX + Math.round(Math.sin(endAngle) * pRadius));
+		int y2 = (int) (pCenterY + Math.round(Math.cos(endAngle) * pRadius));
+		aSvg.add(String.format(TEMPLATE_ARC, x1, y1, pRadius, pRadius, x2, y2));
 	}
 
 	@Override

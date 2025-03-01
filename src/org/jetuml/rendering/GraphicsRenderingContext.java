@@ -117,7 +117,7 @@ public class GraphicsRenderingContext implements RenderingContext
 		assert pLength > 0 && pLength <= FULL_CIRCLE;
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
-		aContext.strokeArc(pCenterX, pCenterY, pRadius * 2, pRadius * 2, pStartAngle, 
+		aContext.strokeArc(pCenterX - pRadius, pCenterY - pRadius, pRadius * 2, pRadius * 2, pStartAngle, 
 				pLength, ArcType.OPEN);
 		aContext.restore();
 	}
