@@ -10,7 +10,6 @@ import org.jetuml.geom.Rectangle;
 import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -35,7 +34,7 @@ public class SvgRenderingContext implements RenderingContext
 	private static final String TEMPLATE_ROUNDED_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
 			+ " stroke=\"black\" fill=\"white\"/>";
 	private static final String TEMPLATE_ARC = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
-	private static final int DEGREES_270 = 270;
+	private static final String TEMPLATE_TEXT = "<text x=\"%d\" y=\"%d\" font-family=\"%s\">%s</text>";
 	private static final int DEGREES_360 = 360;
 	
 	private final StringJoiner aSvg = new StringJoiner("\n");
@@ -110,7 +109,7 @@ public class SvgRenderingContext implements RenderingContext
 	private void strokePath(Path pPath, LineStyle pStyle, String pFill)
 	{
 		StringJoiner path = new StringJoiner(" ", "<path d=\"", 
-				String.format("\" stroke=\"black\" fill=\"%s\" %s/>", pFill, lineStyle(pStyle)));
+				String.format("\" stroke=\"black\" fill=\"%s\"%s/>", pFill, lineStyle(pStyle)));
 		for(PathElement element : pPath.getElements())
 		{
 			if (element instanceof MoveTo moveTo)
@@ -151,9 +150,13 @@ public class SvgRenderingContext implements RenderingContext
 	}
 
 	@Override
-	public void drawText(String pText, int pBoundingX, int pBoundingY, int pRelativeX, int pRelativeY,
+	public void drawText(String pText, Rectangle pBounds, int pRelativeX, int pRelativeY,
 			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
 	{
+		/*
+		 * SVG positions the text from the bottom coordinate.
+		 */
+		aSvg.add(String.format(TEMPLATE_TEXT, pBounds.x(), pBounds.maxY(), pFont.getFamily(), pText));
 	}
 	
 	/**

@@ -159,7 +159,7 @@ public final class StringRenderer
 			textY = pRectangle.height() / 2;
 		}
 
-		pContext.drawText(pString, pRectangle.x(), pRectangle.y(), textX, textY, getTextAlignment(), getTextBaseline(), 
+		pContext.drawText(pString, pRectangle, textX, textY, getTextAlignment(), getTextBaseline(), 
 				ColorScheme.get().stroke(),
 				getFont());
 
