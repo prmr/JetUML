@@ -81,7 +81,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
-	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NODE_GAP_TESTER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
 
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();

@@ -46,7 +46,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 	protected static final int BUTTON_SIZE = 25;
 	protected static final int OFFSET = 3;
 	protected static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
-	private static final StringRenderer SIZE_TESTER = StringRenderer.get(Alignment.TOP_LEFT);
+	private static final StringRenderer SIZE_TESTER = new StringRenderer(Alignment.TOP_LEFT);
 	
 	private static final int DEGREES_180 = 180;
 	

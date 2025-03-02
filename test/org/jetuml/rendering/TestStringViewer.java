@@ -23,8 +23,6 @@ package org.jetuml.rendering;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
@@ -48,7 +46,6 @@ public class TestStringViewer
 	private StringRenderer topCenter;
 	private StringRenderer topCenterPadded;
 	private StringRenderer topCenterBold;
-	private StringRenderer bottomCenterPadded;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -62,10 +59,9 @@ public class TestStringViewer
 	@BeforeEach
 	public void setup()
 	{
-		topCenter = StringRenderer.get(Alignment.TOP_CENTER);
-		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, Decoration.PADDED);
-		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, Decoration.BOLD);
-		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, Decoration.PADDED);
+		topCenter = new StringRenderer(Alignment.TOP_CENTER);
+		topCenterPadded = new StringRenderer(Alignment.TOP_CENTER, Decoration.PADDED);
+		topCenterBold = new StringRenderer(Alignment.TOP_CENTER, Decoration.BOLD);
 	}
 	
 	@AfterAll
@@ -76,18 +72,8 @@ public class TestStringViewer
 	}
 	
 	@Test
-	public void testFlyweightProperty()
-	{
-		StringRenderer stringViewer = StringRenderer.get(Alignment.TOP_CENTER);
-		
-		assertNotSame(topCenterPadded, stringViewer);
-		assertNotSame(bottomCenterPadded, stringViewer);
-		assertSame(topCenter, stringViewer);
-	}
-	
-	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	public void testDimensionDefaultFont()
+	void testDimensionDefaultFont()
 	{
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
@@ -98,7 +84,7 @@ public class TestStringViewer
 	
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	public void testDimension8ptFont()
+	void testDimension8ptFont()
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 8);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
@@ -111,7 +97,7 @@ public class TestStringViewer
 
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	public void testDimension24ptFont()
+	void testDimension24ptFont()
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
@@ -123,7 +109,7 @@ public class TestStringViewer
 	}
 	
 	@Test
-	public void testWrapString()
+	void testWrapString()
 	{
 		assertEquals("Display String", StringRenderer.wrapString("Display String", 15));
 		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 

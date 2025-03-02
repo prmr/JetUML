@@ -51,7 +51,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	protected static final int DEFAULT_TOP_WIDTH = 60;
 	protected static final int NAME_GAP = 3;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
 	
 	/**
 	 * @param pParent The rendere for the diagram that contains this package node.

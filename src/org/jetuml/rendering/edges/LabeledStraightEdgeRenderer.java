@@ -40,7 +40,7 @@ import org.jetuml.rendering.StringRenderer.Decoration;
  */
 public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
-	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	private final Function<Edge, String> aLabelExtractor;
 	

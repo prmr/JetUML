@@ -43,7 +43,7 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeRenderer extends AbstractNodeRenderer
 {
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

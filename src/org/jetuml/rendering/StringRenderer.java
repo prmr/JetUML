@@ -22,10 +22,7 @@ package org.jetuml.rendering;
 
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.jetuml.annotations.Flyweight;
 import org.jetuml.annotations.Immutable;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
@@ -45,13 +42,10 @@ import javafx.scene.text.TextAlignment;
  * with different alignments.
  */
 @Immutable
-@Flyweight
 public final class StringRenderer
 {
 	private static final int PADDING_HORIZONTAL = 7;
 	private static final int PADDING_VERTICAL = 6;
-
-	private static final Map<Alignment, Map<EnumSet<Decoration>, StringRenderer>> STORE = new HashMap<>();
 
 	/**
 	 * How to position this string within its bounding box.
@@ -97,10 +91,17 @@ public final class StringRenderer
 	private final Alignment aAlign;
 	private final EnumSet<Decoration> aDecorations;
 
-	private StringRenderer(Alignment pAlign, EnumSet<Decoration> pDecorations)
+	/**
+	 * Creates a new String Renderer.
+	 * 
+	 * @param pAlign The desired alignment.
+	 * @param pDecorations The desired decorations.
+	 */
+	public StringRenderer(Alignment pAlign, Decoration... pDecorations)
 	{
 		aAlign = pAlign;
-		aDecorations = pDecorations;
+		aDecorations = EnumSet.noneOf(Decoration.class);
+		Collections.addAll(aDecorations, pDecorations);
 	}
 	
 	private int verticalPadding()
@@ -127,25 +128,6 @@ public final class StringRenderer
 		}
 	}
 	
-	/**
-	 * Lazily creates or retrieves an instance of StringRenderer.
-	 * 
-	 * @param pAlign The alignment to use.
-	 * @param pDecorations The decorations to apply.
-	 * @pre pAlign != null
-	 * @return The StringRenderer instance with the requested properties.
-	 */
-	public static StringRenderer get(Alignment pAlign, Decoration... pDecorations)
-	{
-		assert pAlign != null;
-
-		EnumSet<Decoration> decorationSet = EnumSet.noneOf(Decoration.class);
-		Collections.addAll(decorationSet, pDecorations);
-
-		Map<EnumSet<Decoration>, StringRenderer> innerMap = STORE.computeIfAbsent(pAlign, k -> new HashMap<>());
-		return innerMap.computeIfAbsent(decorationSet, k -> new StringRenderer(pAlign, decorationSet));
-	}
-
 	/**
 	 * Draws the string inside a given rectangle.
 	 * 

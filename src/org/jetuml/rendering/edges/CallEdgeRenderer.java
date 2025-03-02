@@ -58,8 +58,8 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
-	private static final StringRenderer CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
-	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
 
 	private static final int SHIFT = 5;
 	

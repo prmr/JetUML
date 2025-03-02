@@ -42,7 +42,7 @@ import javafx.scene.canvas.Canvas;
  */
 public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
-	private static final StringRenderer CONTENTS_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer CONTENTS_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer of the parent diagram.

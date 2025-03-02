@@ -44,7 +44,7 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.

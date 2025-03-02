@@ -49,13 +49,13 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final int TOP_MARGIN = 5;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
-	private static final StringRenderer ITALIC_NAME_VIEWER = StringRenderer.get(
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
+	private static final StringRenderer ITALIC_NAME_VIEWER = new StringRenderer(
 			Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC, Decoration.PADDED);
-	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, Decoration.PADDED);
-	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer UNDERLINING_STRING_VIEWER = new StringRenderer(
 			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.UNDERLINED);
-	private static final StringRenderer ITALIC_STRING_VIEWER = StringRenderer.get(
+	private static final StringRenderer ITALIC_STRING_VIEWER = new StringRenderer(
 			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.ITALIC);
 	private static final String ITALIC_MARKUP = "/";
 	private static final String UNDERLINE_MARKUP = "_";

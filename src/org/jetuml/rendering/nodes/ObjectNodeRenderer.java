@@ -47,7 +47,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	private static final int TEXT_HORIZONTAL_MARGIN = 5;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, 
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, 
 			Decoration.BOLD, Decoration.UNDERLINED, Decoration.PADDED);
 	
 	/**

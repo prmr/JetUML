@@ -49,9 +49,9 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
 	private static final int XGAP = 5;
-	private static final StringRenderer VALUE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
-	private static final StringRenderer EQUALS_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
+	private static final StringRenderer VALUE_VIEWER = new StringRenderer(Alignment.TOP_LEFT);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.TOP_LEFT);
+	private static final StringRenderer EQUALS_VIEWER = new StringRenderer(Alignment.TOP_CENTER);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
