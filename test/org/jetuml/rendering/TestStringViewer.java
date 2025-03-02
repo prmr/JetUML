@@ -107,15 +107,4 @@ public class TestStringViewer
 		assertEquals(new Dimension(160, 44), topCenterPadded.getDimension("Display String"));
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
-	
-	@Test
-	void testWrapString()
-	{
-		assertEquals("Display String", StringRenderer.wrapString("Display String", 15));
-		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 
-				StringRenderer.wrapString("A really long string that should probably be wrapped", 15));
-		assertEquals("Display\nString", StringRenderer.wrapString("Display String", 1));
-		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
-				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
-	}
 }

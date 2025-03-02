@@ -357,4 +357,15 @@ public class TestStoredEdgeViewer
 			fail();
 		}
 	}
+	
+	@Test
+	void testWrapString()
+	{
+		assertEquals("Display String", AbstractEdgeRenderer.wrapString("Display String", 15));
+		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 
+				AbstractEdgeRenderer.wrapString("A really long string that should probably be wrapped", 15));
+		assertEquals("Display\nString", AbstractEdgeRenderer.wrapString("Display String", 1));
+		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
+				AbstractEdgeRenderer.wrapString("A really long string that should probably be wrapped", 1));
+	}
 }

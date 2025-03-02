@@ -245,7 +245,7 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInYPerChar/distanceInXPerChar));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distances.width() / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return StringRenderer.wrapString(pLabel, lineLength);
+		return wrapString(pLabel, lineLength);
 	}
 	
 	/*
