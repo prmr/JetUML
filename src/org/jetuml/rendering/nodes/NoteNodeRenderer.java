@@ -32,7 +32,7 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -48,7 +48,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
 	private static final int TOP_MARGIN = 3;
-	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.

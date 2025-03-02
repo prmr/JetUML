@@ -21,6 +21,9 @@
 package org.jetuml.gui;
 import static java.util.stream.Collectors.toList;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,6 +61,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.AccessoriesRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.RenderingContext;
+import org.jetuml.rendering.SvgRenderingContext;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -787,7 +791,25 @@ StringPreferenceChangeHandler
 		WritableImage image = new WritableImage(bounds.width() + DIAGRAM_PADDING * 2, 
 				bounds.height() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);
+		createSvgImage();
 		return image;
+	}
+	
+	// TODO TEMPORARY
+	private void createSvgImage()
+	{
+		SvgRenderingContext context = new SvgRenderingContext(width(), height());
+		aDiagramBuilder.renderer().draw(context);
+		String svg = context.create();
+		System.out.println(svg);
+		try
+		{
+			Files.write(Path.of("test.svg"), svg.getBytes());
+		}
+		catch (IOException exception)
+		{
+			System.out.println(exception);
+		}
 	}
 	
 	/**

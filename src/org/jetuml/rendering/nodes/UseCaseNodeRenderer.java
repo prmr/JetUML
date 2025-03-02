@@ -35,7 +35,7 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * An object to render a UseCaseNode.
@@ -45,7 +45,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.

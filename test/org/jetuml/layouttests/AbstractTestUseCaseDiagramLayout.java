@@ -28,7 +28,7 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 import org.jetuml.rendering.nodes.ActorNodeRenderer;
 import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 
@@ -55,7 +55,7 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 	{
 		final int WIDTH = getStaticIntFieldValue(ActorNodeRenderer.class, "WIDTH");
 		final int HEIGHT = getStaticIntFieldValue(ActorNodeRenderer.class, "HEIGHT");
-		StringRenderer nameViewer = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+		StringRenderer nameViewer = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
 		Dimension nameBounds = nameViewer.getDimension(((ActorNode)pNode).getName());
 		int calculatedWidth = Math.max(WIDTH, nameBounds.width());
 		int calculatedHeight = HEIGHT + nameBounds.height();

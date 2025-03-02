@@ -42,7 +42,7 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
@@ -81,7 +81,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
-	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
 
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();

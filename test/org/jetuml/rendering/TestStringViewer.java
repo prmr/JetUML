@@ -20,28 +20,24 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.lang.reflect.Field;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.Test;
 
 public class TestStringViewer 
 {
@@ -53,8 +49,6 @@ public class TestStringViewer
 	private StringRenderer topCenterPadded;
 	private StringRenderer topCenterBold;
 	private StringRenderer bottomCenterPadded;
-	private StringRenderer topCenterItalics;
-	private StringRenderer topCenterBoldItalics;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -69,11 +63,9 @@ public class TestStringViewer
 	public void setup()
 	{
 		topCenter = StringRenderer.get(Alignment.TOP_CENTER);
-		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
-		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
-		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
-		topCenterItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.ITALIC);
-		topCenterBoldItalics = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.BOLD, TextDecoration.ITALIC);
+		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, Decoration.PADDED);
+		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, Decoration.BOLD);
+		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, Decoration.PADDED);
 	}
 	
 	@AfterAll
@@ -139,41 +131,5 @@ public class TestStringViewer
 		assertEquals("Display\nString", StringRenderer.wrapString("Display String", 1));
 		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
 				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
-	}
-	
-	/**
-	 * getHeight delegates the actual computation of the height to FontMetrics, which is tested in TestFontMetrics.
-	 * Instead, we need to test whether the correct style (bold, italics) is applied to the font we want to get the height of.
-	 */
-	@Test
-	public void testGetHeight()
-	{
-		try 
-		{
-			Field boldField = StringRenderer.class.getDeclaredField("aBold");
-			Field italicsField = StringRenderer.class.getDeclaredField("aItalic");
-			boldField.setAccessible(true);
-			italicsField.setAccessible(true);
-			
-			// No bold, no italics
-			assertFalse(boldField.getBoolean(topCenter));
-			assertFalse(italicsField.getBoolean(topCenter));
-			
-			// Yes bold, no italics
-			assertTrue(boldField.getBoolean(topCenterBold));
-			assertFalse(italicsField.getBoolean(topCenterBold));
-			
-			// No bold, yes italics
-			assertFalse(boldField.getBoolean(topCenterItalics));
-			assertTrue(italicsField.getBoolean(topCenterItalics));
-			
-			// Yes bold, yes italics
-			assertTrue(boldField.getBoolean(topCenterBoldItalics));
-			assertTrue(italicsField.getBoolean(topCenterBoldItalics));
-		} 
-		catch (ReflectiveOperationException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 }

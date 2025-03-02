@@ -35,7 +35,7 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * An object to render a class or interface in a class diagram.
@@ -49,14 +49,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final int TOP_MARGIN = 5;
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
 	private static final StringRenderer ITALIC_NAME_VIEWER = StringRenderer.get(
-			Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.ITALIC, TextDecoration.PADDED);
-	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+			Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC, Decoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, Decoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = StringRenderer.get(
-			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.UNDERLINED);
+			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.UNDERLINED);
 	private static final StringRenderer ITALIC_STRING_VIEWER = StringRenderer.get(
-			Alignment.TOP_LEFT, TextDecoration.PADDED, TextDecoration.ITALIC);
+			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.ITALIC);
 	private static final String ITALIC_MARKUP = "/";
 	private static final String UNDERLINE_MARKUP = "_";
 	

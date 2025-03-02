@@ -31,7 +31,7 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -43,7 +43,7 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeRenderer extends AbstractNodeRenderer
 {
-	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

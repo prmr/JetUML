@@ -41,21 +41,20 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 /**
- * A utility class to view strings with various decorations: underline, bold,
+ * A class to render strings with various decorations: underline, bold,
  * with different alignments.
  */
 @Immutable
 @Flyweight
 public final class StringRenderer
 {
-	private static final Dimension EMPTY = new Dimension(0, 0);
-	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
-	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 6;
+	private static final int PADDING_HORIZONTAL = 7;
+	private static final int PADDING_VERTICAL = 6;
 
-	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
+	private static final Map<Alignment, Map<EnumSet<Decoration>, StringRenderer>> STORE = new HashMap<>();
 
 	/**
-	 * How to align the text in this string.
+	 * How to position this string within its bounding box.
 	 */
 	public enum Alignment
 	{
@@ -90,31 +89,44 @@ public final class StringRenderer
 	/**
 	 * Various text decorations.
 	 */
-	public enum TextDecoration
+	public enum Decoration
 	{
 		BOLD, ITALIC, UNDERLINED, PADDED
 	}
 
-	private Alignment aAlign = Alignment.CENTER_CENTER;
-	private final boolean aBold;
-	private final boolean aItalic;
-	private final boolean aUnderlined;
-	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
-	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
+	private final Alignment aAlign;
+	private final EnumSet<Decoration> aDecorations;
 
-	private StringRenderer(Alignment pAlign, EnumSet<TextDecoration> pDecorations)
+	private StringRenderer(Alignment pAlign, EnumSet<Decoration> pDecorations)
 	{
-		if( !pDecorations.contains(TextDecoration.PADDED) )
-		{
-			aHorizontalPadding = 0;
-			aVerticalPadding = 0;
-		}
 		aAlign = pAlign;
-		aBold = pDecorations.contains(TextDecoration.BOLD);
-		aItalic = pDecorations.contains(TextDecoration.ITALIC);
-		aUnderlined = pDecorations.contains(TextDecoration.UNDERLINED);
+		aDecorations = pDecorations;
 	}
-
+	
+	private int verticalPadding()
+	{
+		if (aDecorations.contains(Decoration.PADDED))
+		{
+			return PADDING_VERTICAL;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	private int horizontalPadding()
+	{
+		if (aDecorations.contains(Decoration.PADDED))
+		{
+			return PADDING_HORIZONTAL;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
 	/**
 	 * Lazily creates or retrieves an instance of StringRenderer.
 	 * 
@@ -123,14 +135,14 @@ public final class StringRenderer
 	 * @pre pAlign != null
 	 * @return The StringRenderer instance with the requested properties.
 	 */
-	public static StringRenderer get(Alignment pAlign, TextDecoration... pDecorations)
+	public static StringRenderer get(Alignment pAlign, Decoration... pDecorations)
 	{
 		assert pAlign != null;
 
-		EnumSet<TextDecoration> decorationSet = EnumSet.noneOf(TextDecoration.class);
+		EnumSet<Decoration> decorationSet = EnumSet.noneOf(Decoration.class);
 		Collections.addAll(decorationSet, pDecorations);
 
-		Map<EnumSet<TextDecoration>, StringRenderer> innerMap = STORE.computeIfAbsent(pAlign, k -> new HashMap<>());
+		Map<EnumSet<Decoration>, StringRenderer> innerMap = STORE.computeIfAbsent(pAlign, k -> new HashMap<>());
 		return innerMap.computeIfAbsent(decorationSet, k -> new StringRenderer(pAlign, decorationSet));
 	}
 
@@ -151,7 +163,7 @@ public final class StringRenderer
 		}
 		else
 		{
-			textX = aHorizontalPadding;
+			textX = horizontalPadding();
 		}
 
 		if( aAlign.isVerticallyCentered() )
@@ -163,7 +175,7 @@ public final class StringRenderer
 				ColorScheme.get().stroke(),
 				getFont());
 
-		if( aUnderlined && pString.trim().length() > 0 )
+		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{
 			int xOffset = 0;
 			int yOffset = 0;
@@ -202,10 +214,10 @@ public final class StringRenderer
 		assert pString != null;
 		if( pString.length() == 0 )
 		{
-			return EMPTY;
+			return Dimension.NULL;
 		}
 		Dimension dimension = FontMetrics.getDimension(pString, getFont());
-		return new Dimension(dimension.width() + aHorizontalPadding * 2, dimension.height() + aVerticalPadding * 2);
+		return new Dimension(dimension.width() + horizontalPadding() * 2, dimension.height() + verticalPadding() * 2);
 	}
 
 	/**
@@ -283,17 +295,17 @@ public final class StringRenderer
 
 	private Font getFont()
 	{
-		if( aBold && aItalic )
+		if( aDecorations.contains(Decoration.BOLD) && aDecorations.contains(Decoration.ITALIC) )
 		{
 			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), FontWeight.BOLD,
 					FontPosture.ITALIC, UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 		}
-		else if( aBold )
+		else if( aDecorations.contains(Decoration.BOLD) )
 		{
 			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), FontWeight.BOLD,
 					UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 		}
-		else if( aItalic )
+		else if( aDecorations.contains(Decoration.ITALIC) )
 		{
 			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), FontPosture.ITALIC,
 					UserPreferences.instance().getInteger(IntegerPreference.fontSize));

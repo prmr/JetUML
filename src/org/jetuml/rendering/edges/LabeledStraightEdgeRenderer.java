@@ -33,14 +33,14 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
  */
 public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
-	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, Decoration.PADDED);
 	
 	private final Function<Edge, String> aLabelExtractor;
 	
