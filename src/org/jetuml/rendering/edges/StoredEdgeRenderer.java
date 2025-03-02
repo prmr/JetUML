@@ -221,16 +221,16 @@ public class StoredEdgeRenderer extends AbstractEdgeRenderer
 		{
 			if( pSegment.y2() >= pSegment.y1() )
 			{
-				TOP_CENTERED_STRING_VIEWER.draw(label, pContext, bounds);
+				TOP_CENTERED_STRING_VIEWER.draw(label, bounds, pContext);
 			}
 			else
 			{
-				BOTTOM_CENTERED_STRING_VIEWER.draw(label, pContext, bounds);
+				BOTTOM_CENTERED_STRING_VIEWER.draw(label, bounds, pContext);
 			}
 		}
 		else
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(label, pContext, bounds);
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(label, bounds, pContext);
 		}
 	}
 	

@@ -79,8 +79,8 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
-		NAME_VIEWER.draw(((ObjectNode)node).getName(), pContext, 
-				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()));
+		NAME_VIEWER.draw(((ObjectNode)node).getName(), 
+				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()), pContext);
 	}
 	
 	private static Rectangle getTopRectangle(Node pNode)

@@ -68,7 +68,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
 				ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pContext, getBounds(pElement));
+		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), getBounds(pElement), pContext);
 	}
 	
 	@Override

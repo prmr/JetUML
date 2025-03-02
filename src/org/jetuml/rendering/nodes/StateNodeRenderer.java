@@ -66,7 +66,7 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((StateNode)pElement).getName(), pContext, bounds);
+		NAME_VIEWER.draw(((StateNode)pElement).getName(), bounds, pContext);
 	}
 	
 	@Override

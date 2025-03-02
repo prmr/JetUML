@@ -147,11 +147,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			if( italic )
 			{
-				ITALIC_NAME_VIEWER.draw(paddedName, pContext, pBounds);
+				ITALIC_NAME_VIEWER.draw(paddedName, pBounds, pContext);
 			}
 			else
 			{
-				NAME_VIEWER.draw(paddedName, pContext, pBounds);
+				NAME_VIEWER.draw(paddedName, pBounds, pContext);
 			}
 		}
 	}
@@ -170,13 +170,15 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( containsMarkup(attribute, UNDERLINE_MARKUP) )
 			{
-				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), pContext, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), 
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
+								STRING_VIEWER.getHeight()), pContext);
 			}
 			else
 			{
-				STRING_VIEWER.draw(attribute, pContext, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
+				STRING_VIEWER.draw(attribute, 
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
+								STRING_VIEWER.getHeight()), pContext);
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	
@@ -196,18 +198,21 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( containsMarkup(method, UNDERLINE_MARKUP) )
 			{
-				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), pContext, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
+				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), 
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
+								STRING_VIEWER.getHeight()), pContext);
 			}
 			else if( containsMarkup(method, ITALIC_MARKUP) )
 			{
-				ITALIC_STRING_VIEWER.draw(removeMarkup(method), pContext, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
+				ITALIC_STRING_VIEWER.draw(removeMarkup(method), 
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
+								STRING_VIEWER.getHeight()), pContext);
 			}
 			else
 			{
-				STRING_VIEWER.draw(method, pContext, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), STRING_VIEWER.getHeight()));
+				STRING_VIEWER.draw(method, 
+						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
+								STRING_VIEWER.getHeight()), pContext);
 			}
 			lineSpacing += STRING_VIEWER.getHeight();
 		}	

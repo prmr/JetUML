@@ -57,8 +57,8 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pContext, new Rectangle(bottomBounds.x() + NAME_GAP, 
-				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()));
+		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), new Rectangle(bottomBounds.x() + NAME_GAP, 
+				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()), pContext);
 	}
 	
 	@Override
@@ -83,8 +83,8 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		assert pElement instanceof AbstractPackageNode;
 		Canvas icon = super.createIcon(pDiagramType, pElement);
-		CONTENTS_VIEWER.draw("description", new GraphicsRenderingContext(icon.getGraphicsContext2D()), 
-				getBottomBounds((AbstractPackageNode)pElement));
+		CONTENTS_VIEWER.draw("description", getBottomBounds((AbstractPackageNode)pElement), 
+				new GraphicsRenderingContext(icon.getGraphicsContext2D()));
 		return icon;
 	}
 }

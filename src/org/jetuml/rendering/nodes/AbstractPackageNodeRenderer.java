@@ -77,8 +77,8 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		pContext.drawRectangle(bottomBounds, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pContext, new Rectangle(topBounds.x() + NAME_GAP, 
-				topBounds.y(), topBounds.width(), topBounds.height()));
+		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), new Rectangle(topBounds.x() + NAME_GAP, 
+				topBounds.y(), topBounds.width(), topBounds.height()), pContext);
 	}
 	
 	@Override

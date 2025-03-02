@@ -71,8 +71,8 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 		pContext.drawClosedPath(createNotePath(node), ColorScheme.get().note(), ColorScheme.get().stroke(),  
 				Optional.of(ColorScheme.get().dropShadow()));
 		pContext.drawClosedPath(createFoldPath(node), Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
-		NOTE_VIEWER.draw(((NoteNode)node).getName(), pContext, 
-				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		NOTE_VIEWER.draw(((NoteNode)node).getName(), 
+				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT), pContext);
 	}
 	
 	private Path createNotePath(Node pNode)

@@ -124,7 +124,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	{
 		String label = wrapLabel(pEdge);
 		Rectangle labelBounds = getLabelBounds(pEdge);
-		STRING_VIEWER.draw(label, pContext, labelBounds);
+		STRING_VIEWER.draw(label, labelBounds, pContext);
 	}
 	
 	private Rectangle getLabelBounds(StateTransitionEdge pEdge)

@@ -162,11 +162,11 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( pEdge.isSelfEdge() )
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pContext, getStringBounds(pEdge));
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, getStringBounds(pEdge), pContext);
 		}
 		else
 		{
-			CENTERED_STRING_VIEWER.draw(pLabel, pContext, getStringBounds(pEdge));
+			CENTERED_STRING_VIEWER.draw(pLabel, getStringBounds(pEdge), pContext);
 		}
 	}
 	

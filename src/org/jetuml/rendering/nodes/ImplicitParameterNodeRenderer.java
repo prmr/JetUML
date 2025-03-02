@@ -84,7 +84,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = getTopRectangle((Node)pElement);
 		pContext.drawRectangle(top, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pContext, top);
+		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), top, pContext);
 		int xmid = top.center().x();
 		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
 				ColorScheme.get().stroke(),

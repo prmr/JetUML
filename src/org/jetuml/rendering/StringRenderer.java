@@ -129,19 +129,19 @@ public final class StringRenderer
 	}
 	
 	/**
-	 * Draws the string inside a given rectangle.
+	 * Draws the string inside a given bounding box.
 	 * 
 	 * @param pString The string to draw.
+	 * @param pBoundingBox the rectangle into which to place the string.
 	 * @param pContext The rendering context on which to draw the text.
-	 * @param pRectangle the rectangle into which to place the string
 	 */
-	public void draw(String pString, RenderingContext pContext, Rectangle pRectangle)
+	public void draw(String pString, Rectangle pBoundingBox, RenderingContext pContext)
 	{
 		int textX = 0;
 		int textY = 0;
 		if( aAlign.isHorizontallyCentered() )
 		{
-			textX = pRectangle.width() / 2;
+			textX = pBoundingBox.width() / 2;
 		}
 		else
 		{
@@ -150,10 +150,10 @@ public final class StringRenderer
 
 		if( aAlign.isVerticallyCentered() )
 		{
-			textY = pRectangle.height() / 2;
+			textY = pBoundingBox.height() / 2;
 		}
 
-		pContext.drawText(pString, pRectangle, textX, textY, getTextAlignment(), getTextBaseline(), 
+		pContext.drawText(pString, pBoundingBox, textX, textY, getTextAlignment(), getTextBaseline(), 
 				ColorScheme.get().stroke(),
 				getFont());
 
@@ -176,8 +176,8 @@ public final class StringRenderer
 			{
 				yOffset = baselineOffset / 2 + 1;
 			}
-			pContext.strokeLine(pRectangle.x() + textX - xOffset, pRectangle.y() + textY + yOffset,
-					pRectangle.x()+ textX - xOffset + dimension.width(), pRectangle.y() + textY + yOffset, 
+			pContext.strokeLine(pBoundingBox.x() + textX - xOffset, pBoundingBox.y() + textY + yOffset,
+					pBoundingBox.x()+ textX - xOffset + dimension.width(), pBoundingBox.y() + textY + yOffset, 
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
