@@ -28,6 +28,7 @@ import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
@@ -122,9 +123,14 @@ public final class StringRenderer
 			textY = pBoundingBox.height() / 2;
 		}
 
+		Point anchor = aAlign.getAnchor(pBoundingBox);
+		if (aDecorations.contains(Decoration.PADDED) && aAlign.isLeft())
+		{
+			anchor = new Point(anchor.x() + PADDING.width(), anchor.y());
+		}
 		pContext.drawText(pString, pBoundingBox, aAlign, textX, textY, 
 				ColorScheme.get().stroke(),
-				getFont(), aAlign.getAnchor(pBoundingBox));
+				getFont(), anchor);
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{

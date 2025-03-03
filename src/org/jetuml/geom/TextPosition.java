@@ -59,7 +59,6 @@ public enum TextPosition
 	 * Compute and return an anchor of the text, within the bounding box.
 	 * 
 	 * @param pBoundingBox The box containing the text. 
-	 * @param pPadding The padding in both x and y.
 	 * @return A point to use as the anchor for drawing the text.
 	 */
 	public Point getAnchor(Rectangle pBoundingBox)
