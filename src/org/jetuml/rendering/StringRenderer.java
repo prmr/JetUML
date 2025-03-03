@@ -43,8 +43,7 @@ import javafx.scene.text.FontWeight;
 @Immutable
 public final class StringRenderer
 {
-	private static final int PADDING_HORIZONTAL = 7;
-	private static final int PADDING_VERTICAL = 6;
+	private static final Dimension PADDING = new Dimension(7, 6);
 
 	/**
 	 * Various text decorations.
@@ -74,7 +73,7 @@ public final class StringRenderer
 	{
 		if (aDecorations.contains(Decoration.PADDED))
 		{
-			return PADDING_VERTICAL;
+			return PADDING.height();
 		}
 		else
 		{
@@ -86,7 +85,7 @@ public final class StringRenderer
 	{
 		if (aDecorations.contains(Decoration.PADDED))
 		{
-			return PADDING_HORIZONTAL;
+			return PADDING.width();
 		}
 		else
 		{
@@ -125,7 +124,7 @@ public final class StringRenderer
 
 		pContext.drawText(pString, pBoundingBox, aAlign, textX, textY, 
 				ColorScheme.get().stroke(),
-				getFont());
+				getFont(), aAlign.getAnchor(pBoundingBox));
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{

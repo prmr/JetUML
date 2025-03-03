@@ -22,6 +22,7 @@ package org.jetuml.rendering;
 
 import java.util.Optional;
 
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 
@@ -189,17 +190,17 @@ public class GraphicsRenderingContext implements RenderingContext
 	
 	@Override
 	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pAnchorX, int pAnchorY,
-			Color pTextColor, Font pFont)
+			Color pTextColor, Font pFont, Point pAnchor)
 	{
 		assert pText != null && pTextPosition != null;
 		assert pTextColor != null && pFont != null;
 		aContext.save();
 		aContext.setTextAlign(getTextAlignment(pTextPosition));
 		aContext.setTextBaseline(getTextBaseline(pTextPosition));
-		aContext.translate(pBounds.x(), pBounds.y());
+//		aContext.translate(pBounds.x(), pBounds.y());
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
-		aContext.fillText(pText, pAnchorX, pAnchorY);
+		aContext.fillText(pText, pAnchor.x(), pAnchor.y());
 		aContext.restore();
 	}
 	

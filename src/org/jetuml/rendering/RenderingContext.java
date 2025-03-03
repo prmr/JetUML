@@ -22,6 +22,7 @@ package org.jetuml.rendering;
 
 import java.util.Optional;
 
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 
@@ -124,6 +125,6 @@ public interface RenderingContext
 	 * @param pFont The font to use.
 	 */
 	void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pAnchorX, int pAnchorY,
-			Color pTextColor, Font pFont);
+			Color pTextColor, Font pFont, Point pAnchor);
 
 }

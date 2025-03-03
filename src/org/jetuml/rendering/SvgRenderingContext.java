@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 
@@ -150,7 +151,7 @@ public class SvgRenderingContext implements RenderingContext
 
 	@Override
 	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pRelativeX, int pRelativeY,
-			Color pTextColor, Font pFont)
+			Color pTextColor, Font pFont, Point pAnchor)
 	{
 		/*
 		 * SVG positions the text from the bottom coordinate.
