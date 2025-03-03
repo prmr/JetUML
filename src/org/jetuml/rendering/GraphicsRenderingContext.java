@@ -23,6 +23,7 @@ package org.jetuml.rendering;
 import java.util.Optional;
 
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -187,18 +188,50 @@ public class GraphicsRenderingContext implements RenderingContext
 	}
 	
 	@Override
-	public void drawText(String pText, Rectangle pBounds, int pAnchorX, int pAnchorY,
-			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
+	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pAnchorX, int pAnchorY,
+			Color pTextColor, Font pFont)
 	{
-		assert pText != null && pAlignment != null && pBaseline != null;
+		assert pText != null && pTextPosition != null;
 		assert pTextColor != null && pFont != null;
 		aContext.save();
-		aContext.setTextAlign(pAlignment);
-		aContext.setTextBaseline(pBaseline);
+		aContext.setTextAlign(getTextAlignment(pTextPosition));
+		aContext.setTextBaseline(getTextBaseline(pTextPosition));
 		aContext.translate(pBounds.x(), pBounds.y());
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
 		aContext.fillText(pText, pAnchorX, pAnchorY);
 		aContext.restore();
+	}
+	
+	private static TextAlignment getTextAlignment(TextPosition pTextPosition)
+	{
+		if (pTextPosition.isLeft())
+		{
+			return TextAlignment.LEFT;
+		}
+		else if (pTextPosition.isHorizontallyCentered())
+		{
+			return TextAlignment.CENTER;
+		}
+		else
+		{
+			return TextAlignment.RIGHT;
+		}
+	}
+	
+	private static VPos getTextBaseline(TextPosition pTextPosition)
+	{
+		if (pTextPosition.isBottom())
+		{
+			return VPos.BASELINE;
+		}
+		else if (pTextPosition.isVerticallyCentered())
+		{
+			return VPos.CENTER;
+		}
+		else
+		{
+			return VPos.TOP;
+		}
 	}
 }

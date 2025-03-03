@@ -27,16 +27,14 @@ import org.jetuml.annotations.Immutable;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 
-import javafx.geometry.VPos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 /**
  * A class to render strings with various decorations: underline, bold,
@@ -125,7 +123,7 @@ public final class StringRenderer
 			textY = pBoundingBox.height() / 2;
 		}
 
-		pContext.drawText(pString, pBoundingBox, textX, textY, getTextAlignment(), getTextBaseline(), 
+		pContext.drawText(pString, pBoundingBox, aAlign, textX, textY, 
 				ColorScheme.get().stroke(),
 				getFont());
 
@@ -184,32 +182,6 @@ public final class StringRenderer
 	public int getHeight()
 	{
 		return FontMetrics.getHeight(getFont());
-	}
-
-	private TextAlignment getTextAlignment()
-	{
-		if( aAlign.isLeft() )
-		{
-			return TextAlignment.LEFT;
-		}
-		else if( aAlign.isHorizontallyCentered() )
-		{
-			return TextAlignment.CENTER;
-		}
-		return TextAlignment.RIGHT;
-	}
-
-	private VPos getTextBaseline()
-	{
-		if( aAlign.isBottom() )
-		{
-			return VPos.BASELINE;
-		}
-		else if( aAlign.isTop() )
-		{
-			return VPos.TOP;
-		}
-		return VPos.CENTER;
 	}
 
 	private Font getFont()

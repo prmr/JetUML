@@ -6,8 +6,8 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 
-import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -16,7 +16,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Represents an object that can build an SVG image.
@@ -150,8 +149,8 @@ public class SvgRenderingContext implements RenderingContext
 	}
 
 	@Override
-	public void drawText(String pText, Rectangle pBounds, int pRelativeX, int pRelativeY,
-			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
+	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pRelativeX, int pRelativeY,
+			Color pTextColor, Font pFont)
 	{
 		/*
 		 * SVG positions the text from the bottom coordinate.

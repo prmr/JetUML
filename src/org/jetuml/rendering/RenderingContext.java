@@ -23,13 +23,12 @@ package org.jetuml.rendering;
 import java.util.Optional;
 
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 
-import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Object that can serve as a target for all drawing operations. This
@@ -118,14 +117,13 @@ public interface RenderingContext
 	 * 
 	 * @param pText The text to draw
 	 * @param pBounds The box in which to draw the text.
+	 * @param pTextPosition The position of the text within pBounds.
 	 * @param pAnchorX The x-coordinate where to anchor the text, relative to the bounding box.
 	 * @param pAnchorY The y-coordinate where to anchor the text, relative to the bounding box.
-	 * @param pAlignment The alignment.
-	 * @param pBaseline The baseline.
 	 * @param pTextColor The color of the text.
 	 * @param pFont The font to use.
 	 */
-	void drawText(String pText, Rectangle pBounds, int pAnchorX, int pAnchorY,
-			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont);
+	void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pAnchorX, int pAnchorY,
+			Color pTextColor, Font pFont);
 
 }
