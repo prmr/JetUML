@@ -25,6 +25,7 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -34,7 +35,6 @@ import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
@@ -45,7 +45,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.

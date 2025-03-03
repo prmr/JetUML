@@ -23,6 +23,7 @@ package org.jetuml.rendering.nodes;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
@@ -30,7 +31,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.shape.LineTo;
@@ -43,7 +43,7 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeRenderer extends AbstractNodeRenderer
 {
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

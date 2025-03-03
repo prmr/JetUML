@@ -27,6 +27,7 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
@@ -37,7 +38,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
@@ -51,7 +51,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	protected static final int DEFAULT_TOP_WIDTH = 60;
 	protected static final int NAME_GAP = 3;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
 	
 	/**
 	 * @param pParent The rendere for the diagram that contains this package node.

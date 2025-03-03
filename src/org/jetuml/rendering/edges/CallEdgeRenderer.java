@@ -29,6 +29,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
@@ -41,7 +42,6 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.canvas.Canvas;
@@ -58,8 +58,8 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
-	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
-	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
 
 	private static final int SHIFT = 5;
 	

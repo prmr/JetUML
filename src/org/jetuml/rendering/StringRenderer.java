@@ -27,6 +27,7 @@ import org.jetuml.annotations.Immutable;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
@@ -48,39 +49,6 @@ public final class StringRenderer
 	private static final int PADDING_VERTICAL = 6;
 
 	/**
-	 * How to position this string within its bounding box.
-	 */
-	public enum Alignment
-	{
-		TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER_CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
-
-		private boolean isTop()
-		{
-			return this == TOP_LEFT || this == TOP_CENTER || this == TOP_RIGHT;
-		}
-
-		private boolean isVerticallyCentered()
-		{
-			return this == CENTER_LEFT || this == CENTER_CENTER || this == CENTER_RIGHT;
-		}
-
-		private boolean isBottom()
-		{
-			return this == BOTTOM_LEFT || this == BOTTOM_CENTER || this == BOTTOM_RIGHT;
-		}
-
-		private boolean isLeft()
-		{
-			return this == TOP_LEFT || this == CENTER_LEFT || this == BOTTOM_LEFT;
-		}
-
-		private boolean isHorizontallyCentered()
-		{
-			return this == TOP_CENTER || this == CENTER_CENTER || this == BOTTOM_CENTER;
-		}
-	}
-
-	/**
 	 * Various text decorations.
 	 */
 	public enum Decoration
@@ -88,18 +56,18 @@ public final class StringRenderer
 		BOLD, ITALIC, UNDERLINED, PADDED
 	}
 
-	private final Alignment aAlign;
+	private final TextPosition aAlign;
 	private final EnumSet<Decoration> aDecorations;
 
 	/**
 	 * Creates a new String Renderer.
 	 * 
-	 * @param pAlign The desired alignment.
+	 * @param pPosition The desired alignment.
 	 * @param pDecorations The desired decorations.
 	 */
-	public StringRenderer(Alignment pAlign, Decoration... pDecorations)
+	public StringRenderer(TextPosition pPosition, Decoration... pDecorations)
 	{
-		aAlign = pAlign;
+		aAlign = pPosition;
 		aDecorations = EnumSet.noneOf(Decoration.class);
 		Collections.addAll(aDecorations, pDecorations);
 	}
@@ -129,7 +97,7 @@ public final class StringRenderer
 	}
 	
 	/**
-	 * Draws the string inside a given bounding box.
+	 * Draws the string inside a given bounding box. Does not draw a blank string.
 	 * 
 	 * @param pString The string to draw.
 	 * @param pBoundingBox the rectangle into which to place the string.
@@ -137,6 +105,10 @@ public final class StringRenderer
 	 */
 	public void draw(String pString, Rectangle pBoundingBox, RenderingContext pContext)
 	{
+		if (pString.trim().isBlank())
+		{
+			return;
+		}
 		int textX = 0;
 		int textY = 0;
 		if( aAlign.isHorizontallyCentered() )

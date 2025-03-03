@@ -25,13 +25,13 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.paint.Color;
@@ -48,7 +48,7 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
 	private static final int TOP_MARGIN = 3;
-	private static final StringRenderer NOTE_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer NOTE_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.

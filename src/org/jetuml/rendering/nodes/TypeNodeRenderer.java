@@ -27,6 +27,7 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.TypeNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
@@ -34,7 +35,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
@@ -49,14 +49,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final int TOP_MARGIN = 5;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
 	private static final StringRenderer ITALIC_NAME_VIEWER = new StringRenderer(
-			Alignment.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC, Decoration.PADDED);
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(Alignment.TOP_LEFT, Decoration.PADDED);
+			TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC, Decoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
 	private static final StringRenderer UNDERLINING_STRING_VIEWER = new StringRenderer(
-			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.UNDERLINED);
+			TextPosition.TOP_LEFT, Decoration.PADDED, Decoration.UNDERLINED);
 	private static final StringRenderer ITALIC_STRING_VIEWER = new StringRenderer(
-			Alignment.TOP_LEFT, Decoration.PADDED, Decoration.ITALIC);
+			TextPosition.TOP_LEFT, Decoration.PADDED, Decoration.ITALIC);
 	private static final String ITALIC_MARKUP = "/";
 	private static final String UNDERLINE_MARKUP = "_";
 	

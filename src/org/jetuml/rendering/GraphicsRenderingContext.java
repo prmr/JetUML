@@ -187,7 +187,7 @@ public class GraphicsRenderingContext implements RenderingContext
 	}
 	
 	@Override
-	public void drawText(String pText, Rectangle pBounds, int pRelativeX, int pRelativeY,
+	public void drawText(String pText, Rectangle pBounds, int pAnchorX, int pAnchorY,
 			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
 	{
 		assert pText != null && pAlignment != null && pBaseline != null;
@@ -198,7 +198,7 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.translate(pBounds.x(), pBounds.y());
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
-		aContext.fillText(pText, pRelativeX, pRelativeY);
+		aContext.fillText(pText, pAnchorX, pAnchorY);
 		aContext.restore();
 	}
 }

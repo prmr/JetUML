@@ -39,9 +39,9 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
@@ -81,7 +81,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
-	private static final StringRenderer NODE_GAP_TESTER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer NODE_GAP_TESTER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();

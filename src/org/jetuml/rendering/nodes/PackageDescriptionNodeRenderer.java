@@ -26,13 +26,13 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.canvas.Canvas;
@@ -42,7 +42,7 @@ import javafx.scene.canvas.Canvas;
  */
 public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
-	private static final StringRenderer CONTENTS_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer CONTENTS_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 	
 	/**
 	 * @param pParent Renderer of the parent diagram.

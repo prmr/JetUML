@@ -25,6 +25,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
@@ -33,7 +34,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -49,9 +49,9 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
 	private static final int XGAP = 5;
-	private static final StringRenderer VALUE_VIEWER = new StringRenderer(Alignment.TOP_LEFT);
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.TOP_LEFT);
-	private static final StringRenderer EQUALS_VIEWER = new StringRenderer(Alignment.TOP_CENTER);
+	private static final StringRenderer VALUE_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer EQUALS_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.

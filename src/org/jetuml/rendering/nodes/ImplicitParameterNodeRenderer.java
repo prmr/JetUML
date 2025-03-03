@@ -28,6 +28,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
@@ -39,7 +40,6 @@ import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.canvas.Canvas;
@@ -62,7 +62,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final StringRenderer NAME_VIEWER = 
-			new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED, Decoration.UNDERLINED);
+			new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED, Decoration.UNDERLINED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.

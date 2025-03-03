@@ -24,6 +24,7 @@ import java.util.function.Function;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -32,7 +33,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
@@ -40,7 +40,7 @@ import org.jetuml.rendering.StringRenderer.Decoration;
  */
 public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 	
 	private final Function<Edge, String> aLabelExtractor;
 	

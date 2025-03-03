@@ -26,6 +26,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Rectangle;
@@ -34,7 +35,6 @@ import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
@@ -47,7 +47,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	private static final int TEXT_HORIZONTAL_MARGIN = 5;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.CENTER_CENTER, 
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, 
 			Decoration.BOLD, Decoration.UNDERLINED, Decoration.PADDED);
 	
 	/**

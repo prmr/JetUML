@@ -153,14 +153,9 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawText(String pText, Rectangle pBounds, int pRelativeX, int pRelativeY,
 			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont)
 	{
-		if (pText.trim().isBlank())
-		{
-			return;
-		}
 		/*
 		 * SVG positions the text from the bottom coordinate.
 		 */
-		System.out.println(pFont.getSize());
 		aSvg.add(String.format(TEMPLATE_TEXT, pBounds.x() + pRelativeX, pBounds.maxY() - pRelativeY, escapeText(pText)));
 	}
 	

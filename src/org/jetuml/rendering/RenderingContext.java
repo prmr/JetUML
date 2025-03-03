@@ -118,14 +118,14 @@ public interface RenderingContext
 	 * 
 	 * @param pText The text to draw
 	 * @param pBounds The box in which to draw the text.
-	 * @param pRelativeX The x-coordinate where to draw the text, relative to the bounding box.
-	 * @param pRelativeY The y-coordinate where to draw the text, relative to the bounding box.
+	 * @param pAnchorX The x-coordinate where to anchor the text, relative to the bounding box.
+	 * @param pAnchorY The y-coordinate where to anchor the text, relative to the bounding box.
 	 * @param pAlignment The alignment.
 	 * @param pBaseline The baseline.
 	 * @param pTextColor The color of the text.
 	 * @param pFont The font to use.
 	 */
-	void drawText(String pText, Rectangle pBounds, int pRelativeX, int pRelativeY,
+	void drawText(String pText, Rectangle pBounds, int pAnchorX, int pAnchorY,
 			TextAlignment pAlignment, VPos pBaseline, Color pTextColor, Font pFont);
 
 }
