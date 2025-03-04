@@ -27,18 +27,18 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * Common functionality to view the different types of package nodes.
@@ -50,8 +50,8 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	protected static final int DEFAULT_TOP_WIDTH = 60;
-	protected static final int NAME_GAP = 3;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
+	protected static final int HORIZONTAL_PADDING = 3;
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_LEFT);
 	
 	/**
 	 * @param pParent The rendere for the diagram that contains this package node.
@@ -77,7 +77,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
 		pContext.drawRectangle(bottomBounds, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), new Rectangle(topBounds.x() + NAME_GAP, 
+		LABEL_RENDERER.draw(((AbstractPackageNode)pElement).getName(), new Rectangle(topBounds.x() + HORIZONTAL_PADDING, 
 				topBounds.y(), topBounds.width(), topBounds.height()), pContext);
 	}
 	
@@ -152,12 +152,10 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		return new Point(bottomBounds.maxX(), bottomBounds.y());
 	}
 	
-	
 	protected Dimension getTopDimension(AbstractPackageNode pNode)
 	{
-		Dimension nameBounds = NAME_VIEWER.getDimension(pNode.getName());
-		int topWidth = max(nameBounds.width() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		int topHeight = max(nameBounds.height() - 2 * NAME_GAP, TOP_HEIGHT);
+		int topWidth = max(FontMetrics.getWidth(pNode.getName()) + 2 * HORIZONTAL_PADDING, DEFAULT_TOP_WIDTH);
+		int topHeight = max(FontMetrics.getHeight(pNode.getName()), TOP_HEIGHT);
 		return new Dimension(topWidth, topHeight);
 	}
 	

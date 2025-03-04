@@ -85,7 +85,7 @@ public final class FontMetrics
 		TEXT_NODE.setFont(font());
 		TEXT_NODE.setText(pString);
 		Bounds bounds = TEXT_NODE.getLayoutBounds();
-		return GeomUtils.round(bounds.getHeight() * 1.35);
+		return GeomUtils.round(bounds.getHeight() * 1.2);
 	}
 	
 	/**

@@ -98,9 +98,9 @@ public class TestCallNodeViewer
 		
 		aRenderer.getBounds(); // Trigger rendering pass
 		
-		assertEquals(new Rectangle(30, 80, 16, 124), aRenderer.getBounds(aDefaultCallNode1));
-		assertEquals(new Rectangle(230, 102, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
-		assertEquals(new Rectangle(230, 154, 16, 30), aRenderer.getBounds(aCallNode1));
+		assertEquals(new Rectangle(30, 80, 16, 120), aRenderer.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(230, 100, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(230, 150, 16, 30), aRenderer.getBounds(aCallNode1));
 	}	
 	
 	@Test
