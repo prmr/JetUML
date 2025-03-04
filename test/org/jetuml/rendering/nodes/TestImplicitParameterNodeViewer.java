@@ -140,9 +140,9 @@ public class TestImplicitParameterNodeViewer
 		
 		aRenderer.getBounds(); // Trigger rendering pass
 		
-		assertEquals(new Rectangle(0, 0, 80, 285), aRenderer.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 0, 80, 150), aRenderer.getBounds(aImplicitParameterNode2));
-		assertEquals(new Rectangle(200, 150, 80, 115), aRenderer.getBounds(aImplicitParameterNode3));
+		assertEquals(new Rectangle(0, 0, 80, 287), aRenderer.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 0, 80, 152), aRenderer.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(200, 152, 80, 115), aRenderer.getBounds(aImplicitParameterNode3));
 	}
 	
 	@Test

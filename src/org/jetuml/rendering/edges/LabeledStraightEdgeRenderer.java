@@ -24,23 +24,22 @@ import java.util.function.Function;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
-import org.jetuml.geom.TextPosition;
-import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
  */
 public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
 	
 	private final Function<Edge, String> aLabelExtractor;
 	
@@ -64,10 +63,10 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		super.draw(pElement, pContext);
 		Edge edge = (Edge) pElement;
 		String label = wrapLabel(edge);
-		int labelHeight = STRING_VIEWER.getDimension(label).height();
+		
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, getConnectionPoints(edge).spanning().translated(0, -labelHeight/2), pContext);
+			LABEL_RENDERER.draw(label, getConnectionPoints(edge).spanning().translated(0, -FontMetrics.getHeight(label)/2), pContext);
 		}
 	}
 	
@@ -84,10 +83,11 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 	{
 		String label = wrapLabel(pEdge);
 		assert label != null && label.length() > 0;
-		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints(pEdge).spanning().center();
-		return new Rectangle(center.x()-dimensions.width()/2, center.y() - dimensions.height()/2, dimensions.width(), 
-				dimensions.height());
+		int labelHeight = FontMetrics.getHeight(label);
+		int labelWidth = FontMetrics.getWidth(label);
+		return new Rectangle(center.x()-labelWidth/2, center.y() - labelHeight/2, FontMetrics.getWidth(label), 
+				labelHeight);
 	}
 	
 	@Override
