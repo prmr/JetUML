@@ -23,15 +23,16 @@ package org.jetuml.rendering.nodes;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -43,15 +44,14 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeRenderer extends AbstractNodeRenderer
 {
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
 	
-	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;
 	private static final int BODY_SIZE = 20;
 	private static final int LEG_SIZE  = 20;
 	private static final int ARMS_SIZE = 24;
-	private static final int WIDTH = ARMS_SIZE * 2;
-	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
+	private static final int WIDTH = GeomUtils.round(LEG_SIZE / Math.sqrt(2)) * 2;
+	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + GeomUtils.round(LEG_SIZE / Math.sqrt(2));
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -64,19 +64,23 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	@Override
 	public Dimension getDefaultDimension(Node pNode)
 	{
-		return new Dimension(WIDTH, HEIGHT);
+		Rectangle bounds = internalGetBounds(pNode);
+		return new Dimension(bounds.width(), bounds.height());
 	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
-		return new Rectangle(
-				pNode.position().x() + Math.min(0, (WIDTH - nameBounds.width()) / 2), 
+		int width = FontMetrics.getWidth(((ActorNode)pNode).getName());
+		int height = FontMetrics.getHeight(((ActorNode)pNode).getName());
+		Rectangle bounds = 
+		new Rectangle(
+				pNode.position().x() + Math.min(0, (WIDTH - width) / 2), 
 				pNode.position().y(),
-				Math.max(WIDTH, nameBounds.width()),
-				HEIGHT + nameBounds.height()
-		);
+				Math.max(WIDTH, width),
+				HEIGHT + height);
+		System.out.println(bounds);
+		return bounds;
 	}
 
 	@Override
@@ -84,10 +88,11 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
-		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)node).getName());
-		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - nameBounds.width()) / 2, 
-				bounds.y() + HEIGHT, nameBounds.width(), nameBounds.height());
-		NAME_VIEWER.draw(((ActorNode)node).getName(), nameBox, pContext);
+		int labelWidth = FontMetrics.getWidth(((ActorNode)node).getName());
+		int labelHeight = FontMetrics.getHeight(((ActorNode)node).getName());
+		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - labelWidth) / 2, 
+				bounds.y() + HEIGHT, labelWidth, labelHeight);
+		LABEL_RENDERER.draw(((ActorNode)node).getName(), nameBox, pContext);
 		pContext.strokePath(createStickManPath(node), ColorScheme.get().stroke(), LineStyle.SOLID);
 	}
 	
@@ -96,7 +101,7 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		Path path = new Path();
 		
 		int neckX = pNode.position().x() + WIDTH / 2;
-		int neckY = pNode.position().y() + HEAD_SIZE + PADDING;
+		int neckY = pNode.position().y() + HEAD_SIZE;
 		int hipX = neckX;
 		int hipY = neckY + BODY_SIZE;
 		float dx = (float) (LEG_SIZE / Math.sqrt(2));
