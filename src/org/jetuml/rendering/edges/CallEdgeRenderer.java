@@ -29,20 +29,20 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
+import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
-import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -52,16 +52,16 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 /**
- * A viewer to show call edges in a sequence diagrams. These are labeled
+ * A renderer to show call edges in a sequence diagrams. These are labeled
  * edges that are either straight or self-edges, in a solid line, and 
  * have either a V or half-V arrow head.
  */
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
-	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
-	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
+	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer LEFT_CENTER_STRING_RENDERER = new StringRenderer(TextPosition.CENTER_LEFT);
 
-	private static final int SHIFT = 5;
+	private static final int LEFT_MARGIN = 5;
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -131,42 +131,56 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 		
 		Point[] points = getPoints(edge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
 		ArrowHeadRenderer.draw(pContext, getArrowHead((CallEdge)edge), points[points.length - 2], points[points.length - 1]);
-		String label = ((CallEdge)edge).getMiddleLabel();
-		if( label.length() > 0 )
-		{
-			drawLabel((CallEdge)edge, pContext, label);
-		}
+		drawLabel((CallEdge)edge, pContext);
+	}
+	
+	/*
+	 * The label for the self edge is centered on the middle of the "knee" in the self edge,
+	 * with a LEFT_MARGIN space to the left.
+	 */
+	private Rectangle getSelfEdgeLabelBox(CallEdge pEdge)
+	{
+		Dimension dimensions = LEFT_CENTER_STRING_RENDERER.getDimensionNoPadding(pEdge.getMiddleLabel());
+		Point[] points = getPoints(pEdge);
+		int x = points[1].x() + LEFT_MARGIN; // The extent of the self edge plus a margin
+		int y = (points[1].y() + points[2].y())/2 -dimensions.height() / 2; // Align box with center of edge
+		return new Rectangle(x, y, dimensions.width(), dimensions.height());		
+	}
+	
+	/*
+	 * The label for the normal edge is centered horizontally along the call edge
+	 * and placed a bit above so the descendants don't cross the edge.
+	 */
+	private Rectangle getNormalEdgeLabelBox(CallEdge pEdge)
+	{
+		Rectangle spanning = getConnectionPoints(pEdge).spanning();
+		int lineHeight = FontMetrics.getHeight(pEdge.getMiddleLabel());
+		return new Rectangle(spanning.x(), spanning.y() - lineHeight, spanning.width(), lineHeight);
+
 	}
 	
 	private Rectangle getStringBounds(CallEdge pEdge)
 	{
 		assert pEdge != null;
-		final String label = pEdge.getMiddleLabel();
 		if( pEdge.isSelfEdge() )
 		{
-			Dimension dimensions = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(label);
-			Point[] points = getPoints(pEdge);
-			int heightDelta = (points[2].y() -  points[1].y() - dimensions.height())/2 + SHIFT;
-			return new Rectangle(points[1].x(), points[1].y() + heightDelta, dimensions.width() , dimensions.height());
+			return getSelfEdgeLabelBox(pEdge);
 		}
 		else
 		{
-			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
-			Point center = getConnectionPoints(pEdge).spanning().center();
-			return new Rectangle(center.x() - dimensions.width()/2, 
-					center.y() - dimensions.height() + SHIFT, dimensions.width(), dimensions.height());
+			return getNormalEdgeLabelBox(pEdge);
 		}
 	}
 
-	private void drawLabel(CallEdge pEdge, RenderingContext pContext, String pLabel)
+	private void drawLabel(CallEdge pEdge, RenderingContext pContext)
 	{
 		if( pEdge.isSelfEdge() )
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, getStringBounds(pEdge), pContext);
+			LEFT_CENTER_STRING_RENDERER.draw(pEdge.getMiddleLabel(), getSelfEdgeLabelBox(pEdge), pContext);
 		}
 		else
 		{
-			CENTERED_STRING_VIEWER.draw(pLabel, getStringBounds(pEdge), pContext);
+			CENTERED_STRING_VIEWER.draw(pEdge.getMiddleLabel(), getNormalEdgeLabelBox(pEdge), pContext);
 		}
 	}
 	

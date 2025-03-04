@@ -176,6 +176,24 @@ public final class StringRenderer
 		Dimension dimension = FontMetrics.getDimension(pString, getFont());
 		return new Dimension(dimension.width() + horizontalPadding() * 2, dimension.height() + verticalPadding() * 2);
 	}
+	
+	/**
+	 * Gets the width and height required to show pString, excluding padding
+	 * around the string.
+	 * 
+	 * @param pString The input string.
+	 * @return The dimension pString will use on the screen.
+	 * @pre pString != null.
+	 */
+	public Dimension getDimensionNoPadding(String pString)
+	{
+		assert pString != null;
+		if( pString.length() == 0 )
+		{
+			return Dimension.NULL;
+		}
+		return FontMetrics.getDimension(pString, getFont());
+	}
 
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
@@ -186,9 +204,9 @@ public final class StringRenderer
 	 */
 	public int getHeight()
 	{
-		return FontMetrics.getHeight(getFont());
+		return FontMetrics.getHeightOld(getFont());
 	}
-
+	
 	private Font getFont()
 	{
 		if( aDecorations.contains(Decoration.BOLD) && aDecorations.contains(Decoration.ITALIC) )

@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GeomUtils;
 
@@ -41,7 +44,7 @@ public final class FontMetrics
 	private static final Text TEXT_NODE = new Text();
 
 	private FontMetrics() {}
-
+	
 	/**
 	 * Returns the dimension of a given string.
 	 * For the fonts supported in JetUML, the dimension includes the leading space in the height.
@@ -52,7 +55,9 @@ public final class FontMetrics
 	 * @return The dimension of the string
 	 * @pre pString != null
 	 * @pre pFont != null
+	 * @deprecated Refactor out
 	 */
+	@Deprecated
 	public static Dimension getDimension(String pString, Font pFont)
 	{
 		assert pString != null;
@@ -64,6 +69,38 @@ public final class FontMetrics
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
+	private static Font font()
+	{
+		return Font.font(UserPreferences.instance().getString(StringPreference.fontName),
+				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+	}
+	
+	/**
+	 * @param pString A string to test.
+	 * @return The height of the text in the current font.
+	 */
+	public static int getHeight(String pString)
+	{
+		assert pString != null;
+		TEXT_NODE.setFont(font());
+		TEXT_NODE.setText(pString);
+		Bounds bounds = TEXT_NODE.getLayoutBounds();
+		return GeomUtils.round(bounds.getHeight() * 1.35);
+	}
+	
+	/**
+	 * @param pString A string to test. 
+	 * @return The width of the text in the current font.
+	 */
+	public static int getWidth(String pString)
+	{
+		assert pString != null;
+		TEXT_NODE.setFont(font());
+		TEXT_NODE.setText(pString);
+		Bounds bounds = TEXT_NODE.getLayoutBounds();
+		return GeomUtils.round(bounds.getWidth());
+	}
+	
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
 	 * Text#getLayoutBounds().getHeight() varies in its inclusion of the leading space depending on the font,
@@ -72,8 +109,10 @@ public final class FontMetrics
 	 * @param pFont The font used for the metric.
 	 * @return The height of a single lined text.
 	 * @pre pFont != null
+	 * @deprecated Refactor out
 	 */
-	public static int getHeight(Font pFont)
+	@Deprecated
+	public static int getHeightOld(Font pFont)
 	{
 		assert pFont != null;
 		
@@ -91,7 +130,9 @@ public final class FontMetrics
 	 * @param pFont The font used for the metric.
 	 * @return the distance above the baseline for a single lined text.
 	 * @pre pFont != null
+	 * @deprecated Refactor out
 	 */
+	@Deprecated
 	public static int getBaselineOffset(Font pFont)
 	{
 		assert pFont != null;
