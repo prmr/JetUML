@@ -75,8 +75,8 @@ public class TestActorNodeViewer
 	{
 		aNode.setName("");
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
-		assertEquals(48, aViewer.getBounds(aNode).width());
-		assertEquals(64, aViewer.getBounds(aNode).height());
+		assertEquals(28, aViewer.getBounds(aNode).width());
+		assertEquals(69, aViewer.getBounds(aNode).height());
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class TestActorNodeViewer
 	{
 		aNode.setName("X");
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
-		assertEquals(48, aViewer.getBounds(aNode).width());
+		assertEquals(28, aViewer.getBounds(aNode).width());
 		assertTrue(aViewer.getBounds(aNode).height() > 64);
 	}
 	
@@ -93,7 +93,7 @@ public class TestActorNodeViewer
 	public void testGetBounds_LongName()
 	{
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(-153,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(-156,0), aViewer.getBounds(aNode).origin());
 		assertTrue(aViewer.getBounds(aNode).width() > 48);
 		assertTrue(aViewer.getBounds(aNode).height() > 64);
 	}

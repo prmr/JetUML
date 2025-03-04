@@ -35,6 +35,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -61,8 +62,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
-	private static final StringRenderer NAME_VIEWER = 
-			new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED, Decoration.UNDERLINED);
+	private static final StringRenderer LABEL_RENDERER = 
+			new StringRenderer(TextPosition.CENTER_CENTER, Decoration.UNDERLINED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -84,7 +85,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = getTopRectangle((Node)pElement);
 		pContext.drawRectangle(top, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), top, pContext);
+		LABEL_RENDERER.draw(((ImplicitParameterNode)pElement).getName(), top, pContext);
 		int xmid = top.center().x();
 		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
 				ColorScheme.get().stroke(),
@@ -119,8 +120,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;
-		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pElement).getName()).width()+ 
-				HORIZONTAL_PADDING, DEFAULT_WIDTH);
+		int labelWidth = FontMetrics.getWidth(((ImplicitParameterNode)pElement).getName());
+		return Math.max(labelWidth + HORIZONTAL_PADDING, DEFAULT_WIDTH);
 	}
 	
 	private Point getMaxXYofChildren(Node pNode)
@@ -156,8 +157,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public static int getCenterXCoordinate(Node pNode)
 	{
 		assert pNode != null;
-		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
-				HORIZONTAL_PADDING, DEFAULT_WIDTH)/2 + pNode.position().x();
+		return Math.max(FontMetrics.getWidth(((ImplicitParameterNode)pNode).getName()) + HORIZONTAL_PADDING, 
+				DEFAULT_WIDTH)/2 + pNode.position().x();
 	}
 
 	@Override

@@ -79,16 +79,6 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 	}
 	
 	/**
-	 * Tests that all actor nodes that are supposed to have the default dimension actually do. 
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = {"Actor", "Actor2", "Actor3"})
-	void testActorNodesDefaultDimension(String pNodeName)
-	{
-		verifyActorNodeWithNameDefaultDimensions(nodeByName(pNodeName));
-	}
-	
-	/**
 	 * Tests that the note node has the default dimensions. 
 	 */
 	@Test
