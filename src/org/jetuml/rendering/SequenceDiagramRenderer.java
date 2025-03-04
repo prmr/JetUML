@@ -39,10 +39,8 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.StringRenderer.Decoration;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
@@ -55,11 +53,8 @@ import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
  */
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 { 
-	private static final int CALL_DROP = 10;
-
 	/*
-	 * Number of pixels to drop the contructor activation box from. 
-	 */
+	 * Number of pixels to drop the contructor activation box from. */
 	private static final int CONSTRUCTOR_DROP = 5;
 
 	/* Initial position of the lifeline of an object if it is not the target of a constructor call.  */
@@ -81,7 +76,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
-	private static final StringRenderer NODE_GAP_TESTER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
 
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
@@ -390,20 +384,10 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	/*
 	 * @return The number of pixels to drop the call edges from the current position in the call sequence.
 	 * Takes into account the size of the font to ensure labels on call edges do not overlap.
-	 * 
 	 */
 	private static int getDropDistance()
 	{
-		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
-		// Only apply shift if necessary
-		if( shift < CALL_DROP )
-		{
-			return DROP_MIN;
-		}
-		else
-		{
-			return DROP_MIN + CALL_DROP;
-		}
+		return Math.max(DROP_MIN, FontMetrics.getHeight(TEST_STRING));
 	}
 	
 	/**
