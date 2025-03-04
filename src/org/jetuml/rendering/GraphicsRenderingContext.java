@@ -52,7 +52,7 @@ import javafx.scene.text.TextAlignment;
 public class GraphicsRenderingContext implements RenderingContext
 {
 	private static final int FULL_CIRCLE = 360;
-	private static final double LINE_WIDTH = 0.5;
+	private static final double LINE_WIDTH = 0.6;
 	private static final int ROUNDED_RECTANGLE_ARC = 20;
 	
 	private final GraphicsContext aContext;
@@ -131,7 +131,7 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setLineDashes(pStyle.getLineDashes());
-		strokePath(pPath);
+		strokePath(pPath, false);
 		aContext.restore();
 	}
 	
@@ -142,14 +142,13 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.save();
 		aContext.setStroke(pStrokeColor);
 		aContext.setFill(pFillColor);
-		strokePath(pPath);
+		strokePath(pPath, true);
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(pDropShadow.get()));
-		aContext.fill();
 		pDropShadow.ifPresent(shadow -> aContext.setEffect(null));
 		aContext.restore();
 	}
 	
-	private void strokePath(Path pPath)
+	private void strokePath(Path pPath, boolean pFill)
 	{
 		aContext.beginPath();
 		for(PathElement element : pPath.getElements())
@@ -167,6 +166,10 @@ public class GraphicsRenderingContext implements RenderingContext
 				aContext.quadraticCurveTo(curve.getControlX(), curve.getControlY(), 
 						curve.getX(), curve.getY());
 			}
+		}
+		if (pFill)
+		{
+			aContext.fill();
 		}
 		aContext.stroke();
 	}
