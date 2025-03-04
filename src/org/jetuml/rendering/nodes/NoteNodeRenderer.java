@@ -25,14 +25,14 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -47,8 +47,8 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
-	private static final int TOP_MARGIN = 3;
-	private static final StringRenderer NOTE_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
+	private static final int PADDING = 3;
+	private static final StringRenderer NOTE_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.
@@ -72,7 +72,10 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 				Optional.of(ColorScheme.get().dropShadow()));
 		pContext.drawClosedPath(createFoldPath(node), Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
 		NOTE_VIEWER.draw(((NoteNode)node).getName(), 
-				new Rectangle(node.position().x(), node.position().y() + TOP_MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT), pContext);
+				new Rectangle(node.position().x() + PADDING, 
+						      node.position().y() + PADDING, 
+						      DEFAULT_WIDTH - FOLD_LENGTH - PADDING * 2, 
+						      DEFAULT_HEIGHT - FOLD_LENGTH - PADDING -2), pContext);
 	}
 	
 	private Path createNotePath(Node pNode)
@@ -109,8 +112,10 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		Dimension textBounds = NOTE_VIEWER.getDimension(((NoteNode)pNode).getName()); 
+		int textHeight = FontMetrics.getHeight(((NoteNode)pNode).getName());
+		int textWidth = FontMetrics.getWidth(((NoteNode)pNode).getName());
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 
-				Math.max(textBounds.width() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.height(), DEFAULT_HEIGHT));
+				Math.max(textWidth + FOLD_LENGTH + PADDING * 2, DEFAULT_WIDTH), 
+				Math.max(textHeight + PADDING * 2, DEFAULT_HEIGHT));
 	}
 }

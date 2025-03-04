@@ -76,7 +76,7 @@ public class TestActorNodeViewer
 		aNode.setName("");
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
 		assertEquals(28, aViewer.getBounds(aNode).width());
-		assertEquals(69, aViewer.getBounds(aNode).height());
+		assertEquals(66, aViewer.getBounds(aNode).height());
 	}
 	
 	@Test

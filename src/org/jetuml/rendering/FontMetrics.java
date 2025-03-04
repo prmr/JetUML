@@ -76,8 +76,11 @@ public final class FontMetrics
 	}
 	
 	/**
+	 * Returns the total height of the line, including the 
+	 * leading, ascent, and descent.
+	 * 
 	 * @param pString A string to test.
-	 * @return The height of the text in the current font.
+	 * @return The height of the text in the current font. 
 	 */
 	public static int getHeight(String pString)
 	{
@@ -85,7 +88,7 @@ public final class FontMetrics
 		TEXT_NODE.setFont(font());
 		TEXT_NODE.setText(pString);
 		Bounds bounds = TEXT_NODE.getLayoutBounds();
-		return GeomUtils.round(bounds.getHeight() * 1.2);
+		return GeomUtils.round(bounds.getHeight());
 	}
 	
 	/**
