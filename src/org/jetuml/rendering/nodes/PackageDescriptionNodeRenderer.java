@@ -26,14 +26,13 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 import javafx.scene.canvas.Canvas;
 
@@ -42,7 +41,7 @@ import javafx.scene.canvas.Canvas;
  */
 public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
-	private static final StringRenderer CONTENTS_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
 	
 	/**
 	 * @param pParent Renderer of the parent diagram.
@@ -57,14 +56,14 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), new Rectangle(bottomBounds.x() + HORIZONTAL_PADDING, 
+		CONTENT_RENDERER.draw(((PackageDescriptionNode)pElement).getContents(), new Rectangle(bottomBounds.x(), 
 				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()), pContext);
 	}
 	
 	@Override
 	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
 	{
-		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(((PackageDescriptionNode)pNode).getContents());
+		Dimension contentsBounds = CONTENT_RENDERER.getDimension(((PackageDescriptionNode)pNode).getContents());
 		int width = max(contentsBounds.width() + 2 * PADDING, DEFAULT_WIDTH);
 		int height = max(contentsBounds.height() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
 		
@@ -83,7 +82,7 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		assert pElement instanceof AbstractPackageNode;
 		Canvas icon = super.createIcon(pDiagramType, pElement);
-		CONTENTS_VIEWER.draw("description", getBottomBounds((AbstractPackageNode)pElement), 
+		CONTENT_RENDERER.draw("description", getBottomBounds((AbstractPackageNode)pElement), 
 				new GraphicsRenderingContext(icon.getGraphicsContext2D()));
 		return icon;
 	}
