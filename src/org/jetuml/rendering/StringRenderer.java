@@ -44,14 +44,12 @@ import javafx.scene.text.FontWeight;
 @Immutable
 public final class StringRenderer
 {
-	private static final Dimension PADDING = new Dimension(7, 6);
-
 	/**
 	 * Various text decorations.
 	 */
 	public enum Decoration
 	{
-		BOLD, ITALIC, UNDERLINED, PADDED
+		BOLD, ITALIC, UNDERLINED
 	}
 
 	private final TextPosition aAlign;
@@ -68,30 +66,6 @@ public final class StringRenderer
 		aAlign = pPosition;
 		aDecorations = EnumSet.noneOf(Decoration.class);
 		Collections.addAll(aDecorations, pDecorations);
-	}
-	
-	private int verticalPadding()
-	{
-		if (aDecorations.contains(Decoration.PADDED))
-		{
-			return PADDING.height();
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	
-	private int horizontalPadding()
-	{
-		if (aDecorations.contains(Decoration.PADDED))
-		{
-			return PADDING.width();
-		}
-		else
-		{
-			return 0;
-		}
 	}
 	
 	/**
@@ -113,10 +87,6 @@ public final class StringRenderer
 		{
 			textX = pBoundingBox.width() / 2;
 		}
-		else
-		{
-			textX = horizontalPadding();
-		}
 
 		if( aAlign.isVerticallyCentered() )
 		{
@@ -124,10 +94,6 @@ public final class StringRenderer
 		}
 
 		Point anchor = aAlign.getAnchor(pBoundingBox);
-		if (aDecorations.contains(Decoration.PADDED) && aAlign.isLeft())
-		{
-			anchor = new Point(anchor.x() + PADDING.width(), anchor.y());
-		}
 		pContext.drawText(pString, pBoundingBox, aAlign, textX, textY, 
 				ColorScheme.get().stroke(),
 				getFont(), anchor);
@@ -174,7 +140,7 @@ public final class StringRenderer
 			return Dimension.NULL;
 		}
 		Dimension dimension = FontMetrics.getDimensionOld(pString, getFont());
-		return new Dimension(dimension.width() + horizontalPadding() * 2, dimension.height() + verticalPadding() * 2);
+		return new Dimension(dimension.width(), dimension.height());
 	}
 	
 	/**
