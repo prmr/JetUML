@@ -29,7 +29,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
@@ -66,7 +65,7 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		
 		if( label.length() > 0 )
 		{
-			LABEL_RENDERER.draw(label, getConnectionPoints(edge).spanning().translated(0, -FontMetrics.getHeight(label)/2), pContext);
+			LABEL_RENDERER.draw(label, getConnectionPoints(edge).spanning().translated(0, -StringRenderer.getHeight(label)/2), pContext);
 		}
 	}
 	
@@ -84,9 +83,9 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		String label = wrapLabel(pEdge);
 		assert label != null && label.length() > 0;
 		Point center = getConnectionPoints(pEdge).spanning().center();
-		int labelHeight = FontMetrics.getHeight(label);
-		int labelWidth = FontMetrics.getWidth(label);
-		return new Rectangle(center.x()-labelWidth/2, center.y() - labelHeight/2, FontMetrics.getWidth(label), 
+		int labelHeight = StringRenderer.getHeight(label);
+		int labelWidth = StringRenderer.getWidth(label);
+		return new Rectangle(center.x()-labelWidth/2, center.y() - labelHeight/2, StringRenderer.getWidth(label), 
 				labelHeight);
 	}
 	

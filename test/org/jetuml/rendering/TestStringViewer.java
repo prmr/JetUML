@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jetuml.application.UserPreferences;
@@ -50,9 +48,9 @@ public class TestStringViewer
 	public static void setupClass()
 	{
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
-		UserPreferences.instance().setString(StringPreference.fontName, DEFAULT_FONT_NAME);
+		UserPreferences.instance().setString(StringPreference.fontName, UserPreferences.DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
 	
 	@BeforeEach
@@ -86,7 +84,7 @@ public class TestStringViewer
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(49, 11), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(53, 11), topCenterBold.getDimension("Display String"));
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
 
 	@Test
@@ -97,6 +95,6 @@ public class TestStringViewer
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(146, 32), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(158, 32), topCenterBold.getDimension("Display String"));
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
 }

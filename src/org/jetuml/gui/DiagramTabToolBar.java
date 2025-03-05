@@ -21,7 +21,6 @@
 package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
 import java.util.List;
 import java.util.Optional;
@@ -108,7 +107,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	private void installDiagramElementTools(DiagramRenderer pDiagramRenderer, ToggleGroup pToggleGroup)
 	{
 		final int oldFontSize = UserPreferences.instance().getInteger(IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 		for( DiagramElement element : pDiagramRenderer.diagram().getPrototypes() )
 		{
 			SelectableToolButton button = new SelectableToolButton(pDiagramRenderer.createIcon(element),

@@ -21,8 +21,6 @@
 package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,8 +157,8 @@ public class FontDialog
 		Button restoreDefault = new Button(RESOURCES.getString("dialog.font.default"));
 		restoreDefault.setOnAction(pEvent -> 
 		{
-			aFonts.getSelectionModel().select(DEFAULT_FONT_NAME);
-			aSizes.getSelectionModel().select((Integer) DEFAULT_FONT_SIZE);
+			aFonts.getSelectionModel().select(UserPreferences.DEFAULT_FONT_NAME);
+			aSizes.getSelectionModel().select(UserPreferences.DEFAULT_FONT_SIZE);
 		});
 		GridPane.setConstraints(restoreDefault, 0, 3);
 		

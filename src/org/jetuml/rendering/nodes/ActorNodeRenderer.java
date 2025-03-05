@@ -29,7 +29,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
@@ -71,8 +70,8 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		int width = FontMetrics.getWidth(((ActorNode)pNode).getName());
-		int height = FontMetrics.getHeight(((ActorNode)pNode).getName());
+		int width = StringRenderer.getWidth(((ActorNode)pNode).getName());
+		int height = StringRenderer.getHeight(((ActorNode)pNode).getName());
 		Rectangle bounds = 
 		new Rectangle(
 				pNode.position().x() + Math.min(0, (WIDTH - width) / 2), 
@@ -87,8 +86,8 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
-		int labelWidth = FontMetrics.getWidth(((ActorNode)node).getName());
-		int labelHeight = FontMetrics.getHeight(((ActorNode)node).getName());
+		int labelWidth = StringRenderer.getWidth(((ActorNode)node).getName());
+		int labelHeight = StringRenderer.getHeight(((ActorNode)node).getName());
 		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - labelWidth) / 2, 
 				bounds.y() + HEIGHT, labelWidth, labelHeight);
 		LABEL_RENDERER.draw(((ActorNode)node).getName(), nameBox, pContext);

@@ -25,10 +25,9 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 import org.jetuml.rendering.nodes.ActorNodeRenderer;
 import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 

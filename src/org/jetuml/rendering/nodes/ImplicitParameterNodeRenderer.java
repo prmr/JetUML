@@ -28,14 +28,13 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -120,7 +119,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;
-		int labelWidth = FontMetrics.getWidth(((ImplicitParameterNode)pElement).getName());
+		int labelWidth = StringRenderer.getWidth(((ImplicitParameterNode)pElement).getName());
 		return Math.max(labelWidth + HORIZONTAL_PADDING, DEFAULT_WIDTH);
 	}
 	
@@ -157,7 +156,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public static int getCenterXCoordinate(Node pNode)
 	{
 		assert pNode != null;
-		return Math.max(FontMetrics.getWidth(((ImplicitParameterNode)pNode).getName()) + HORIZONTAL_PADDING, 
+		return Math.max(StringRenderer.getWidth(((ImplicitParameterNode)pNode).getName()) + HORIZONTAL_PADDING, 
 				DEFAULT_WIDTH)/2 + pNode.position().x();
 	}
 

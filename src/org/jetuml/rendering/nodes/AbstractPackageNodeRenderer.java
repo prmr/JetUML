@@ -35,7 +35,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.Side;
 import org.jetuml.rendering.StringRenderer;
@@ -154,8 +153,8 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	
 	protected Dimension getTopDimension(AbstractPackageNode pNode)
 	{
-		int topWidth = max(FontMetrics.getWidth(pNode.getName()) + 2 * HORIZONTAL_PADDING, DEFAULT_TOP_WIDTH);
-		int topHeight = max(FontMetrics.getHeight(pNode.getName()), TOP_HEIGHT);
+		int topWidth = max(StringRenderer.getWidth(pNode.getName()) + 2 * HORIZONTAL_PADDING, DEFAULT_TOP_WIDTH);
+		int topHeight = max(StringRenderer.getHeight(pNode.getName()), TOP_HEIGHT);
 		return new Dimension(topWidth, topHeight);
 	}
 	

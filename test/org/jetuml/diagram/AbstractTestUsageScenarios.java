@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.diagram;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -62,7 +60,7 @@ public class AbstractTestUsageScenarios
 	public static void setupClass()
 	{
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
 	}
 	

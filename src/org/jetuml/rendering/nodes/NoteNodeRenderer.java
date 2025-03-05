@@ -30,7 +30,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 
@@ -112,8 +111,8 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		int textHeight = FontMetrics.getHeight(((NoteNode)pNode).getName());
-		int textWidth = FontMetrics.getWidth(((NoteNode)pNode).getName());
+		int textHeight = StringRenderer.getHeight(((NoteNode)pNode).getName());
+		int textWidth = StringRenderer.getWidth(((NoteNode)pNode).getName());
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 
 				Math.max(textWidth + FOLD_LENGTH + PADDING * 2, DEFAULT_WIDTH), 
 				Math.max(textHeight + PADDING * 2, DEFAULT_HEIGHT));

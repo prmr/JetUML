@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.layouttests;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -64,9 +62,9 @@ public abstract class AbstractTestDiagramLayout
 	public static void setupClass()
 	{
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
-		UserPreferences.instance().setString(StringPreference.fontName, DEFAULT_FONT_NAME);
+		UserPreferences.instance().setString(StringPreference.fontName, "System");
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 12);
 	}
 	
 	@AfterAll

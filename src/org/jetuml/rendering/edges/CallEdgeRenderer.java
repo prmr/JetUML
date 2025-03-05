@@ -38,7 +38,6 @@ import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.FontMetrics;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingContext;
@@ -154,7 +153,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	private Rectangle getNormalEdgeLabelBox(CallEdge pEdge)
 	{
 		Rectangle spanning = getConnectionPoints(pEdge).spanning();
-		int lineHeight = FontMetrics.getHeight(pEdge.getMiddleLabel());
+		int lineHeight = StringRenderer.getHeight(pEdge.getMiddleLabel());
 		return new Rectangle(spanning.x(), spanning.y() - lineHeight, spanning.width(), lineHeight);
 
 	}

@@ -20,9 +20,6 @@
  *******************************************************************************/
 package org.jetuml.application;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_NAME;
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -36,6 +33,9 @@ import org.jetuml.JetUML;
  */
 public final class UserPreferences
 {
+	public static final String DEFAULT_FONT_NAME = "System";
+	public static final int DEFAULT_FONT_SIZE = 12;
+	
 	/**
 	 * A boolean preference.
 	 */

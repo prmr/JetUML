@@ -387,7 +387,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private static int getDropDistance()
 	{
-		return Math.max(DROP_MIN, FontMetrics.getHeight(TEST_STRING));
+		return Math.max(DROP_MIN, StringRenderer.getHeight(TEST_STRING));
 	}
 	
 	/**
