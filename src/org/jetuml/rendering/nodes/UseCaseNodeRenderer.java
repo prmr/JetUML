@@ -25,17 +25,16 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * An object to render a UseCaseNode.
@@ -45,7 +44,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.
@@ -68,16 +67,16 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
 				ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), getBounds(pElement), pContext);
+		LABEL_RENDERER.draw(((UseCaseNode)pElement).getName(), getBounds(pElement), pContext);
 	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 
-				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).width()+
+				Math.max(DEFAULT_WIDTH,  LABEL_RENDERER.getDimension(((UseCaseNode)pNode).getName()).width()+
 						HORIZONTAL_NAME_PADDING), 
-				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).height()));
+				Math.max(DEFAULT_HEIGHT, LABEL_RENDERER.getDimension(((UseCaseNode)pNode).getName()).height()));
 	}
 	
 	@Override

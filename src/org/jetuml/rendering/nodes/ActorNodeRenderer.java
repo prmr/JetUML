@@ -79,7 +79,6 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 				pNode.position().y(),
 				Math.max(WIDTH, width),
 				HEIGHT + height);
-		System.out.println(bounds);
 		return bounds;
 	}
 
