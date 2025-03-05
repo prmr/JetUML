@@ -109,7 +109,7 @@ public final class StringRenderer
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = getDimensionOld(pString, getFont());
+			Dimension dimension = getDimension(pString);
 			int baselineOffset = getBaselineOffset(getFont());
 			if( aAlign.isHorizontallyCentered() )
 			{
@@ -146,28 +146,12 @@ public final class StringRenderer
 		{
 			return Dimension.NULL;
 		}
-		Dimension dimension = getDimensionOld(pString, getFont());
-		return new Dimension(dimension.width(), dimension.height());
+		TEXT_NODE.setFont(getFont());
+		TEXT_NODE.setText(pString);
+		Bounds bounds = TEXT_NODE.getLayoutBounds();
+		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
-	/**
-	 * Gets the width and height required to show pString, excluding padding
-	 * around the string.
-	 * 
-	 * @param pString The input string.
-	 * @return The dimension pString will use on the screen.
-	 * @pre pString != null.
-	 */
-	public Dimension getDimensionNoPadding(String pString)
-	{
-		assert pString != null;
-		if( pString.length() == 0 )
-		{
-			return Dimension.NULL;
-		}
-		return getDimensionOld(pString, getFont());
-	}
-
 	/**
 	 * Returns the distance between the top and bottom of a single lined text.
 	 * 
@@ -197,65 +181,6 @@ public final class StringRenderer
 			return Font.font(UserPreferences.instance().getString(StringPreference.fontName), FontPosture.ITALIC,
 					UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 		}
-		return Font.font(UserPreferences.instance().getString(StringPreference.fontName),
-				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
-	}
-	
-	/**
-	 * Returns the dimension of a given string.
-	 * For the fonts supported in JetUML, the dimension includes the leading space in the height.
-	 * However, this behavior is not consistent across all fonts.
-	 * 
-	 * @param pString The string to which the bounds pertain.
-	 * @param pFont The font used for the metric.
-	 * @return The dimension of the string
-	 * @pre pString != null
-	 * @pre pFont != null
-	 * @deprecated Refactor out
-	 */
-	@Deprecated
-	private static Dimension getDimensionOld(String pString, Font pFont)
-	{
-		assert pString != null;
-		assert pFont != null;
-
-		TEXT_NODE.setFont(pFont);
-		TEXT_NODE.setText(pString);
-		Bounds bounds = TEXT_NODE.getLayoutBounds();
-		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
-	}
-	
-	/**
-	 * Returns the total height of the line, including the 
-	 * leading, ascent, and descent.
-	 * 
-	 * @param pString A string to test.
-	 * @return The height of the text in the current font. 
-	 */
-	public static int getHeight(String pString)
-	{
-		assert pString != null;
-		TEXT_NODE.setFont(font());
-		TEXT_NODE.setText(pString);
-		Bounds bounds = TEXT_NODE.getLayoutBounds();
-		return GeomUtils.round(bounds.getHeight());
-	}
-	
-	/**
-	 * @param pString A string to test. 
-	 * @return The width of the text in the current font.
-	 */
-	public static int getWidth(String pString)
-	{
-		assert pString != null;
-		TEXT_NODE.setFont(font());
-		TEXT_NODE.setText(pString);
-		Bounds bounds = TEXT_NODE.getLayoutBounds();
-		return GeomUtils.round(bounds.getWidth());
-	}
-	
-	private static Font font()
-	{
 		return Font.font(UserPreferences.instance().getString(StringPreference.fontName),
 				UserPreferences.instance().getInteger(IntegerPreference.fontSize));
 	}

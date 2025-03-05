@@ -153,8 +153,9 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	
 	protected Dimension getTopDimension(AbstractPackageNode pNode)
 	{
-		int topWidth = max(StringRenderer.getWidth(pNode.getName()) + 2 * HORIZONTAL_PADDING, DEFAULT_TOP_WIDTH);
-		int topHeight = max(StringRenderer.getHeight(pNode.getName()), TOP_HEIGHT);
+		Dimension textDimensions = LABEL_RENDERER.getDimension(pNode.getName());
+		int topWidth = max(textDimensions.width() + 2 * HORIZONTAL_PADDING, DEFAULT_TOP_WIDTH);
+		int topHeight = max(textDimensions.height(), TOP_HEIGHT);
 		return new Dimension(topWidth, topHeight);
 	}
 	

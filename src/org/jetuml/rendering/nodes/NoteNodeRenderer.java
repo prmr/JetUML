@@ -111,10 +111,9 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		int textHeight = StringRenderer.getHeight(((NoteNode)pNode).getName());
-		int textWidth = StringRenderer.getWidth(((NoteNode)pNode).getName());
+		Dimension textDimension = NOTE_VIEWER.getDimension(((NoteNode)pNode).getName());
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 
-				Math.max(textWidth + FOLD_LENGTH + PADDING * 2, DEFAULT_WIDTH), 
-				Math.max(textHeight + PADDING * 2, DEFAULT_HEIGHT));
+				Math.max(textDimension.width() + FOLD_LENGTH + PADDING * 2, DEFAULT_WIDTH), 
+				Math.max(textDimension.height() + PADDING * 2, DEFAULT_HEIGHT));
 	}
 }

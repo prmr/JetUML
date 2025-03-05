@@ -139,7 +139,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private Rectangle getSelfEdgeLabelBox(CallEdge pEdge)
 	{
-		Dimension dimensions = LEFT_CENTER_STRING_RENDERER.getDimensionNoPadding(pEdge.getMiddleLabel());
+		Dimension dimensions = LEFT_CENTER_STRING_RENDERER.getDimension(pEdge.getMiddleLabel());
 		Point[] points = getPoints(pEdge);
 		int x = points[1].x() + LEFT_MARGIN; // The extent of the self edge plus a margin
 		int y = (points[1].y() + points[2].y())/2 -dimensions.height() / 2; // Align box with center of edge
@@ -153,7 +153,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	private Rectangle getNormalEdgeLabelBox(CallEdge pEdge)
 	{
 		Rectangle spanning = getConnectionPoints(pEdge).spanning();
-		int lineHeight = StringRenderer.getHeight(pEdge.getMiddleLabel());
+		int lineHeight = CENTERED_STRING_VIEWER.getDimension(pEdge.getMiddleLabel()).height();
 		return new Rectangle(spanning.x(), spanning.y() - lineHeight, spanning.width(), lineHeight);
 
 	}

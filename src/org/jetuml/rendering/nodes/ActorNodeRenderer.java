@@ -70,14 +70,13 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		int width = StringRenderer.getWidth(((ActorNode)pNode).getName());
-		int height = StringRenderer.getHeight(((ActorNode)pNode).getName());
+		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode)pNode).getName());
 		Rectangle bounds = 
 		new Rectangle(
-				pNode.position().x() + Math.min(0, (WIDTH - width) / 2), 
+				pNode.position().x() + Math.min(0, (WIDTH - textDimension.width()) / 2), 
 				pNode.position().y(),
-				Math.max(WIDTH, width),
-				HEIGHT + height);
+				Math.max(WIDTH, textDimension.width()),
+				HEIGHT + textDimension.height());
 		return bounds;
 	}
 
@@ -86,10 +85,9 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	{
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
-		int labelWidth = StringRenderer.getWidth(((ActorNode)node).getName());
-		int labelHeight = StringRenderer.getHeight(((ActorNode)node).getName());
-		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - labelWidth) / 2, 
-				bounds.y() + HEIGHT, labelWidth, labelHeight);
+		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode)node).getName());
+		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - textDimension.width()) / 2, 
+				bounds.y() + HEIGHT, textDimension.width(), textDimension.height());
 		LABEL_RENDERER.draw(((ActorNode)node).getName(), nameBox, pContext);
 		pContext.strokePath(createStickManPath(node), ColorScheme.get().stroke(), LineStyle.SOLID);
 	}

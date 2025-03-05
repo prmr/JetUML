@@ -119,7 +119,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	{
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;
-		int labelWidth = StringRenderer.getWidth(((ImplicitParameterNode)pElement).getName());
+		int labelWidth = LABEL_RENDERER.getDimension(((ImplicitParameterNode)pElement).getName()).width();
 		return Math.max(labelWidth + HORIZONTAL_PADDING, DEFAULT_WIDTH);
 	}
 	
@@ -156,7 +156,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public static int getCenterXCoordinate(Node pNode)
 	{
 		assert pNode != null;
-		return Math.max(StringRenderer.getWidth(((ImplicitParameterNode)pNode).getName()) + HORIZONTAL_PADDING, 
+		return Math.max(LABEL_RENDERER.getDimension(((ImplicitParameterNode)pNode).getName()).width() + HORIZONTAL_PADDING, 
 				DEFAULT_WIDTH)/2 + pNode.position().x();
 	}
 

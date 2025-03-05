@@ -41,6 +41,7 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
@@ -76,6 +77,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
+	
+	/* Renderer used only for measuring string height */
+	private static final StringRenderer STRING_METRIC = new StringRenderer(TextPosition.TOP_LEFT);
 
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
@@ -387,7 +391,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private static int getDropDistance()
 	{
-		return Math.max(DROP_MIN, StringRenderer.getHeight(TEST_STRING));
+		return Math.max(DROP_MIN, STRING_METRIC.getDimension(TEST_STRING).height());
 	}
 	
 	/**
