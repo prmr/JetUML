@@ -136,7 +136,7 @@ public final class StringRenderer
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = FontMetrics.getDimension(pString, getFont());
+			Dimension dimension = FontMetrics.getDimensionOld(pString, getFont());
 			int baselineOffset = FontMetrics.getBaselineOffset(getFont());
 			if( aAlign.isHorizontallyCentered() )
 			{
@@ -173,7 +173,7 @@ public final class StringRenderer
 		{
 			return Dimension.NULL;
 		}
-		Dimension dimension = FontMetrics.getDimension(pString, getFont());
+		Dimension dimension = FontMetrics.getDimensionOld(pString, getFont());
 		return new Dimension(dimension.width() + horizontalPadding() * 2, dimension.height() + verticalPadding() * 2);
 	}
 	
@@ -192,7 +192,7 @@ public final class StringRenderer
 		{
 			return Dimension.NULL;
 		}
-		return FontMetrics.getDimension(pString, getFont());
+		return FontMetrics.getDimensionOld(pString, getFont());
 	}
 
 	/**

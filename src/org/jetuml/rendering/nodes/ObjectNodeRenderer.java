@@ -26,10 +26,10 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -44,11 +44,11 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final int TEXT_HORIZONTAL_MARGIN = 5;
+	private static final int TEXT_HORIZONTAL_MARGIN = 10;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, 
-			Decoration.BOLD, Decoration.UNDERLINED, Decoration.PADDED);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER, 
+			Decoration.BOLD, Decoration.UNDERLINED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -79,15 +79,16 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
-		NAME_VIEWER.draw(((ObjectNode)node).getName(), 
+		LABEL_RENDERER.draw(((ObjectNode)node).getName(), 
 				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()), pContext);
 	}
 	
 	private static Rectangle getTopRectangle(Node pNode)
 	{
-		Dimension bounds = NAME_VIEWER.getDimension(((ObjectNode)pNode).getName() + TEXT_HORIZONTAL_MARGIN); 
-		bounds = bounds.include(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		return new Rectangle(0, 0, bounds.width(), bounds.height()).translated(pNode.position().x(), pNode.position().y());
+		Dimension bounds = LABEL_RENDERER.getDimension(((ObjectNode)pNode).getName()); 
+		return new Rectangle(pNode.position().x(), pNode.position().y(), 
+				Math.max(DEFAULT_WIDTH, bounds.width() + TEXT_HORIZONTAL_MARGIN),
+				Math.max(DEFAULT_HEIGHT,  bounds.height()));
 	}
 	
 	/**

@@ -58,12 +58,28 @@ public final class FontMetrics
 	 * @deprecated Refactor out
 	 */
 	@Deprecated
-	public static Dimension getDimension(String pString, Font pFont)
+	public static Dimension getDimensionOld(String pString, Font pFont)
 	{
 		assert pString != null;
 		assert pFont != null;
 
 		TEXT_NODE.setFont(pFont);
+		TEXT_NODE.setText(pString);
+		Bounds bounds = TEXT_NODE.getLayoutBounds();
+		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
+	}
+	
+	/**
+	 * Returns the dimensions for the text. The height is the total 
+	 * line height, with leading, and is independent of the text shown.
+	 * @param pString The string to test.
+	 * @return The dimensions for the text.
+	 */
+	public static Dimension getDimension(String pString)
+	{
+		assert pString != null;
+
+		TEXT_NODE.setFont(font());
 		TEXT_NODE.setText(pString);
 		Bounds bounds = TEXT_NODE.getLayoutBounds();
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
