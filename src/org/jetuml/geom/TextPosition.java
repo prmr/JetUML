@@ -5,14 +5,14 @@ package org.jetuml.geom;
  */
 public enum TextPosition
 {
-	TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER_CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT;
+	TOP_LEFT, TOP_CENTER, CENTER_LEFT, CENTER_CENTER, BOTTOM_LEFT, BOTTOM_CENTER;
 
 	/**
 	 * @return true iif this object represents a top position.
 	 */
 	public boolean isTop()
 	{
-		return this == TOP_LEFT || this == TOP_CENTER || this == TOP_RIGHT;
+		return this == TOP_LEFT || this == TOP_CENTER;
 	}
 
 	/**
@@ -20,7 +20,7 @@ public enum TextPosition
 	 */
 	public boolean isVerticallyCentered()
 	{
-		return this == CENTER_LEFT || this == CENTER_CENTER || this == CENTER_RIGHT;
+		return this == CENTER_LEFT || this == CENTER_CENTER;
 	}
 
 	/**
@@ -28,7 +28,7 @@ public enum TextPosition
 	 */
 	public boolean isBottom()
 	{
-		return this == BOTTOM_LEFT || this == BOTTOM_CENTER || this == BOTTOM_RIGHT;
+		return this == BOTTOM_LEFT || this == BOTTOM_CENTER;
 	}
 
 	/**
@@ -39,14 +39,6 @@ public enum TextPosition
 		return this == TOP_LEFT || this == CENTER_LEFT || this == BOTTOM_LEFT;
 	}
 	
-	/**
-	 * @return true iif this object represents a right position.
-	 */
-	public boolean isRight()
-	{
-		return this == TOP_RIGHT || this == CENTER_RIGHT || this == BOTTOM_RIGHT;
-	}
-
 	/**
 	 * @return true iif this object represents a centered position in the horizontal axis.
 	 */
@@ -67,10 +59,6 @@ public enum TextPosition
 		if (isHorizontallyCentered())
 		{
 			x = pBoundingBox.center().x();
-		}
-		else if (isRight())
-		{
-			x = pBoundingBox.maxX();
 		}
 		int y = pBoundingBox.maxY();
 		if (isVerticallyCentered())

@@ -158,7 +158,7 @@ public class FontDialog
 		restoreDefault.setOnAction(pEvent -> 
 		{
 			aFonts.getSelectionModel().select(UserPreferences.DEFAULT_FONT_NAME);
-			aSizes.getSelectionModel().select(UserPreferences.DEFAULT_FONT_SIZE);
+			aSizes.getSelectionModel().select((Integer) UserPreferences.DEFAULT_FONT_SIZE);
 		});
 		GridPane.setConstraints(restoreDefault, 0, 3);
 		

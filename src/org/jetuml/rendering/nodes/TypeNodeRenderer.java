@@ -76,6 +76,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
+	private static int lineHeight()
+	{
+		return STRING_RENDERER.getDimension("|").height();
+	}
+	
 	@Override
 	public void draw(DiagramElement pElement, RenderingContext pContext)
 	{	
@@ -114,6 +119,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 					LineStyle.SOLID);
 			drawMethod(node.getMethods(), new Rectangle(bounds.x(), splitY, bounds.width(), methodBoxHeight), pContext);
 		}
+		lineHeight();
 	}
 	
 	/*
@@ -175,16 +181,16 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				UNDERLINING_STRING_RENDERER.draw(removeMarkup(attribute), 
 						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
 								pBounds.width(), 
-								STRING_RENDERER.getHeight()), pContext);
+								lineHeight()), pContext);
 			}
 			else
 			{
 				STRING_RENDERER.draw(attribute, 
 						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
 								pBounds.width(), 
-								STRING_RENDERER.getHeight()), pContext);
+								lineHeight()), pContext);
 			}
-			lineSpacing += STRING_RENDERER.getHeight();
+			lineSpacing += lineHeight();
 		}	
 	}
 	
@@ -205,23 +211,23 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				UNDERLINING_STRING_RENDERER.draw(removeMarkup(method), 
 						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
 								pBounds.width(), 
-								STRING_RENDERER.getHeight()), pContext);
+								lineHeight()), pContext);
 			}
 			else if( containsMarkup(method, ITALIC_MARKUP) )
 			{
 				ITALIC_STRING_RENDERER.draw(removeMarkup(method), 
 						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
 								pBounds.width(), 
-								STRING_RENDERER.getHeight()), pContext);
+								lineHeight()), pContext);
 			}
 			else
 			{
 				STRING_RENDERER.draw(method, 
 						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
 								pBounds.width(), 
-								STRING_RENDERER.getHeight()), pContext);
+								lineHeight()), pContext);
 			}
-			lineSpacing += STRING_RENDERER.getHeight();
+			lineSpacing += lineHeight();
 		}	
 	}
 	

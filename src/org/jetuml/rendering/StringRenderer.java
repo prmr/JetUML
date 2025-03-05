@@ -48,8 +48,6 @@ import javafx.scene.text.Text;
 public final class StringRenderer
 {
 	private static final Text TEXT_NODE = new Text();
-	private static final String SINGLE_LINED_TEXT = "One";
-	private static final String TWO_LINED_TEXT = "One\nTwo";
 	
 	/**
 	 * Various text decorations.
@@ -103,14 +101,14 @@ public final class StringRenderer
 		Point anchor = aAlign.getAnchor(pBoundingBox);
 		pContext.drawText(pString, pBoundingBox, aAlign, textX, textY, 
 				ColorScheme.get().stroke(),
-				getFont(), anchor);
+				font(), anchor);
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{
 			int xOffset = 0;
 			int yOffset = 0;
 			Dimension dimension = getDimension(pString);
-			int baselineOffset = getBaselineOffset(getFont());
+			int baselineOffset = baselineOffset(font());
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width() / 2;
@@ -146,25 +144,13 @@ public final class StringRenderer
 		{
 			return Dimension.NULL;
 		}
-		TEXT_NODE.setFont(getFont());
+		TEXT_NODE.setFont(font());
 		TEXT_NODE.setText(pString);
 		Bounds bounds = TEXT_NODE.getLayoutBounds();
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
-	/**
-	 * Returns the distance between the top and bottom of a single lined text.
-	 * 
-	 * @param pString The string.
-	 * @return The height of the string.
-	 * @pre pString != null
-	 */
-	public int getHeight()
-	{
-		return getHeightOld(getFont());
-	}
-	
-	private Font getFont()
+	private Font font()
 	{
 		if( aDecorations.contains(Decoration.BOLD) && aDecorations.contains(Decoration.ITALIC) )
 		{
@@ -186,43 +172,18 @@ public final class StringRenderer
 	}
 	
 	/**
-	 * Returns the distance between the top and bottom of a single lined text.
-	 * Text#getLayoutBounds().getHeight() varies in its inclusion of the leading space depending on the font,
-	 * hence the subtraction approach was taken to ensure inclusion of the leading space.
-	 * 
-	 * @param pFont The font used for the metric.
-	 * @return The height of a single lined text.
-	 * @pre pFont != null
-	 * @deprecated Refactor out
-	 */
-	@Deprecated
-	private static int getHeightOld(Font pFont)
-	{
-		assert pFont != null;
-		
-		TEXT_NODE.setFont(pFont);
-		TEXT_NODE.setText(TWO_LINED_TEXT);
-		double twoLineHeight = TEXT_NODE.getLayoutBounds().getHeight();
-		TEXT_NODE.setText(SINGLE_LINED_TEXT);
-		double singleLineHeight = TEXT_NODE.getLayoutBounds().getHeight();
-		return GeomUtils.round(twoLineHeight - singleLineHeight);
-	}
-	
-	/**
 	 * Returns the distance between the top and baseline of a single lined text.
 	 * 
 	 * @param pFont The font used for the metric.
 	 * @return the distance above the baseline for a single lined text.
 	 * @pre pFont != null
-	 * @deprecated Refactor out
 	 */
-	@Deprecated
-	private static int getBaselineOffset(Font pFont)
+	private static int baselineOffset(Font pFont)
 	{
 		assert pFont != null;
 		
 		TEXT_NODE.setFont(pFont);
-		TEXT_NODE.setText(SINGLE_LINED_TEXT);
+		TEXT_NODE.setText("|");
 		return GeomUtils.round(TEXT_NODE.getBaselineOffset());
 	}
 }
