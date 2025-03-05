@@ -25,17 +25,16 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Decoration;
 
 /**
  * An object to render a StateNode.
@@ -44,7 +43,8 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.PADDED);
+	private static final int PADDING = 15;
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -66,15 +66,15 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		NAME_VIEWER.draw(((StateNode)pElement).getName(), bounds, pContext);
+		LABEL_RENDERER.draw(((StateNode)pElement).getName(), bounds, pContext);
 	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
+		Dimension bounds = LABEL_RENDERER.getDimension(((StateNode)pNode).getName());
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 
-				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
+				Math.max(bounds.width() + PADDING, DEFAULT_WIDTH), Math.max(bounds.height() + PADDING, DEFAULT_HEIGHT));
 	}
 	
 	@Override
