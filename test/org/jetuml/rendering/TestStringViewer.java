@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
-import org.jetuml.geom.TextPosition;
 import org.jetuml.geom.Dimension;
+import org.jetuml.geom.TextPosition;
 import org.jetuml.rendering.StringRenderer.Decoration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +44,6 @@ public class TestStringViewer
 	private static int userDefinedFontSize;
 	
 	private StringRenderer topCenter;
-	private StringRenderer topCenterPadded;
 	private StringRenderer topCenterBold;
 	
 	@BeforeAll
@@ -60,7 +59,6 @@ public class TestStringViewer
 	public void setup()
 	{
 		topCenter = new StringRenderer(TextPosition.TOP_CENTER);
-		topCenterPadded = new StringRenderer(TextPosition.TOP_CENTER, Decoration.PADDED);
 		topCenterBold = new StringRenderer(TextPosition.TOP_CENTER, Decoration.BOLD);
 	}
 	
@@ -76,10 +74,8 @@ public class TestStringViewer
 	void testDimensionDefaultFont()
 	{
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
-		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
 		assertEquals(new Dimension(73, 16), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(79, 16), topCenterBold.getDimension("Display String"));
-		assertEquals(new Dimension(87, 28), topCenterPadded.getDimension("Display String"));
 	}
 	
 	@Test
@@ -88,10 +84,8 @@ public class TestStringViewer
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 8);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
-		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
 		assertEquals(new Dimension(49, 11), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(53, 11), topCenterBold.getDimension("Display String"));
-		assertEquals(new Dimension(63, 23), topCenterPadded.getDimension("Display String"));
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 
@@ -101,10 +95,8 @@ public class TestStringViewer
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
-		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
 		assertEquals(new Dimension(146, 32), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(158, 32), topCenterBold.getDimension("Display String"));
-		assertEquals(new Dimension(160, 44), topCenterPadded.getDimension("Display String"));
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 }

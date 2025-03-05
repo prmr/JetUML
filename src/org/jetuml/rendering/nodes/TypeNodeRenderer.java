@@ -49,14 +49,16 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
 	private static final int TOP_MARGIN = 5;
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.PADDED);
-	private static final StringRenderer ITALIC_NAME_VIEWER = new StringRenderer(
-			TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC, Decoration.PADDED);
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.TOP_LEFT, Decoration.PADDED);
-	private static final StringRenderer UNDERLINING_STRING_VIEWER = new StringRenderer(
-			TextPosition.TOP_LEFT, Decoration.PADDED, Decoration.UNDERLINED);
-	private static final StringRenderer ITALIC_STRING_VIEWER = new StringRenderer(
-			TextPosition.TOP_LEFT, Decoration.PADDED, Decoration.ITALIC);
+	private static final int HORIZONTAL_PADDING = 7;
+	private static final int VERTICAL_PADDING = 6;
+	private static final StringRenderer TYPE_NAME_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.BOLD);
+	private static final StringRenderer ITALIC_NAME_RENDERER = new StringRenderer(
+			TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC);
+	private static final StringRenderer STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer UNDERLINING_STRING_RENDERER = new StringRenderer(
+			TextPosition.TOP_LEFT, Decoration.UNDERLINED);
+	private static final StringRenderer ITALIC_STRING_RENDERER = new StringRenderer(
+			TextPosition.TOP_LEFT, Decoration.ITALIC);
 	private static final String ITALIC_MARKUP = "/";
 	private static final String UNDERLINE_MARKUP = "_";
 	
@@ -147,11 +149,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 			}
 			if( italic )
 			{
-				ITALIC_NAME_VIEWER.draw(paddedName, pBounds, pContext);
+				ITALIC_NAME_RENDERER.draw(paddedName, pBounds, pContext);
 			}
 			else
 			{
-				NAME_VIEWER.draw(paddedName, pBounds, pContext);
+				TYPE_NAME_RENDERER.draw(paddedName, pBounds, pContext);
 			}
 		}
 	}
@@ -170,17 +172,19 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( containsMarkup(attribute, UNDERLINE_MARKUP) )
 			{
-				UNDERLINING_STRING_VIEWER.draw(removeMarkup(attribute), 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
-								STRING_VIEWER.getHeight()), pContext);
+				UNDERLINING_STRING_RENDERER.draw(removeMarkup(attribute), 
+						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
+								pBounds.width(), 
+								STRING_RENDERER.getHeight()), pContext);
 			}
 			else
 			{
-				STRING_VIEWER.draw(attribute, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
-								STRING_VIEWER.getHeight()), pContext);
+				STRING_RENDERER.draw(attribute, 
+						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
+								pBounds.width(), 
+								STRING_RENDERER.getHeight()), pContext);
 			}
-			lineSpacing += STRING_VIEWER.getHeight();
+			lineSpacing += STRING_RENDERER.getHeight();
 		}	
 	}
 	
@@ -198,23 +202,26 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		{
 			if( containsMarkup(method, UNDERLINE_MARKUP) )
 			{
-				UNDERLINING_STRING_VIEWER.draw(removeMarkup(method), 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
-								STRING_VIEWER.getHeight()), pContext);
+				UNDERLINING_STRING_RENDERER.draw(removeMarkup(method), 
+						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
+								pBounds.width(), 
+								STRING_RENDERER.getHeight()), pContext);
 			}
 			else if( containsMarkup(method, ITALIC_MARKUP) )
 			{
-				ITALIC_STRING_VIEWER.draw(removeMarkup(method), 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
-								STRING_VIEWER.getHeight()), pContext);
+				ITALIC_STRING_RENDERER.draw(removeMarkup(method), 
+						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
+								pBounds.width(), 
+								STRING_RENDERER.getHeight()), pContext);
 			}
 			else
 			{
-				STRING_VIEWER.draw(method, 
-						new Rectangle(pBounds.x(), pBounds.y() + lineSpacing, pBounds.width(), 
-								STRING_VIEWER.getHeight()), pContext);
+				STRING_RENDERER.draw(method, 
+						new Rectangle(pBounds.x() + HORIZONTAL_PADDING, pBounds.y() + lineSpacing, 
+								pBounds.width(), 
+								STRING_RENDERER.getHeight()), pContext);
 			}
-			lineSpacing += STRING_VIEWER.getHeight();
+			lineSpacing += STRING_RENDERER.getHeight();
 		}	
 	}
 	
@@ -262,7 +269,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		Dimension result = Dimension.NULL;
 		if( pString.length() > 0 )
 		{
-			result = STRING_VIEWER.getDimension(pString);
+			Dimension dimension = STRING_RENDERER.getDimension(pString);
+			result = new Dimension(dimension.width() + 2 * HORIZONTAL_PADDING, dimension.height() + 2 * VERTICAL_PADDING);
 		}
 		return result;
 	}
@@ -272,7 +280,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 		Dimension result = Dimension.NULL;
 		if( pString.length() > 0 )
 		{
-			result = NAME_VIEWER.getDimension(pString);
+			Dimension dimension = TYPE_NAME_RENDERER.getDimension(pString);
+			result = new Dimension(dimension.width() + 2 * HORIZONTAL_PADDING, dimension.height());
 		}
 		return result;
 	}
