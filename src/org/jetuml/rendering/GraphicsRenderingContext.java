@@ -199,7 +199,7 @@ public class GraphicsRenderingContext implements RenderingContext
 		assert pTextColor != null && pFont != null;
 		aContext.save();
 		aContext.setTextAlign(getTextAlignment(pTextPosition));
-		aContext.setTextBaseline(getTextBaseline(pTextPosition));
+		aContext.setTextBaseline(VPos.TOP);
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
 		int anchorX = pBounds.x();
@@ -225,18 +225,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		else
 		{
 			return TextAlignment.RIGHT;
-		}
-	}
-	
-	private static VPos getTextBaseline(TextPosition pTextPosition)
-	{
-		if (pTextPosition.isBottom())
-		{
-			return VPos.BASELINE;
-		}
-		else
-		{
-			return VPos.TOP;
 		}
 	}
 }
