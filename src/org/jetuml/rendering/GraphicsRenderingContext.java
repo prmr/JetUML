@@ -192,7 +192,7 @@ public class GraphicsRenderingContext implements RenderingContext
 	}
 	
 	@Override
-	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, int pAnchorX, int pAnchorY,
+	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition,
 			Color pTextColor, Font pFont, Point pAnchor)
 	{
 		assert pText != null && pTextPosition != null;
@@ -200,10 +200,19 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.save();
 		aContext.setTextAlign(getTextAlignment(pTextPosition));
 		aContext.setTextBaseline(getTextBaseline(pTextPosition));
-//		aContext.translate(pBounds.x(), pBounds.y());
 		aContext.setFont(pFont);
 		aContext.setFill(pTextColor);
-		aContext.fillText(pText, pAnchor.x(), pAnchor.y());
+		int anchorX = pBounds.x();
+		int anchorY = pBounds.y();
+		if (pTextPosition.isHorizontallyCentered())
+		{
+			anchorX = pBounds.center().x();
+		}
+		if (pTextPosition.isVerticallyCentered())
+		{
+			anchorY = pBounds.center().y();
+		}
+		aContext.fillText(pText, anchorX, anchorY);
 		aContext.restore();
 	}
 	
