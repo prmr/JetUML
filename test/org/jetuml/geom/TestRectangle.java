@@ -107,4 +107,32 @@ public class TestRectangle
 		rectangle = rectangle.add( new Rectangle(0,0,20,20));
 		assertEquals( new Rectangle(0,0,20,20), rectangle);
 	}
+	
+	@Test
+	void testCenterSlice_Same_ZeroY()
+	{
+		Rectangle original = new Rectangle(0,0,100,60);
+		Rectangle expected = new Rectangle(0,0,100,60);
+		Rectangle actual = original.centerSlice(60);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void testCenterSlice_Same_NonZeroY()
+	{
+		Rectangle original = new Rectangle(0,20,100,60);
+		Rectangle expected = new Rectangle(0,20,100,60);
+		Rectangle actual = original.centerSlice(60);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void testCenterSlice_Smaller()
+	{
+		Rectangle original = new Rectangle(0,20,100,60);
+		Rectangle expected = new Rectangle(0,35,100,30);
+		Rectangle actual = original.centerSlice(30);
+		assertEquals(expected, actual);
+	}
+
 }

@@ -138,6 +138,20 @@ public record Rectangle(int x, int y, int width, int height)
 	}
 	
 	/**
+	 * Get a rectangle of height pHeight with the same Y-coordinate as center
+	 * and same width.
+	 * 
+	 * @param pHeight The desired height.
+	 * @return A rectangle that is a vertical slice of this one.
+	 */
+	public Rectangle centerSlice(int pHeight)
+	{
+		assert pHeight > 0;
+		assert pHeight <= height();
+		return new Rectangle(x(), center().y() - pHeight/2, width(), pHeight);
+	}
+	
+	/**
 	 * @return The top left corner of the rectangle.
 	 */
 	public Point origin()
