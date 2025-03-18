@@ -208,10 +208,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		{
 			anchorX = pBounds.center().x();
 		}
-		if (pTextPosition.isVerticallyCentered())
-		{
-			anchorY = pBounds.center().y();
-		}
 		aContext.fillText(pText, anchorX, anchorY);
 		aContext.restore();
 	}
@@ -237,10 +233,6 @@ public class GraphicsRenderingContext implements RenderingContext
 		if (pTextPosition.isBottom())
 		{
 			return VPos.BASELINE;
-		}
-		else if (pTextPosition.isVerticallyCentered())
-		{
-			return VPos.CENTER;
 		}
 		else
 		{

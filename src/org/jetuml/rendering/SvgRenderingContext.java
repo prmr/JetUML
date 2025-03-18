@@ -157,14 +157,7 @@ public class SvgRenderingContext implements RenderingContext
 		/*
 		 * SVG positions the text from the bottom coordinate.
 		 */
-		if (pTextPosition.isVerticallyCentered())
-		{
-			aSvg.add(String.format(TEMPLATE_TEXT_TOP_LEFT, pBounds.x(), pBounds.maxY(), escapeText(pText)));
-		}
-		else
-		{
-			aSvg.add(String.format(TEMPLATE_TEXT_TOP_LEFT, pBounds.x(), pBounds.maxY(), escapeText(pText)));
-		}
+		aSvg.add(String.format(TEMPLATE_TEXT_TOP_LEFT, pBounds.x(), pBounds.maxY(), escapeText(pText)));
 	}
 	
 	private static String escapeText(String pText)

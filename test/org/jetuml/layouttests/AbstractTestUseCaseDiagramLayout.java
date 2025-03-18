@@ -54,7 +54,7 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 	{
 		final int WIDTH = getStaticIntFieldValue(ActorNodeRenderer.class, "WIDTH");
 		final int HEIGHT = getStaticIntFieldValue(ActorNodeRenderer.class, "HEIGHT");
-		StringRenderer nameViewer = new StringRenderer(TextPosition.CENTER_CENTER);
+		StringRenderer nameViewer = new StringRenderer(TextPosition.TOP_CENTER);
 		Dimension nameBounds = nameViewer.getDimension(((ActorNode)pNode).getName());
 		int calculatedWidth = Math.max(WIDTH, nameBounds.width());
 		int calculatedHeight = HEIGHT + nameBounds.height();

@@ -105,10 +105,6 @@ public final class StringRenderer
 			{
 				yOffset = baselineOffset + 2;
 			}
-			else if( aAlign.isVerticallyCentered() )
-			{
-				yOffset = baselineOffset / 2 + 1;
-			}
 			int textX = 0;
 			int textY = 0;
 			if( aAlign.isHorizontallyCentered() )
@@ -116,10 +112,6 @@ public final class StringRenderer
 				textX = pBoundingBox.width() / 2;
 			}
 
-			if( aAlign.isVerticallyCentered() )
-			{
-				textY = pBoundingBox.height() / 2;
-			}
 			pContext.strokeLine(pBoundingBox.x() + textX - xOffset, pBoundingBox.y() + textY + yOffset,
 					pBoundingBox.x()+ textX - xOffset + dimension.width(), pBoundingBox.y() + textY + yOffset, 
 					ColorScheme.get().stroke(),

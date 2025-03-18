@@ -146,7 +146,7 @@ public record Rectangle(int x, int y, int width, int height)
 	 */
 	public Rectangle centerSlice(int pHeight)
 	{
-		assert pHeight > 0;
+		assert pHeight >= 0;
 		assert pHeight <= height();
 		return new Rectangle(x(), center().y() - pHeight/2, width(), pHeight);
 	}
