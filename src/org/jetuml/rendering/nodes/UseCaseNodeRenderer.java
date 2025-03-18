@@ -44,7 +44,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.
@@ -67,7 +67,10 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 		pContext.drawOval(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 
 				ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		LABEL_RENDERER.draw(((UseCaseNode)pElement).getName(), getBounds(pElement), pContext);
+		String name = ((UseCaseNode)pElement).getName();
+		LABEL_RENDERER.draw(name, 
+				getBounds(pElement).centerSlice(LABEL_RENDERER.getDimension(name).height()), 
+				pContext);
 	}
 	
 	@Override

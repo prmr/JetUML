@@ -60,7 +60,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private static final int DEGREES_270 = 270;
 	
 	private static final int RADIANS_TO_PIXELS = 7;
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.

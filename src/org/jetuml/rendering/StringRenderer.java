@@ -148,6 +148,14 @@ public final class StringRenderer
 		return new Dimension(GeomUtils.round(bounds.getWidth()), GeomUtils.round(bounds.getHeight()));
 	}
 	
+	/**
+	 * @return The height of one line of text, including skip.
+	 */
+	public int lineHeight()
+	{
+		return getDimension("|").height();
+	}
+	
 	private Font font()
 	{
 		if( aDecorations.contains(Decoration.BOLD) && aDecorations.contains(Decoration.ITALIC) )

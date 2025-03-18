@@ -41,7 +41,7 @@ import javafx.scene.canvas.Canvas;
  */
 public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
-	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	/**
 	 * @param pParent Renderer of the parent diagram.
@@ -56,8 +56,10 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		super.draw(pElement, pContext);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		CONTENT_RENDERER.draw(((PackageDescriptionNode)pElement).getContents(), new Rectangle(bottomBounds.x(), 
-				bottomBounds.y(), bottomBounds.width(), bottomBounds.height()), pContext);
+		String content = ((PackageDescriptionNode)pElement).getContents();
+		CONTENT_RENDERER.draw(((PackageDescriptionNode)pElement).getContents(), 
+				bottomBounds.centerSlice(CONTENT_RENDERER.getDimension(content).height()), 
+				pContext);
 	}
 	
 	@Override
@@ -82,7 +84,8 @@ public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRen
 	{
 		assert pElement instanceof AbstractPackageNode;
 		Canvas icon = super.createIcon(pDiagramType, pElement);
-		CONTENT_RENDERER.draw("description", getBottomBounds((AbstractPackageNode)pElement), 
+		CONTENT_RENDERER.draw("description", 
+				getBottomBounds((AbstractPackageNode)pElement).centerSlice(CONTENT_RENDERER.lineHeight()), 
 				new GraphicsRenderingContext(icon.getGraphicsContext2D()));
 		return icon;
 	}

@@ -62,7 +62,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final StringRenderer LABEL_RENDERER = 
-			new StringRenderer(TextPosition.CENTER_CENTER, Decoration.UNDERLINED);
+			new StringRenderer(TextPosition.TOP_CENTER, Decoration.UNDERLINED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -84,7 +84,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		Rectangle top = getTopRectangle((Node)pElement);
 		pContext.drawRectangle(top, ColorScheme.get().fill(), 
 				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		LABEL_RENDERER.draw(((ImplicitParameterNode)pElement).getName(), top, pContext);
+		LABEL_RENDERER.draw(((ImplicitParameterNode)pElement).getName(), 
+				top.centerSlice(LABEL_RENDERER.getDimension("|").height()), pContext);
 		int xmid = top.center().x();
 		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
 				ColorScheme.get().stroke(),

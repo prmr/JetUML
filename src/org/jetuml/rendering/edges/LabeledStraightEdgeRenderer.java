@@ -39,7 +39,7 @@ import org.jetuml.rendering.StringRenderer;
  */
 public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	private final Function<Edge, String> aLabelExtractor;
 	
@@ -67,7 +67,7 @@ public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 		if( label.length() > 0 )
 		{
 			LABEL_RENDERER.draw(label, getConnectionPoints(edge).spanning()
-					.translated(0, -LABEL_RENDERER.getDimension(label).height()/2), pContext);
+					.translated(0, -LABEL_RENDERER.getDimension(label).height()), pContext);
 		}
 	}
 	

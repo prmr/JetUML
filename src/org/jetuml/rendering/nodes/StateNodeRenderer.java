@@ -44,7 +44,7 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int PADDING = 15;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.
@@ -66,7 +66,10 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 		final Rectangle bounds = getBounds(pElement);
 		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(), 
 				Optional.of(ColorScheme.get().dropShadow()));
-		LABEL_RENDERER.draw(((StateNode)pElement).getName(), bounds, pContext);
+		String name = ((StateNode)pElement).getName();
+		LABEL_RENDERER.draw(name, 
+				bounds.centerSlice(LABEL_RENDERER.getDimension(name).height()),
+				pContext);
 	}
 	
 	@Override

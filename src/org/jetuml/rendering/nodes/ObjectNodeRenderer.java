@@ -47,7 +47,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	private static final int TEXT_HORIZONTAL_MARGIN = 10;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER, 
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER, 
 			Decoration.BOLD, Decoration.UNDERLINED);
 	
 	/**
@@ -79,8 +79,9 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 					ColorScheme.get().stroke(),
 					LineStyle.SOLID);
 		}
+		Rectangle top = new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height());
 		LABEL_RENDERER.draw(((ObjectNode)node).getName(), 
-				new Rectangle(bounds.x(), bounds.y(), bounds.width(), topRectangle.height()), pContext);
+				top.centerSlice(LABEL_RENDERER.lineHeight()), pContext);
 	}
 	
 	private static Rectangle getTopRectangle(Node pNode)

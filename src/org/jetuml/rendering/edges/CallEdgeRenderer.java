@@ -57,7 +57,7 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
-	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER);
+	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
 	private static final StringRenderer TOP_CENTER_STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
 
 	private static final int LEFT_MARGIN = 5;

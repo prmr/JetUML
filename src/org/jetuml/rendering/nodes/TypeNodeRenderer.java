@@ -51,9 +51,9 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	private static final int TOP_MARGIN = 5;
 	private static final int HORIZONTAL_PADDING = 7;
 	private static final int VERTICAL_PADDING = 6;
-	private static final StringRenderer TYPE_NAME_RENDERER = new StringRenderer(TextPosition.CENTER_CENTER, Decoration.BOLD);
+	private static final StringRenderer TYPE_NAME_RENDERER = new StringRenderer(TextPosition.TOP_CENTER, Decoration.BOLD);
 	private static final StringRenderer ITALIC_NAME_RENDERER = new StringRenderer(
-			TextPosition.CENTER_CENTER, Decoration.BOLD, Decoration.ITALIC);
+			TextPosition.TOP_CENTER, Decoration.BOLD, Decoration.ITALIC);
 	private static final StringRenderer STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
 	private static final StringRenderer UNDERLINING_STRING_RENDERER = new StringRenderer(
 			TextPosition.TOP_LEFT, Decoration.UNDERLINED);

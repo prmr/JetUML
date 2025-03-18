@@ -55,7 +55,7 @@ public final class UseCaseDependencyEdgeRenderer extends LabeledStraightEdgeRend
 		Canvas canvas = super.createIcon(pDiagramType, edge);
 		final float scale = 0.75f;
 		canvas.getGraphicsContext2D().scale(scale, scale);
-		new StringRenderer(TextPosition.CENTER_CENTER).draw(getIconTag(edge), new Rectangle(1, BUTTON_SIZE, 1, 1),
+		new StringRenderer(TextPosition.TOP_CENTER).draw(getIconTag(edge), new Rectangle(1, BUTTON_SIZE, 1, 1),
 				new GraphicsRenderingContext(canvas.getGraphicsContext2D()));
 		return canvas;
 	}
