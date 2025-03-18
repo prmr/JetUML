@@ -130,9 +130,8 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	private static void drawName(String pName, Rectangle pBounds, RenderingContext pContext)
 	{
 		String[] nameByLine = pName.trim().split("\n");
-		int numLines = nameByLine.length;
 		
-		for( int i = 0; i < numLines; i++ )
+		for (int i = 0; i < nameByLine.length; i++)
 		{
 			boolean italic = false;
 			String paddedName = "";
@@ -141,10 +140,11 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 				nameByLine[i] = removeMarkup(nameByLine[i]);
 				italic = true;
 			}
-			// We pad each line to maintain centering of entire name in the node. This allows us to render the name line by line.
-			for( int j = 0; j < numLines; j++ )
+			// We pad each line to maintain the vertical centering of entire name 
+			// in the node. This allows us to render the name line by line.
+			for (int j = 0; j < nameByLine.length; j++)
 			{
-				if( i == j )
+				if (i == j)
 				{
 					paddedName += nameByLine[i];
 				}
@@ -153,7 +153,7 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 					paddedName += "\n";
 				}
 			}
-			if( italic )
+			if (italic)
 			{
 				ITALIC_NAME_RENDERER.draw(paddedName, pBounds, pContext);
 			}
