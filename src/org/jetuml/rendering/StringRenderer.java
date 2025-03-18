@@ -31,7 +31,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 
 import javafx.geometry.Bounds;
@@ -57,7 +57,7 @@ public final class StringRenderer
 		BOLD, ITALIC, UNDERLINED
 	}
 
-	private final TextPosition aAlign;
+	private final Alignment aAlign;
 	private final EnumSet<Decoration> aDecorations;
 
 	/**
@@ -66,7 +66,7 @@ public final class StringRenderer
 	 * @param pPosition The desired alignment.
 	 * @param pDecorations The desired decorations.
 	 */
-	public StringRenderer(TextPosition pPosition, Decoration... pDecorations)
+	public StringRenderer(Alignment pPosition, Decoration... pDecorations)
 	{
 		aAlign = pPosition;
 		aDecorations = EnumSet.noneOf(Decoration.class);
@@ -96,18 +96,15 @@ public final class StringRenderer
 			int yOffset = 0;
 			Dimension dimension = getDimension(pString);
 			int baselineOffset = baselineOffset(font());
-			if( aAlign.isHorizontallyCentered() )
+			if( aAlign == Alignment.CENTER )
 			{
 				xOffset = dimension.width() / 2;
 			}
 
-			if( aAlign.isTop() )
-			{
-				yOffset = baselineOffset + 2;
-			}
+			yOffset = baselineOffset + 2;
 			int textX = 0;
 			int textY = 0;
-			if( aAlign.isHorizontallyCentered() )
+			if( aAlign == Alignment.CENTER )
 			{
 				textX = pBoundingBox.width() / 2;
 			}

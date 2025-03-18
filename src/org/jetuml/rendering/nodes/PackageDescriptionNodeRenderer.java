@@ -28,7 +28,7 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
 import org.jetuml.rendering.RenderingContext;
@@ -41,7 +41,7 @@ import javafx.scene.canvas.Canvas;
  */
 public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
-	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
+	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(Alignment.CENTER);
 	
 	/**
 	 * @param pParent Renderer of the parent diagram.

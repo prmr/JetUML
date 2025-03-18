@@ -29,7 +29,7 @@ import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GridUtils;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
@@ -47,7 +47,7 @@ public final class ObjectNodeRenderer extends AbstractNodeRenderer
 	private static final int TEXT_HORIZONTAL_MARGIN = 10;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER, 
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER, 
 			Decoration.BOLD, Decoration.UNDERLINED);
 	
 	/**

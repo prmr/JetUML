@@ -26,7 +26,7 @@ import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
 import org.jetuml.geom.Dimension;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.rendering.StringRenderer.Decoration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,8 +56,8 @@ public class TestStringViewer
 	@BeforeEach
 	public void setup()
 	{
-		topCenter = new StringRenderer(TextPosition.TOP_CENTER);
-		topCenterBold = new StringRenderer(TextPosition.TOP_CENTER, Decoration.BOLD);
+		topCenter = new StringRenderer(Alignment.CENTER);
+		topCenterBold = new StringRenderer(Alignment.CENTER, Decoration.BOLD);
 	}
 	
 	@AfterAll

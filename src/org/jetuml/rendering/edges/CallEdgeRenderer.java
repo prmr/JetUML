@@ -34,7 +34,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
@@ -57,8 +57,8 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
-	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
-	private static final StringRenderer TOP_CENTER_STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(Alignment.CENTER);
+	private static final StringRenderer TOP_CENTER_STRING_RENDERER = new StringRenderer(Alignment.LEFT);
 
 	private static final int LEFT_MARGIN = 5;
 	

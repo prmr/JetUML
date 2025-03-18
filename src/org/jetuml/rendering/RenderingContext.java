@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -122,6 +122,6 @@ public interface RenderingContext
 	 * @param pTextColor The color of the text.
 	 * @param pFont The font to use.
 	 */
-	void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, Color pTextColor, Font pFont, Point pAnchor);
+	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont, Point pAnchor);
 
 }

@@ -24,7 +24,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -60,7 +60,7 @@ public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 	private static final int DEGREES_270 = 270;
 	
 	private static final int RADIANS_TO_PIXELS = 7;
-	private static final StringRenderer STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
+	private static final StringRenderer STRING_VIEWER = new StringRenderer(Alignment.CENTER);
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.

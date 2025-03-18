@@ -32,7 +32,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.GraphicsRenderingContext;
@@ -62,7 +62,7 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final StringRenderer LABEL_RENDERER = 
-			new StringRenderer(TextPosition.TOP_CENTER, Decoration.UNDERLINED);
+			new StringRenderer(Alignment.CENTER, Decoration.UNDERLINED);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.

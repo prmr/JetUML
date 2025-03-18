@@ -22,7 +22,7 @@ package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
@@ -46,7 +46,7 @@ public abstract class AbstractEdgeRenderer implements EdgeRenderer
 	protected static final int BUTTON_SIZE = 25;
 	protected static final int OFFSET = 3;
 	protected static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
-	private static final StringRenderer SIZE_TESTER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer SIZE_TESTER = new StringRenderer(Alignment.LEFT);
 	
 	private static final int DEGREES_180 = 180;
 	

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -151,7 +151,7 @@ public class SvgRenderingContext implements RenderingContext
 	}
 
 	@Override
-	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition, 
+	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, 
 			Color pTextColor, Font pFont, Point pAnchor)
 	{
 		/*

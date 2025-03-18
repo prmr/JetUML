@@ -30,7 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingContext;
@@ -44,7 +44,7 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_CENTER);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER);
 	
 	/**
 	 * @param pParent Renderer for the parent diagram.

@@ -27,7 +27,7 @@ import java.util.Optional;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.TypeNode;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.gui.ColorScheme;
@@ -51,14 +51,14 @@ public class TypeNodeRenderer extends AbstractNodeRenderer
 	private static final int TOP_MARGIN = 5;
 	private static final int HORIZONTAL_PADDING = 7;
 	private static final int VERTICAL_PADDING = 6;
-	private static final StringRenderer TYPE_NAME_RENDERER = new StringRenderer(TextPosition.TOP_CENTER, Decoration.BOLD);
+	private static final StringRenderer TYPE_NAME_RENDERER = new StringRenderer(Alignment.CENTER, Decoration.BOLD);
 	private static final StringRenderer ITALIC_NAME_RENDERER = new StringRenderer(
-			TextPosition.TOP_CENTER, Decoration.BOLD, Decoration.ITALIC);
-	private static final StringRenderer STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
+			Alignment.CENTER, Decoration.BOLD, Decoration.ITALIC);
+	private static final StringRenderer STRING_RENDERER = new StringRenderer(Alignment.LEFT);
 	private static final StringRenderer UNDERLINING_STRING_RENDERER = new StringRenderer(
-			TextPosition.TOP_LEFT, Decoration.UNDERLINED);
+			Alignment.LEFT, Decoration.UNDERLINED);
 	private static final StringRenderer ITALIC_STRING_RENDERER = new StringRenderer(
-			TextPosition.TOP_LEFT, Decoration.ITALIC);
+			Alignment.LEFT, Decoration.ITALIC);
 	private static final String ITALIC_MARKUP = "/";
 	private static final String UNDERLINE_MARKUP = "_";
 	

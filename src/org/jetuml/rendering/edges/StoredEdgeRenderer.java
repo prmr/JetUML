@@ -35,7 +35,7 @@ import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.SingleLabelEdge;
 import org.jetuml.diagram.edges.ThreeLabelEdge;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -62,9 +62,9 @@ import javafx.scene.shape.Shape;
  */
 public class StoredEdgeRenderer extends AbstractEdgeRenderer
 {
-	private static final StringRenderer TOP_CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
-	private static final StringRenderer BOTTOM_CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
-	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
+	private static final StringRenderer TOP_CENTERED_STRING_VIEWER = new StringRenderer(Alignment.CENTER);
+	private static final StringRenderer BOTTOM_CENTERED_STRING_VIEWER = new StringRenderer(Alignment.CENTER);
+	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = new StringRenderer(Alignment.LEFT);
 	private static final int SINGLE_CHAR_WIDTH = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").width();
 	private static final int SIGLE_CHAR_HEIGHT = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
 	private static final int DEGREES_180 = 180;

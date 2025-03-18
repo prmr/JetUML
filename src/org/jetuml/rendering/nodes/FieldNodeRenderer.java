@@ -25,7 +25,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
@@ -49,9 +49,9 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
 	private static final int XGAP = 5;
-	private static final StringRenderer VALUE_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
-	private static final StringRenderer NAME_VIEWER = new StringRenderer(TextPosition.TOP_LEFT);
-	private static final StringRenderer EQUALS_VIEWER = new StringRenderer(TextPosition.TOP_CENTER);
+	private static final StringRenderer VALUE_VIEWER = new StringRenderer(Alignment.LEFT);
+	private static final StringRenderer NAME_VIEWER = new StringRenderer(Alignment.LEFT);
+	private static final StringRenderer EQUALS_VIEWER = new StringRenderer(Alignment.CENTER);
 	
 	/**
 	 * @param pParent The renderer for the parent diagram.

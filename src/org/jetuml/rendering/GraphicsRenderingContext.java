@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.TextPosition;
+import org.jetuml.geom.Alignment;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -192,7 +192,7 @@ public class GraphicsRenderingContext implements RenderingContext
 	}
 	
 	@Override
-	public void drawText(String pText, Rectangle pBounds, TextPosition pTextPosition,
+	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition,
 			Color pTextColor, Font pFont, Point pAnchor)
 	{
 		assert pText != null && pTextPosition != null;
@@ -204,7 +204,7 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.setFill(pTextColor);
 		int anchorX = pBounds.x();
 		int anchorY = pBounds.y();
-		if (pTextPosition.isHorizontallyCentered())
+		if (pTextPosition == Alignment.CENTER)
 		{
 			anchorX = pBounds.center().x();
 		}
@@ -212,19 +212,15 @@ public class GraphicsRenderingContext implements RenderingContext
 		aContext.restore();
 	}
 	
-	private static TextAlignment getTextAlignment(TextPosition pTextPosition)
+	private static TextAlignment getTextAlignment(Alignment pTextPosition)
 	{
-		if (pTextPosition.isLeft())
+		if (pTextPosition == Alignment.LEFT)
 		{
 			return TextAlignment.LEFT;
 		}
-		else if (pTextPosition.isHorizontallyCentered())
-		{
-			return TextAlignment.CENTER;
-		}
 		else
 		{
-			return TextAlignment.RIGHT;
+			return TextAlignment.CENTER;
 		}
 	}
 }
