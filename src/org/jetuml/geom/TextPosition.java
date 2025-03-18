@@ -5,7 +5,7 @@ package org.jetuml.geom;
  */
 public enum TextPosition
 {
-	TOP_LEFT, TOP_CENTER, CENTER_LEFT, CENTER_CENTER, BOTTOM_LEFT, BOTTOM_CENTER;
+	TOP_LEFT, TOP_CENTER, CENTER_CENTER, BOTTOM_LEFT, BOTTOM_CENTER;
 
 	/**
 	 * @return true iif this object represents a top position.
@@ -20,7 +20,7 @@ public enum TextPosition
 	 */
 	public boolean isVerticallyCentered()
 	{
-		return this == CENTER_LEFT || this == CENTER_CENTER;
+		return this == CENTER_CENTER;
 	}
 
 	/**
@@ -36,7 +36,7 @@ public enum TextPosition
 	 */
 	public boolean isLeft()
 	{
-		return this == TOP_LEFT || this == CENTER_LEFT || this == BOTTOM_LEFT;
+		return this == TOP_LEFT || this == BOTTOM_LEFT;
 	}
 	
 	/**

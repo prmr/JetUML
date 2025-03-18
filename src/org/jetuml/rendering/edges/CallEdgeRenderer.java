@@ -58,7 +58,7 @@ import javafx.scene.shape.Shape;
 public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
 	private static final StringRenderer CENTERED_STRING_VIEWER = new StringRenderer(TextPosition.CENTER_CENTER);
-	private static final StringRenderer LEFT_CENTER_STRING_RENDERER = new StringRenderer(TextPosition.CENTER_LEFT);
+	private static final StringRenderer TOP_CENTER_STRING_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
 
 	private static final int LEFT_MARGIN = 5;
 	
@@ -139,7 +139,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	 */
 	private Rectangle getSelfEdgeLabelBox(CallEdge pEdge)
 	{
-		Dimension dimensions = LEFT_CENTER_STRING_RENDERER.getDimension(pEdge.getMiddleLabel());
+		Dimension dimensions = TOP_CENTER_STRING_RENDERER.getDimension(pEdge.getMiddleLabel());
 		Point[] points = getPoints(pEdge);
 		int x = points[1].x() + LEFT_MARGIN; // The extent of the self edge plus a margin
 		int y = (points[1].y() + points[2].y())/2 -dimensions.height() / 2; // Align box with center of edge
@@ -175,7 +175,7 @@ public final class CallEdgeRenderer extends AbstractEdgeRenderer
 	{
 		if( pEdge.isSelfEdge() )
 		{
-			LEFT_CENTER_STRING_RENDERER.draw(pEdge.getMiddleLabel(), getSelfEdgeLabelBox(pEdge), pContext);
+			TOP_CENTER_STRING_RENDERER.draw(pEdge.getMiddleLabel(), getSelfEdgeLabelBox(pEdge), pContext);
 		}
 		else
 		{

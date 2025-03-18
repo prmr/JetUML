@@ -50,7 +50,7 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	protected static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	protected static final int DEFAULT_TOP_WIDTH = 60;
 	protected static final int HORIZONTAL_PADDING = 3;
-	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.CENTER_LEFT);
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(TextPosition.TOP_LEFT);
 	
 	/**
 	 * @param pParent The rendere for the diagram that contains this package node.
