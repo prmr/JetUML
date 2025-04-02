@@ -34,12 +34,13 @@ public class SvgRenderingContext implements RenderingContext
 	private static final String TEMPLATE_ROUNDED_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
 			+ " stroke=\"black\" fill=\"white\"/>";
 	private static final String TEMPLATE_ARC = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
-	private static final String TEMPLATE_TEXT_LEFT = "<text x=\"%d\" y=\"%d\" font-size=\"10pt\" "
+	private static final String TEMPLATE_TEXT = "<text x=\"%d\" y=\"%d\" "
+			+ "font-size=\"10pt\" "
 			+ "font-family=\"Arial, Helvetica, sans-serif\" "
-			+ "text-anchor=\"start\">%s</text>";
-	private static final String TEMPLATE_TEXT_CENTER = "<text x=\"%d\" y=\"%d\" font-size=\"10pt\" "
-			+ "font-family=\"Arial, Helvetica, sans-serif\" "
-			+ "text-anchor=\"middle\">%s</text>";
+			+ "text-anchor=\"%s\">%s</text>";
+//	private static final String TEMPLATE_TEXT_CENTER = "<text x=\"%d\" y=\"%d\" font-size=\"10pt\" "
+//			+ "font-family=\"Arial, Helvetica, sans-serif\" "
+//			+ "text-anchor=\"middle\">%s</text>";
 	private static final int DEGREES_360 = 360;
 	
 	private final StringJoiner aSvg = new StringJoiner("\n");
@@ -163,12 +164,15 @@ public class SvgRenderingContext implements RenderingContext
 		 */
 		if (pTextPosition == Alignment.LEFT)
 		{
-			aSvg.add(String.format(TEMPLATE_TEXT_LEFT, pBounds.x(), pBounds.maxY(), escapeText(pText)));
+			aSvg.add(String.format(TEMPLATE_TEXT, pBounds.x(), pBounds.maxY(),
+					"start",
+					escapeText(pText)));
 		}
 		else
 		{
-			aSvg.add(String.format(TEMPLATE_TEXT_CENTER, pBounds.center().x(), 
-					pBounds.maxY(), escapeText(pText)));
+			aSvg.add(String.format(TEMPLATE_TEXT, pBounds.center().x(), pBounds.maxY(), 
+					"middle",
+					escapeText(pText)));
 		}
 	}
 	
