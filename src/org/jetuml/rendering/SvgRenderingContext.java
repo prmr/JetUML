@@ -23,8 +23,9 @@ import javafx.scene.text.Font;
  */
 public class SvgRenderingContext implements RenderingContext
 {
-	private static final String ROOT_START_TEMPLATE = "<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">";
-	private static final String ROOT_END = "</svg>";
+	private static final String ROOT_START_TEMPLATE = "<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">\n"
+			+ "<g transform=\"translate(0.5,0.5)\">";
+	private static final String ROOT_END = "</g></svg>";
 	
 	private static final String TEMPLATE_LINE = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\"%s/>";
 	private static final String TEMPLATE_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\""
