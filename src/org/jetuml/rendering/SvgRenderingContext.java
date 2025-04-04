@@ -35,12 +35,10 @@ public class SvgRenderingContext implements RenderingContext
 			+ " stroke=\"black\" fill=\"white\"/>";
 	private static final String TEMPLATE_ARC = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
 	private static final String TEMPLATE_TEXT = "<text x=\"%d\" y=\"%d\" "
-			+ "font-size=\"10pt\" "
+			+ "font-size=\"%.2fpx\" "
 			+ "font-family=\"Arial, Helvetica, sans-serif\" "
+			+ "font-weight=\"%s\" "
 			+ "text-anchor=\"%s\">%s</text>";
-//	private static final String TEMPLATE_TEXT_CENTER = "<text x=\"%d\" y=\"%d\" font-size=\"10pt\" "
-//			+ "font-family=\"Arial, Helvetica, sans-serif\" "
-//			+ "text-anchor=\"middle\">%s</text>";
 	private static final int DEGREES_360 = 360;
 	
 	private final StringJoiner aSvg = new StringJoiner("\n");
@@ -159,21 +157,18 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, 
 			Color pTextColor, Font pFont, Point pAnchor)
 	{
-		/*
-		 * SVG positions the text from the bottom coordinate.
-		 */
-		if (pTextPosition == Alignment.LEFT)
+		// SVG positions the text from the bottom coordinate.
+		int anchorX = pBounds.x();
+		int anchorY = pBounds.maxY();
+		String anchor = "start";
+		if( pTextPosition == Alignment.CENTER )
 		{
-			aSvg.add(String.format(TEMPLATE_TEXT, pBounds.x(), pBounds.maxY(),
-					"start",
-					escapeText(pText)));
+			anchorX = pBounds.center().x();
+			anchor = "middle";
 		}
-		else
-		{
-			aSvg.add(String.format(TEMPLATE_TEXT, pBounds.center().x(), pBounds.maxY(), 
-					"middle",
-					escapeText(pText)));
-		}
+		String weight = "normal";
+
+		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize(), weight, anchor, escapeText(pText)));
 	}
 	
 	private static String escapeText(String pText)
