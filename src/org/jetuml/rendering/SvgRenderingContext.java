@@ -38,6 +38,7 @@ public class SvgRenderingContext implements RenderingContext
 			+ "font-size=\"%.2fpx\" "
 			+ "font-family=\"Arial, Helvetica, sans-serif\" "
 			+ "font-weight=\"%s\" "
+			+ "font-style=\"%s\" "
 			+ "text-anchor=\"%s\">%s</text>";
 	private static final int DEGREES_360 = 360;
 	
@@ -171,8 +172,13 @@ public class SvgRenderingContext implements RenderingContext
 		{
 			weight = "bold";
 		}
+		String style = "normal";
+		if (pFont.getStyle().toLowerCase().contains("italic"))
+		{
+			style = "italic";
+		}
 
-		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize(), weight, anchor, escapeText(pText)));
+		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize(), weight, style, anchor, escapeText(pText)));
 	}
 	
 	private static String escapeText(String pText)
