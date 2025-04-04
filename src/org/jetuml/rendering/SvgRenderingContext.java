@@ -167,6 +167,10 @@ public class SvgRenderingContext implements RenderingContext
 			anchor = "middle";
 		}
 		String weight = "normal";
+		if (pFont.getStyle().toLowerCase().contains("bold"))
+		{
+			weight = "bold";
+		}
 
 		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize(), weight, anchor, escapeText(pText)));
 	}
