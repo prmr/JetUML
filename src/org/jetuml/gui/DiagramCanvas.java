@@ -798,10 +798,9 @@ StringPreferenceChangeHandler
 	// TODO TEMPORARY
 	private void createSvgImage()
 	{
-		SvgRenderingContext context = new SvgRenderingContext(width(), height());
+		SvgRenderingContext context = new SvgRenderingContext(aDiagramBuilder.renderer().getBounds());
 		aDiagramBuilder.renderer().draw(context);
 		String svg = context.create();
-		System.out.println(svg);
 		try
 		{
 			Files.write(Path.of("test.svg"), svg.getBytes());

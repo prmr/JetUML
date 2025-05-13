@@ -22,7 +22,12 @@ import javafx.scene.text.Font;
  */
 public class SvgRenderingContext implements RenderingContext
 {
-	private static final String ROOT_START_TEMPLATE = "<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">\n"
+	private static final int BUFFER = 2;
+	
+	private static final String ROOT_START_TEMPLATE = "<svg "
+			+ "viewBox=\"%d %d %d %d\" "
+			+ "style=\"min-width:%dpx; max-width:%dpx\" "
+			+ "xmlns=\"http://www.w3.org/2000/svg\">\n"
 			+ "<g transform=\"translate(0.5,0.5)\">";
 	private static final String ROOT_END = "</g></svg>";
 	
@@ -45,13 +50,17 @@ public class SvgRenderingContext implements RenderingContext
 	private final StringJoiner aSvg = new StringJoiner("\n");
 	
 	/**
-	 * Creates an SVG image of the specified dimension.
-	 * 
-	 * @param pDimension The dimension of the SVG image, in pixels.
+	 * Creates an SVG image. TODO finish documentation
 	 */
-	public SvgRenderingContext(int pWidth, int pHeight)
+	public SvgRenderingContext(Rectangle pBounds)
 	{
-		aSvg.add(String.format(ROOT_START_TEMPLATE, pWidth, pHeight));
+		aSvg.add(String.format(ROOT_START_TEMPLATE, 
+				pBounds.x(), 
+				pBounds.y(), 
+				pBounds.width() + BUFFER,
+				pBounds.height() + BUFFER,
+				(pBounds.width() + BUFFER) * 2,
+				(pBounds.width() + BUFFER) * 2));
 	}
 	
 	@Override
