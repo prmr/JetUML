@@ -23,12 +23,13 @@ import javafx.scene.text.Font;
 public class SvgRenderingContext implements RenderingContext
 {
 	private static final int BUFFER = 2;
+	private static final float FONT_ADJUSTMENT = 0.25f;
 	
 	private static final String ROOT_START_TEMPLATE = "<svg "
 			+ "viewBox=\"%d %d %d %d\" "
 			+ "style=\"min-width:%dpx; max-width:%dpx\" "
 			+ "xmlns=\"http://www.w3.org/2000/svg\">\n"
-			+ "<g transform=\"translate(0.5,0.5)\">";
+			+ "<g transform=\"translate(0.5,0.5)\" stroke-width=\"0.5\">";
 	private static final String ROOT_END = "</g></svg>";
 	
 	private static final String TEMPLATE_LINE = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\"%s/>";
@@ -192,7 +193,7 @@ public class SvgRenderingContext implements RenderingContext
 			style = "italic";
 		}
 
-		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize(), weight, style, anchor, escapeText(pText)));
+		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize() - FONT_ADJUSTMENT, weight, style, anchor, escapeText(pText)));
 	}
 	
 	private static String escapeText(String pText)

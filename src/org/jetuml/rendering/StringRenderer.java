@@ -74,6 +74,7 @@ public final class StringRenderer
 	
 	/**
 	 * Draws the string inside a given bounding box. Does not draw a blank string.
+	 * Automatically splits lines and draws each separately.
 	 * 
 	 * @param pString The string to draw.
 	 * @param pBoundingBox the rectangle into which to place the string.
@@ -81,6 +82,18 @@ public final class StringRenderer
 	 */
 	public void draw(String pString, Rectangle pBoundingBox, RenderingContext pContext)
 	{
+		int currentY = pBoundingBox.y();
+		for (String line : pString.split("\n"))
+		{
+			drawSingleLine(line, new Rectangle(pBoundingBox.x(), currentY, pBoundingBox.width(), lineHeight()), pContext);
+			currentY += lineHeight();
+		}
+	}
+	
+	private void drawSingleLine(String pString, Rectangle pBoundingBox, RenderingContext pContext)
+	{
+		assert !pString.contains("\n");
+		
 		if (pString.trim().isBlank())
 		{
 			return;
