@@ -21,9 +21,6 @@
 package org.jetuml.gui;
 import static java.util.stream.Collectors.toList;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -794,21 +791,15 @@ StringPreferenceChangeHandler
 		createSvgImage();
 		return image;
 	}
-	
-	// TODO TEMPORARY
-	private void createSvgImage()
+
+	/**
+	 * @return A string that contains an SVG description of the rendered diagram.
+	 */
+	public String createSvgImage()
 	{
 		SvgRenderingContext context = new SvgRenderingContext(aDiagramBuilder.renderer().getBounds());
 		aDiagramBuilder.renderer().draw(context);
-		String svg = context.create();
-		try
-		{
-			Files.write(Path.of("test.svg"), svg.getBytes());
-		}
-		catch (IOException exception)
-		{
-			System.out.println(exception);
-		}
+		return context.create();
 	}
 	
 	/**

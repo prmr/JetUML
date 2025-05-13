@@ -391,4 +391,12 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	{
 		return aDiagramCanvas.createImage();
 	}
+	
+	/**
+	 * @return An SVG representation of this canvas.
+	 */
+	public String createSvgImage()
+	{
+		return aDiagramCanvas.createSvgImage();
+	}
 }	        

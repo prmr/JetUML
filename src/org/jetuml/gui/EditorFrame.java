@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +84,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	private static final String KEY_LAST_IMAGE_FORMAT = "lastImageFormat";
 	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide-topics.html";
 	
-	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
+	private static final String[] IMAGE_FORMATS = validFormats("png", "svg", "jpg", "gif", "bmp");
 	
 	private final Stage aMainStage;
 	private final Stage aDialogStage;
@@ -141,14 +142,14 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
-	 * claims to recognized the format */
+	 * claims to recognize the format */
 	private static String[] validFormats(String... pDesiredFormats)
 	{
 		List<String> recognizedWriters = Arrays.asList(ImageIO.getWriterFormatNames());
 		List<String> validFormats = new ArrayList<>();
 		for( String format : pDesiredFormats )
 		{
-			if( recognizedWriters.contains(format))
+			if( recognizedWriters.contains(format) || "svg".equals(format))
 			{
 				validFormats.add(format);
 			}
@@ -588,26 +589,33 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
-			BufferedImage image = getBufferedImage(frame); 
-			if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
+			if ("svg".equals(format))
 			{
-				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
-				Graphics2D graphics = imageRGB.createGraphics();
-				graphics.drawImage(image, 0,  0, null);
-				ImageIO.write(imageRGB, format, out);
-				graphics.dispose();
-			}
-			else if("bmp".equals(format))	// to correct the BufferedImage type
-			{
-				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-				Graphics2D graphics = imageRGB.createGraphics();
-				graphics.drawImage(image, 0, 0, Color.WHITE, null);
-				ImageIO.write(imageRGB, format, out);
-				graphics.dispose();
+				out.write(frame.createSvgImage().getBytes(StandardCharsets.UTF_8));
 			}
 			else
 			{
-				ImageIO.write(image, format, out);
+				BufferedImage image = getBufferedImage(frame); 
+				if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
+				{
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
+					Graphics2D graphics = imageRGB.createGraphics();
+					graphics.drawImage(image, 0,  0, null);
+					ImageIO.write(imageRGB, format, out);
+					graphics.dispose();
+				}
+				else if("bmp".equals(format))	// to correct the BufferedImage type
+				{
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+					Graphics2D graphics = imageRGB.createGraphics();
+					graphics.drawImage(image, 0, 0, Color.WHITE, null);
+					ImageIO.write(imageRGB, format, out);
+					graphics.dispose();
+				}
+				else
+				{
+					ImageIO.write(image, format, out);
+				}
 			}
 		} 
 		catch(IOException exception) 
