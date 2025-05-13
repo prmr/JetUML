@@ -86,7 +86,7 @@ public final class StringRenderer
 			return;
 		}
 		pContext.drawText(pString, pBoundingBox, aAlign, ColorScheme.get().stroke(),
-				font());
+				font(), fontDimension());
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{

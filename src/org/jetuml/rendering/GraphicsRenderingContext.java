@@ -192,7 +192,7 @@ public class GraphicsRenderingContext implements RenderingContext
 	
 	@Override
 	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition,
-			Color pTextColor, Font pFont)
+			Color pTextColor, Font pFont, FontDimension pDimension)
 	{
 		assert pText != null && pTextPosition != null;
 		assert pTextColor != null && pFont != null;

@@ -39,7 +39,8 @@ import javafx.scene.text.Font;
  * (e.g., lines) for performance reasons: to avoid creating an object for every
  * call to a rendering primitive.
  */
-public interface RenderingContext {
+public interface RenderingContext 
+{
 	/**
 	 * Stroke a line with a specified color and line style.
 	 * 
@@ -124,6 +125,6 @@ public interface RenderingContext {
 	 * @param pFont The font to use.
 	 * @param pFontDimension The dimension of pFont.
 	 */
-	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont);
+	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont, FontDimension pFontDimension);
 
 }

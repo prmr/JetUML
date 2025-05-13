@@ -156,7 +156,7 @@ public class SvgRenderingContext implements RenderingContext
 
 	@Override
 	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, 
-			Color pTextColor, Font pFont)
+			Color pTextColor, Font pFont, FontDimension pDimension)
 	{
 		// SVG positions the text from the bottom coordinate.
 		int anchorX = pBounds.x();
