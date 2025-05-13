@@ -2,29 +2,28 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  ******************************************************************************/
 package org.jetuml.rendering;
 
 import java.util.Optional;
 
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.Alignment;
+import org.jetuml.geom.Rectangle;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -32,16 +31,15 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 
 /**
- * Object that can serve as a target for all drawing operations. This
- * interface contains rendering operations of two types: stroking a line or
- * drawing a figure, which is equivalent to filling and stroking.
+ * Object that can serve as a target for all drawing operations. This interface
+ * contains rendering operations of two types: stroking a line or drawing a
+ * figure, which is equivalent to filling and stroking.
  * 
  * The signature of some methods takes coordinates instead of geometric elements
- * (e.g., lines) for performance reasons: to avoid creating an object for every call
- * to a rendering primitive. 
+ * (e.g., lines) for performance reasons: to avoid creating an object for every
+ * call to a rendering primitive.
  */
-public interface RenderingContext
-{
+public interface RenderingContext {
 	/**
 	 * Stroke a line with a specified color and line style.
 	 * 
@@ -80,8 +78,10 @@ public interface RenderingContext
 	 * @param pCenterX The x coordinate of the center of the arc
 	 * @param pCenterY The y coordinate of the center of the arc
 	 * @param pRadius The radius of the arc, in pixels.
-	 * @param pStartAngle The start angle in degrees, 0 being at the bottom middle of the circle.
-	 * @param pLength The length of the arc in degrees, moving counter-clockwise from the start angle.
+	 * @param pStartAngle The start angle in degrees, 0 being at the bottom
+	 * middle of the circle.
+	 * @param pLength The length of the arc in degrees, moving counter-clockwise
+	 * from the start angle.
 	 * @param pStrokeColor The color of the stroke
 	 */
 	void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor);
@@ -114,14 +114,16 @@ public interface RenderingContext
 			Optional<DropShadow> pDropShadow);
 
 	/**
-	 * Draw pText.
+	 * Draw pText within pBounds. The text should be centered vertically within
+	 * pBounds and aligned horizontally according to pTextPosition.
 	 * 
 	 * @param pText The text to draw
 	 * @param pBounds The box in which to draw the text.
 	 * @param pTextPosition The position of the text within pBounds.
 	 * @param pTextColor The color of the text.
 	 * @param pFont The font to use.
+	 * @param pFontDimension The dimension of pFont.
 	 */
-	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont, Point pAnchor);
+	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont);
 
 }

@@ -27,11 +27,10 @@ import org.jetuml.annotations.Immutable;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
+import org.jetuml.geom.Alignment;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.GeomUtils;
-import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.geom.Alignment;
 import org.jetuml.gui.ColorScheme;
 
 import javafx.geometry.Bounds;
@@ -56,7 +55,7 @@ public final class StringRenderer
 	{
 		BOLD, ITALIC, UNDERLINED
 	}
-
+	
 	private final Alignment aAlign;
 	private final EnumSet<Decoration> aDecorations;
 
@@ -86,9 +85,8 @@ public final class StringRenderer
 		{
 			return;
 		}
-		Point anchor = aAlign.getAnchor(pBoundingBox);
 		pContext.drawText(pString, pBoundingBox, aAlign, ColorScheme.get().stroke(),
-				font(), anchor);
+				font());
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{
@@ -143,6 +141,14 @@ public final class StringRenderer
 	public int lineHeight()
 	{
 		return getDimension("|").height();
+	}
+	
+	/**
+	 * @return The dimensions of the current font.
+	 */
+	public FontDimension fontDimension()
+	{
+		return new FontDimension(lineHeight(), baselineOffset(font()));
 	}
 	
 	private Font font()

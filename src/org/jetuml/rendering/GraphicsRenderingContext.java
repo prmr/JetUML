@@ -22,9 +22,8 @@ package org.jetuml.rendering;
 
 import java.util.Optional;
 
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.Alignment;
+import org.jetuml.geom.Rectangle;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -193,7 +192,7 @@ public class GraphicsRenderingContext implements RenderingContext
 	
 	@Override
 	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition,
-			Color pTextColor, Font pFont, Point pAnchor)
+			Color pTextColor, Font pFont)
 	{
 		assert pText != null && pTextPosition != null;
 		assert pTextColor != null && pFont != null;

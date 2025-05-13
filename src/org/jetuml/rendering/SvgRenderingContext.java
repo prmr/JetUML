@@ -5,9 +5,8 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.Alignment;
+import org.jetuml.geom.Rectangle;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -157,7 +156,7 @@ public class SvgRenderingContext implements RenderingContext
 
 	@Override
 	public void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, 
-			Color pTextColor, Font pFont, Point pAnchor)
+			Color pTextColor, Font pFont)
 	{
 		// SVG positions the text from the bottom coordinate.
 		int anchorX = pBounds.x();
