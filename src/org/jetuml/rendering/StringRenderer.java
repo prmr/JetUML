@@ -90,27 +90,15 @@ public final class StringRenderer
 
 		if( aDecorations.contains(Decoration.UNDERLINED) && pString.trim().length() > 0 )
 		{
-			int xOffset = 0;
-			int yOffset = 0;
-			Dimension dimension = getDimension(pString);
-			int baselineOffset = baselineOffset(font());
-			if( aAlign == Alignment.CENTER )
+			final int textWidth = getDimension(pString).width();
+			int x1 = pBoundingBox.x();
+			if (aAlign == Alignment.CENTER)
 			{
-				xOffset = dimension.width() / 2;
+				x1 += (pBoundingBox.width() - textWidth)/2;
 			}
-
-			yOffset = baselineOffset + 2;
-			int textX = 0;
-			int textY = 0;
-			if( aAlign == Alignment.CENTER )
-			{
-				textX = pBoundingBox.width() / 2;
-			}
-
-			pContext.strokeLine(pBoundingBox.x() + textX - xOffset, pBoundingBox.y() + textY + yOffset,
-					pBoundingBox.x()+ textX - xOffset + dimension.width(), pBoundingBox.y() + textY + yOffset, 
-					ColorScheme.get().stroke(),
-					LineStyle.SOLID);
+			/* We position the underline in the middle of the baseline offset */
+			int y = pBoundingBox.maxY() - fontDimension().baselineOffset()/2;
+			pContext.strokeLine(x1, y, x1 + textWidth, y, ColorScheme.get().stroke(), LineStyle.SOLID);
 		}
 	}
 
@@ -148,7 +136,7 @@ public final class StringRenderer
 	 */
 	public FontDimension fontDimension()
 	{
-		return new FontDimension(lineHeight(), baselineOffset(font()));
+		return new FontDimension(lineHeight(), lineHeight()- baselineOffset(font()));
 	}
 	
 	private Font font()

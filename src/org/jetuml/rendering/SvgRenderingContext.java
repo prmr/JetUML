@@ -160,7 +160,7 @@ public class SvgRenderingContext implements RenderingContext
 	{
 		// SVG positions the text from the bottom coordinate.
 		int anchorX = pBounds.x();
-		int anchorY = pBounds.maxY();
+		int anchorY = pBounds.maxY() - pDimension.baselineOffset();
 		String anchor = "start";
 		if( pTextPosition == Alignment.CENTER )
 		{
