@@ -76,7 +76,6 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pDropShadow)
 	{
-		// TODO Add drop shadow
 		aSvg.add(String.format(TEMPLATE_RECTANGLE, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
 	}
 
@@ -84,7 +83,6 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawOval(int pX, int pY, int pWidth, int pHeight, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pShadow)
 	{
-		// TODO Add drop shadow
 		String color = "white";
 		if (pFillColor != Color.WHITE)
 		{
@@ -150,7 +148,6 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawRoundedRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pDropShadow)
 	{
-		// TODO Add drop shadow
 		aSvg.add(String.format(TEMPLATE_ROUNDED_RECTANGLE, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
 	}
 
