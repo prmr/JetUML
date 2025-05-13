@@ -146,9 +146,17 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawClosedPath(Path pPath, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow)
 	{
 		String color = "white";
-		if (pFillColor != Color.WHITE)
+		if (pFillColor == Color.WHITE)
+		{
+			color = "white";
+		}
+		else if (pFillColor == Color.BLACK)
 		{
 			color = "black";
+		}
+		else 
+		{
+			color = "rgb(90%, 90%, 60%)"; // The only other color is for notes.
 		}
 		strokePath(pPath, LineStyle.SOLID, color);
 	}
