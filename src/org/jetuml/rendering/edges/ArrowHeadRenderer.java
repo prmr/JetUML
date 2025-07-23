@@ -61,13 +61,21 @@ public final class ArrowHeadRenderer
 	{
 		assert pContext != null && pArrowHead != null && pAxis != null;
 		
+		// Don't draw anything if the path is empty, which is the case
+		// if there's no arrowhead.
+		Path path = getPath(pArrowHead, pAxis);
+		if (path.getElements().isEmpty())
+		{
+			return;
+		}
+		
 		if(pArrowHead.isFilled()) 
 		{
-			pContext.drawClosedPath(getPath(pArrowHead, pAxis), Color.BLACK, ColorScheme.get().stroke(), Optional.empty());
+			pContext.drawClosedPath(path, Color.BLACK, ColorScheme.get().stroke(), Optional.empty());
 		}
 		else 
 		{
-			pContext.drawClosedPath(getPath(pArrowHead, pAxis), Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
+			pContext.drawClosedPath(path, Color.WHITE, ColorScheme.get().stroke(), Optional.empty());
 		}
 	}
 	
@@ -81,17 +89,7 @@ public final class ArrowHeadRenderer
 	public static void draw(RenderingContext pContext, ArrowHead pArrowHead, Point pPoint1, Point pPoint2)
 	{
 		assert pContext != null && pArrowHead != null && pPoint1 != null && pPoint2 != null;
-		
-		if(pArrowHead.isFilled()) 
-		{
-			pContext.drawClosedPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.BLACK, 
-					ColorScheme.get().stroke(), Optional.empty());
-		}
-		else 
-		{
-			pContext.drawClosedPath(getPath(pArrowHead, new Line(pPoint1, pPoint2)), Color.WHITE, 
-					ColorScheme.get().stroke(), Optional.empty());
-		}
+		draw(pContext, pArrowHead, new Line(pPoint1, pPoint2));
 	}
 	
 	/**
