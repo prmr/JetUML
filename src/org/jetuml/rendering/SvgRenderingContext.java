@@ -22,52 +22,50 @@ import javafx.scene.text.Font;
  */
 public class SvgRenderingContext implements RenderingContext
 {
-	private static final int BUFFER = 2;
+	/* For drop shadows, we use an overlay with a Gaussian filter because
+	 * the dropShadow SVG filter is not uniformly supported. When it becomes
+	 * more widely supported to convert SVG images to PDF, for example, this
+	 * class can be revised to use the feDropShadow filter instead. 
+	 */
+	
+	/* Margin of white space around the diagram, in pixels. */
+	private static final int MARGIN = 7;
+	
+	/* Amount of pixels to subtract from the font size, to make sure it fits. */
 	private static final float FONT_ADJUSTMENT = 0.25f;
-	
-	private static final String ROOT_START_TEMPLATE = "<svg "
-			+ "viewBox=\"%d %d %d %d\" "
-			+ "style=\"min-width:%dpx; max-width:%dpx\" "
-			+ "xmlns=\"http://www.w3.org/2000/svg\">\n"
-			+ "<g transform=\"translate(0.5,0.5)\" stroke-width=\"0.5\">";
-	private static final String ROOT_END = "</g></svg>";
-	
-	private static final String TEMPLATE_LINE = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\"%s/>";
-	private static final String TEMPLATE_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\""
-			+ " stroke=\"black\" fill=\"white\"/>";
-	private static final String TEMPLATE_OVAL = "<ellipse rx=\"%d\" ry=\"%d\" cx=\"%d\" cy=\"%d\"" 
-			+ " stroke=\"black\" fill=\"%s\"/>";
-	private static final String TEMPLATE_ROUNDED_RECTANGLE = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
-			+ " stroke=\"black\" fill=\"white\"/>";
-	private static final String TEMPLATE_ARC = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
-	private static final String TEMPLATE_TEXT = "<text x=\"%d\" y=\"%d\" "
-			+ "font-size=\"%.2fpx\" "
-			+ "font-family=\"Arial, Helvetica, sans-serif\" "
-			+ "font-weight=\"%s\" "
-			+ "font-style=\"%s\" "
-			+ "text-anchor=\"%s\">%s</text>";
-	private static final int DEGREES_360 = 360;
 	
 	private final StringJoiner aSvg = new StringJoiner("\n");
 	
 	/**
-	 * Creates an SVG image. TODO finish documentation
+	 * Creates an SVG image using pViewport as the viewport area. The viewport is the area to 
+	 * render. The viewport effectively translates the coordinates of the diagram to render
+	 * in the final SVG image.
+	 * @param pViewport A rectangle describing the coordinate area to use as SVG viewport.
 	 */
-	public SvgRenderingContext(Rectangle pBounds)
+	public SvgRenderingContext(Rectangle pViewport)
 	{
-		aSvg.add(String.format(ROOT_START_TEMPLATE, 
-				pBounds.x(), 
-				pBounds.y(), 
-				pBounds.width() + BUFFER,
-				pBounds.height() + BUFFER,
-				(pBounds.width() + BUFFER) * 2,
-				(pBounds.width() + BUFFER) * 2));
+		final String rootStartTemplate = "<svg "
+				+ "viewBox=\"%d %d %d %d\" "
+				+ "xmlns=\"http://www.w3.org/2000/svg\">\n"
+				+ "<defs><filter id=\"shadow\" x=\"-10%%\" y=\"-10%%\">\n"
+				+ "  <feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1\" />\n"
+				+ "</filter></defs>"
+				+ "<g transform=\"translate(0.5,0.5)\" stroke-width=\"0.75\">";
+		
+		aSvg.add(String.format(rootStartTemplate, 
+				pViewport.x() - MARGIN, 
+				pViewport.y() - MARGIN, 
+				pViewport.width() + MARGIN * 2,
+				pViewport.height() + MARGIN * 2,
+				(pViewport.width() + MARGIN) * 2,
+				(pViewport.width() + MARGIN) * 2));
 	}
 	
 	@Override
 	public void strokeLine(int pX1, int pY1, int pX2, int pY2, Color pColor, LineStyle pStyle)
 	{
-		aSvg.add(String.format(TEMPLATE_LINE, pX1, pY1, pX2, pY2, lineStyle(pStyle)));
+		final String templateLine = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\"%s/>";
+		aSvg.add(String.format(templateLine, pX1, pY1, pX2, pY2, lineStyle(pStyle)));
 	}
 	
 	private static String lineStyle(LineStyle pLineStyle)
@@ -86,43 +84,67 @@ public class SvgRenderingContext implements RenderingContext
 	public void drawRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pDropShadow)
 	{
-		aSvg.add(String.format(TEMPLATE_RECTANGLE, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
+		final String templateRectangle = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\""
+				+ " stroke=\"black\" fill=\"white\"/>";
+		final String templateRectangleShadow = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\""
+				+ " stroke=\"none\" fill=\"lightgray\" style=\"filter:url(#shadow);\"/>";
+		pDropShadow.ifPresent(dropShadow -> 
+			aSvg.add(String.format(templateRectangleShadow, 
+					pRectangle.width(), pRectangle.height(), pRectangle.x()+2, pRectangle.y()+2)));
+		aSvg.add(String.format(templateRectangle, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
 	}
 
 	@Override
 	public void drawOval(int pX, int pY, int pWidth, int pHeight, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pShadow)
 	{
+		final String templateOval = "<ellipse rx=\"%d\" ry=\"%d\" cx=\"%d\" cy=\"%d\"" 
+				+ " stroke=\"black\" fill=\"%s\"/>";
+		final String templateOvalShadow = "<ellipse rx=\"%d\" ry=\"%d\" cx=\"%d\" cy=\"%d\"" 
+				+ " stroke=\"none\" fill=\"lightgray\" style=\"filter:url(#shadow);\"/>";
+		
 		String color = "white";
 		if (pFillColor != Color.WHITE)
 		{
 			color = "black";
 		}
-		aSvg.add(String.format(TEMPLATE_OVAL, pWidth/2, pHeight/2, pX+pWidth/2, pY+pHeight/2, color));
+		if (pShadow.isPresent())
+		{
+			aSvg.add(String.format(templateOvalShadow, pWidth/2, pHeight/2, pX+pWidth/2+2, pY+pHeight/2+2, color));
+		}
+		aSvg.add(String.format(templateOval, pWidth/2, pHeight/2, pX+pWidth/2, pY+pHeight/2, color));
 	}
 
 	@Override
 	public void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor)
 	{
+		final int fullCircle = 360; // Degrees
 		double startAngle = Math.toRadians(pStartAngle);
-		double endAngle = Math.toRadians((pStartAngle - pLength) % DEGREES_360);
+		double endAngle = Math.toRadians((pStartAngle - pLength) % fullCircle);
 		int x1 = (int) (pCenterX + Math.round(Math.sin(startAngle) * pRadius));
 		int y1 = (int) (pCenterY + Math.round(Math.cos(startAngle) * pRadius));
 		int x2 = (int) (pCenterX + Math.round(Math.sin(endAngle) * pRadius));
 		int y2 = (int) (pCenterY + Math.round(Math.cos(endAngle) * pRadius));
-		aSvg.add(String.format(TEMPLATE_ARC, x1, y1, pRadius, pRadius, x2, y2));
+		final String templateArc = "<path d=\"M %d %d A %d %d 0 1 1 %d %d\" stroke=\"black\" fill=\"none\"/>";
+		aSvg.add(String.format(templateArc, x1, y1, pRadius, pRadius, x2, y2));
 	}
 
 	@Override
 	public void strokePath(Path pPath, Color pStrokeColor, LineStyle pStyle)
 	{
-		strokePath(pPath, pStyle, "none");
+		strokePath(pPath, pStyle, "none", false);
 	}
 	
-	private void strokePath(Path pPath, LineStyle pStyle, String pFill)
+	private void strokePath(Path pPath, LineStyle pStyle, String pFill, boolean pShadow)
 	{
 		StringJoiner path = new StringJoiner(" ", "<path d=\"", 
 				String.format("\" stroke=\"black\" fill=\"%s\"%s/>", pFill, lineStyle(pStyle)));
+		if (pShadow)
+		{
+			path = new StringJoiner(" ", "<path d=\"", 
+					String.format("\" stroke=\"none\" fill=\"lightGray\"  "
+							+ "transform=\"translate(2 2)\" style=\"filter:url(#shadow);\"/>"));
+		}
 		for(PathElement element : pPath.getElements())
 		{
 			if (element instanceof MoveTo moveTo)
@@ -159,14 +181,24 @@ public class SvgRenderingContext implements RenderingContext
 		{
 			color = "rgb(90%, 90%, 60%)"; // The only other color is for notes.
 		}
-		strokePath(pPath, LineStyle.SOLID, color);
+		if (pDropShadow.isPresent())
+		{
+			strokePath(pPath, LineStyle.SOLID, color, true);
+		}
+		strokePath(pPath, LineStyle.SOLID, color, false);
 	}
 
 	@Override
 	public void drawRoundedRectangle(Rectangle pRectangle, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pDropShadow)
 	{
-		aSvg.add(String.format(TEMPLATE_ROUNDED_RECTANGLE, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
+		final String templateRoundedRectangle = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
+				+ " stroke=\"black\" fill=\"white\"/>";
+		final String templateRoundedRectangleShadow = "<rect width=\"%d\" height=\"%d\" x=\"%d\" y=\"%d\" rx=\"10\" ry=\"10\"" 
+				+ " stroke=\"none\" fill=\"lightGray\" style=\"filter:url(#shadow);\"/>";		
+		pDropShadow.ifPresent(shadow -> aSvg.add(String.format(templateRoundedRectangleShadow, 
+				pRectangle.width(), pRectangle.height(), pRectangle.x() + 2, pRectangle.y() +2)));
+		aSvg.add(String.format(templateRoundedRectangle, pRectangle.width(), pRectangle.height(), pRectangle.x(), pRectangle.y()));
 	}
 
 	@Override
@@ -192,8 +224,15 @@ public class SvgRenderingContext implements RenderingContext
 		{
 			style = "italic";
 		}
+		
+		final String templateText = "<text x=\"%d\" y=\"%d\" "
+				+ "font-size=\"%.2fpx\" "
+				+ "font-family=\"Arial, Helvetica, sans-serif\" "
+				+ "font-weight=\"%s\" "
+				+ "font-style=\"%s\" "
+				+ "text-anchor=\"%s\">%s</text>";
 
-		aSvg.add(String.format(TEMPLATE_TEXT, anchorX, anchorY, pFont.getSize() - FONT_ADJUSTMENT, weight, style, anchor, escapeText(pText)));
+		aSvg.add(String.format(templateText, anchorX, anchorY, pFont.getSize() - FONT_ADJUSTMENT, weight, style, anchor, escapeText(pText)));
 	}
 	
 	private static String escapeText(String pText)
@@ -206,6 +245,7 @@ public class SvgRenderingContext implements RenderingContext
 	 */
 	public String create()
 	{
-		return aSvg.add(ROOT_END).toString();
+		final String rootEnd = "</g></svg>";
+		return aSvg.add(rootEnd).toString();
 	}
 }
