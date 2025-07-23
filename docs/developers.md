@@ -39,7 +39,7 @@ Run this from the git repo root (where `FXMODS` points to the JavaFX mods direct
 
 ```
 set FXMODS="C:\local\Java\javafx-jmods-21.0.2"
-jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.6 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
+jpackage --module-path %FXMODS%;bin\main --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
 ```
 
 ### Linux
