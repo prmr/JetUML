@@ -8,7 +8,7 @@ JetUML stores diagrams in JSON notation using a format specified using [JSONSche
 
 ## Schemas
 
-The schemas can be used to interpret and [validate](https://json-schema.org/implementations.html#validators) diagram files outside of JetUML.
+The schemas can be used to interpret and validate diagram files outside of JetUML.
 
 * [Class Diagram](schema/3.0/class.schema.json) (`.class.jet`)
 * [Object Diagram](schema/3.0/objectschema.json) (`.object.jet`)
@@ -36,7 +36,7 @@ This class diagram has the following encoding.
 ```json
 {
     "diagram": "ClassDiagram",
-    "version": "3.5",
+    "version": "3.9",
 ```
 Each diagram file has four required attributes: `diagram`, `version`, `nodes`, `edges`. The values allowed for `diagram` are encoded in the enumerated values of type `DiagramType`.
 

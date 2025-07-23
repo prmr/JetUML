@@ -15,7 +15,7 @@ JetUML is distributed in two formats:
 
 ### Thin Jar
 
-*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 17 or above running on your system.* 
+*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 21 or above installed on your system.* 
 
 Download file `JetUML-<Version>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. 
 
@@ -28,13 +28,5 @@ javaw --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.sw
 Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
 
 ```shell
-javaw --module-path "C:\local\Java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.4.jar
+javaw --module-path "C:\local\Java\javafx-sdk-21.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.9.jar
 ```
-
-## Package Managers
-
-Some systems may have a pre-packaged version of JetUML available.
-
-| System | Link | Maintainers |
-|--------|------|-------------|
-| Arch   | [aur.archlinux.org/packages/jetuml](https://aur.archlinux.org/packages/jetuml) | Community   |

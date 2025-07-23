@@ -27,7 +27,7 @@ The current version of JetUML is built with Java 21, the latest long-term suppor
 1. All committed code must respect all the JetUML style guidelines. These are available as a [style file](../style/Style.xml) for the [Checkstyle Eclipse Plug-in](https://marketplace.eclipse.org/content/checkstyle-plug). Before committing code for JetUML, make sure to install the plug-in, activate it, and check for any warning.
 2. All commits must be associated with an issues using an issue tag as the first token in the commit comment, using the format `[$NB]` where `NB` is the issue number. For example, [`[#519] Add constraint for connection to notes`](https://github.com/prmr/JetUML/commit/6af09b1289153cb5fd0aa5b0683da77bca2e5e58).
 3. Ensure that any new file includes the [copyright notice](#copyright-notice).
-3. Ensure that all unit test pass.
+3. Ensure that all unit tests pass.
 
 ## Packaging the Application
 
@@ -49,7 +49,7 @@ Run this from the git repo root (adjust paths as needed):
 ``` 
 FXMODS=/usr/lib/jvm/javafx-jmods-21.0.2
 JMODS=/usr/lib/jvm/jdk-17-oracle-x64/jmods
-jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.7 --icon icons/jet.png 
+jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --icon icons/jet.png 
 ```
 
 ### Mac
@@ -57,12 +57,10 @@ jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module j
 Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
 
 ```
-$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
+$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
 ```
 
 ## Copyright Notice
-
-*To be used in the Eclipse copyright tool.*
 
 ```
 JetUML - A desktop application for fast UML diagramming.
@@ -87,5 +85,5 @@ along with this program.  If not, see http://www.gnu.org/licenses.
 
 ## See Also
 
-* [Contributing Guidelines](docs/CONTRIBUTING)
-* [Architecture Description](/docs/architecture)
+* [Contributing Guidelines](CONTRIBUTING.md)
+* [Architecture Description](architecture.md)
