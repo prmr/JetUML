@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2022 by McGill University.
+ * Copyright (C) 2025 by McGill University.
  * 
  * See: https://github.com/prmr/JetUML
  *
@@ -17,7 +17,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-
 package org.jetuml.persistence.json;
 
 /**
