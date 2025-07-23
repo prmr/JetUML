@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2025 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
  */
 public enum CollectionAssertions
 {	
-	
 	/** True is the collection is empty. Does not require any argument. */
 	isEmpty( CollectionAssertions::isEmpty ),
 	
