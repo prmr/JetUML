@@ -22,12 +22,15 @@ package org.jetuml.application;
 
 import java.util.StringJoiner;
 
+import org.jetuml.annotations.Immutable;
+
 /**
  * Represents a version of JetUML. 
  * @param major The major version number.
  * @param minor The minor version number.
  * @param patch The patch number.
  */
+@Immutable
 public record Version(int major, int minor, int patch)
 {	
 	@Override

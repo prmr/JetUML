@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetuml.annotations.Composite;
+
 /**
  * An operation that is composed of other operations, following
  * the Composite Design Pattern.
@@ -33,6 +35,7 @@ import java.util.List;
  * undoes all the sub-operation in the reverse order in which 
  * they were added.
  */
+@Composite
 public class CompoundOperation implements DiagramOperation
 {
 	private List<DiagramOperation> aOperations = new ArrayList<>();

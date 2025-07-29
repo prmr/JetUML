@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import org.jetuml.annotations.Immutable;
 import org.jetuml.geom.GeomUtils;
 
 /**
@@ -30,6 +31,7 @@ import org.jetuml.geom.GeomUtils;
  * then discarded. Both dimensions of the viewport must be equal to or
  * smaller than the canvas's.
  */
+@Immutable
 public final class ViewportProjection
 {
 	private final int aViewportWidth;

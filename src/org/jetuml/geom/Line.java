@@ -23,11 +23,14 @@ package org.jetuml.geom;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
+import org.jetuml.annotations.Immutable;
+
 /**
  * A pair of connected points in the integer space.
  * @param point1 The first point in the line. Conceptually the "start" of the line. point1 != null
  * @param point2 The second point in the line. Conceptually the "end" of the line. point2 != null
  */
+@Immutable
 public record Line(Point point1, Point point2)
 {
 	/**

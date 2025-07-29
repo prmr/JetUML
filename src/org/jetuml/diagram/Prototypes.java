@@ -25,6 +25,7 @@ import static org.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import org.jetuml.annotations.Singleton;
 import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.CallEdge;
@@ -55,6 +56,7 @@ import org.jetuml.diagram.nodes.UseCaseNode;
 /**
  * Prototype objects for creating diagram elements.
  */
+@Singleton
 public final class Prototypes
 {   // CSOFF:
 	private static final Prototypes INSTANCE = new Prototypes();

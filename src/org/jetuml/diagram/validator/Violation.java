@@ -20,11 +20,13 @@
  *******************************************************************************/
 package org.jetuml.diagram.validator;
 
+import org.jetuml.annotations.Immutable;
 import org.jetuml.application.ApplicationResources;
 
 /**
  * Represents a problem that invalidates a diagram for rendering in JetUML.
  */
+@Immutable
 public final class Violation
 {
 	private static final String KEY_PREFIX = "error.";

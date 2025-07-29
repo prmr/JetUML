@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Documents a class as a singleton that realizes the  
+ * Indicates that a class is a singleton as defined by the   
  * Singleton design pattern.
  */
 @Target(ElementType.TYPE)

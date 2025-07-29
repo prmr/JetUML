@@ -20,11 +20,14 @@
  *******************************************************************************/
 package org.jetuml.geom;
 
+import org.jetuml.annotations.Immutable;
+
 /**
  * A framework independent representation of a point in integer space. 
  * @param x The x-coordinate of the point.
  * @param y The y-coordinate of the point.
  */
+@Immutable
 public record Point(int x, int y)
 {
 	/**

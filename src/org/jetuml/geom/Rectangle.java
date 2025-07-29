@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.geom;
 
+import org.jetuml.annotations.Immutable;
+
 /**
  * A framework independent representation of a rectangle in 
  * 2-dimensional integer space.
@@ -28,6 +30,7 @@ package org.jetuml.geom;
  * @param width The width of the rectangle. width >=0 
  * @param height The height of the rectangle. height >= 0
  */
+@Immutable
 public record Rectangle(int x, int y, int width, int height)
 {
 	/**

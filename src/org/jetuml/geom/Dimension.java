@@ -22,11 +22,14 @@ package org.jetuml.geom;
 
 import static java.lang.Math.max;
 
+import org.jetuml.annotations.Immutable;
+
 /**
  * Represents a pair of width and height.
  * @param width The width. >= 0
  * @param height The height. >= 0
  */
+@Immutable
 public record Dimension(int width, int height)
 {
 	public static final Dimension NULL = new Dimension(0, 0);

@@ -26,11 +26,13 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 import org.jetuml.JetUML;
+import org.jetuml.annotations.Singleton;
 
 /**
  * A Singleton that manages all user preferences global to
  * the application.
  */
+@Singleton
 public final class UserPreferences
 {
 	public static final String DEFAULT_FONT_NAME = "System";

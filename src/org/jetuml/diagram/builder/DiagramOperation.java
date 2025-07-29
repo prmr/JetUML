@@ -20,11 +20,14 @@
  *******************************************************************************/
 package org.jetuml.diagram.builder;
 
+import org.jetuml.annotations.Command;
+
 /**
  * Represents an operation to change a diagram, that
  * can be undone. Operations are only required to be valid
  * for a single execution and a single undoing in a row.
  */
+@Command
 public interface DiagramOperation
 {
 	/**
