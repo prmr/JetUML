@@ -1,6 +1,6 @@
 site_name: JetUML Documentation
 nav:
-  - About: index.md
+  - Home: index.md
   - Download and Installation: install.md
   - File Format: schemas.md
   - Contributing: CONTRIBUTING.md
