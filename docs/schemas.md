@@ -1,6 +1,7 @@
 # JetUML File Format
 
 JetUML uses an open file format to store diagram information. This means that anyone can:
+
 * Programmatically generate UML diagram files and open them in JetUML, or
 * Read and manipulate diagram files outside of JetUML.
 
@@ -19,6 +20,7 @@ The schemas can be used to interpret and validate diagram files outside of JetUM
 ## Diagram Validation in JetUML
 
 JetUML performs three types of validation when loading a diagram file:
+
 1. **Syntactic:** If the file does not contain well-formed JSON notation, a _syntactic error_ will be reported;
 2. **Structural:** If the JSON file can be read but the information it contains cannot be assembled into a diagram, a _structural error_ will be reported. An example of structural error is trying to add a node of an invalid type to a diagram (for example, a state transition edge to a class diagram). Most, but not all, structural errors would be detected by validating a file against the suitable schema.
 3. **Semantic:** JetUML only renders diagrams that respect a set of semantic diagramming rules. If a diagram file can be loaded and converted to a diagram, but this diagram violates one or more semantic rules, a _semantic error_ will be reported. An example of semantic error is a self-generalization (i.e., a class that generalizes itself). JetUML diagrams must be semantically valid to be rendered because the rendering requires some semantic properties to hold.
