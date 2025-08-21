@@ -4,7 +4,7 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 ## Privacy Policy
 
-JetUML does not collect _any_ information. The application only accesses the network to open web pages via the commands in the Help menu.
+JetUML does not collect any information. The application only accesses the network to open web pages via the commands in the Help menu.
 
 ## Installation Instructions
 

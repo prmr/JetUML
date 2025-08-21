@@ -17,10 +17,6 @@ A lightweight desktop application for interactively creating and editing diagram
 >
 > — Randall Hudson, Mitre Corporation
 
-## Privacy Policy
-
-JetUML does not collect any information, personal or otherwise. The application only accesses the network to open web pages via the commands in the Help menu.
-
 ## JetUML in the Literature
 
 * M.P. Robillard and K. Kutschera. **Lessons Learned in Migrating from Swing to JavaFX**. IEEE Software,  37 (3), 2020. *Reports on the experience of migrating the GUI to JavaFX*. [(pdf)](https://www.cs.mcgill.ca/~martin/papers/software2019.pdf)

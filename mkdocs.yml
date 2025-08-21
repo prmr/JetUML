@@ -1,9 +1,0 @@
-site_name: JetUML Documentation
-nav:
-  - Home: index.md
-  - Download and Installation: install.md
-  - File Format: schemas.md
-  - Contributing: CONTRIBUTING.md
-  - Developer Guide: developers.md
-  - Software Architecture: architecture.md
-theme: readthedocs
