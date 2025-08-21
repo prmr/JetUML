@@ -1,4 +1,12 @@
-# Installation Instructions
+# Download and Installation
+
+JetUML is available under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). The application is distributed as a Java archive (jar) file, or as native binary application on some operating systems. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page. Please consider supporting the project by starring [the GitHub repo](https://github.com/prmr/JetUML) and by [writing an endorsement](mailto:jetuml@cs.mcgill.ca).
+
+## Privacy Policy
+
+JetUML does not collect _any_ information. The application only accesses the network to open web pages via the commands in the Help menu.
+
+## Installation Instructions
 
 JetUML is distributed in two formats:
 
