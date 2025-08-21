@@ -1,15 +1,4 @@
-# JetUML
-
-JetUML is a simple free and open-source [UML](https://en.wikipedia.org/wiki/Unified_Modeling_Language) editor. It supports sketching software design ideas quickly and with a minimum of hassle. Diagrams can be exported to popular image formats and copied to the system clipboard for integration with other tools.
-
-![JetUML Class Diagram](banner.png)
-
-## Endorsements
-
-> I do a fair bit of modeling with some commercial tools which can be quite heavyweight. Whenever I need to quickly sketch out a design before writing code I prefer JetUML in most cases.
-  — Randall Hudson, Mitre Corporation
-
-## JetUML in the Literature
+# Blogs and Articles About JetUML
 
 * M.P. Robillard and K. Kutschera. **Lessons Learned in Migrating from Swing to JavaFX**. IEEE Software,  37 (3), 2020. *Reports on the experience of migrating the GUI to JavaFX*. [(pdf)](https://www.cs.mcgill.ca/~martin/papers/software2019.pdf)
 * F. Pfahler, R. Minelli, C. Nagy, M. Lanza. **Visualizing Evolving Software Cities**. In Proceedings of the 8th Working Conference on Software Visualization, 2020. *Discusses the evolution of the JetUML code base*. [(pdf)](https://www.inf.usi.ch/lanza/Downloads/Pfah2020a.pdf)
