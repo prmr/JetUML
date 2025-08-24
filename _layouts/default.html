@@ -7,15 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  
+	<style>
+		h1 {
+	        color: #2c3e50 !important; 
+	      }
+
+	    .site-navbar {
+	  		background-color: #f9f9f9;
+	  		border-bottom: 1px solid #ddd;
+	  		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+	  		font-size: 0.85em;
+	  		line-height: 1.0;
+		}
+
+		.nav-title-desc a {
+	  	font-weight: 600;
+	  	color: #2c3e50;
+	  	text-decoration: none;
+		}
+
+		.nav-description {
+	  		color: #666;
+	  		font-size: 0.75em;
+	  		margin-left: 0.4em; /* small space after title */
+		}
+	  </style>
+	
   </head>
   
-  <style>
-      h1 {
-        color: #2c3e50; 
-      }
-  </style>
+  
   <body>
 
+	<nav class="site-navbar">
+	  <div class="main-content nav-inner">
+	    <div class="nav-title-desc">
+	      <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+	      <span class="nav-description"> — {{ site.description }}</span>
+	    </div>
+	  </div>
+	</nav>
+	
     <main id="content" class="main-content" role="main">
       {{ content }}
       <footer class="site-footer">
