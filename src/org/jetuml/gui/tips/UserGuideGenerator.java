@@ -89,7 +89,7 @@ public final class UserGuideGenerator
 	{
 		if (pTipElement.getMedia() == Media.TEXT)
 		{
-			return "\n" + pTipElement.getContent();
+			return "\n" + pTipElement.getContent().replace(" | ", " > ");
 		}
 		else
 		{

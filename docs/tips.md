@@ -4,7 +4,7 @@ This page lists all the "Tip of the Day" entries available through JetUML's help
 
 ## 1. Creating a New Diagram
 
-You can create a new diagram at any point using the menu command File | New. The diagram will open in a new tab.
+You can create a new diagram at any point using the menu command File > New. The diagram will open in a new tab.
 
 ![Image](../tipdata/tip_images/tip1.png)
 
@@ -46,7 +46,7 @@ When attempting to create a new edge, the operation will only succeed if the edg
 
 ## 8. Tool Hints
 
-It is possible to view the name of each tool in the toolbar in full next to its icon. To toggle this feature, use the menu command View | Show Tool Hint.
+It is possible to view the name of each tool in the toolbar in full next to its icon. To toggle this feature, use the menu command View > Show Tool Hint.
 
 ![Image](../tipdata/tip_images/tip8.png)
 
@@ -70,7 +70,7 @@ Certain types of edges can be changed through the edge's properties. Access the 
 
 ## 12. Selecting Everything
 
-Use the menu command Edit | Select All (Ctrl-A) to select all elements in a diagram, for example to move the entire diagram as one.
+Use the menu command Edit > Select All (Ctrl-A) to select all elements in a diagram, for example to move the entire diagram as one.
 
 ![Image](../tipdata/tip_images/tip12.png)
 
@@ -106,7 +106,7 @@ You can cut or copy one or more diagram elements and paste them either within th
 
 ## 18. Verbose Tooltips
 
-Use the menu command View | Verbose Tooltips to toggle verbose tooltips in the toolbar. Verbose tooltips provide an extended description of the meaning of UML elements available in the toolbar.
+Use the menu command View > Verbose Tooltips to toggle verbose tooltips in the toolbar. Verbose tooltips provide an extended description of the meaning of UML elements available in the toolbar.
 
 ![Image](../tipdata/tip_images/tip18.png)
 
@@ -152,7 +152,7 @@ To speed up diagramming, use the Auto Edit Node feature to automatically open th
 
 ## 25. Duplicating a Diagram
 
-Use the menu command File | Duplicate (Ctrl-D) to quickly make a duplicate of the current diagram. The duplicate diagram will be open in a new tab. This feature is especially useful when exploring different variants of a design.
+Use the menu command File > Duplicate (Ctrl-D) to quickly make a duplicate of the current diagram. The duplicate diagram will be open in a new tab. This feature is especially useful when exploring different variants of a design.
 
 ![Image](../tipdata/tip_images/tip25.png)
 
@@ -180,7 +180,7 @@ The call will be shown with the label «create» and the implicit parameter will
 
 ## 29. Setting the Size of Diagrams
 
-In JetUML diagrams have a fixed size. To change this size, use the menu command View | Set Diagram Size. The size will be used when creating new diagrams or opening diagram files. When opening a diagram, the size is automatically increased to fit the diagram if necessary. Larger diagrams decrease the tool's performance. The default values are in relation to the display size.
+In JetUML diagrams have a fixed size. To change this size, use the menu command View > Set Diagram Size. The size will be used when creating new diagrams or opening diagram files. When opening a diagram, the size is automatically increased to fit the diagram if necessary. Larger diagrams decrease the tool's performance. The default values are in relation to the display size.
 
 ![Image](../tipdata/tip_images/tip29.png)
 
@@ -192,7 +192,7 @@ Package nodes can contain child nodes. To add a child node to a package, select 
 
 ## 31. Showing or Hiding the Grid
 
-It is possible to control whether the grid is visible or not in a diagram. Use the menu command View | Show Grid to toggle this option. Diagram elements automatically snap to the grid whether it is visible or not.
+It is possible to control whether the grid is visible or not in a diagram. Use the menu command View > Show Grid to toggle this option. Diagram elements automatically snap to the grid whether it is visible or not.
 
 ![Image](../tipdata/tip_images/tip31.png)
 
@@ -210,13 +210,13 @@ It is possible to zoom the diagram in and out up to a maximum of two levels in b
 
 ## 34. Exporting the Diagram
 
-Use the menu command File | Export Image to save the current diagram as an image file. The image type is determined by the file extension selected from the Save as Type field.
+Use the menu command File > Export Image to save the current diagram as an image file. The image type is determined by the file extension selected from the Save as Type field.
 
 ![Image](../tipdata/tip_images/tip34.png)
 
 ## 35. Changing the Font
 
-Use the menu command View | Change Font to change the font and size of the font used in the diagram. This setting only affects how the diagram looks.
+Use the menu command View > Change Font to change the font and size of the font used in the diagram. This setting only affects how the diagram looks.
 
 ![Image](../tipdata/tip_images/tip35.png)
 
@@ -234,7 +234,7 @@ Errors and confirmations get reported as temporary notifications in the bottom l
 
 ## 38. Dark Mode
 
-You can turn dark mode on or off by navigating to the menu command View | Dark Mode.
+You can turn dark mode on or off by navigating to the menu command View > Dark Mode.
 
 ![Image](../tipdata/tip_images/tip38.png)
 
