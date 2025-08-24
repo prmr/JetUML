@@ -21,7 +21,7 @@ Download the application from the [latest release](https://github.com/prmr/JetUM
 ## Documentation
 
 * [Download and Installation](docs/install.md)
-* [User Guide](https://www.jetuml.org/docs/user-guide-topics.html)
+* [Tips for JetUML Users](docs/tips.md)
 * [JetUML File Format](docs/schemas.md)
 * [Contributing Guidelines](docs/CONTRIBUTING.md)
 * [Guide for JetUML Developers](docs/developers.md)
