@@ -1,2 +1,4 @@
-theme: jekyll-theme-slate
-include: docs/CONTRIBUTING.md
+title: JetUML
+description: A desktop application for fast UML diagramming.
+
+theme: just-the-docs
