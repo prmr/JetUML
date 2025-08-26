@@ -17,7 +17,7 @@
 	  		background-color: #f9f9f9;
 	  		border-bottom: 1px solid #ddd;
 	  		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-	  		font-size: 1em;
+	  		font-size: 1.2em;
 	  		line-height: 1.0;
 		}
 
@@ -29,7 +29,7 @@
 
 		.nav-description {
 	  		color: #666;
-	  		font-size: 0.85em;
+	  		font-size: 1.0em;
 	  		margin-left: 0.4em; /* small space after title */
 		}
 	  </style>
@@ -50,11 +50,7 @@
     <main id="content" class="main-content" role="main">
       {{ content }}
       <footer class="site-footer">
-        <span class="site-footer-owner">
-          {% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}">{{ site.title }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
-          {% endif %}
-        </span>
+     	<p>View the JetUML project <a href="https://github.com/prmr/JetUML">on GitHub</a>.
       </footer>
     </main>
     

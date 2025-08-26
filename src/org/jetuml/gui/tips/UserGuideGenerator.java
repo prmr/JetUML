@@ -38,12 +38,12 @@ public final class UserGuideGenerator
 {
 	private static final int NUMBER_OF_TIPS = Integer.parseInt(RESOURCES.getString("tips.quantity"));
 	private static final Path PATH_OUTPUT = Path.of("docs/tips.md");
-	private static final String TEMPLATE_TITLE = "\n## %d. %s";
+	private static final String TEMPLATE_TITLE = "\n### %d. %s";
 	private static final String TEMPLATE_IMAGE = "\n![Image](../tipdata/tip_images/%s)";
 	private static final String HEADER = """
-			# Tips for JetUML Users
+			## Tips for JetUML Users
 			
-			This page lists all the "Tip of the Day" entries available through JetUML's help menu.
+			This section lists all the "Tip of the Day" entries available through JetUML's help menu.
 			""";
 	
 	private UserGuideGenerator() {}
