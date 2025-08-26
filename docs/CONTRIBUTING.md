@@ -1,8 +1,3 @@
---
-layout: default
-title: Contributing
----
-
 # Contributing to JetUML
 
 Thanks for considering contributing to JetUML. 
@@ -14,7 +9,7 @@ Thanks for considering contributing to JetUML.
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [JetUML code of conduct](../CODE_OF_CONDUCT.md). 
+This project and everyone participating in it is governed by the [JetUML code of conduct](CODE_OF_CONDUCT.md). 
 By participating, you are expected to uphold this code.
 
 ## Reporting Bugs

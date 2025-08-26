@@ -86,4 +86,5 @@ along with this program.  If not, see http://www.gnu.org/licenses.
 ## See Also
 
 * [Contributing Guidelines](CONTRIBUTING.md)
+* [Code of Conduct](CODE_OF_CONDUCT.md)
 * [Architecture Description](architecture.md)
