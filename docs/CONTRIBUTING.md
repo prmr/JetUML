@@ -1,3 +1,8 @@
+--
+layout: default
+title: Contributing
+---
+
 # Contributing to JetUML
 
 Thanks for considering contributing to JetUML. 
@@ -42,3 +47,7 @@ If you would like to contribute a *minor fix*, you can directly submit a [pull r
 ## Tackling Bigger Changes
  
  If you are considering contributing more than a minor fix, please comment on the corresponding issue first to share your ideas.
+
+## See Also
+
+The [developer guide](developers.md)
