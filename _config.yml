@@ -1,3 +1,2 @@
 theme: jekyll-theme-cayman
-include: CONTRIBUTING.md
-include: CODE_OF_CONDUCT.md
+include: CONTRIBUTING.md, CODE_OF_CONDUCT.md

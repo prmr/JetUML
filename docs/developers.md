@@ -1,5 +1,7 @@
 # Guide for JetUML Developers
 
+Thanks for considering contributing to the JetUML project. Please consult the [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ### Contents
 
 * [System Requirements](#system-requirements)
@@ -7,7 +9,7 @@
 * [Committing Code](#committing-code)
 * [Packaging the Application](#packaging-the-application)
 * [Copyright Notice](#copyright-notice)
-* [See Also](#see-also)
+* [Architecture Description](#architecture-description)
 
 ## System Requirements
 
@@ -16,10 +18,10 @@ The current version of JetUML is built with Java 21, the latest long-term suppor
 ## Building the Application in Eclipse
 
 1. Ensure that you meet the system requirements, including a working version of Eclipse.
-2. In Eclipse, ensure that the JDK 21 is the default workspace JRE (_Window | Preferences | Java | Installed JREs_).
-3. Create a new _user library_ called `JavaFX` that includes all the JavaFX 21 jar files. To create this library, access _Window | Preferences | Java | User Libraries_, select _New..._, enter the exact string `JavaFX`. Then, select this library, and click _Add External JARS..._, then find and select the jar files under the `lib` directory of your JavaFX download.
-4. Import the [JetUML repo](https://github.com/prmr/JetUML.git) in Eclipse (_File | Import | Git | Projects from Git | Clone URI_). If you meet the system requirements, the project should build automatically.
-5. To run JetUML, right-click on the project in the Package Explorer and select _Run As | Java Application_, selecting `JetUML` as the main file.
+2. In Eclipse, ensure that the JDK 21 is the default workspace JRE (_Window > Preferences > Java > Installed JREs_).
+3. Create a new _user library_ called `JavaFX` that includes all the JavaFX 21 jar files. To create this library, access _Window > Preferences > Java > User Libraries_, select _New..._, enter the exact string `JavaFX`. Then, select this library, and click _Add External JARS..._, then find and select the jar files under the `lib` directory of your JavaFX download.
+4. Import the [JetUML repo](https://github.com/prmr/JetUML.git) in Eclipse (_File > Import > Git > Projects from Git > Clone URI_). If you meet the system requirements, the project should build automatically.
+5. To run JetUML, right-click on the project in the Package Explorer and select _Run As > Java Application_, selecting `JetUML` as the main file.
 6. **If you are using a Mac**, to run the application, open the run configuration and make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is not checked.
 
 ## Committing Code
@@ -83,8 +85,26 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses.
 ```
 
-## See Also
+## Architecture Description
 
-* [Contributing Guidelines](CONTRIBUTING.md)
-* [Code of Conduct](CODE_OF_CONDUCT.md)
-* [Architecture Description](architecture.md)
+This section captures the major decisions related to the development of JetUML.
+
+## Architectural Principles
+
+The following principles guide the development of JetUML:
+
+* **No dependencies:** The application depends on no external libraries. This decision is to minimize the development and evolution cost, minimize the risk of having to do effort-intensive library adaptations, and lower entry barriers for contributors.
+* **Minimalist feature set:** The application only supports core UML diagramming features. 
+* **Violate Encapsulation for Testing:** To goal for the design is to support the highest possible level of encapsulation, and this implies the most restrictive access modifiers. When necessary, the 
+classes in the `test` source folders can use reflection to get around accessibility restrictions.
+* **No reflection:** To avoid fragile and hard-to-understand code, the project does not rely on any heavily-reflective framework, such as Javabeans. 
+* **No streaming:** The use of [streaming](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html) is explicitly avoided in the interface of classes. JetUML has few data-intensive operations, as diagrams typically have only a handful of elements. In this context, the downsides of streaming (harder to debug, problems with checked exceptions, dual-paradigm design) are deemed to outweigh the advantages (more compact code). When appropriate, use of streams provided by API classes can be used if limited to the scope of a method.
+
+## Functional View
+
+The functional view is split by functional concern.
+
+ * [Diagram State Management](functional/DiagramState.md)
+ * [Tab Management](functional/TabManagement.md)
+ * [Diagram Element Properties](functional/properties.md)
+ * [Node Storage](functional/NodeStorage.md)
