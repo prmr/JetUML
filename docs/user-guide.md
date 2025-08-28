@@ -1,6 +1,10 @@
 # JetUML User Guide
 
-For JetUML Version 3.9. Updated 2025-08-24.
+For JetUML Version 3.9. Updated 2025-08-28.
+
+* [Main Features](#main-features)
+* [A Quick Tour of JetUML](#a-quick-tour-of-jetuml)
+* [Tips for JetUML Users](#tips-for-jetuml-users)
 
 ## Main Features
 
@@ -21,6 +25,52 @@ The essential features of JetUML.
 7. **Customizable Interface.** View additional hints and documentation directly in the user interface, switch to dark mode, change the font, hide the grid, etc. See the View menu for all the customization options. (See the _View_ menu)
 
 8. **Open file format.** JetUML saves diagram in [JSON](https://en.wikipedia.org/wiki/JSON) files using a [documented format](schemas.md). Diagrams can thus be accessed and manipulated outside of JetUML. (_File > Save_)
+
+## A Quick Tour of JetUML
+
+Once you have JetUML [up and running](install.md), follow these instructions for a quick tour through the application that will demonstrate most of its features. 
+
+### Part 1: A Simple Sketch
+
+In this first part, you will create a very simple UML sketch. 
+
+![Simple UML Sketch](quicktour2.svg)
+
+Once you have the hang of it, you'll be able to create this diagram in approximately 30 seconds.
+
+1. Start JetUML: you will see the _Welcome Tab_. Under _Create New Diagram_, select _Class Diagram_. You will now see a blank _canvas_.
+
+> **NOTE:** If you prefer to work in dark mode, select the menu option View > Dark Mode.
+
+2. To the right of the canvas is the _tool pane_. We will use it to create an interface element in our diagram. In the tool pane, select the third element down from the top. Its tool tip should say "Interface". With the _interface tool_ activated, click anywhere on the canvas to create the interface element.
+
+> **NOTE:** If you are not yet familiar with the UML, select View > Show Tool Hint to display labels next to the icons in the tool bar. You can also select View > Verbose Tooltips to show an extended description of each UML element though their tool tip.
+
+3. We will now _edit the properties_ of the interface element. Either double-click the element, or select it and press Ctrl-Enter. Its _property sheet_ will appear. Under _Name_, type `Figure`. In the box for _Methods_, type `draw():void`. Note that you can tab between fields in a property sheet.
+
+To sketch out this diagram as fast as possible, we will use the _auto-edit_ feature, which automatically opens the property sheet whenever an element is created. 
+
+4. Select View > Auto Edit Node. You can turn this feature off whenever it is no longer necessary.
+5. Select the _Class (creation) tool_ from the toolbar (second button from the top).
+6. Click on the canvas. A class element is created and its property sheet opens. Type `Figure` then hit the Esc key to close the dialog. Repeat the process for another element with the name `Group`. Position both elements below the interface element.
+7. We will now add the edges to the diagram. In the toolbar, select the _Realization_ edge (ninth button from the top). Then click inside the `Rectangle` element, hold and drag, and release the mouse button inside the `Figure` element. A realization edge will be created linking the two elements. Repeat the process to add a realization edge between the `Group` and the `Figure` elements. Note how the edges automatically align and merge to produce a compact diagram.
+8. To create the _aggregation edge_ between the `Group` and the `Figure` elements, select the _Aggregation Edge (creation)_ tool in the tool bar, then drag the mouse between the `Group` and the `Figure` elements.
+9. To add the `elements` label to the aggregation edge, select the _Selection Tool_ (first element in the tool bar), then double-click the edge. The property sheet will open. Type `elements` in the _Middle Label_ field and hit the Esc key to close the property sheet. 
+
+> **NOTE:** You can use the property sheet to change any of the elements property, including alternating between association and composition.
+
+10. To finalize your first UML sketch, move the nodes around until the diagram looks the way you want.
+
+At this point, you have already created a valid UML sketch with JetUML. You can:
+
+* Save your diagram to open it again later, using File > Save As;
+* Export the diagram as an image using File > Export Image;
+* Copy it to the clipboard using File > Copy to Clipboard or (even better) its corresponding shortcut key. Try pasting it in a suitable application, for example a slide presentation.
+
+### Part 2: Additional Features
+
+![A sample class diagram](quicktour.svg)
+
 
 ## Tips for JetUML Users
 
