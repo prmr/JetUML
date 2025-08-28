@@ -22,7 +22,7 @@ The essential features of JetUML.
 
 6. **Duplicate Diagram.** With a single command, duplicate the current diagram to explore different design alternatives. (_File > Duplicate_)
 
-7. **Customizable Interface.** View additional hints and documentation directly in the user interface, switch to dark mode, change the font, hide the grid, etc. See the View menu for all the customization options. (See the _View_ menu)
+7. **Customizable Interface.** View additional hints and documentation directly in the user interface, switch to dark mode, change the font, hide the grid, etc. (See the _View_ menu)
 
 8. **Open file format.** JetUML saves diagram in [JSON](https://en.wikipedia.org/wiki/JSON) files using a [documented format](schemas.md). Diagrams can thus be accessed and manipulated outside of JetUML. (_File > Save_)
 
@@ -40,20 +40,20 @@ Once you have the hang of it, you'll be able to create this diagram in approxima
 
 1. Start JetUML: you will see the _Welcome Tab_. Under _Create New Diagram_, select _Class Diagram_. You will now see a blank _canvas_.
 
-> **NOTE:** If you prefer to work in dark mode, select the menu option View > Dark Mode.
+> **NOTE:** If you prefer to work in dark mode, select the menu option View > [Dark Mode](#38-dark-mode).
 
-2. To the right of the canvas is the _tool pane_. We will use it to create an interface element in our diagram. In the tool pane, select the third element down from the top. Its tool tip should say "Interface". With the _interface tool_ activated, click anywhere on the canvas to create the interface element.
+2. To the right of the canvas is the _tool pane_. We will use it to create an interface element in our diagram. In the tool pane, select the third element down from the top. Its tool tip should say "Interface". With the _interface (creation) tool_ activated, click anywhere on the canvas to [create the interface element](#2-creating-nodes).
 
-> **NOTE:** If you are not yet familiar with the UML, select View > Show Tool Hint to display labels next to the icons in the tool bar. You can also select View > Verbose Tooltips to show an extended description of each UML element though their tool tip.
+> **NOTE:** If you are not yet familiar with the UML, select View > [Show Tool Hint](#8-tool-hints) to display labels next to the icons in the tool bar. You can also select View > [Verbose Tooltips](#18-verbose-tooltips) to show an extended description of each UML element though their tool tip.
 
-3. We will now _edit the properties_ of the interface element. Either double-click the element, or select it and press Ctrl-Enter. Its _property sheet_ will appear. Under _Name_, type `Figure`. In the box for _Methods_, type `draw():void`. Note that you can tab between fields in a property sheet.
+3. You will now _[edit the properties](#6-editing-element-properties)_ of the interface element. Either double-click the element, or [select it](#4-selecting-diagram-elements) and press Ctrl-Enter. Its _property sheet_ will appear. Under _Name_, type `Figure`. In the box for _Methods_, type `draw():void`. Note that you can tab between fields in a property sheet.
 
-To sketch out this diagram as fast as possible, we will use the _auto-edit_ feature, which automatically opens the property sheet whenever an element is created. 
+To sketch out this diagram as fast as possible, we will use the [_auto-edit_ feature](#24-automatically-editing-newly-created-nodes), which automatically opens the property sheet whenever an element is created. 
 
 4. Select View > Auto Edit Node. You can turn this feature off whenever it is no longer necessary.
-5. Select the _Class (creation) tool_ from the toolbar (second button from the top).
+5. Select the _class (creation) tool_ from the toolbar (second button from the top).
 6. Click on the canvas. A class element is created and its property sheet opens. Type `Figure` then hit the Esc key to close the dialog. Repeat the process for another element with the name `Group`. Position both elements below the interface element.
-7. We will now add the edges to the diagram. In the toolbar, select the _Realization_ edge (ninth button from the top). Then click inside the `Rectangle` element, hold and drag, and release the mouse button inside the `Figure` element. A realization edge will be created linking the two elements. Repeat the process to add a realization edge between the `Group` and the `Figure` elements. Note how the edges automatically align and merge to produce a compact diagram.
+7. You will now [add the edges](#3-creating-edges) to the diagram. In the toolbar, select the _Realization_ edge (ninth button from the top). Then click inside the `Rectangle` element, hold and drag, and release the mouse button inside the `Figure` element. A realization edge will be created linking the two elements. Repeat the process to add a realization edge between the `Group` and the `Figure` elements. Note how the edges automatically align and merge to produce a compact diagram.
 8. To create the _aggregation edge_ between the `Group` and the `Figure` elements, select the _Aggregation Edge (creation)_ tool in the tool bar, then drag the mouse between the `Group` and the `Figure` elements.
 9. To add the `elements` label to the aggregation edge, select the _Selection Tool_ (first element in the tool bar), then double-click the edge. The property sheet will open. Type `elements` in the _Middle Label_ field and hit the Esc key to close the property sheet. 
 
@@ -64,13 +64,30 @@ To sketch out this diagram as fast as possible, we will use the _auto-edit_ feat
 At this point, you have already created a valid UML sketch with JetUML. You can:
 
 * Save your diagram to open it again later, using File > Save As;
-* Export the diagram as an image using File > Export Image;
-* Copy it to the clipboard using File > Copy to Clipboard or (even better) its corresponding shortcut key. Try pasting it in a suitable application, for example a slide presentation.
+* [Export the diagram](#34-exporting-the-diagram) as an image using File > Export Image;
+* [Copy it to the clipboard](#22-copying-the-diagram-to-the-clipboard) using File > Copy to Clipboard or (even better) its corresponding shortcut key. Try pasting it in a suitable application, for example a slide presentation.
 
 ### Part 2: Additional Features
 
+You will now expand your initial sketch to explore a different design, and at the same time discover additional features of JetUML, by creating the following diagram.
+
 ![A sample class diagram](quicktour.svg)
 
+1. Ensure you have the sketch from Part 1 in a class diagram tab. If you closed the application after Part 1 and saved your diagram, load it back with File > Open. Otherwise, simply recreate it (it should now be very quick).
+2. Duplicate the diagram by using File > [Duplicate](#25-duplicating-a-diagram) or its corresponding shortcut key. JetUML will open a new tab with the same diagram, allowing you to modify it while keeping your first version around.
+3. To turn the `Rectangle` class into an abstract class, open its property sheet and change the name from `Rectangle` to `/AbstractFigure/`. The [slashes](#39-underlining-or-italicizing-text) before and after the name will tell JetUML to render it in italics, which is the UML convention for abstract elements. While you are at it, add a field `x:int` and `y:int` in the _Attributes_ box.
+4. Using the class creation tool, create a new element and name it `Rectangle`. Add a method `draw():void` to its _Methods_ property.
+5. You will now indicate that `Rectangle` _inherits_ from `AbstractFigure`. But first, let's try something silly: to make `Rectangle` inherit from itself. Select the inheritance tool from the tool bar, and drag an edge _between two points within the `Rectangle` element!_ The edge won't get created, and you should see a [notification](#37-notifications) indicating that this is not possible. JetUML's _semantic checking_ prevents numerous modeling errors in this way. With the inheritance tool still selected, now drag from the `Rectangle` to the `AbstractFigure` element, to properly mode the relationship.
+
+> **NOTE:** You can adjust the duration of the notifications with View > [Notification Duration](#37-notifications). 
+
+6. You will now add the `Drawing` class. Create a class element as usual. However, this element has a [stereotype](https://en.wikipedia.org/wiki/Stereotype_(UML)) `«application»`. To easily [add the French quotes](#36-inserting-stereotype-delimiters), enter Ctrl-Q. Also add the `main` method to the _Methods_ properties, as you have done above. In UML class diagram, static members should be underlined. To show the `main` method as underlined, add an underscore before and after it, e.g., `_main(String[]):void_`. 
+7. To show the dependency between the `Diagram` and the `Figure` elements, select the dependency create tool and drag from `Drawing` to `Figure`. Double-click on the new dependency to open its property sheet, and notice how you can add a label or even change the directionality of the dependency. Close the property sheet.
+8. To complete the diagram you will add a [_note_ element](#13-creating-note-elements) to indicate that `Group` fulfills the role of a composite in the Composite design pattern. Using the note creation tool, add a note element and edit its property to add the text `Composite`. To [link the note](#14-linking-note-elements) to the group class, select the node connector tool and drag _from_ the `Group` element _to_ the node element. The note will then be connected to the `Group` class: if you move it around, the connector will stay connected to it.
+
+> **NOTE:** To connect a note element to an arbitrary point on the canvas, drag instead _from_ the note element to the desired point.
+
+That's it! You're now ready to create your own models in the blink of an eye. Modeling with the other diagram types works the same way: select a tool, create node elements, and connect them with edges. For additional tips, see below.
 
 ## Tips for JetUML Users
 
