@@ -37,8 +37,7 @@ import org.jetuml.diagram.validator.constraints.ConstraintNoSelfEdgeForEdgeType;
 /**
  * Validator for use case diagrams.
  */
-public class UseCaseDiagramValidator extends AbstractDiagramValidator
-{
+public class UseCaseDiagramValidator extends AbstractDiagramValidator {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
 			new ConstraintNoSelfEdgeForEdgeType(UseCaseAssociationEdge.class),
@@ -61,8 +60,7 @@ public class UseCaseDiagramValidator extends AbstractDiagramValidator
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.USECASE
 	 */
 
-	public UseCaseDiagramValidator(Diagram pDiagram)
-	{
+	public UseCaseDiagramValidator(Diagram pDiagram) {
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.USECASE;
 	}

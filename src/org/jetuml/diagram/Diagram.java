@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package org.jetuml.diagram;
 
@@ -29,18 +29,19 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.FieldNode;
 
 /**
- * Stores the logical structure of a diagram. This class is only concerned with 
- * maintaining information about the logical structure of a diagram (nodes and edges). 
- * Specifically, it should not encode any business rules about the valid construction
- * of diagrams (handled by DiagramBuilder), or of computing the geometry of a diagram
- * (handled by DiagramView). DiagramData provides immutable access to the information
- * stored in the diagram.
+ * Stores the logical structure of a diagram. This class is only concerned with
+ * maintaining information about the logical structure of a diagram (nodes and
+ * edges). Specifically, it should not encode any business rules about the valid
+ * construction of diagrams (handled by DiagramBuilder), or of computing the
+ * geometry of a diagram (handled by DiagramView). DiagramData provides
+ * immutable access to the information stored in the diagram.
  */
-public final class Diagram implements DiagramData
-{
+public final class Diagram implements DiagramData {
+
 	/*
-	 * Only root nodes are explicitly tracked by a diagram object. Nodes that are children of their parent should be
-	 * managed and accessed through their parent node.
+	 * Only root nodes are explicitly tracked by a diagram object. Nodes that
+	 * are children of their parent should be managed and accessed through their
+	 * parent node.
 	 */
 	private final ArrayList<Node> aRootNodes;
 	private final ArrayList<Edge> aEdges;
@@ -51,26 +52,23 @@ public final class Diagram implements DiagramData
 	 * 
 	 * @param pType The type of the diagram.
 	 */
-	public Diagram(DiagramType pType)
-	{
+	public Diagram(DiagramType pType) {
 		aType = pType;
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
 	}
 
 	/**
-	 * Creates a copy of the current diagram. The copy is a completely distinct graph of nodes and edges with the same
-	 * topology as this diagram.
+	 * Creates a copy of the current diagram. The copy is a completely distinct
+	 * graph of nodes and edges with the same topology as this diagram.
 	 * 
 	 * @return A copy of this diagram. Never null.
 	 */
-	public Diagram duplicate()
-	{
+	public Diagram duplicate() {
 		Diagram copy = new Diagram(this.aType);
 		aEdges.forEach(edge -> copy.aEdges.add(edge.clone()));
 
-		for( Node node : aRootNodes )
-		{
+		for (Node node : aRootNodes) {
 			Node nodeCopy = node.clone();
 			copy.aRootNodes.add(nodeCopy);
 			reassignEdges(copy.aEdges, node, nodeCopy);
@@ -82,121 +80,104 @@ public final class Diagram implements DiagramData
 	}
 
 	/*
-	 * For node pOriginal, go through all edges that refer to it and replace it with pCopy in the edge. Do this
-	 * recursively for all children of pOriginal, assuming the same topology for pCopy.
+	 * For node pOriginal, go through all edges that refer to it and replace it
+	 * with pCopy in the edge. Do this recursively for all children of
+	 * pOriginal, assuming the same topology for pCopy.
 	 */
-	private static void reassignEdges(List<Edge> pEdges, Node pOriginal, Node pCopy)
-	{
-		for( Edge edge : pEdges )
-		{
-			if( edge.start() == pOriginal )
-			{
+	private static void reassignEdges(List<Edge> pEdges, Node pOriginal, Node pCopy) {
+		for (Edge edge : pEdges) {
+			if (edge.start() == pOriginal) {
 				edge.connect(pCopy, edge.end());
 			}
-			if( edge.end() == pOriginal )
-			{
+			if (edge.end() == pOriginal) {
 				edge.connect(edge.start(), pCopy);
 			}
 		}
 		List<Node> oldChildren = pOriginal.getChildren();
 		List<Node> newChildren = pCopy.getChildren();
-		for( int i = 0; i < oldChildren.size(); i++ )
-		{
+		for (int i = 0; i < oldChildren.size(); i++) {
 			reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
 		}
 	}
 
 	@Override
-	public List<Node> rootNodes()
-	{
+	public List<Node> rootNodes() {
 		return Collections.unmodifiableList(aRootNodes);
 	}
-	
+
 	/**
-	 * @return All the nodes in the diagram: both the root nodes
-	 * and their children.
+	 * @return All the nodes in the diagram: both the root nodes and their
+	 *     children.
 	 */
-	public List<Node> allNodes()
-	{
+	public List<Node> allNodes() {
 		List<Node> allNodes = new ArrayList<>();
 		rootNodes().forEach(node -> collectNodes(node, allNodes));
 		return allNodes;
 	}
-	
+
 	/*
 	 * Adds pParent to the list, then all its children recursively.
 	 */
-	private static void collectNodes(Node pParent, List<Node> pNodes)
-	{
+	private static void collectNodes(Node pParent, List<Node> pNodes) {
 		pNodes.add(pParent);
 		pParent.getChildren().forEach(child -> collectNodes(child, pNodes));
 	}
 
 	@Override
-	public List<Edge> edges()
-	{
+	public List<Edge> edges() {
 		return Collections.unmodifiableList(aEdges);
 	}
 
 	/**
 	 * @return The type of this diagram.
 	 */
-	public DiagramType getType()
-	{
+	public DiagramType getType() {
 		return aType;
 	}
 
 	/**
-	 * @return The file extension (including the dot) corresponding to files of this diagram type.
+	 * @return The file extension (including the dot) corresponding to files of
+	 *     this diagram type.
 	 */
-	public String getFileExtension()
-	{
+	public String getFileExtension() {
 		return aType.getFileExtension();
 	}
 
 	/**
 	 * @return The name of the diagram.
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return aType.getName();
 	}
 
 	/**
-	 * Checks whether pElement is in the diagram. If pElement is a node, the method returns true if it is a root node,
-	 * or any of its parent is a root node.
+	 * Checks whether pElement is in the diagram. If pElement is a node, the
+	 * method returns true if it is a root node, or any of its parent is a root
+	 * node.
 	 * 
 	 * @param pElement The element we want to check is in the diagram.
 	 * @return True if pElement is a node or edge in this diagram.
 	 * @pre pElement != null
 	 */
-	public boolean contains(DiagramElement pElement)
-	{
+	public boolean contains(DiagramElement pElement) {
 		assert pElement != null;
-		if( aEdges.contains(pElement) )
-		{
+		if (aEdges.contains(pElement)) {
 			return true;
 		}
-		for( Node node : aRootNodes )
-		{
-			if( containsNode(node, pElement) )
-			{
+		for (Node node : aRootNodes) {
+			if (containsNode(node, pElement)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean containsNode(Node pTest, DiagramElement pTarget)
-	{
-		if( pTest == pTarget )
-		{
+	private boolean containsNode(Node pTest, DiagramElement pTarget) {
+		if (pTest == pTarget) {
 			return true;
 		}
-		for( Node node : pTest.getChildren() )
-		{
-			if( containsNode(node, pTarget) )
-			{
+		for (Node node : pTest.getChildren()) {
+			if (containsNode(node, pTarget)) {
 				return true;
 			}
 		}
@@ -208,20 +189,19 @@ public final class Diagram implements DiagramData
 	 * @return True if pNode is a root node of the Diagram.
 	 * @pre pNode != null.
 	 */
-	public boolean containsAsRoot(Node pNode)
-	{
+	public boolean containsAsRoot(Node pNode) {
 		assert pNode != null;
 		return aRootNodes.contains(pNode);
 	}
 
 	/**
-	 * Gets the types of elements that can be using prototypes for a diagram type. 
-	 * The list returned is a copy of the prototypes: it can be safely modified.
+	 * Gets the types of elements that can be using prototypes for a diagram
+	 * type. The list returned is a copy of the prototypes: it can be safely
+	 * modified.
 	 * 
 	 * @return A non-null list of node prototypes
 	 */
-	public List<DiagramElement> getPrototypes()
-	{
+	public List<DiagramElement> getPrototypes() {
 		return aType.getPrototypes();
 	}
 
@@ -231,140 +211,126 @@ public final class Diagram implements DiagramData
 	 * @pre pNode != null
 	 * @pre contains(pNode)
 	 */
-	public Iterable<Edge> edgesConnectedTo(Node pNode)
-	{
+	public Iterable<Edge> edgesConnectedTo(Node pNode) {
 		assert pNode != null && contains(pNode);
 		Collection<Edge> lReturn = new ArrayList<>();
-		for( Edge edge : aEdges )
-		{
-			if( edge.start() == pNode || edge.end() == pNode )
-			{
+		for (Edge edge : aEdges) {
+			if (edge.start() == pNode || edge.end() == pNode) {
 				lReturn.add(edge);
 			}
 		}
 		return lReturn;
 	}
-	
+
 	/**
-	 * Returns all the edges in the diagram of a type assignable to pType,
-	 * and that have pNode as end node.
+	 * Returns all the edges in the diagram of a type assignable to pType, and
+	 * that have pNode as end node.
 	 * 
 	 * @param pNode The desired end node.
-	 * @param pOfType The desired edge type. Use Edge.class to get edges of any type.
+	 * @param pOfType The desired edge type. Use Edge.class to get edges of any
+	 *     type.
 	 * @return An unmodifiable list of edges of type pOfType (or a subtype) that
-	 * have pNode as end node.
+	 *     have pNode as end node.
 	 */
-	public List<Edge> edgesTo(Node pNode, Class<? extends Edge> pOfType)
-	{
+	public List<Edge> edgesTo(Node pNode, Class<? extends Edge> pOfType) {
 		assert pNode != null && pOfType != null;
-		return aEdges.stream()
-				.filter(pOfType::isInstance)
-				.filter(edge -> edge.end() == pNode)
-				.toList();
+		return aEdges.stream().filter(pOfType::isInstance).filter(edge -> edge.end() == pNode).toList();
 	}
 
 	/**
-	 * Adds pNode as a root node in this diagram. Callers of this method must ensure that the addition respects the
-	 * integrity of the diagram.
+	 * Adds pNode as a root node in this diagram. Callers of this method must
+	 * ensure that the addition respects the integrity of the diagram.
 	 * 
 	 * @param pNode The node to add.
 	 * @pre pNode != null
 	 */
-	public void addRootNode(Node pNode)
-	{
+	public void addRootNode(Node pNode) {
 		assert pNode != null;
 		aRootNodes.add(pNode);
 	}
 
 	/**
-	 * Removes pNode from the list of root nodes in this diagram. Callers must ensure that the removal preserves the
-	 * integrity of the diagram.
+	 * Removes pNode from the list of root nodes in this diagram. Callers must
+	 * ensure that the removal preserves the integrity of the diagram.
 	 * 
 	 * @param pNode The node to remove.
 	 * @pre pNode != null && pNode is contained as a root node.
 	 */
-	public void removeRootNode(Node pNode)
-	{
+	public void removeRootNode(Node pNode) {
 		assert pNode != null && aRootNodes.contains(pNode);
 		aRootNodes.remove(pNode);
 	}
 
 	/**
-	 * Adds pEdge to the diagram. pEdge should already be connected to its start and end nodes. The edge is added to the
-	 * end of the list of edges.
+	 * Adds pEdge to the diagram. pEdge should already be connected to its start
+	 * and end nodes. The edge is added to the end of the list of edges.
 	 * 
 	 * @param pEdge The edge to add.
-	 * @pre pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph != null
+	 * @pre pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null
+	 *     && pEdge.getGraph != null
 	 */
-	public void addEdge(Edge pEdge)
-	{
+	public void addEdge(Edge pEdge) {
 		assert pEdge != null && pEdge.start() != null && pEdge.end() != null;
 		aEdges.add(pEdge);
 	}
-	
+
 	/**
-	 * Adds pEdge at index pIndex, and shifts the existing edges to the right of the list.
+	 * Adds pEdge at index pIndex, and shifts the existing edges to the right of
+	 * the list.
 	 * 
 	 * @param pIndex Where to add the edge.
 	 * @param pEdge The edge to add.
 	 * @pre pEdge != null && pIndex >=0 && pIndex < aEdges.size()
 	 */
-	public void addEdge(int pIndex, Edge pEdge)
-	{
+	public void addEdge(int pIndex, Edge pEdge) {
 		assert pEdge != null && pIndex >= 0 && pIndex <= aEdges.size();
 		aEdges.add(pIndex, pEdge);
 	}
 
-
 	/**
-	 * @param pEdge
-	 *            The edge to check.
+	 * @param pEdge The edge to check.
 	 * @return The index of pEdge in the list of edges.
 	 * @pre contains(pEdge)
 	 */
-	public int indexOf(Edge pEdge)
-	{
+	public int indexOf(Edge pEdge) {
 		assert contains(pEdge);
 		return aEdges.indexOf(pEdge);
 	}
 
 	/**
-	 * Removes pEdge from this diagram. Callers must ensure that the removal preserves the integrity of the diagram.
+	 * Removes pEdge from this diagram. Callers must ensure that the removal
+	 * preserves the integrity of the diagram.
 	 * 
 	 * @param pEdge The edge to remove.
 	 * @pre pEdge != null && pEdge is contained in the diagram
 	 */
-	public void removeEdge(Edge pEdge)
-	{
+	public void removeEdge(Edge pEdge) {
 		assert pEdge != null && aEdges.contains(pEdge);
 		aEdges.remove(pEdge);
 	}
 
 	/**
-	 * Recursively reorder the node to be on top of its parent's children. If the node is not a child node or the node
-	 * does not have a parent, check if the node is a root node of the diagram and place it on top.
+	 * Recursively reorder the node to be on top of its parent's children. If
+	 * the node is not a child node or the node does not have a parent, check if
+	 * the node is a root node of the diagram and place it on top.
 	 * 
 	 * @param pNode The node to be placed on top
 	 * @pre pNode != null
 	 */
-	public void placeOnTop(Node pNode)
-	{
+	public void placeOnTop(Node pNode) {
 		assert pNode != null;
 		// Certain nodes should not have their order changed
-		if( pNode.getClass() == CallNode.class || pNode.getClass() == FieldNode.class )
-		{
+		if (pNode.getClass() == CallNode.class || pNode.getClass() == FieldNode.class) {
 			return;
 		}
-		if( pNode.hasParent() )
-		{
+		if (pNode.hasParent()) {
 			Node parent = pNode.getParent();
 			// Move the child node to the top of all other children
 			parent.placeLast(pNode);
 			// Recursively reorder the node's parent
 			placeOnTop(parent);
 		}
-		else if( containsAsRoot(pNode) )
-		{
+		else if (containsAsRoot(pNode)) {
 			removeRootNode(pNode);
 			addRootNode(pNode);
 		}

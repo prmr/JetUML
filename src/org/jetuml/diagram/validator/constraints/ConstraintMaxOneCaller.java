@@ -30,11 +30,9 @@ import java.util.List;
 /**
  * There can be at most one caller to a call node.
  */
-public final class ConstraintMaxOneCaller implements EdgeConstraint
-{
+public final class ConstraintMaxOneCaller implements EdgeConstraint {
     @Override
-    public boolean satisfied(Edge pEdge, Diagram pDiagram)
-    {
+    public boolean satisfied(Edge pEdge, Diagram pDiagram) {
         return pDiagram.allNodes().stream()								// Nodes
                 .filter(CallNode.class::isInstance)						// Call nodes
                 .map(node -> pDiagram.edgesTo(node, CallEdge.class))	// Lists of callers to call nodes

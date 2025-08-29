@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
 package org.jetuml.diagram.builder;
@@ -49,176 +49,155 @@ import org.jetuml.rendering.nodes.PackageNodeRenderer;
 
 /**
  * Wrapper around a DiagramRenderer that provides the logic for converting
- * requests to creates or remove nodes and edges, and convert these
- * requests into operation. An object of this class should perform
- * read-only access to the underlying diagram. However, executing the operations
- * created by methods of this class will change the state of the 
- * underlying diagram.
+ * requests to creates or remove nodes and edges, and convert these requests
+ * into operation. An object of this class should perform read-only access to
+ * the underlying diagram. However, executing the operations created by methods
+ * of this class will change the state of the underlying diagram.
  */
-public abstract class DiagramBuilder
-{
+public abstract class DiagramBuilder {
+
 	// Arbitrary default value, used to simplify the testing code
 	private static final int DEFAULT_DIMENSION = 1000;
-	
+
 	protected final DiagramRenderer aDiagramRenderer;
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
-	
+
 	/**
-	 * Creates a builder for the diagram wrapped by pDiagram, and an embedded renderer.
+	 * Creates a builder for the diagram wrapped by pDiagram, and an embedded
+	 * renderer.
 	 * 
 	 * @param pDiagram The diagram renderer to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	protected DiagramBuilder( Diagram pDiagram )
-	{
+	protected DiagramBuilder(Diagram pDiagram) {
 		assert pDiagram != null;
 		aDiagramRenderer = DiagramType.newRendererInstanceFor(pDiagram);
 	}
-	
+
 	/**
 	 * @return The diagram wrapped by this builder.
 	 */
-	public final Diagram diagram()
-	{
+	public final Diagram diagram() {
 		return aDiagramRenderer.diagram();
 	}
-	
+
 	/**
 	 * @return The encapsulated renderer.
 	 */
-	public final DiagramRenderer renderer()
-	{
+	public final DiagramRenderer renderer() {
 		return aDiagramRenderer;
 	}
-	
+
 	/**
-	 * Provide information to this builder about the size
-	 * of the canvas the diagram is built on.
+	 * Provide information to this builder about the size of the canvas the
+	 * diagram is built on.
 	 * 
 	 * @param pDimension The canvas size.
 	 * @pre pDimension != null.
 	 */
-	public void setCanvasDimension(Dimension pDimension)
-	{
+	public void setCanvasDimension(Dimension pDimension) {
 		assert pDimension != null;
 		aCanvasDimension = pDimension;
 	}
-	
-	private static List<Node> getNodeAndAllChildren(Node pNode)
-	{
+
+	private static List<Node> getNodeAndAllChildren(Node pNode) {
 		List<Node> result = new ArrayList<>();
 		result.add(pNode);
 		pNode.getChildren().forEach(node -> result.addAll(getNodeAndAllChildren(node)));
 		return result;
 	}
 
-	/** 
-	 * The default behavior is to position the node so it entirely fits in the diagram, then 
-	 * add it as a root node.
+	/**
+	 * The default behavior is to position the node so it entirely fits in the
+	 * diagram, then add it as a root node.
+	 * 
 	 * @param pNode The node to add.
-	 * @param pRequestedPosition A point that is the requested position of the node.
+	 * @param pRequestedPosition A point that is the requested position of the
+	 *     node.
 	 * @return The requested operation
 	 * @pre pNode != null && pRequestedPosition != null
 	 * @pre canAdd(pNode, pRequestedPosition)
 	 */
-	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
-	{
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition) {
 		assert pNode != null && pRequestedPosition != null;
 		// Skip the condition check for add node
-		//assert canAdd(pNode, pRequestedPosition);
+		// assert canAdd(pNode, pRequestedPosition);
 		positionNode(pNode, pRequestedPosition);
-		return new SimpleOperation( ()-> aDiagramRenderer.diagram().addRootNode(pNode), 
-				()-> aDiagramRenderer.diagram().removeRootNode(pNode));
+		return new SimpleOperation(() -> aDiagramRenderer.diagram().addRootNode(pNode),
+				() -> aDiagramRenderer.diagram().removeRootNode(pNode));
 	}
-	
+
 	/**
-	 * Creates an operation that adds all the elements in pElements. Assumes all nodes
-	 * are root nodes and all edges are connected, and that there are no dangling references.
+	 * Creates an operation that adds all the elements in pElements. Assumes all
+	 * nodes are root nodes and all edges are connected, and that there are no
+	 * dangling references.
 	 * 
 	 * @param pElements The elements to add.
 	 * @return The requested operation
 	 * @pre pElements != null
 	 */
-	public final DiagramOperation createAddElementsOperation(Iterable<DiagramElement> pElements)
-	{
+	public final DiagramOperation createAddElementsOperation(Iterable<DiagramElement> pElements) {
 		CompoundOperation operation = new CompoundOperation();
-		for( DiagramElement element : pElements)
-		{
-			if( element instanceof Node node)
-			{
-				operation.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().addRootNode(node),
-						()-> aDiagramRenderer.diagram().removeRootNode(node)));
+		for (DiagramElement element : pElements) {
+			if (element instanceof Node node) {
+				operation.add(new SimpleOperation(() -> aDiagramRenderer.diagram().addRootNode(node),
+						() -> aDiagramRenderer.diagram().removeRootNode(node)));
 			}
-			else if( element instanceof Edge edge)
-			{
-				/* We need to re-connect the edge to set the correct value for the
-				 * reference to the diagram, to cover the cases where elements might 
-				 * be added by being copied from one diagram and pasted into another.
+			else if (element instanceof Edge edge) {
+				/*
+				 * We need to re-connect the edge to set the correct value for
+				 * the reference to the diagram, to cover the cases where
+				 * elements might be added by being copied from one diagram and
+				 * pasted into another.
 				 */
-				operation.add(new SimpleOperation(
-						()-> 
-						{ 
-							aDiagramRenderer.diagram().addEdge(edge); 
-							edge.connect(edge.start(), edge.end());	
-						},
-						()-> aDiagramRenderer.diagram().removeEdge((Edge)element)));
+				operation.add(new SimpleOperation(() -> {
+					aDiagramRenderer.diagram().addEdge(edge);
+					edge.connect(edge.start(), edge.end());
+				}, () -> aDiagramRenderer.diagram().removeEdge((Edge) element)));
 			}
 		}
-		
+
 		return operation;
 	}
-	
+
 	/**
-	 * Finds the elements that should be removed if pElement is removed,
-	 * to preserve the integrity of the diagram.
+	 * Finds the elements that should be removed if pElement is removed, to
+	 * preserve the integrity of the diagram.
 	 * 
 	 * @param pElement The element to remove.
 	 * @return The list of elements that have to be removed with pElement.
 	 * @pre pElement != null && aDiagramRenderer.contains(pElement);
 	 */
-	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
-	{
+	protected List<DiagramElement> getCoRemovals(DiagramElement pElement) {
 		assert pElement != null && aDiagramRenderer.diagram().contains(pElement);
 		ArrayList<DiagramElement> result = new ArrayList<>();
 		result.add(pElement);
-		if( pElement.getClass() == PointNode.class )
-		{
-			for( Edge edge : aDiagramRenderer.diagram().edgesConnectedTo((Node)pElement))
-			{
+		if (pElement.getClass() == PointNode.class) {
+			for (Edge edge : aDiagramRenderer.diagram().edgesConnectedTo((Node) pElement)) {
 				result.add(edge);
 			}
 		}
-		if( pElement.getClass() == NoteEdge.class )
-		{
-			Edge edge = (Edge)pElement;
-			if( edge.start().getClass() == PointNode.class )
-			{
+		if (pElement.getClass() == NoteEdge.class) {
+			Edge edge = (Edge) pElement;
+			if (edge.start().getClass() == PointNode.class) {
 				result.add(edge.start());
 			}
-			if( edge.end().getClass() == PointNode.class )
-			{
+			if (edge.end().getClass() == PointNode.class) {
 				result.add(edge.end());
 			}
 		}
-		if( pElement instanceof Node node)
-		{
+		if (pElement instanceof Node node) {
 			List<Node> descendants = getNodeAndAllChildren(node);
-			for(Edge edge : aDiagramRenderer.diagram().edges())
-			{
-				if(descendants.contains(edge.start() ) || descendants.contains(edge.end()))
-				{
+			for (Edge edge : aDiagramRenderer.diagram().edges()) {
+				if (descendants.contains(edge.start()) || descendants.contains(edge.end())) {
 					result.add(edge);
-					// Special case that if we remove a note edge we must always 
+					// Special case that if we remove a note edge we must always
 					// remove the point node as well.
-					if( edge instanceof NoteEdge )
-					{
-						if( edge.start() instanceof PointNode )
-						{
+					if (edge instanceof NoteEdge) {
+						if (edge.start() instanceof PointNode) {
 							result.add(edge.start());
 						}
-						if( edge.end() instanceof PointNode )
-						{
+						if (edge.end() instanceof PointNode) {
 							result.add(edge.end());
 						}
 					}
@@ -227,79 +206,65 @@ public abstract class DiagramBuilder
 		}
 		return result;
 	}
-	
+
 	/*
 	 * Organize the elements to delete so that they can be reinserted properly
 	 */
-	private List<DiagramElement> tweakOrder(Set<DiagramElement> pElements)
-	{
+	private List<DiagramElement> tweakOrder(Set<DiagramElement> pElements) {
 		List<DiagramElement> result = new ArrayList<>();
 		Map<ObjectNode, List<FieldNode>> fields = new HashMap<>();
-		for( DiagramElement element : pElements )
-		{
-			if( element.getClass() != FieldNode.class )
-			{
+		for (DiagramElement element : pElements) {
+			if (element.getClass() != FieldNode.class) {
 				result.add(element);
 			}
-			else
-			{
+			else {
 				FieldNode field = (FieldNode) element;
-				if( !fields.containsKey(field.getParent()) )
-				{
-					fields.put((ObjectNode)field.getParent(), new ArrayList<>());
+				if (!fields.containsKey(field.getParent())) {
+					fields.put((ObjectNode) field.getParent(), new ArrayList<>());
 				}
 				fields.get(field.getParent()).add(field);
 			}
 		}
-		for( ObjectNode object : fields.keySet() )
-		{
+		for (ObjectNode object : fields.keySet()) {
 			List<FieldNode> nodes = fields.get(object);
-			Collections.sort(nodes, new Comparator<FieldNode>()
-			{
+			Collections.sort(nodes, new Comparator<FieldNode>() {
+
 				@Override
-				public int compare(FieldNode pField1, FieldNode pField2)
-				{
+				public int compare(FieldNode pField1, FieldNode pField2) {
 					return pField2.getParent().getChildren().indexOf(pField2) - 
 							pField1.getParent().getChildren().indexOf(pField1);
 				}
 			});
-			for( FieldNode node : nodes )
-			{
+			for (FieldNode node : nodes) {
 				result.add(node);
 			}
 		}
 		ArrayList<DiagramElement> result2 = new ArrayList<>();
 		ArrayList<Edge> edges = new ArrayList<>();
 		ArrayList<Node> nodes = new ArrayList<>();
-		for( DiagramElement element : result )
-		{
-			if( element instanceof Edge edge)
-			{
+		for (DiagramElement element : result) {
+			if (element instanceof Edge edge) {
 				edges.add(edge);
 			}
-			else if( element instanceof Node node && node.hasParent() )
-			{
+			else if (element instanceof Node node && node.hasParent()) {
 				nodes.add(node);
 			}
-			else
-			{
+			else {
 				result2.add(element);
 			}
 		}
-		Collections.sort(edges, (pEdge1, pEdge2) -> aDiagramRenderer.diagram().indexOf(pEdge2) - aDiagramRenderer.diagram().indexOf(pEdge1));
-		Collections.sort(nodes, new Comparator<Node>() 
-		{
+		Collections.sort(edges, (pEdge1, pEdge2) -> aDiagramRenderer.diagram().indexOf(pEdge2)- 
+				aDiagramRenderer.diagram().indexOf(pEdge1));
+		Collections.sort(nodes, new Comparator<Node>() {
+
 			@Override
-			public int compare(Node pNode1, Node pNode2)
-			{
+			public int compare(Node pNode1, Node pNode2) {
 				Node parent1 = pNode1.getParent();
 				Node parent2 = pNode2.getParent();
-				if( parent1 == parent2 )
-				{
-					return parent2.getChildren().indexOf(pNode2) -  parent1.getChildren().indexOf(pNode1);
+				if (parent1 == parent2) {
+					return parent2.getChildren().indexOf(pNode2) - parent1.getChildren().indexOf(pNode1);
 				}
-				else 
-				{
+				else {
 					return aDiagramRenderer.diagram().rootNodes().indexOf(parent2) - 
 							aDiagramRenderer.diagram().rootNodes().indexOf(parent1);
 				}
@@ -309,7 +274,7 @@ public abstract class DiagramBuilder
 		result2.addAll(nodes);
 		return result2;
 	}
-	
+
 	/**
 	 * Creates an operation that removes all the elements in pElements.
 	 * 
@@ -317,60 +282,46 @@ public abstract class DiagramBuilder
 	 * @return The requested operation.
 	 * @pre pElements != null.
 	 */
-	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
-	{
+	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements) {
 		assert pElements != null;
 		Set<DiagramElement> toDelete = new HashSet<>();
-		for( DiagramElement element : pElements)
-		{
+		for (DiagramElement element : pElements) {
 			toDelete.addAll(getCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
-		
-		for( DiagramElement element : tweakOrder(toDelete))
-		{
-			if( element instanceof Edge edge)
-			{
+
+		for (DiagramElement element : tweakOrder(toDelete)) {
+			if (element instanceof Edge edge) {
 				int index = aDiagramRenderer.diagram().indexOf(edge);
-				result.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().removeEdge(edge),
-						()-> aDiagramRenderer.diagram().addEdge(index, edge)));
+				result.add(new SimpleOperation(() -> aDiagramRenderer.diagram().removeEdge(edge),
+						() -> aDiagramRenderer.diagram().addEdge(index, edge)));
 			}
-			else if( element instanceof Node node)
-			{
-				if(node.hasParent())
-				{
-					result.add(new SimpleOperation(
-						createDetachOperation(node),
-						createReinsertOperation(node)));
+			else if (element instanceof Node node) {
+				if (node.hasParent()) {
+					result.add(new SimpleOperation(createDetachOperation(node), createReinsertOperation(node)));
 				}
-				else
-				{
-					result.add(new SimpleOperation(
-						()-> aDiagramRenderer.diagram().removeRootNode(node),
-						()-> aDiagramRenderer.diagram().addRootNode(node)));
+				else {
+					result.add(new SimpleOperation(() -> aDiagramRenderer.diagram().removeRootNode(node),
+							() -> aDiagramRenderer.diagram().addRootNode(node)));
 				}
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Create an operation to move a node.
 	 * 
 	 * @param pNode The node to move.
 	 * @param pX The amount to move the node in the x-coordinate.
 	 * @param pY The amount to move the node in the y-coordinate.
- 	 * @return The requested operation.
- 	 * @pre pNode != null.
+	 * @return The requested operation.
+	 * @pre pNode != null.
 	 */
-	public static DiagramOperation createMoveNodeOperation(Node pNode, int pX, int pY)
-	{
-		return new SimpleOperation(
-				()-> pNode.translate(pX, pY),
-				()-> pNode.translate(-pX, -pY));
+	public static DiagramOperation createMoveNodeOperation(Node pNode, int pX, int pY) {
+		return new SimpleOperation(() -> pNode.translate(pX, pY), () -> pNode.translate(-pX, -pY));
 	}
-	
+
 	/**
 	 * Create an operation to add and edge. By default an edge is create between
 	 * the start and end point of the rubberband. The special cases are handled
@@ -381,78 +332,76 @@ public abstract class DiagramBuilder
 	 * @param pEnd The end point.
 	 * @return The requested operation.
 	 */
-	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
-	{ 
+	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd) {
 		assert pEdge != null && pStart != null && pEnd != null;
-		
-		Node startNode = detectStartNode(pStart); 				// Must exist
-		Node endNode = detectEndNode(pEdge, startNode, pEnd);   // Can be created as a result of the method call
+
+		Node startNode = detectStartNode(pStart); // Must exist
+		Node endNode = detectEndNode(pEdge, startNode, pEnd); // Can be created
+																// as a result
+																// of the method
+																// call
 		Edge edge = obtainEdge(pEdge, pStart, pEnd);
-		
+
 		CompoundOperation addEdgeOperation = new CompoundOperation();
-		if(!diagram().allNodes().contains(endNode))
-		{
-			addEdgeOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(endNode),
+		if (!diagram().allNodes().contains(endNode)) {
+			addEdgeOperation.add(new SimpleOperation(() -> aDiagramRenderer.diagram().addRootNode(endNode),
 					() -> aDiagramRenderer.diagram().removeRootNode(endNode)));
 		}
 		completeEdgeAdditionOperation(addEdgeOperation, edge, startNode, endNode, pStart, pEnd);
 		return addEdgeOperation;
 	}
-	
+
 	/**
-	 * Allows subclasses to overried the edge used by the user to create an edge.
-	 * To support special cases where a different edge is more appropriate given the 
-	 * start and end points than the one chosen by the user. By default this method returns pOriginalEdge.
+	 * Allows subclasses to overried the edge used by the user to create an
+	 * edge. To support special cases where a different edge is more appropriate
+	 * given the start and end points than the one chosen by the user. By
+	 * default this method returns pOriginalEdge.
 	 * 
 	 * @param pOriginalEdge The edge originally selected by the user.
 	 * @param pStart The start point for the edge.
 	 * @param pEnd The end point for the edge.
 	 * @return An edge object to add to the diagram.
 	 */
-	protected Edge obtainEdge(Edge pOriginalEdge, Point pStart, Point pEnd)
-	{
+	protected Edge obtainEdge(Edge pOriginalEdge, Point pStart, Point pEnd) {
 		return pOriginalEdge;
 	}
-	
+
 	/*
-	 * Returns the node under pStartPoint. Using this method assumes that
-	 * there is one. This constraint must be enforced externally.
+	 * Returns the node under pStartPoint. Using this method assumes that there
+	 * is one. This constraint must be enforced externally.
 	 */
-	private Node detectStartNode(Point pStartPoint)
-	{
+	private Node detectStartNode(Point pStartPoint) {
 		Optional<Node> maybeNode1 = aDiagramRenderer.nodeAt(pStartPoint);
-		// Because we should only reach here if the edge creation gesture was started from a node
-		assert maybeNode1.isPresent(); 
- 		return maybeNode1.get();
+		// Because we should only reach here if the edge creation gesture was
+		// started from a node
+		assert maybeNode1.isPresent();
+		return maybeNode1.get();
 	}
-	
+
 	/*
-	 * Returns the node under pEndPoint. If there is no such node, this 
-	 * method creates a PointNode at pEndPoint. If the edge is a note 
-	 * edge, a PointNode is created if the end node is not an note node
+	 * Returns the node under pEndPoint. If there is no such node, this method
+	 * creates a PointNode at pEndPoint. If the edge is a note edge, a PointNode
+	 * is created if the end node is not an note node
 	 */
-	private Node detectEndNode(Edge pEdge, Node pStartNode, Point pEndPoint)
-	{
+	private Node detectEndNode(Edge pEdge, Node pStartNode, Point pEndPoint) {
 		Optional<Node> optionalEndNode = aDiagramRenderer.nodeAt(pEndPoint);
 
-		if( pStartNode.getClass() == NoteNode.class && pEdge.getClass() == NoteEdge.class || 
-				optionalEndNode.isEmpty() )
-		{
+		if (pStartNode.getClass() == NoteNode.class && pEdge.getClass() == NoteEdge.class || 
+				optionalEndNode.isEmpty()) {
 			Node endNode = new PointNode();
 			endNode.translate(pEndPoint.x(), pEndPoint.y());
 			return endNode;
 		}
-		else
-		{
+		else {
 			return optionalEndNode.get();
 		}
 	}
-	
+
 	/**
-	 * Finishes the addition operation. By default, this just connects the edge to the nodes
-	 * and adds the edge to the diagram.
+	 * Finishes the addition operation. By default, this just connects the edge
+	 * to the nodes and adds the edge to the diagram.
 	 * 
-	 * @param pOperation The operation being constructed. 
+	 * @param pOperation The operation being constructed.
 	 * @param pEdge The edge to add.
 	 * @param pStartNode The start node.
 	 * @param pEndNode The end node.
@@ -460,68 +409,57 @@ public abstract class DiagramBuilder
 	 * @param pEndPoint The end point.
 	 * @pre No null references as arguments.
 	 */
-	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
-			Point pStartPoint, Point pEndPoint)
-	{
+	protected void completeEdgeAdditionOperation(CompoundOperation pOperation, Edge pEdge, Node pStartNode,
+			Node pEndNode, Point pStartPoint, Point pEndPoint) {
 		pEdge.connect(pStartNode, pEndNode);
-		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(pEdge),
-				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
+		pOperation.add(new SimpleOperation(() -> aDiagramRenderer.diagram().addEdge(pEdge),
+				() -> aDiagramRenderer.diagram().removeEdge(pEdge)));
 	}
-	
-	private static Runnable createReinsertOperation(Node pNode)
-	{
+
+	private static Runnable createReinsertOperation(Node pNode) {
 		Node parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);
-		return ()-> parent.addChild(index, pNode);
+		return () -> parent.addChild(index, pNode);
 	}
-	
-	private Runnable createDetachOperation(Node pNode)
-	{
+
+	private Runnable createDetachOperation(Node pNode) {
 		Node parent = pNode.getParent();
-		if(parent.getClass()==PackageNode.class && parent.getChildren().size()==1)
-		{
-			return ()-> 
-			{ 
+		if (parent.getClass() == PackageNode.class && parent.getChildren().size() == 1) {
+			return () -> {
 				Rectangle parentBound = packageNodeRenderer().getBounds(parent);
-				parent.removeChild(pNode); 
-				parent.translate( parentBound.x()-parent.position().x(),  parentBound.y()-parent.position().y() );
+				parent.removeChild(pNode);
+				parent.translate(parentBound.x() - parent.position().x(), parentBound.y() - parent.position().y());
 			};
 		}
-		return ()-> 
-		{ 
-			parent.removeChild(pNode); 
+		return () -> {
+			parent.removeChild(pNode);
 		};
 	}
-	
-	protected PackageNodeRenderer packageNodeRenderer()
-	{
-		return (PackageNodeRenderer)aDiagramRenderer.rendererFor(PackageNode.class);
+
+	protected PackageNodeRenderer packageNodeRenderer() {
+		return (PackageNodeRenderer) aDiagramRenderer.rendererFor(PackageNode.class);
 	}
-	
-	private Point computePosition(Dimension pDimension, Point pRequestedPosition)
-	{
+
+	private Point computePosition(Dimension pDimension, Point pRequestedPosition) {
 		int newX = pRequestedPosition.x();
 		int newY = pRequestedPosition.y();
-		if(newX + pDimension.width() > aCanvasDimension.width())
-		{
+		if (newX + pDimension.width() > aCanvasDimension.width()) {
 			newX = aCanvasDimension.width() - pDimension.width();
 		}
-		if(newY + pDimension.height() > aCanvasDimension.height())
-		{
+		if (newY + pDimension.height() > aCanvasDimension.height()) {
 			newY = aCanvasDimension.height() - pDimension.height();
 		}
 		return new Point(newX, newY);
 	}
-	
+
 	/**
 	 * Positions pNode as close to the requested position as possible.
 	 * 
-	 * @param pNode The node to position. 
+	 * @param pNode The node to position.
 	 * @param pRequestedPosition The requested position.
 	 * @pre pNode != null && pRequestedPosition != null
 	 */
-	protected void positionNode(Node pNode, Point pRequestedPosition)
-	{
+	protected void positionNode(Node pNode, Point pRequestedPosition) {
 		assert pNode != null && pRequestedPosition != null;
 		Dimension bounds = renderer().getDefaultDimension(pNode);
 		Point position = computePosition(bounds, pRequestedPosition);

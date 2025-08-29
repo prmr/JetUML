@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package org.jetuml.gui;
 
@@ -42,83 +42,75 @@ import javafx.stage.Stage;
 /**
  * A modal dialog that provides information about JetUML.
  */
-public class AboutDialog
-{
+public class AboutDialog {
+
 	private final Stage aStage;
-	
+
 	/**
 	 * Creates a new dialog.
 	 * 
 	 * @param pOwner The stage that owns this stage.
 	 */
-	public AboutDialog( Stage pDialogStage )
-	{
+	public AboutDialog(Stage pDialogStage) {
 		aStage = pDialogStage;
 		prepareStage();
 		aStage.getScene().setRoot(createRoot());
 	}
-	
-	private void prepareStage() 
-	{
+
+	private void prepareStage() {
 		aStage.setTitle(String.format("%s %s", RESOURCES.getString("dialog.about.title"),
 				RESOURCES.getString("application.name")));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 	}
-	
-	private Pane createRoot() 
-	{
+
+	private Pane createRoot() {
 		final int verticalSpacing = 5;
-		
+
 		VBox info = new VBox(verticalSpacing);
 		Label name = new Label(RESOURCES.getString("application.name"));
 		name.setStyle("-fx-font-size: 18pt;");
-		
-		Label version = new Label(String.format("%s %s", RESOURCES.getString("dialog.about.version"), 
-				JetUML.VERSION));
-		
+
+		Label version = new Label(String.format("%s %s", RESOURCES.getString("dialog.about.version"), JetUML.VERSION));
+
 		Label copyright = new Label(RESOURCES.getString("application.copyright"));
-		
+
 		Label license = new Label(RESOURCES.getString("dialog.about.license"));
-		
+
 		Label quotes = new Label(RESOURCES.getString("quotes.copyright"));
-		
+
 		Hyperlink link = new Hyperlink(RESOURCES.getString("dialog.about.link"));
 		link.setBorder(Border.EMPTY);
 		link.setPadding(new Insets(0));
 		link.setOnMouseClicked(e -> JetUML.openBrowser(RESOURCES.getString("dialog.about.url")));
 		link.setUnderline(true);
 		link.setFocusTraversable(false);
-		
+
 		info.getChildren().addAll(name, version, copyright, license, link, quotes);
-		
+
 		final int padding = 15;
 		HBox layout = new HBox(padding);
 		layout.setPadding(new Insets(padding));
 		layout.setAlignment(Pos.CENTER_LEFT);
-		
+
 		ImageView logo = new ImageView(RESOURCES.getString("application.icon"));
 		logo.setEffect(new BoxBlur());
 		layout.getChildren().addAll(logo, info);
 		layout.setAlignment(Pos.TOP_CENTER);
-		
+
 		aStage.requestFocus();
-		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
-		{
-			if(pEvent.getCode() == KeyCode.ENTER) 
-			{
+		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> {
+			if (pEvent.getCode() == KeyCode.ENTER) {
 				aStage.close();
 			}
 		});
-		
+
 		return layout;
 	}
-	
+
 	/**
-	 * Shows the dialog and blocks the remainder of the UI
-	 * until it is closed.
+	 * Shows the dialog and blocks the remainder of the UI until it is closed.
 	 */
-	public void show() 
-	{
-        aStage.showAndWait();
-    }
+	public void show() {
+		aStage.showAndWait();
+	}
 }

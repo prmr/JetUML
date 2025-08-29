@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
 package org.jetuml;
@@ -51,25 +51,26 @@ import javafx.stage.Stage;
 /**
  * Entry point for launching JetUML.
  */
-public final class JetUML extends Application
-{
+public final class JetUML extends Application {
+
 	@SuppressWarnings("exports")
 	public static final Version VERSION = Version.create(3, 9);
 	
-	private static HostServices aHostServices; // Required to open a browser page.
-	
+	private static final String CSS_FILE_NAME = "JetUML.css";
+
+	// Required to open a browser page.
+	private static HostServices aHostServices;
+
 	/**
 	 * @param pArgs Not used.
 	 */
-	public static void main(String[] pArgs)
-	{
+	public static void main(String[] pArgs) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		launch(pArgs);
 	}
-	
+
 	@Override
-	public void start(Stage pStage) throws Exception 
-	{
+	public void start(Stage pStage) throws Exception {
 		aHostServices = getHostServices();
 		setStageBoundaries(pStage);
 
@@ -78,87 +79,76 @@ public final class JetUML extends Application
 
 		Optional<Diagram> diagramToOpen = Optional.empty();
 		Optional<File> fileToOpen = getFileToOpenIfPresent();
-		
-		/* For simplicity, the code below does not set up a stage just to serve
+
+		/*
+		 * For simplicity, the code below does not set up a stage just to serve
 		 * as a parent for the Alert dialog. The only consequence is that if
 		 * this dialog appears, a default "Java" icon will be shown in the OS
-		 * taskbar instead of the JetUML-branded icon. To show the JetUML
-		 * icon, the code needs to be extended to create an empty stage
-		 * and ensure the dialog shows up in the middle of the screen, before
-		 * exiting.
+		 * taskbar instead of the JetUML-branded icon. To show the JetUML icon,
+		 * the code needs to be extended to create an empty stage and ensure the
+		 * dialog shows up in the middle of the screen, before exiting.
 		 */
-		try
-		{
-			if( fileToOpen.isPresent())
-			{
+		try {
+			if (fileToOpen.isPresent()) {
 				diagramToOpen = Optional.of(PersistenceService.read(fileToOpen.get()));
 			}
 		}
-		catch( IOException | DeserializationException exception )
-		{
+		catch (IOException | DeserializationException exception) {
 			Alert alert = new DeserializationErrorAlert(exception);
 			alert.showAndWait();
 			System.exit(0);
 		}
-		
+
 		DialogStage dialogStage = new DialogStage(pStage);
-		dialogStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
-		
+		dialogStage.getScene().getStylesheets().add(getClass().getResource(CSS_FILE_NAME).toExternalForm());
+
 		EditorFrame editor = new EditorFrame(pStage, dialogStage);
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
 
 		NotificationService.instance().setMainStage(pStage);
-		
-		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
+
+		pStage.getScene().getStylesheets().add(getClass().getResource(CSS_FILE_NAME).toExternalForm());
 		editor.booleanPreferenceChanged(UserPreferences.BooleanPreference.darkMode);
-		
-		pStage.setOnCloseRequest(pWindowEvent -> 
-		{
+
+		pStage.setOnCloseRequest(pWindowEvent -> {
 			pWindowEvent.consume();
-			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
+			((EditorFrame) ((Stage) pWindowEvent.getSource()).getScene().getRoot()).exit();
 		});
 		pStage.show();
-		
-		if(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips))
-		{
+
+		if (UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips)) {
 			new TipDialog(dialogStage).show();
 		}
 	}
-	
+
 	// If the first argument passed to the application is a valid file
-	private Optional<File> getFileToOpenIfPresent()
-	{
+	private Optional<File> getFileToOpenIfPresent() {
 		List<String> parameters = getParameters().getUnnamed();
-		if( parameters.isEmpty() )
-		{
+		if (parameters.isEmpty()) {
 			return Optional.empty();
 		}
 		File file = new File(parameters.get(0));
-		if(file.exists() && !file.isDirectory())
-		{
+		if (file.exists() && !file.isDirectory()) {
 			return Optional.of(file);
 		}
-		else
-		{
+		else {
 			return Optional.empty();
 		}
 	}
-	
+
 	/**
 	 * Open pUrl in the default system browser.
 	 * 
 	 * @param pUrl The url to open.
 	 * @pre pUrl != null
 	 */
-	public static void openBrowser(String pUrl)
-	{
+	public static void openBrowser(String pUrl) {
 		assert pUrl != null;
 		aHostServices.showDocument(pUrl);
 	}
 
-	private static void setStageBoundaries(Stage pStage)
-	{
+	private static void setStageBoundaries(Stage pStage) {
 		Rectangle defaultStageBounds = GuiUtils.defaultStageBounds();
 		pStage.setX(defaultStageBounds.x());
 		pStage.setY(defaultStageBounds.y());

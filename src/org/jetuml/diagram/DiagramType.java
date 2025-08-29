@@ -48,8 +48,8 @@ import org.jetuml.rendering.UseCaseDiagramRenderer;
  * The different types of UML diagrams supported by 
  * this application.
  */
-public enum DiagramType
-{
+public enum DiagramType {
+	
 	CLASS(
 			"ClassDiagram",
 			".class",
@@ -140,8 +140,7 @@ public enum DiagramType
 	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier,
 				Function<Diagram, DiagramRenderer> pRendererFactory,
-				Function<Diagram, DiagramValidator> pValidatorFactory, DiagramElement[] pPrototypes)
-	{
+				Function<Diagram, DiagramValidator> pValidatorFactory, DiagramElement[] pPrototypes) {
 		assert pName != null;
 		aName = pName;
 		aFileExtension = pFileExtension;
@@ -156,12 +155,9 @@ public enum DiagramType
 	 * @return The DiagramType with name pName.
 	 * @throws IllegalArgumentException if pName is not a valid diagram type name.
 	 */
-	public static DiagramType fromName(String pName)
-	{
-		for( DiagramType type : DiagramType.values() )
-		{
-			if( type.getName().equals(pName) )
-			{
+	public static DiagramType fromName(String pName) {
+		for (DiagramType type : DiagramType.values()) {
+			if (type.getName().equals(pName)) {
 				return type;
 			}
 		}
@@ -171,17 +167,15 @@ public enum DiagramType
 	/**
 	 * @return The file extension for this type of diagram.
 	 */
-	public String getFileExtension()
-	{
+	public String getFileExtension() {
 		return aFileExtension;
 	}
 	
 	/**
 	 * @return A short description of the diagram type.
 	 */
-	public String getFileNameDescription()
-	{
-		return RESOURCES.getString( aName.toLowerCase() + ".file.name");
+	public String getFileNameDescription() {
+		return RESOURCES.getString(aName.toLowerCase() + ".file.name");
 	}
 	
 	/**
@@ -191,8 +185,7 @@ public enum DiagramType
 	 * it can be safely modified.
 	 * @return A non-null list of prototypes
 	 */   
-	public List<DiagramElement> getPrototypes()
-	{
+	public List<DiagramElement> getPrototypes() {
 		return Arrays.asList(aPrototypes);
 	}
 
@@ -201,8 +194,7 @@ public enum DiagramType
 	 * @return A new instance of a builder for this diagram type.
 	 * @pre pDiagram != null
 	 */
-	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram)
-	{
+	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram) {
 		/* This method is not defined on class Diagram to avoid introducing 
 		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
@@ -214,8 +206,7 @@ public enum DiagramType
 	 * @return A new instance of a renderer for this diagram type.
 	 * @pre pDiagram != null
 	 */
-	public static DiagramRenderer newRendererInstanceFor(Diagram pDiagram)
-	{
+	public static DiagramRenderer newRendererInstanceFor(Diagram pDiagram) {
 		/* This method is not defined on class Diagram to avoid introducing 
 		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
@@ -227,8 +218,7 @@ public enum DiagramType
 	 * @return A new instance of a validator for this diagram type.
 	 * @pre pDiagram != null
 	 */
-	public static DiagramValidator newValidatorInstanceFor(Diagram pDiagram)
-	{
+	public static DiagramValidator newValidatorInstanceFor(Diagram pDiagram) {
 		assert pDiagram != null;
 		return pDiagram.getType().aValidatorFactory.apply(pDiagram);
 	}
@@ -236,8 +226,7 @@ public enum DiagramType
 	/**
 	 * @return The name of the diagram type.
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return aName;
 	}
 }

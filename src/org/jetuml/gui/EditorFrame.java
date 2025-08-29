@@ -76,8 +76,7 @@ import javafx.stage.Stage;
 /**
  * The main frame that contains panes that contain diagrams.
  */
-public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHandler
-{
+public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHandler {
 	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
 	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
 	private static final String KEY_LAST_IMAGE_FORMAT = "lastImageFormat";
@@ -98,8 +97,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * @param pMainStage The main stage used by the UMLEditor
 	 * @param pDialogStage The stage for all dialogs.
 	 */
-	public EditorFrame(Stage pMainStage, Stage pDialogStage) 
-	{
+	public EditorFrame(Stage pMainStage, Stage pDialogStage) {
 		aMainStage = pMainStage;
 		aDialogStage = pDialogStage;
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
@@ -110,7 +108,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		TabPane tabPane = new TabPane();
 //		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER); // This JavaFX feature is too buggy to use at the moment see issue #455
 		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
-		setCenter( tabPane );
+		setCenter(tabPane);
 
 		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
 		createFileMenu(menuBar, newDiagramHandlers);
@@ -124,17 +122,13 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(this);
 		
-		setOnKeyPressed(e -> 
-		{
-			if( !isWelcomeTabShowing() && e.isShiftDown() )
-			{
+		setOnKeyPressed(e -> {
+			if (!isWelcomeTabShowing() && e.isShiftDown()) {
 				getSelectedDiagramTab().shiftKeyPressed();
 			}
 		});
-		setOnKeyTyped(e -> 
-		{
-			if( !isWelcomeTabShowing() && !e.isShortcutDown())
-			{
+		setOnKeyTyped(e -> {
+			if (!isWelcomeTabShowing() && !e.isShortcutDown()) {
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
@@ -142,14 +136,11 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
 	 * claims to recognize the format */
-	private static String[] validFormats(String... pDesiredFormats)
-	{
+	private static String[] validFormats(String... pDesiredFormats) {
 		List<String> recognizedWriters = Arrays.asList(ImageIO.getWriterFormatNames());
 		List<String> validFormats = new ArrayList<>();
-		for( String format : pDesiredFormats )
-		{
-			if( recognizedWriters.contains(format) || "svg".equals(format))
-			{
+		for (String format : pDesiredFormats) {
+			if (recognizedWriters.contains(format) || "svg".equals(format)) {
 				validFormats.add(format);
 			}
 		}
@@ -166,24 +157,22 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * This method assumes that any sub-menu beyond the second level (sub-menus of
 	 * top menus) will NOT be diagram-specific.
 	 */
-	private void setMenuVisibility()
-	{
-			((MenuBar)getTop()).getMenus().stream() // All top level menus
+	private void setMenuVisibility() {
+			((MenuBar) getTop()).getMenus().stream() // All top level menus
 				.flatMap(menu -> Stream.concat(Stream.of(menu), menu.getItems().stream())) // All menus and immediate sub-menus
-				.filter( item -> Boolean.TRUE.equals(item.getUserData())) // Retain only diagram-relevant menu items
-				.forEach( item -> item.setDisable(isWelcomeTabShowing()));
+				.filter(item -> Boolean.TRUE.equals(item.getUserData())) // Retain only diagram-relevant menu items
+				.forEach(item -> item.setDisable(isWelcomeTabShowing()));
 	}
 	
 	// Returns the new menu
-	private void createFileMenu(MenuBar pMenuBar, List<NewDiagramHandler> pNewDiagramHandlers) 
-	{
+	private void createFileMenu(MenuBar pMenuBar, List<NewDiagramHandler> pNewDiagramHandlers) {
 		MenuFactory factory = new MenuFactory(RESOURCES);
 		
 		// Special menu items whose creation can't be inlined in the factory call.
 		Menu newMenu = factory.createMenu("file.new", false);
-		for( NewDiagramHandler handler : pNewDiagramHandlers )
-		{
-			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName().toLowerCase(), false, handler));
+		for (NewDiagramHandler handler : pNewDiagramHandlers) {
+			newMenu.getItems()
+					.add(factory.createMenuItem(handler.getDiagramType().getName().toLowerCase(), false, handler));
 		}
 		
 		aRecentFilesMenu = factory.createMenu("file.recent", false);
@@ -204,10 +193,9 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 				factory.createMenuItem("file.exit", false, event -> exit())));
 	}
 	
-	private void createEditMenu(MenuBar pMenuBar) 
-	{
+	private void createEditMenu(MenuBar pMenuBar) {
 		MenuFactory factory = new MenuFactory(RESOURCES);
-		pMenuBar.getMenus().add(factory.createMenu("edit", true, 
+		pMenuBar.getMenus().add(factory.createMenu("edit", true,
 				factory.createMenuItem("edit.undo", true, pEvent -> getSelectedDiagramTab().undo()),
 				factory.createMenuItem("edit.redo", true, pEvent -> getSelectedDiagramTab().redo()),
 				factory.createMenuItem("edit.selectall", true, pEvent -> getSelectedDiagramTab().selectAll()),
@@ -215,69 +203,65 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 				factory.createMenuItem("edit.cut", true, pEvent -> getSelectedDiagramTab().cut()),
 				factory.createMenuItem("edit.paste", true, pEvent -> getSelectedDiagramTab().paste()),
 				factory.createMenuItem("edit.copy", true, pEvent -> getSelectedDiagramTab().copy()),
-				factory.createMenuItem("edit.delete", true, pEvent -> getSelectedDiagramTab().removeSelected() )));
+				factory.createMenuItem("edit.delete", true, pEvent -> getSelectedDiagramTab().removeSelected())));
 	}
 	
-	private void createViewMenu(MenuBar pMenuBar) 
-	{
+	private void createViewMenu(MenuBar pMenuBar) {
 		MenuFactory factory = new MenuFactory(RESOURCES);
-		pMenuBar.getMenus().add(factory.createMenu("view", false, 
-				
-				factory.createCheckMenuItem("view.show_grid", false, 
-				UserPreferences.instance().getBoolean(BooleanPreference.showGrid), 
-					pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, 
-							((CheckMenuItem) pEvent.getSource()).isSelected())),
-			
-				factory.createCheckMenuItem("view.show_hints", false, 
-				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
-				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
-						((CheckMenuItem) pEvent.getSource()).isSelected())),
-				
-				factory.createCheckMenuItem("view.verbose_tooltips", false, 
-						UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips),
-						pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.verboseToolTips, 
+		pMenuBar.getMenus().add(factory.createMenu("view", false,
+
+				factory.createCheckMenuItem("view.show_grid", false,
+						UserPreferences.instance().getBoolean(BooleanPreference.showGrid),
+						pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid,
 								((CheckMenuItem) pEvent.getSource()).isSelected())),
-				
-				factory.createCheckMenuItem("view.autoedit_node", false, 
+
+				factory.createCheckMenuItem("view.show_hints", false,
+						UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
+						pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints,
+								((CheckMenuItem) pEvent.getSource()).isSelected())),
+
+				factory.createCheckMenuItem("view.verbose_tooltips", false,
+						UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips),
+						pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.verboseToolTips,
+								((CheckMenuItem) pEvent.getSource()).isSelected())),
+
+				factory.createCheckMenuItem("view.autoedit_node", false,
 						UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode),
-						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
+						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode,
 								((CheckMenuItem) event.getSource()).isSelected())),
-				
-				factory.createCheckMenuItem("view.dark_mode", false, 
+
+				factory.createCheckMenuItem("view.dark_mode", false,
 						UserPreferences.instance().getBoolean(BooleanPreference.darkMode),
-						event -> UserPreferences.instance().setBoolean(BooleanPreference.darkMode, 
+						event -> UserPreferences.instance().setBoolean(BooleanPreference.darkMode,
 								((CheckMenuItem) event.getSource()).isSelected())),
-		
+
 				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aDialogStage).show()),
 				factory.createMenuItem("view.font", false, event -> new FontDialog(aDialogStage).show()),
-				factory.createMenuItem("view.notifications", false, event -> new NotificationTimeDialog(aDialogStage).show()),
+				factory.createMenuItem("view.notifications", false,
+						event -> new NotificationTimeDialog(aDialogStage).show()),
 				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
 				factory.createMenuItem("view.zoom_out", true, event -> getSelectedDiagramTab().zoomOut()),
 				factory.createMenuItem("view.reset_zoom", true, event -> getSelectedDiagramTab().resetZoom())));
 	}
 	
-	private void createHelpMenu(MenuBar pMenuBar) 
-	{
+	private void createHelpMenu(MenuBar pMenuBar) {
 		MenuFactory factory = new MenuFactory(RESOURCES);
-		pMenuBar.getMenus().add(factory.createMenu("help", false,
-				factory.createMenuItem("help.tips", false, event -> new TipDialog(aDialogStage).show()),
-				factory.createMenuItem("help.guide", false, event -> JetUML.openBrowser(USER_MANUAL_URL)),
-				factory.createMenuItem("help.about", false, event -> new AboutDialog(aDialogStage).show())));
+		pMenuBar.getMenus()
+				.add(factory.createMenu("help", false,
+						factory.createMenuItem("help.tips", false, event -> new TipDialog(aDialogStage).show()),
+						factory.createMenuItem("help.guide", false, event -> JetUML.openBrowser(USER_MANUAL_URL)),
+						factory.createMenuItem("help.about", false, event -> new AboutDialog(aDialogStage).show())));
 	}
 	
 	/*
 	 * @return The diagram tab whose corresponding file is pFile,
 	 * or empty if there are none.
 	 */
-	private Optional<DiagramTab> findTabFor(File pFile)
-	{
-		for( Tab tab : tabs() )
-		{
-			if(tab instanceof DiagramTab diagramTab)
-			{	
-				if(diagramTab.getFile().isPresent()	&& 
-						diagramTab.getFile().get().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
-				{
+	private Optional<DiagramTab> findTabFor(File pFile) {
+		for (Tab tab : tabs()) {
+			if (tab instanceof DiagramTab diagramTab) {
+				if (diagramTab.getFile().isPresent() &&
+						diagramTab.getFile().get().getAbsoluteFile().equals(pFile.getAbsoluteFile())) {
 					return Optional.of(diagramTab);
 				}
 			}
@@ -291,24 +275,20 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * 
 	 * @param pName the file to open. Not null.
 	 */
-	private void open(File pFile) 
-	{
+	private void open(File pFile) {
 		assert pFile != null;
 		Optional<DiagramTab> tab = findTabFor(pFile);
-		if( tab.isPresent() )
-		{
+		if (tab.isPresent()) {
 			tabPane().getSelectionModel().select(tab.get());
 			addRecentFile(pFile.getPath());
 			return;
 		}
-		
-		try 
-		{
+
+		try {
 			Diagram diagram = PersistenceService.read(pFile);
 			setOpenFileAsDiagram(pFile, diagram);
 		}
-		catch(IOException | DeserializationException exception) 
-		{
+		catch (IOException | DeserializationException exception) {
 			Alert alert = new DeserializationErrorAlert(exception);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
@@ -322,31 +302,25 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * @param pFile A valid diagram file.
 	 * @param pDiagram The diagram loaded from the file.
 	 */
-	public void setOpenFileAsDiagram(File pFile, Diagram pDiagram)
-	{
+	public void setOpenFileAsDiagram(File pFile, Diagram pDiagram) {
 		DiagramTab frame = new DiagramTab(pDiagram);
 		frame.setFile(pFile.getAbsoluteFile());
 		addRecentFile(pFile.getPath());
 		insertGraphFrameIntoTabbedPane(frame);
 	}
 	
-	private List<NamedHandler> getOpenFileHandlers()
-	{
+	private List<NamedHandler> getOpenFileHandlers() {
 		List<NamedHandler> result = new ArrayList<>();
-		for( File file : aRecentFiles )
-   		{
+		for (File file : aRecentFiles) {
 			result.add(new NamedHandler(file.getName(), pEvent -> open(file)));
-   		}
+		}
 		return Collections.unmodifiableList(result);
 	}
 	
-	private List<NewDiagramHandler> createNewDiagramHandlers()
-	{
+	private List<NewDiagramHandler> createNewDiagramHandlers() {
 		List<NewDiagramHandler> result = new ArrayList<>();
-		for( DiagramType diagramType : DiagramType.values() )
-		{
-			result.add(new NewDiagramHandler(diagramType, pEvent ->
-			{
+		for (DiagramType diagramType : DiagramType.values()) {
+			result.add(new NewDiagramHandler(diagramType, pEvent -> {
 				insertGraphFrameIntoTabbedPane(new DiagramTab(new Diagram(diagramType)));
 			}));
 		}
@@ -359,8 +333,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * 
 	 * @param pNewFile the file name to add
 	 */
-	private void addRecentFile(String pNewFile) 
-	{
+	private void addRecentFile(String pNewFile) {
 		aRecentFiles.add(pNewFile);
 		buildRecentFilesMenu();
 	}
@@ -370,31 +343,27 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
    	 * recent files is less than 10. Otherwise, additional logic will need
    	 * to be added to 0-index the mnemonics for files 1-9.
    	 */
-   	private void buildRecentFilesMenu()
-   	{ 
-   		aRecentFilesMenu.getItems().clear();
-   		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
-   		int i = 1;
-   		for( File file : aRecentFiles )
-   		{
-   			String name = "_" + i + " " + file.getName();
-   			MenuItem item = new MenuItem(name);
-   			aRecentFilesMenu.getItems().add(item);
-   			item.setOnAction(pEvent -> open(file));
-            i++;
-   		}
-   }
+	private void buildRecentFilesMenu() {
+		aRecentFilesMenu.getItems().clear();
+		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
+		int i = 1;
+		for (File file : aRecentFiles) {
+			String name = "_" + i + " " + file.getName();
+			MenuItem item = new MenuItem(name);
+			aRecentFilesMenu.getItems().add(item);
+			item.setOnAction(pEvent -> open(file));
+			i++;
+		}
+	}
 
-	private void openFile() 
-	{
+	private void openFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
 		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 
 		File selectedFile = fileChooser.showOpenDialog(aMainStage);
-		
-		if(selectedFile != null) 
-		{
+
+		if (selectedFile != null) {
 			open(selectedFile);
 		}
 	}
@@ -402,46 +371,42 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	/**
 	 * Copies the current image to the clipboard.
 	 */
-	public void copyToClipboard() 
-	{
+	public void copyToClipboard() {
 		DiagramTab frame = getSelectedDiagramTab();
 		final Image image = frame.createImage();
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
-	    final ClipboardContent content = new ClipboardContent();
-	    content.putImage(image);
-	    clipboard.setContent(content);
-		NotificationService.instance().spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"), ToastNotification.Type.SUCCESS);
+		final ClipboardContent content = new ClipboardContent();
+		content.putImage(image);
+		clipboard.setContent(content);
+		NotificationService.instance().spawnNotification(RESOURCES.getString("dialog.to_clipboard.message"),
+				ToastNotification.Type.SUCCESS);
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */
-	private DiagramTab getSelectedDiagramTab()
-	{
+	private DiagramTab getSelectedDiagramTab() {
 		Tab tab = ((TabPane) getCenter()).getSelectionModel().getSelectedItem();
 		assert tab instanceof DiagramTab; // implies a null check.
 		return (DiagramTab) tab;
 	}
 
-	private void close() 
-	{
+	private void close() {
 		DiagramTab diagramTab = getSelectedDiagramTab();
 		// we only want to check attempts to close a frame
-		if( diagramTab.hasUnsavedChanges() ) 
-		{
+		if (diagramTab.hasUnsavedChanges()) {
 			// ask user if it is ok to close
-			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES,
+					ButtonType.NO);
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 			alert.showAndWait();
 
-			if(alert.getResult() == ButtonType.YES) 
-			{
+			if (alert.getResult() == ButtonType.YES) {
 				removeGraphFrameFromTabbedPane(diagramTab);
 			}
 			return;
-		} 
-		else 
-		{
+		}
+		else {
 			removeGraphFrameFromTabbedPane(diagramTab);
 		}
 	}
@@ -452,58 +417,47 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * 
 	 * @param pDiagramTab The current Tab that one wishes to close.
 	 */
-	public void close(DiagramTab pDiagramTab) 
-	{
-		if(pDiagramTab.hasUnsavedChanges()) 
-		{
-			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+	public void close(DiagramTab pDiagramTab) {
+		if (pDiagramTab.hasUnsavedChanges()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES,
+					ButtonType.NO);
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.close.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 			alert.showAndWait();
 
-			if(alert.getResult() == ButtonType.YES) 
-			{
+			if (alert.getResult() == ButtonType.YES) {
 				removeGraphFrameFromTabbedPane(pDiagramTab);
 			}
 		}
-		else
-		{
+		else {
 			removeGraphFrameFromTabbedPane(pDiagramTab);
 		}
 	}
 	
-	private void duplicate() 
-	{
+	private void duplicate() {
 		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate()));
 	}
-	
-	
 
-	private void save() 
-	{
+	private void save() {
 		DiagramTab diagramTab = getSelectedDiagramTab();
 		Optional<File> file = diagramTab.getFile();
-		if(!file.isPresent()) 
-		{
+		if (!file.isPresent()) {
 			saveAs();
 			return;
 		}
-		try 
-		{
+		try {
 			PersistenceService.save(diagramTab.getDiagram(), file.get());
 			diagramTab.diagramSaved();
-		} 
-		catch(IOException exception) 
-		{
+		}
+		catch (IOException exception) {
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
 	}
 
-	private void saveAs() 
-	{
+	private void saveAs() {
 		DiagramTab diagramTab = getSelectedDiagramTab();
 		Diagram diagram = diagramTab.getDiagram();
 
@@ -511,141 +465,121 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 		fileChooser.setSelectedExtensionFilter(FileExtensions.forDiagramType(diagram.getType()));
 
-		if(diagramTab.getFile().isPresent()) 
-		{
+		if (diagramTab.getFile().isPresent()) {
 			fileChooser.setInitialDirectory(diagramTab.getFile().get().getParentFile());
 			fileChooser.setInitialFileName(diagramTab.getFile().get().getName());
-		} 
-		else 
-		{
+		}
+		else {
 			fileChooser.setInitialDirectory(getLastDir(KEY_LAST_SAVEAS_DIR));
 			fileChooser.setInitialFileName("");
 		}
 
-		try 
-		{
+		try {
 			File result = fileChooser.showSaveDialog(aMainStage);
-			if( result != null )
-			{
+			if (result != null) {
 				PersistenceService.save(diagram, result);
 				addRecentFile(result.getAbsolutePath());
 				diagramTab.setFile(result);
 				diagramTab.setText(diagramTab.getFile().get().getName());
 				diagramTab.diagramSaved();
 				File dir = result.getParentFile();
-				if( dir != null )
-				{
+				if (dir != null) {
 					setLastDir(KEY_LAST_SAVEAS_DIR, dir);
 				}
 			}
-		} 
-		catch (IOException exception) 
-		{
+		}
+		catch (IOException exception) {
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
 	}
 
-	private static File getLastDir(String pKey)
-	{
+	private static File getLastDir(String pKey) {
 		String dir = Preferences.userNodeForPackage(JetUML.class).get(pKey, ".");
 		File result = new File(dir);
-		if( !(result.exists() && result.isDirectory()))
-		{
+		if (!(result.exists() && result.isDirectory())) {
 			result = new File(".");
 		}
 		return result;
 	}
 	
-	private static void setLastDir(String pKey, File pLastExportDir)
-	{
+	private static void setLastDir(String pKey, File pLastExportDir) {
 		Preferences.userNodeForPackage(JetUML.class).put(pKey, pLastExportDir.getAbsolutePath().toString());
 	}
 	
 	/**
 	 * Exports the current graph to an image file.
 	 */
-	private void exportImage() 
-	{
-		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR), 
+	private void exportImage() {
+		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR),
 				Preferences.userNodeForPackage(JetUML.class).get(KEY_LAST_IMAGE_FORMAT, "png"));
 		File file = fileChooser.showSaveDialog(aMainStage);
-		if(file == null) 
-		{
+		if (file == null) {
 			return;
 		}
 
 		String fileName = file.getPath();
 		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
 		Preferences.userNodeForPackage(JetUML.class).put(KEY_LAST_IMAGE_FORMAT, format);
-				
+
 		File dir = file.getParentFile();
-		if( dir != null )
-		{
+		if (dir != null) {
 			setLastDir(KEY_LAST_EXPORT_DIR, dir);
 		}
 		DiagramTab frame = getSelectedDiagramTab();
-		try (OutputStream out = new FileOutputStream(file)) 
-		{
-			if ("svg".equals(format))
-			{
+		try (OutputStream out = new FileOutputStream(file)) {
+			if ("svg".equals(format)) {
 				out.write(frame.createSvgImage().getBytes(StandardCharsets.UTF_8));
 			}
-			else
-			{
-				BufferedImage image = getBufferedImage(frame); 
-				if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
-				{
-					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), Transparency.OPAQUE);
+			else {
+				BufferedImage image = getBufferedImage(frame);
+				if ("jpg".equals(format)) { // to correct the display of JPEG/JPG images (removes red hue)
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(),
+							Transparency.OPAQUE);
 					Graphics2D graphics = imageRGB.createGraphics();
-					graphics.drawImage(image, 0,  0, null);
+					graphics.drawImage(image, 0, 0, null);
 					ImageIO.write(imageRGB, format, out);
 					graphics.dispose();
 				}
-				else if("bmp".equals(format))	// to correct the BufferedImage type
-				{
-					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+				else if ("bmp".equals(format)) { // to correct the BufferedImage type
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(),
+							BufferedImage.TYPE_INT_RGB);
 					Graphics2D graphics = imageRGB.createGraphics();
 					graphics.drawImage(image, 0, 0, Color.WHITE, null);
 					ImageIO.write(imageRGB, format, out);
 					graphics.dispose();
 				}
-				else
-				{
+				else {
 					ImageIO.write(image, format, out);
 				}
 			}
-		} 
-		catch(IOException exception) 
-		{
+		}
+		catch (IOException exception) {
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
 	}
 	
-	private FileChooser getImageFileChooser(File pInitialDirectory, String pInitialFormat) 
-	{
+	private FileChooser getImageFileChooser(File pInitialDirectory, String pInitialFormat) {
 		assert pInitialDirectory.exists() && pInitialDirectory.isDirectory();
 		DiagramTab frame = getSelectedDiagramTab();
 
 		FileChooser fileChooser = new FileChooser();
-		for(String format : IMAGE_FORMATS ) 
-		{
-			ExtensionFilter filter = 
-					new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format);
+		for (String format : IMAGE_FORMATS) {
+			ExtensionFilter filter = new ExtensionFilter(
+					format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." + format);
 			fileChooser.getExtensionFilters().add(filter);
-			if( format.equals(pInitialFormat ))
-			{
+			if (format.equals(pInitialFormat)) {
 				fileChooser.setSelectedExtensionFilter(filter);
 			}
 		}
 		fileChooser.setInitialDirectory(pInitialDirectory);
 
-		// If the file was previously saved, use that to suggest a file name root.
-		if(frame.getFile().isPresent()) 
-		{
+		// If the file was previously saved, use that to suggest a file name
+		// root.
+		if (frame.getFile().isPresent()) {
 			File file = FileExtensions.clipApplicationExtension(frame.getFile().get());
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
@@ -653,95 +587,75 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		return fileChooser;
 	}
 
-	private static BufferedImage getBufferedImage(DiagramTab pDiagramTab) 
-	{
+	private static BufferedImage getBufferedImage(DiagramTab pDiagramTab) {
 		return SwingFXUtils.fromFXImage(pDiagramTab.createImage(), null);
 	}
-	
-	private int getNumberOfUsavedDiagrams()
-	{
-		return (int) tabs().stream()
-			.filter( tab -> tab instanceof DiagramTab ) 
-			.filter( frame -> ((DiagramTab) frame).hasUnsavedChanges())
-			.count();
+
+	private int getNumberOfUsavedDiagrams() {
+		return (int) tabs().stream().filter(tab -> tab instanceof DiagramTab)
+				.filter(frame -> ((DiagramTab) frame).hasUnsavedChanges()).count();
 	}
 
 	/**
 	 * Exits the program if no graphs have been modified or if the user agrees to
 	 * abandon modified graphs.
 	 */
-	public void exit() 
-	{
+	public void exit() {
 		final int modcount = getNumberOfUsavedDiagrams();
-		if(modcount > 0) 
-		{
-			Alert alert = new Alert(AlertType.CONFIRMATION, 
-					MessageFormat.format(RESOURCES.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(modcount) }),
-					ButtonType.YES, 
-					ButtonType.NO);
+		if (modcount > 0) {
+			Alert alert = new Alert(AlertType.CONFIRMATION, MessageFormat.format(RESOURCES.getString("dialog.exit.ok"),
+					new Object[] { Integer.valueOf(modcount) }), ButtonType.YES, ButtonType.NO);
 			alert.initOwner(aMainStage);
 			alert.setTitle(RESOURCES.getString("dialog.exit.title"));
 			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
 			alert.showAndWait();
 
-			if(alert.getResult() == ButtonType.YES) 
-			{
+			if (alert.getResult() == ButtonType.YES) {
 				Preferences.userNodeForPackage(JetUML.class).put("recent", aRecentFiles.serialize());
 				System.exit(0);
 			}
 		}
-		else 
-		{
+		else {
 			Preferences.userNodeForPackage(JetUML.class).put("recent", aRecentFiles.serialize());
 			System.exit(0);
 		}
-	}		
+	}
 	
 	/**
 	 * Getter for the dialog stage.
 	 * 
 	 * @return The dialog stage.
 	 */
-	public Stage getDialogStage()
-	{
+	public Stage getDialogStage() {
 		return aDialogStage;
 	}
-	
-	private List<Tab> tabs()
-	{
+
+	private List<Tab> tabs() {
 		return ((TabPane) getCenter()).getTabs();
 	}
-	
-	private TabPane tabPane()
-	{
+
+	private TabPane tabPane() {
 		return (TabPane) getCenter();
 	}
 	
-	private boolean isWelcomeTabShowing()
-	{
-		return aWelcomeTab != null && 
-				tabs().size() == 1 && 
-				tabs().get(0) instanceof WelcomeTab;
+	private boolean isWelcomeTabShowing() {
+		return aWelcomeTab != null && tabs().size() == 1 && tabs().get(0) instanceof WelcomeTab;
 	}
 	
 	/* Insert a graph frame into the tabbedpane */ 
-	private void insertGraphFrameIntoTabbedPane(DiagramTab pGraphFrame) 
-	{
-		if( isWelcomeTabShowing() )
-		{
+	private void insertGraphFrameIntoTabbedPane(DiagramTab pGraphFrame) {
+		if (isWelcomeTabShowing()) {
 			tabs().remove(0);
 		}
 		tabs().add(pGraphFrame);
 		tabPane().getSelectionModel().selectLast();
 	}
-	
+
 	/*
 	 * Shows the welcome tab if there are no other tabs.
 	 */
-	private void showWelcomeTabIfNecessary() 
-	{
-		if( tabs().size() == 0)
-		{
+	private void showWelcomeTabIfNecessary() {
+		if (tabs().size() == 0) {
 			aWelcomeTab.loadRecentFileLinks(getOpenFileHandlers());
 			tabs().add(aWelcomeTab);
 		}
@@ -750,25 +664,20 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	/*
 	 * Removes the graph frame from the tabbed pane
 	 */
-	private void removeGraphFrameFromTabbedPane(DiagramTab pTab) 
-	{
+	private void removeGraphFrameFromTabbedPane(DiagramTab pTab) {
 		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
 	}
 	
 	@Override
-	public void booleanPreferenceChanged(BooleanPreference pPreference)
-	{
-		if( pPreference == BooleanPreference.darkMode )
-		{
-			if( UserPreferences.instance().getBoolean(pPreference) )
-			{
+	public void booleanPreferenceChanged(BooleanPreference pPreference) {
+		if (pPreference == BooleanPreference.darkMode) {
+			if (UserPreferences.instance().getBoolean(pPreference)) {
 				getScene().getStylesheets().add(aDarkModeCSSPath);
 				aDialogStage.getScene().getStylesheets().add(aDarkModeCSSPath);
 			}
-			else
-			{
+			else {
 				getScene().getStylesheets().remove(aDarkModeCSSPath);
 				aDialogStage.getScene().getStylesheets().remove(aDarkModeCSSPath);
 			}

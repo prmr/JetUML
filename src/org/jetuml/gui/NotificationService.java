@@ -32,8 +32,7 @@ import java.util.List;
  * Singleton object that manages the notification object positions and display states.
  */
 @Singleton
-public final class NotificationService
-{
+public final class NotificationService {
 
     private static final int NOTIFICATION_DISPLAY_SPACING = 8;
     private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
@@ -58,8 +57,7 @@ public final class NotificationService
     /**
      * @return The NotificationService singleton instance
      */
-    public static NotificationService instance()
-    {
+    public static NotificationService instance() {
         return INSTANCE;
     }
 
@@ -70,71 +68,64 @@ public final class NotificationService
      *
      * @param pStage The target parent stage of the notification objects
      */
-    public void setMainStage(Stage pStage)
-    {
-        aMainStage = pStage;
+	public void setMainStage(Stage pStage) {
+		aMainStage = pStage;
 
-        if(pStage != null)
-        {
-            // Window position and size listener for notifications
-            ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue, pNewValue) ->
-                    NotificationService.instance().updateNotificationPosition();
+		if (pStage != null) {
+			// Window position and size listener for notifications
+			ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
+					pNewValue) -> NotificationService.instance().updateNotificationPosition();
 
-            // When the stage is moved, update the notification positions
-            pStage.xProperty().addListener(stageTransformationListener);
-            pStage.yProperty().addListener(stageTransformationListener);
+			// When the stage is moved, update the notification positions
+			pStage.xProperty().addListener(stageTransformationListener);
+			pStage.yProperty().addListener(stageTransformationListener);
 
-            // When the stage is resized, update the notification positions
-            pStage.heightProperty().addListener(stageTransformationListener);
-            pStage.widthProperty().addListener(stageTransformationListener);
-        }
-    }
+			// When the stage is resized, update the notification positions
+			pStage.heightProperty().addListener(stageTransformationListener);
+			pStage.widthProperty().addListener(stageTransformationListener);
+		}
+	}
 
     /**
      * Rearranges the notifications so that they are stacked properly and do not overlap.
      */
-    public void updateNotificationPosition()
-    {
-        double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
-        double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
+	public void updateNotificationPosition() {
+		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
+		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
-        ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
-        Collections.reverse(reverseNotifications);
-        for(Notification notification : reverseNotifications)
-        {
-            notification.setPosition(x, y);
-            y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
+		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
+		Collections.reverse(reverseNotifications);
+		for (Notification notification : reverseNotifications) {
+			notification.setPosition(x, y);
+			y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
 
-            if(y < aMainStage.getY())
-            {
-                notification.close();
-                aNotifications.remove(notification);
-            }
-        }
-    }
+			if (y < aMainStage.getY()) {
+				notification.close();
+				aNotifications.remove(notification);
+			}
+		}
+	}
 
     /**
      * Spawns a notification (it should be instantiated first).
      *
      * @param pNotification The notification object to spawn
      */
-    public void spawnNotification(Notification pNotification)
-    {
-        if(aMainStage == null)
-        {
-            return;
-        }
-        aDeadNotifications.forEach(Notification::close);
-        aDeadNotifications.clear();
+	public void spawnNotification(Notification pNotification) {
+		if (aMainStage == null) {
+			return;
+		}
+		aDeadNotifications.forEach(Notification::close);
+		aDeadNotifications.clear();
 
-        aNotifications.add(pNotification);
+		aNotifications.add(pNotification);
 
-        pNotification.show(() -> {
-            aNotifications.remove(pNotification);
-            aDeadNotifications.add(pNotification);
-        });
-        updateNotificationPosition();
-    }
+		pNotification.show(() -> {
+			aNotifications.remove(pNotification);
+			aDeadNotifications.add(pNotification);
+		});
+		updateNotificationPosition();
+	}
 
     /**
      * Spawns a new toast notification without having to pass a ToastNotification object, i.e. without having
@@ -142,14 +133,12 @@ public final class NotificationService
      *
      * @param pText The text to show on the toast
      */
-    public void spawnNotification(String pText, ToastNotification.Type pType)
-    {
-        if(aMainStage == null)
-        {
-            return;
-        }
+	public void spawnNotification(String pText, ToastNotification.Type pType) {
+		if (aMainStage == null) {
+			return;
+		}
 
-        ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
-        spawnNotification(toast);
-    }
+		ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
+		spawnNotification(toast);
+	}
 }

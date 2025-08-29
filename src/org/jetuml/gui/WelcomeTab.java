@@ -36,8 +36,7 @@ import javafx.scene.layout.VBox;
  * A tab that allow users to open new diagrams of the different types
  * or open recently saved diagrams.
  */
-public class WelcomeTab extends Tab
-{
+public class WelcomeTab extends Tab {
 	/* CSS classes of the different GUI elements in the welcome tab. See UMLEditorStyle.css for the styling */
 	private static final String CLASS_WELCOME_TAB_PANEL = "welcome-tab-panel"; 	// One column in the welcome tab
 	private static final String CLASS_PANEL_TITLE = "panel-title"; 				// The title/header above each of the two columns
@@ -47,24 +46,22 @@ public class WelcomeTab extends Tab
 	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams. The name 
 	 *     is expected to be the simple name of a concrete diagram, all in lower case.
 	 */
-	public WelcomeTab(List<NewDiagramHandler> pNewDiagramHandlers)
-	{
+	public WelcomeTab(List<NewDiagramHandler> pNewDiagramHandlers) {
 		super(RESOURCES.getString("welcome.title"));
 		setClosable(false);
-		
+
 		BorderPane layout = new BorderPane();
-		
+
 		HBox shortcutPanel = new HBox();
 		shortcutPanel.setAlignment(Pos.CENTER);
 		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramHandlers), createFilePanel());
 		layout.setCenter(shortcutPanel);
 		layout.setBottom(createFootTextPanel());
-	    
-	    setContent(layout);
+
+		setContent(layout);
 	}
 		
-	private static VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers)
-	{
+	private static VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers) {
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
 		titleBox.getChildren().addAll(new Label(RESOURCES.getString("welcome.create.text")));
@@ -72,9 +69,9 @@ public class WelcomeTab extends Tab
 		VBox diagramBox = new VBox();
 		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		diagramBox.getChildren().add(titleBox);
-		for(NewDiagramHandler handler : pNewDiagramHandlers)
-		{
-			Button newDiagramShortcut = new Button(RESOURCES.getString(handler.getDiagramType().getName().toLowerCase() + ".text"));
+		for (NewDiagramHandler handler : pNewDiagramHandlers) {
+			Button newDiagramShortcut = new Button(
+					RESOURCES.getString(handler.getDiagramType().getName().toLowerCase() + ".text"));
 			newDiagramShortcut.setOnAction(handler);
 			diagramBox.getChildren().add(newDiagramShortcut);
 		}
@@ -86,20 +83,17 @@ public class WelcomeTab extends Tab
 	 * 
 	 * @param pFileOpenHanders The file handlers.
 	 */
-	public void loadRecentFileLinks(List<NamedHandler> pFileOpenHanders)
-	{
-		VBox filesNode = (VBox) ((HBox)((BorderPane) getContent()).getCenter()).getChildren().get(1);
+	public void loadRecentFileLinks(List<NamedHandler> pFileOpenHanders) {
+		VBox filesNode = (VBox) ((HBox) ((BorderPane) getContent()).getCenter()).getChildren().get(1);
 		filesNode.getChildren().remove(1, filesNode.getChildren().size());
-		for(NamedHandler handler : pFileOpenHanders)
-		{
+		for (NamedHandler handler : pFileOpenHanders) {
 			Button fileShortcut = new Button(handler.getName());
 			fileShortcut.setOnAction(handler);
 			filesNode.getChildren().add(fileShortcut);
 		}
 	}
 	
-	private static VBox createFilePanel()
-	{
+	private static VBox createFilePanel() {
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
 		titleBox.getChildren().add(new Label(RESOURCES.getString("welcome.open.text")));
@@ -111,9 +105,7 @@ public class WelcomeTab extends Tab
 		return fileBox;
 	}
 
-
-	private static HBox createFootTextPanel()
-	{
+	private static HBox createFootTextPanel() {
 		HBox footTextPanel = new HBox();
 		footTextPanel.getStyleClass().add(CLASS_FOOTER);
 		footTextPanel.getChildren().add(new Label(RESOURCES.getString("application.copyright")));

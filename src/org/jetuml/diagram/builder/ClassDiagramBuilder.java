@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
 package org.jetuml.diagram.builder;
@@ -36,8 +36,8 @@ import org.jetuml.geom.Rectangle;
 /**
  * A builder for class diagrams.
  */
-public class ClassDiagramBuilder extends DiagramBuilder
-{
+public class ClassDiagramBuilder extends DiagramBuilder {
+
 	private static final int PADDING = 10;
 	private static final int TOP_HEIGHT = 20;
 
@@ -47,81 +47,66 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.CLASS
 	 */
-	public ClassDiagramBuilder( Diagram pDiagram )
-	{
-		super( pDiagram );
+	public ClassDiagramBuilder(Diagram pDiagram) {
+		super(pDiagram);
 		assert pDiagram.getType() == DiagramType.CLASS;
 	}
-	
+
 	@Override
-	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
-	{
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition) {
 		DiagramOperation result = null;
-		if( validChild(pNode))
-		{
+		if (validChild(pNode)) {
 			Optional<PackageNode> container = findContainer(aDiagramRenderer.diagram().rootNodes(), pRequestedPosition);
-			if( container.isPresent() )
-			{
-				if( container.get().getChildren().size()==0 )
-				{
-					// If pNode would be the first child node, position the node according to its container's position
-					positionNode(pNode, new Point(container.get().position().x() + PADDING, 
+			if (container.isPresent()) {
+				if (container.get().getChildren().size() == 0) {
+					// If pNode would be the first child node, position the node
+					// according to its container's position
+					positionNode(pNode, new Point(container.get().position().x() + PADDING,
 							container.get().position().y() + PADDING + TOP_HEIGHT));
 				}
-				else 
-				{
+				else {
 					positionNode(pNode, pRequestedPosition);
 				}
-				result = new SimpleOperation( ()-> container.get().addChild(pNode),
-						()-> container.get().removeChild(pNode));
+				result = new SimpleOperation(() -> container.get().addChild(pNode),
+						() -> container.get().removeChild(pNode));
 			}
 		}
-		if( result == null )
-		{
+		if (result == null) {
 			result = super.createAddNodeOperation(pNode, pRequestedPosition);
 		}
 		return result;
 	}
 
-	
-	private static boolean validChild(Node pPotentialChild)
-	{
+	private static boolean validChild(Node pPotentialChild) {
 		return pPotentialChild instanceof TypeNode || pPotentialChild instanceof AbstractPackageNode;
 	}
-	
-	/* 
-	 * Finds if the node to be added should be added to a package. Returns Optional.empty() if not. 
-	 * If packages overlap, select the last one added, which by default should be on
-	 * top. This could be fixed if we ever add a z coordinate to the diagram.
+
+	/*
+	 * Finds if the node to be added should be added to a package. Returns
+	 * Optional.empty() if not. If packages overlap, select the last one added,
+	 * which by default should be on top. This could be fixed if we ever add a z
+	 * coordinate to the diagram.
 	 */
-	private Optional<PackageNode> findContainer( List<Node> pNodes, Point pPoint)
-	{
+	private Optional<PackageNode> findContainer(List<Node> pNodes, Point pPoint) {
 		PackageNode container = null;
-		for( Node node : pNodes )
-		{
-			if( node instanceof PackageNode && aDiagramRenderer.contains(node, pPoint) )
-			{
+		for (Node node : pNodes) {
+			if (node instanceof PackageNode && aDiagramRenderer.contains(node, pPoint)) {
 				container = (PackageNode) node;
 			}
 		}
-		if( container == null )
-		{
+		if (container == null) {
 			return Optional.empty();
 		}
 		List<Node> children = new ArrayList<>(container.getChildren());
-		if( children.size() == 0 )
-		{
+		if (children.size() == 0) {
 			return Optional.of(container);
 		}
-		else
-		{
-			Optional<PackageNode> deeperContainer = findContainer( children, pPoint );
-			if( deeperContainer.isPresent() )
-			{
+		else {
+			Optional<PackageNode> deeperContainer = findContainer(children, pPoint);
+			if (deeperContainer.isPresent()) {
 				return deeperContainer;
 			}
-			else 
-			{
+			else {
 				return Optional.of(container);
 			}
 		}
@@ -129,230 +114,199 @@ public class ClassDiagramBuilder extends DiagramBuilder
 
 	/*
 	 * Finds the package node under the position of the first node in pNodes.
-	 * Returns Optional.empty() if there is no such package node for the nodes in pNodes to attach to,
-	 * or the package node is already in the pNodes.
+	 * Returns Optional.empty() if there is no such package node for the nodes
+	 * in pNodes to attach to, or the package node is already in the pNodes.
 	 */
-	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes)
-	{
+	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes) {
 		assert pNodes != null && pNodes.size() > 0;
 		List<Node> rootNodes = new ArrayList<>(aDiagramRenderer.diagram().rootNodes());
 		Point requestedPosition = pNodes.get(0).position();
-		for( Node pNode: pNodes )
-		{
-			if(aDiagramRenderer.diagram().containsAsRoot(pNode))
-			{
+		for (Node pNode : pNodes) {
+			if (aDiagramRenderer.diagram().containsAsRoot(pNode)) {
 				rootNodes.remove(pNode);
 			}
 		}
 		Optional<PackageNode> packageNode = findContainer(rootNodes, requestedPosition);
-		if( !packageNode.isPresent() )
-		{
+		if (!packageNode.isPresent()) {
 			return Optional.empty();
 		}
-		// Returns Optional.empty() if the package node is in pNodes or contains any node in pNodes
-		for(Node pNode: pNodes)
-		{
-			if( packageNode.get() == pNode || packageNode.get().getChildren().contains(pNode) )
-			{
+		// Returns Optional.empty() if the package node is in pNodes or contains
+		// any node in pNodes
+		for (Node pNode : pNodes) {
+			if (packageNode.get() == pNode || packageNode.get().getChildren().contains(pNode)) {
 				return Optional.empty();
 			}
 		}
 		return packageNode;
 	}
-	
+
 	/*
-	 * Returns true iff all the nodes in pNodes are linkable to a parent, or if the list is empty.
+	 * Returns true iff all the nodes in pNodes are linkable to a parent, or if
+	 * the list is empty.
+	 * 
 	 * @pre pNodes != null
 	 */
-	private static boolean allLinkable(List<Node> pNodes)
-	{
+	private static boolean allLinkable(List<Node> pNodes) {
 		assert pNodes != null;
 		return pNodes.stream().allMatch(ClassDiagramBuilder::isLinkable);
 	}
-	
+
 	/*
 	 * @param pNode The node to check
-	 * @return True if the node is a valid child that does not already
-	 * have a parent.
+	 * 
+	 * @return True if the node is a valid child that does not already have a
+	 * parent.
+	 * 
 	 * @pre pNode != null
 	 */
-	private static boolean isLinkable(Node pNode)
-	{
+	private static boolean isLinkable(Node pNode) {
 		return validChild(pNode) && !pNode.hasParent();
 	}
-	
+
 	/*
 	 * @param pNode The node to check
-	 * @return True if the node is a valid child that already
-	 * has a parent.
+	 * 
+	 * @return True if the node is a valid child that already has a parent.
+	 * 
 	 * @pre pNode != null
 	 */
-	private static boolean isUnlinkable(Node pNode)
-	{
+	private static boolean isUnlinkable(Node pNode) {
 		// To be on the safe side we should technically check
 		// that pNode also does not require a parent, but since
 		// currently all linkable nodes do not require a parent, skip.
-		return pNode.hasParent(); 
+		return pNode.hasParent();
 	}
-	
+
 	/*
 	 * Returns true iff all the nodes in pNodes are detachable
+	 * 
 	 * @pre pNodes != null && pNodes.size() > 0
 	 */
-	private static boolean allUnlinkable(List<Node> pNodes)
-	{
+	private static boolean allUnlinkable(List<Node> pNodes) {
 		assert pNodes != null && pNodes.size() > 0;
 		return pNodes.stream().allMatch(ClassDiagramBuilder::isUnlinkable);
 	}
 
 	/*
-	 * Finds the parent of all the nodes in pNodes. Returns Optional.empty() if the nodes have different parents.
+	 * Finds the parent of all the nodes in pNodes. Returns Optional.empty() if
+	 * the nodes have different parents.
 	 */
-	private static Optional<Node> findSharedParent(List<Node> pNodes)
-	{
+	private static Optional<Node> findSharedParent(List<Node> pNodes) {
 		assert allUnlinkable(pNodes);
 		// Get the parent of the first child node and check with other nodes
 		Node parent = pNodes.get(0).getParent();
-		for(Node pNode: pNodes)
-		{
-			if(parent != pNode.getParent())
-			{
+		for (Node pNode : pNodes) {
+			if (parent != pNode.getParent()) {
 				return Optional.empty();
 			}
 		}
 		return Optional.of(parent);
 	}
-	
+
 	/**
-	 * Returns whether attaching the nodes in pNodes to the package node under the position
-	 * of the first node in pNodes is a valid operation on the diagram.
+	 * Returns whether attaching the nodes in pNodes to the package node under
+	 * the position of the first node in pNodes is a valid operation on the
+	 * diagram.
 	 * 
-	 * @param pNodes The nodes to attach. 
+	 * @param pNodes The nodes to attach.
 	 * @return True if it is possible to attach pNodes to the package node.
 	 * @pre pNodes != null;
 	 */
-	public boolean canLinkToPackage(List<Node> pNodes)
-	{
-		assert pNodes!= null;
-		if( pNodes.isEmpty() ) 
-		{
+	public boolean canLinkToPackage(List<Node> pNodes) {
+		assert pNodes != null;
+		if (pNodes.isEmpty()) {
 			return false;
 		}
 		return allLinkable(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
-	
+
 	/**
-	 * Returns whether detaching the nodes in pNodes from the their parent is
-	 * a valid operation on the diagram.
+	 * Returns whether detaching the nodes in pNodes from the their parent is a
+	 * valid operation on the diagram.
 	 * 
 	 * @param pNodes The nodes to detach.
-	 * @return True if it is possible to detach pNodes from their parents, false otherwise
-	 *     or if the list is empty.
+	 * @return True if it is possible to detach pNodes from their parents, false
+	 *     otherwise or if the list is empty.
 	 * @pre pNodes != null;
 	 */
-	public boolean canUnlinkFromPackage(List<Node>pNodes)
-	{
-		assert pNodes!= null;
-		if( pNodes.isEmpty() )
-		{
+	public boolean canUnlinkFromPackage(List<Node> pNodes) {
+		assert pNodes != null;
+		if (pNodes.isEmpty()) {
 			return false;
 		}
 		return allUnlinkable(pNodes) && findSharedParent(pNodes).isPresent();
 	}
-	
+
 	/**
-	 * Creates an operation that attaches all the nodes in pNodes to the package node under 
-	 * the position of the first node in pNodes.
+	 * Creates an operation that attaches all the nodes in pNodes to the package
+	 * node under the position of the first node in pNodes.
 	 * 
 	 * @param pNodes The nodes to attach.
 	 * @return The requested operation.
 	 * @pre canAttachToPackage(pNodes);
 	 */
-	public DiagramOperation createLinkToPackageOperation(List<Node>pNodes)
-	{
+	public DiagramOperation createLinkToPackageOperation(List<Node> pNodes) {
 		assert canLinkToPackage(pNodes);
 		PackageNode packageNode = findPackageToAttach(pNodes).get();
-		return new SimpleOperation( 
-				()-> 
-				{
-					for( Node pNode: pNodes )
-					{
-						aDiagramRenderer.diagram().removeRootNode(pNode);
-						packageNode.addChild(pNode);
-						pNode.link(packageNode);
-					}
-				},
-				()->
-				{
-					for( Node pNode: pNodes )
-					{
-						aDiagramRenderer.diagram().addRootNode(pNode);
-						packageNode.removeChild(pNode);
-					}
-				});	
+		return new SimpleOperation(() -> {
+			for (Node pNode : pNodes) {
+				aDiagramRenderer.diagram().removeRootNode(pNode);
+				packageNode.addChild(pNode);
+				pNode.link(packageNode);
+			}
+		}, () -> {
+			for (Node pNode : pNodes) {
+				aDiagramRenderer.diagram().addRootNode(pNode);
+				packageNode.removeChild(pNode);
+			}
+		});
 	}
-	
 
 	/**
-	 * Creates an operation that detaches all the nodes in pNodes from their parent.
+	 * Creates an operation that detaches all the nodes in pNodes from their
+	 * parent.
 	 * 
 	 * @param pNodes The nodes to detach.
 	 * @return The requested operation.
 	 * @pre canUnlinkFromPackage(pNodes);
 	 */
-	public DiagramOperation createUnlinkFromPackageOperation(List<Node> pNodes)
-	{
+	public DiagramOperation createUnlinkFromPackageOperation(List<Node> pNodes) {
 		assert canUnlinkFromPackage(pNodes);
 		Node parent = findSharedParent(pNodes).get();
 		// CSOFF:
-		Node outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
+		Node outerParent = parent.hasParent() ? parent.getParent() : null; // CSON:
 		Rectangle parentBound = packageNodeRenderer().getBounds(parent);
 
-		if( outerParent == null )
-		{
-			// The parent of the nodes in pNodes does not have parent, 
+		if (outerParent == null) {
+			// The parent of the nodes in pNodes does not have parent,
 			// set the detached nodes as root nodes in the diagram
-			return new SimpleOperation( ()-> 
-					{
-						for( Node pNode: pNodes )
-						{
-							aDiagramRenderer.diagram().addRootNode(pNode);
-							parent.removeChild(pNode);
-						}
-						parent.translate( parentBound.x()-parent.position().x(),  
-							parentBound.y()-parent.position().y() );
-					},
-					()->
-					{
-						for( Node pNode: pNodes )
-						{
-							aDiagramRenderer.diagram().removeRootNode(pNode);
-							parent.addChild(pNode);
-						}
-					});	
+			return new SimpleOperation(() -> {
+				for (Node pNode : pNodes) {
+					aDiagramRenderer.diagram().addRootNode(pNode);
+					parent.removeChild(pNode);
+				}
+				parent.translate(parentBound.x() - parent.position().x(), parentBound.y() - parent.position().y());
+			}, () -> {
+				for (Node pNode : pNodes) {
+					aDiagramRenderer.diagram().removeRootNode(pNode);
+					parent.addChild(pNode);
+				}
+			});
 		}
-		else 
-		{
+		else {
 			// Attach the detached nodes to the parent of their current parent
-			return new SimpleOperation( 
-					()-> 
-					{
-						for( Node pNode: pNodes )
-						{
-							parent.removeChild(pNode);
-							outerParent.addChild(pNode);
-						}
-						parent.translate( parentBound.x()-parent.position().x(),  
-									parentBound.y()-parent.position().y() );
-					},
-					()->
-					{
-						for( Node pNode: pNodes )
-						{
-							outerParent.removeChild(pNode);
-							parent.addChild(pNode);
-						}
-					});	
+			return new SimpleOperation(() -> {
+				for (Node pNode : pNodes) {
+					parent.removeChild(pNode);
+					outerParent.addChild(pNode);
+				}
+				parent.translate(parentBound.x() - parent.position().x(), parentBound.y() - parent.position().y());
+			}, () -> {
+				for (Node pNode : pNodes) {
+					outerParent.removeChild(pNode);
+					parent.addChild(pNode);
+				}
+			});
 		}
 	}
 }

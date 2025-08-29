@@ -60,38 +60,36 @@ import org.jetuml.geom.Point;
  * ambiguous.
  */
 @Singleton
-public final class Clipboard 
-{
+public final class Clipboard {
+
 	private static final Clipboard INSTANCE = new Clipboard();
-	
+
 	private final List<Node> aNodes = new ArrayList<>();
 	private final List<Edge> aEdges = new ArrayList<>();
 
 	/**
 	 * Creates an empty clip-board.
 	 */
-	private Clipboard() 
-	{}
-	
+	private Clipboard() {
+	}
+
 	/**
 	 * @return The Singleton instance of the Clipboard.
 	 */
-	public static Clipboard instance()
-	{
+	public static Clipboard instance() {
 		return INSTANCE;
 	}
-	
+
 	/**
-	 * Copies the elements in pSelection into the clip board.  
-	 * The list of elements stored into the clipboard is assumed to 
-	 * respect the non-redundancy constraint that no element whose 
-	 * deletion leads to the deletion of a node is selected with the node.
-	 * The transformation described in the class documentation are applied.
+	 * Copies the elements in pSelection into the clip board. The list of
+	 * elements stored into the clipboard is assumed to respect the
+	 * non-redundancy constraint that no element whose deletion leads to the
+	 * deletion of a node is selected with the node. The transformation
+	 * described in the class documentation are applied.
 	 * 
 	 * @param pSelection The elements to copy. Cannot be null.
 	 */
-	public void copy(Iterable<DiagramElement> pSelection)
-	{
+	public void copy(Iterable<DiagramElement> pSelection) {
 		assert pSelection != null;
 		clear();
 		aEdges.addAll(copyEdges(pSelection));
@@ -99,12 +97,11 @@ public final class Clipboard
 		removeDanglingEdges();
 		removeDanglingReferencesToParents();
 	}
-	
+
 	/**
 	 * @return A list of clones of the elements in this clipboard.
 	 */
-	public Iterable<DiagramElement> getElements()
-	{
+	public Iterable<DiagramElement> getElements() {
 		List<Edge> clonedEdges = copyEdges(new ArrayList<>(aEdges));
 		List<Node> clonedNodes = copyNodes(clonedEdges, new ArrayList<>(aNodes));
 		List<DiagramElement> result = new ArrayList<>();
@@ -112,59 +109,46 @@ public final class Clipboard
 		result.addAll(clonedNodes);
 		return result;
 	}
-	
+
 	/*
 	 * Empties the clipboard
 	 */
-	private void clear()
-	{
+	private void clear() {
 		aNodes.clear();
 		aEdges.clear();
 	}
-	
+
 	/*
-	 * Makes a clone of every edges in pSelection and copies it into the clipboard	 
+	 * Makes a clone of every edges in pSelection and copies it into the
+	 * clipboard
 	 */
-	private static List<Edge> copyEdges(Iterable<DiagramElement> pSelection)
-	{
-		return stream(pSelection.spliterator(), false)
-			.filter(Edge.class::isInstance)
-			.map(Edge.class::cast)
-			.map(Edge::clone)
-			.collect(toList());
+	private static List<Edge> copyEdges(Iterable<DiagramElement> pSelection) {
+		return stream(pSelection.spliterator(), false).filter(Edge.class::isInstance).map(Edge.class::cast)
+				.map(Edge::clone).collect(toList());
 	}
-	
+
 	/**
-	 * Determines if any node in the clipboard has a position equal to any
-	 * node in the target diagram.
+	 * Determines if any node in the clipboard has a position equal to any node
+	 * in the target diagram.
 	 * 
-	 * @param pDiagram The target diagram. 
-	 * @return True iff there is a node in pDiagram with a position equal to 
-	 * that of a node in the clipboard.
+	 * @param pDiagram The target diagram.
+	 * @return True iff there is a node in pDiagram with a position equal to
+	 *     that of a node in the clipboard.
 	 */
-	public boolean overlapsWithElementOf(Diagram pDiagram)
-	{
-		Set<Point> positions = aNodes.stream()
-				.map(Node::position)
-				.collect(toSet());
-		return pDiagram.allNodes().stream()
-				.map(Node::position)
-				.anyMatch(positions::contains);
+	public boolean overlapsWithElementOf(Diagram pDiagram) {
+		Set<Point> positions = aNodes.stream().map(Node::position).collect(toSet());
+		return pDiagram.allNodes().stream().map(Node::position).anyMatch(positions::contains);
 	}
-	
+
 	/*
 	 * Makes a clone of every node in pSelection, copies it into the clipboard,
 	 * and reassigns its edges
 	 */
-	private List<Node> copyNodes(List<Edge> pEdges, Iterable<DiagramElement> pSelection)
-	{
+	private List<Node> copyNodes(List<Edge> pEdges, Iterable<DiagramElement> pSelection) {
 		List<Node> result = new ArrayList<>();
-		for( DiagramElement element : pSelection )
-		{
-			if( element instanceof Node node)
-			{
-				if( missingParent(node))
-				{
+		for (DiagramElement element : pSelection) {
+			if (element instanceof Node node) {
+				if (missingParent(node)) {
 					continue;
 				}
 				Node cloned = node.clone();
@@ -174,139 +158,107 @@ public final class Clipboard
 		}
 		return result;
 	}
-	
-	private void removeDanglingEdges()
-	{
+
+	private void removeDanglingEdges() {
 		List<Edge> toDelete = new ArrayList<>();
-		for( Edge edge : aEdges )
-		{
-			if( !recursivelyContains(edge.start()) || !recursivelyContains(edge.end()))
-			{
+		for (Edge edge : aEdges) {
+			if (!recursivelyContains(edge.start()) || !recursivelyContains(edge.end())) {
 				toDelete.add(edge);
 			}
 		}
-		for( Edge edge : toDelete )
-		{
+		for (Edge edge : toDelete) {
 			aEdges.remove(edge);
 		}
 	}
-	
-	private boolean recursivelyContains(Node pNode)
-	{
-		for( Node node : aNodes )
-		{
-			if( node == pNode )
-			{
+
+	private boolean recursivelyContains(Node pNode) {
+		for (Node node : aNodes) {
+			if (node == pNode) {
 				return true;
 			}
-			else if( recursivelyContains(pNode, node.getChildren()) )
-			{
+			else if (recursivelyContains(pNode, node.getChildren())) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private boolean recursivelyContains(Node pNode, List<Node> pNodes)
-	{
-		for( Node node : pNodes )
-		{
-			if( node == pNode )
-			{
+
+	private boolean recursivelyContains(Node pNode, List<Node> pNodes) {
+		for (Node node : pNodes) {
+			if (node == pNode) {
 				return true;
 			}
-			else if( recursivelyContains(pNode, node.getChildren()) )
-			{
+			else if (recursivelyContains(pNode, node.getChildren())) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private void reassignEdges(List<Edge> pEdges, Node pOld, Node pNew)
-	{
-		for( Edge edge : pEdges )
-		{
-			if( edge.start() == pOld )
-			{
+
+	private void reassignEdges(List<Edge> pEdges, Node pOld, Node pNew) {
+		for (Edge edge : pEdges) {
+			if (edge.start() == pOld) {
 				edge.connect(pNew, edge.end());
 			}
-			if( edge.end() == pOld)
-			{
+			if (edge.end() == pOld) {
 				edge.connect(edge.start(), pNew);
 			}
 		}
 		List<Node> oldChildren = pOld.getChildren();
 		List<Node> newChildren = pNew.getChildren();
-		for( int i = 0; i < oldChildren.size(); i++ )
-		{
+		for (int i = 0; i < oldChildren.size(); i++) {
 			reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
 		}
 	}
-	
+
 	/*
-	 * Returns true if pNode needs a parent that isn't in 
-	 * the clipboard.
+	 * Returns true if pNode needs a parent that isn't in the clipboard.
 	 */
-	private boolean missingParent(Node pNode)
-	{
-		return pNode.requiresParent() && !aNodes.contains(pNode.getParent()) ;
+	private boolean missingParent(Node pNode) {
+		return pNode.requiresParent() && !aNodes.contains(pNode.getParent());
 	}
-	
+
 	/*
-	 * Removes the reference to the parent of any node in the list.
-	 * This operation is safe because nodes in the clip-board
-	 * can only be pasted as root nodes. Children nodes would
-	 * be copied through their parent.
+	 * Removes the reference to the parent of any node in the list. This
+	 * operation is safe because nodes in the clip-board can only be pasted as
+	 * root nodes. Children nodes would be copied through their parent.
 	 */
-	private void removeDanglingReferencesToParents()
-	{
-		aNodes.stream()
-			.filter(Node::hasParent)
-			.forEach(Node::unlink);
+	private void removeDanglingReferencesToParents() {
+		aNodes.stream().filter(Node::hasParent).forEach(Node::unlink);
 	}
-	
+
 	/**
-	 * Returns true only of all the nodes and edges in the selection 
-	 * are compatible with the type of the target diagram.
+	 * Returns true only of all the nodes and edges in the selection are
+	 * compatible with the type of the target diagram.
 	 * 
 	 * @param pDiagram The diagram to paste into.
 	 * 
-	 * @return True if and only if it is possible to paste the content
-	 *     of the clipboard into pDiagram.
+	 * @return True if and only if it is possible to paste the content of the
+	 *     clipboard into pDiagram.
 	 */
-	public boolean validPaste(Diagram pDiagram)
-	{
-		if( pDiagram.getType() == DiagramType.SEQUENCE )
-		{
+	public boolean validPaste(Diagram pDiagram) {
+		if (pDiagram.getType() == DiagramType.SEQUENCE) {
 			return false;
 		}
-		for( Edge edge : aEdges )
-		{
-			if( !validElementFor(edge, pDiagram ))
-			{
+		for (Edge edge : aEdges) {
+			if (!validElementFor(edge, pDiagram)) {
 				return false;
 			}
 		}
-		for( Node node : aNodes )
-		{
-			if( !validElementFor(node, pDiagram ))
-			{
+		for (Node node : aNodes) {
+			if (!validElementFor(node, pDiagram)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	private static boolean validElementFor( DiagramElement pElement, Diagram pDiagram )
-	{
-		// PointNodes are allowed in all diagrams despite not being contained in prototypes.
-		if( pElement.getClass() == PointNode.class ) 
-		{
+
+	private static boolean validElementFor(DiagramElement pElement, Diagram pDiagram) {
+		// PointNodes are allowed in all diagrams despite not being contained in
+		// prototypes.
+		if (pElement.getClass() == PointNode.class) {
 			return true;
 		}
-		return pDiagram.getPrototypes().stream()
-				.map(Object::getClass)
-				.anyMatch(Predicate.isEqual(pElement.getClass()));
+		return pDiagram.getPrototypes().stream().map(Object::getClass).anyMatch(Predicate.isEqual(pElement.getClass()));
 	}
 }

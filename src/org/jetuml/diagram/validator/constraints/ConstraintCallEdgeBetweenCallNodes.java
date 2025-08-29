@@ -30,13 +30,11 @@ import org.jetuml.diagram.validator.EdgeConstraint;
  * A call or constructor edge (subtype of CallEdge) can only be between call
  * nodes.
  */
-public final class ConstraintCallEdgeBetweenCallNodes implements EdgeConstraint
-{
+public final class ConstraintCallEdgeBetweenCallNodes implements EdgeConstraint {
+
 	@Override
-	public boolean satisfied(Edge pEdge, Diagram pDiagram)
-	{
-		return !(pEdge instanceof CallEdge && 
-				(pEdge.start().getClass() != CallNode.class || 
-					pEdge.end().getClass() != CallNode.class));
+	public boolean satisfied(Edge pEdge, Diagram pDiagram) {
+		return !(pEdge instanceof CallEdge &&
+				(pEdge.start().getClass() != CallNode.class || pEdge.end().getClass() != CallNode.class));
 	}
 }

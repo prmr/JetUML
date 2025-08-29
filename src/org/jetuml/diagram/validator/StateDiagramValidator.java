@@ -37,8 +37,7 @@ import org.jetuml.diagram.validator.constraints.ConstraintValidTransitionEdgeSta
 /**
  * Validator for state diagrams.
  */
-public class StateDiagramValidator extends AbstractDiagramValidator
-{
+public class StateDiagramValidator extends AbstractDiagramValidator {
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(2),
 			new ConstraintValidTransitionEdgeStartNode(),
@@ -58,8 +57,7 @@ public class StateDiagramValidator extends AbstractDiagramValidator
 	 * @param pDiagram The diagram to do semantic validity check on.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.STATE
 	 */
-	public StateDiagramValidator(Diagram pDiagram)
-	{
+	public StateDiagramValidator(Diagram pDiagram) {
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.STATE;
 	}

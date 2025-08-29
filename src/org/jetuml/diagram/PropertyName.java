@@ -25,8 +25,7 @@ import static org.jetuml.application.ApplicationResources.RESOURCES;
 /**
  * List of all the possible names of Property objects.
  */
-public enum PropertyName
-{
+public enum PropertyName {
 	// List in alphabetical order.
 	AGGREGATION_TYPE("Aggregation Type"),
 	ATTRIBUTES("attributes"),
@@ -51,8 +50,7 @@ public enum PropertyName
 	 */
 	private final String aExternal;
 	
-	PropertyName(String pExternal)
-	{
+	PropertyName(String pExternal) {
 		assert pExternal != null;
 		aExternal = pExternal;
 	}
@@ -60,8 +58,7 @@ public enum PropertyName
 	/**
 	 * @return The name of this property for purpose of externalizing it in a diagram file.
 	 */
-	public String external()
-	{
+	public String external() {
 		return aExternal;
 	}
 	
@@ -69,8 +66,7 @@ public enum PropertyName
 	 * @return The name of the property as users should see it, that is, 
 	 *     obtained from the application resources.
 	 */
-	public String visible()
-	{
+	public String visible() {
 		return RESOURCES.getString("property." + name().toLowerCase());
 	}
 }

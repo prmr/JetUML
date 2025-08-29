@@ -2,21 +2,21 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2025 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package org.jetuml.gui;
 
@@ -43,38 +43,35 @@ import javafx.stage.Stage;
  * A modal dialog that allows users to change the duration (in seconds) that
  * notifications remain visible.
  */
-public class NotificationTimeDialog 
-{
+public class NotificationTimeDialog {
+
 	private static final int SPACING = 10;
 	private static final int VSPACE = 20;
 	private static final int MIN_DURATION = 0;
 	private static final int MAX_DURATION = 10;
 	private final Stage aStage;
 	private final TextField aDurationField = new TextField();
-	
+
 	/**
 	 * Creates a new dialog.
 	 * 
 	 * @param pDialogStage The stage that owns this dialog.
 	 */
-	public NotificationTimeDialog( Stage pDialogStage )
-	{
+	public NotificationTimeDialog(Stage pDialogStage) {
 		aStage = pDialogStage;
 		prepareStage();
 		aStage.getScene().setRoot(createRoot());
 	}
-	
-	private void prepareStage() 
-	{
+
+	private void prepareStage() {
 		aStage.setTitle(RESOURCES.getString("dialog.notifications.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 	}
-	
-	private Pane createRoot() 
-	{
+
+	private Pane createRoot() {
 		BorderPane layout = new BorderPane();
-		layout.setPadding( new Insets(SPACING));
-		
+		layout.setPadding(new Insets(SPACING));
+
 		String message = RESOURCES.getString("dialog.notifications.message");
 		message = message.replace("#1", Integer.toString(MIN_DURATION));
 		message = message.replace("#2", Integer.toString(MAX_DURATION));
@@ -84,56 +81,48 @@ public class NotificationTimeDialog
 		layout.setTop(top);
 		layout.setCenter(createForm());
 		layout.setBottom(createButtons());
-		
+
 		return layout;
 	}
-	
-	private Pane createForm()
-	{
+
+	private Pane createForm() {
 		HBox pane = new HBox();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(SPACING));
 		pane.setSpacing(SPACING);
-				
-		aDurationField.setPrefColumnCount((int)Math.log10(MAX_DURATION)+1);
+
+		aDurationField.setPrefColumnCount((int) Math.log10(MAX_DURATION) + 1);
 		aDurationField.setText(durationAsString());
 		HBox size = new HBox(new Label(RESOURCES.getString("dialog.notifications.value")), aDurationField);
 		size.setAlignment(Pos.CENTER);
 		size.setSpacing(2);
 		aDurationField.setOnAction(event -> onInput());
-		
+
 		Button defaultButton = new Button(RESOURCES.getString("dialog.notifications.default"));
-		defaultButton.setOnAction( pEvent -> 
-		{
+		defaultButton.setOnAction(pEvent -> {
 			aDurationField.setText(UserPreferences.IntegerPreference.notificationDuration.getDefault());
 		});
-				
+
 		pane.getChildren().addAll(size, defaultButton);
-				
+
 		return pane;
 	}
-	
-	private static boolean isValid(String pSize) 
-	{
-		try
-		{
+
+	private static boolean isValid(String pSize) {
+		try {
 			int parsedSize = Integer.parseInt(pSize);
 			return MIN_DURATION <= parsedSize && parsedSize <= MAX_DURATION;
 		}
-		catch ( NumberFormatException exception )
-		{
+		catch (NumberFormatException exception) {
 			return false;
 		}
 	}
 
-	private static String durationAsString()
-	{
-		return Integer.toString(UserPreferences.instance().
-				getInteger(IntegerPreference.notificationDuration));
+	private static String durationAsString() {
+		return Integer.toString(UserPreferences.instance().getInteger(IntegerPreference.notificationDuration));
 	}
-	
-	private void showInvalidDurationAlert()
-	{
+
+	private void showInvalidDurationAlert() {
 		String content = RESOURCES.getString("dialog.notifications.error_content");
 		content = content.replace("#1", Integer.toString(MIN_DURATION));
 		content = content.replace("#2", Integer.toString(MAX_DURATION));
@@ -143,13 +132,12 @@ public class NotificationTimeDialog
 		alert.initOwner(aStage);
 		alert.showAndWait();
 	}
-	
-	private Pane createButtons()
-	{
+
+	private Pane createButtons() {
 		Button ok = new Button(RESOURCES.getString("dialog.notifications.ok"));
 		Button cancel = new Button(RESOURCES.getString("dialog.notifications.cancel"));
 		ok.setOnAction(event -> onInput());
-		cancel.setOnAction( pEvent -> aStage.close() );
+		cancel.setOnAction(pEvent -> aStage.close());
 
 		HBox box = new HBox(ok, cancel);
 		box.setSpacing(SPACING);
@@ -157,27 +145,23 @@ public class NotificationTimeDialog
 		box.setPadding(new Insets(VSPACE, 0, 0, 0));
 		return box;
 	}
-	
-	private void onInput()
-	{
-		if( isValid(aDurationField.getText()) )
-		{
-			UserPreferences.instance().setInteger(IntegerPreference.notificationDuration, Integer.parseInt(aDurationField.getText()));
+
+	private void onInput() {
+		if (isValid(aDurationField.getText())) {
+			UserPreferences.instance().setInteger(IntegerPreference.notificationDuration,
+					Integer.parseInt(aDurationField.getText()));
 			aStage.close();
 		}
-		else
-		{
+		else {
 			aDurationField.setText(durationAsString());
 			showInvalidDurationAlert();
 		}
 	}
-	
+
 	/**
-	 * Shows the dialog and blocks the remainder of the UI
-	 * until it is closed.
+	 * Shows the dialog and blocks the remainder of the UI until it is closed.
 	 */
-	public void show() 
-	{
-        aStage.showAndWait();
-    }
+	public void show() {
+		aStage.showAndWait();
+	}
 }

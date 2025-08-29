@@ -41,8 +41,8 @@ import org.jetuml.diagram.validator.constraints.ConstraintReturnsToCaller;
 /**
  * Validator for sequence diagrams.
  */
-public class SequenceDiagramValidator extends AbstractDiagramValidator
-{
+public class SequenceDiagramValidator extends AbstractDiagramValidator {
+	
 	private static final Set<EdgeConstraint> CONSTRAINTS = Set.of(
 			new ConstraintMaxNumberOfEdgesOfGivenTypeBetweenNodes(1),
 			new ConstraintCallEdgeBetweenCallNodes(),
@@ -65,8 +65,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 * @param pDiagram The diagram to do semantic validity check on.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.SEQUENCE
 	 */
-	public SequenceDiagramValidator(Diagram pDiagram)
-	{
+	public SequenceDiagramValidator(Diagram pDiagram) {
 		super(pDiagram, VALID_NODE_TYPES, VALID_EDGE_TYPES, CONSTRAINTS);
 		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
@@ -75,8 +74,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	 * Root nodes contain no call nodes.
 	 */
 	@Override
-	protected boolean hasValidDiagramNodes()
-	{
+	protected boolean hasValidDiagramNodes() {
 		return diagram().rootNodes().stream()
 				.allMatch(node -> node.getClass() != CallNode.class) && maxOneRoot();
 	}
@@ -84,8 +82,7 @@ public class SequenceDiagramValidator extends AbstractDiagramValidator
 	/*
 	 * There can be at most one call node without a caller
 	 */
-	private boolean maxOneRoot()
-	{
+	private boolean maxOneRoot() {
 		return diagram().allNodes().stream()							// Nodes
 				.filter(CallNode.class::isInstance)						// Call nodes
 				.map(node -> diagram().edgesTo(node, CallEdge.class))	// Lists of callers to call nodes
