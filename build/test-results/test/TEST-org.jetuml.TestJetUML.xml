@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.jetuml.TestJetUML" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-09-05T14:29:53.203Z" hostname="K-1" time="0.029">
+  <properties/>
+  <testcase name="Basic string resource should load correctly" classname="org.jetuml.TestJetUML" time="0.022"/>
+  <testcase name="File save and load round-trip should preserve content" classname="org.jetuml.TestJetUML" time="0.004"/>
+  <testcase name="Java collections behave as expected" classname="org.jetuml.TestJetUML" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
