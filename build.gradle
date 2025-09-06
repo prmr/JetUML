@@ -2,25 +2,16 @@ plugins {
     id 'java'
     id 'application'
     id 'jacoco'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group = 'com.jetuml'
 version = '1.0.0'
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
-dependencies {
-    implementation "org.openjfx:javafx-controls:17.0.9"
-    implementation "org.openjfx:javafx-swing:17.0.9"
-    implementation "org.openjfx:javafx-graphics:17.0.9"
-
-    testImplementation platform('org.junit:junit-bom:5.11.3')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
-    testImplementation 'junit:junit:4.13.2'
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
 application {
@@ -29,16 +20,14 @@ application {
 
 test {
     useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+    testLogging { events "passed", "skipped", "failed" }
 }
 
 sourceSets {
     main {
         java {
             srcDirs = ['src']
-            exclude 'test/**'   
+            exclude 'test/**'
         }
         resources {
             srcDirs = ['src']
@@ -51,10 +40,20 @@ sourceSets {
     }
 }
 
+javafx {
+    version = '17.0.9'
+    modules = ['javafx.controls', 'javafx.graphics', 'javafx.swing']
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.11.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    testImplementation 'junit:junit:4.13.2'
+}
+
 jacocoTestReport {
     dependsOn test
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
+    reports { xml.required.set(true); html.required.set(true) }
 }
