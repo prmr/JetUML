@@ -1,0 +1,53 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ develop, 'feature/**' ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build --no-daemon
+
+      - name: Upload build artifacts (JAR)
+        uses: actions/upload-artifact@v4  
+        with:
+          name: build-artifacts
+          path: build/libs/**
+
+      - name: Run Unit Tests
+        run: ./gradlew test --no-daemon
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            build/test-results/test/**
+            build/reports/tests/**
+
+      - name: Generate Code Coverage Report
+        run: ./gradlew jacocoTestReport --no-daemon
+
+      - name: Upload Code Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: build/reports/jacoco/test/html/**
