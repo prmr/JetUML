@@ -12,6 +12,10 @@ repositories {
 }
 
 dependencies {
+    implementation "org.openjfx:javafx-controls:17.0.9"
+    implementation "org.openjfx:javafx-swing:17.0.9"
+    implementation "org.openjfx:javafx-graphics:17.0.9"
+
     testImplementation platform('org.junit:junit-bom:5.11.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
