@@ -31,6 +31,22 @@ test {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java.srcDirs = ['test']
+        resources.srcDirs = ['test']
+    }
+}
+
+
 jacocoTestReport {
     dependsOn test
     reports {
