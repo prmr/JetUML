@@ -41,30 +41,27 @@ import java.util.Set;
  * internally as a string, and attempting to retrieve it as an int will throw a
  * JsonException.
  */
-public class JsonObject
-{
+public class JsonObject {
 	/*
 	 * HashMap is used on purpose to ensure that elements are unordered by the
 	 * specification. JSON tends to be a portable transfer format to allows the
 	 * container implementations to rearrange their items for a faster element
-	 * retrieval based on associative access. Therefore, an implementation
-	 * mustn't rely on the order of the item.
+	 * retrieval based on associative access. Therefore, an implementation mustn't
+	 * rely on the order of the item.
 	 */
 	private Map<String, Object> aProperties = new HashMap<>();
 
 	/**
 	 * Construct a JsonObject with no property.
 	 */
-	public JsonObject() {}
-	
-	private void validateProperty(String pName)
-	{
-		if( pName == null )
-		{
+	public JsonObject() {
+	}
+
+	private void validateProperty(String pName) {
+		if (pName == null) {
 			throw new JsonException("Property name cannot be null");
 		}
-		if( !aProperties.containsKey(pName) )
-		{
+		if (!aProperties.containsKey(pName)) {
 			throw new JsonException("Property " + pName + " not found");
 		}
 	}
@@ -76,8 +73,7 @@ public class JsonObject
 	 * @return The property value.
 	 * @throws JsonException If the name is null or the property is not found.
 	 */
-	public Object get(String pName)
-	{
+	public Object get(String pName) {
 		validateProperty(pName);
 		return aProperties.get(pName);
 	}
@@ -87,11 +83,10 @@ public class JsonObject
 	 *
 	 * @param pName The property name
 	 * @return The integer value.
-	 * @throws JsonException if the key is null or not found or if the value was
-	 * not originally stored as an integer.
+	 * @throws JsonException if the key is null or not found or if the value was not
+	 *                       originally stored as an integer.
 	 */
-	public int getInt(String pName)
-	{
+	public int getInt(String pName) {
 		validateProperty(pName);
 		return JsonValueValidator.asInt(get(pName));
 	}
@@ -101,25 +96,23 @@ public class JsonObject
 	 *
 	 * @param pName The property name
 	 * @return The JsonArray value.
-	 * @throws JsonException if the key is null or not found or if the value was
-	 * not originally stored as a JsonArray.
+	 * @throws JsonException if the key is null or not found or if the value was not
+	 *                       originally stored as a JsonArray.
 	 */
-	public JsonArray getJsonArray(String pName)
-	{
+	public JsonArray getJsonArray(String pName) {
 		validateProperty(pName);
 		return JsonValueValidator.asJsonArray(get(pName));
 	}
-	
+
 	/**
 	 * Get a property value as a JsonObject.
 	 *
 	 * @param pName The property name
 	 * @return The JsonObject value.
-	 * @throws JsonException if the key is null or not found or if the value was
-	 * not originally stored as a JsonObject.
+	 * @throws JsonException if the key is null or not found or if the value was not
+	 *                       originally stored as a JsonObject.
 	 */
-	public JsonObject getJsonObject(String pName)
-	{
+	public JsonObject getJsonObject(String pName) {
 		validateProperty(pName);
 		return JsonValueValidator.asJsonObject(get(pName));
 	}
@@ -129,25 +122,23 @@ public class JsonObject
 	 *
 	 * @param pName The property name
 	 * @return The String value.
-	 * @throws JsonException if the key is null or not found or if the value was
-	 * not originally stored as a String.
+	 * @throws JsonException if the key is null or not found or if the value was not
+	 *                       originally stored as a String.
 	 */
-	public String getString(String pName)
-	{
+	public String getString(String pName) {
 		validateProperty(pName);
 		return JsonValueValidator.asString(get(pName));
 	}
-	
+
 	/**
 	 * Get a property value as a boolean.
 	 *
 	 * @param pName The property name
 	 * @return The boolean value.
-	 * @throws JsonException if the key is null or not found or if the value was
-	 * not originally stored as a boolean.
+	 * @throws JsonException if the key is null or not found or if the value was not
+	 *                       originally stored as a boolean.
 	 */
-	public boolean getBoolean(String pName)
-	{
+	public boolean getBoolean(String pName) {
 		validateProperty(pName);
 		return JsonValueValidator.asBoolean(get(pName));
 	}
@@ -155,13 +146,12 @@ public class JsonObject
 	/**
 	 * Determine if this object contains a given property.
 	 *
-	 * @param pName The property name. Null is accepted but 
-	 * will always return false as it is not possible for
-	 * an object of this class to store a property with a null name.
+	 * @param pName The property name. Null is accepted but will always return false
+	 *              as it is not possible for an object of this class to store a
+	 *              property with a null name.
 	 * @return true if the property exists in this object.
 	 */
-	public boolean hasProperty(String pName)
-	{
+	public boolean hasProperty(String pName) {
 		return aProperties.containsKey(pName);
 	}
 
@@ -170,16 +160,14 @@ public class JsonObject
 	 *
 	 * @return The number of properties in the object.
 	 */
-	public int numberOfProperties()
-	{
+	public int numberOfProperties() {
 		return aProperties.size();
 	}
-	
+
 	/**
 	 * @return A set of all property names in this object.
 	 */
-	public Set<String> properties()
-	{
+	public Set<String> properties() {
 		return aProperties.keySet();
 	}
 
@@ -187,15 +175,15 @@ public class JsonObject
 	 * Adds a property to this object. Overrides any previous value associated with
 	 * the property name.
 	 *
-	 * @param pName The name of the property. Should not be null.
-	 * @param pValue The value of the property. It should not be null and be of one of these
-	 * types: boolean/Boolean, int/Integer, JsonArray, JsonObject, or String.
-	 * @throws JsonException If the name is null or if the value is not of a valid Json value.
+	 * @param pName  The name of the property. Should not be null.
+	 * @param pValue The value of the property. It should not be null and be of one
+	 *               of these types: boolean/Boolean, int/Integer, JsonArray,
+	 *               JsonObject, or String.
+	 * @throws JsonException If the name is null or if the value is not of a valid
+	 *                       Json value.
 	 */
-	public void put(String pName, Object pValue)
-	{
-		if(pName == null)
-		{
+	public void put(String pName, Object pValue) {
+		if (pName == null) {
 			throw new JsonException("Null property name");
 		}
 		validateType(pValue);
@@ -203,14 +191,13 @@ public class JsonObject
 	}
 
 	/**
-	 * Make a JSON text of this object. For compactness, no whitespace is
-	 * added. This method assumes that the data structure is acyclical.
+	 * Make a JSON text of this object. For compactness, no whitespace is added.
+	 * This method assumes that the data structure is acyclical.
 	 *
 	 * @return A serialized version of this object.
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return JsonObjectParser.writeJsonObject(this);
 	}
 }

@@ -32,13 +32,11 @@ import org.jetuml.rendering.nodes.StateNodeRenderer;
 /**
  * The renderer for state diagrams.
  */
-public final class StateDiagramRenderer extends AbstractDiagramRenderer
-{
+public final class StateDiagramRenderer extends AbstractDiagramRenderer {
 	/**
 	 * @param pDiagram The diagram being rendered.
 	 */
-	public StateDiagramRenderer(Diagram pDiagram)
-	{
+	public StateDiagramRenderer(Diagram pDiagram) {
 		super(pDiagram);
 		addElementRenderer(FinalStateNode.class, new CircularStateNodeRenderer(this, true));
 		addElementRenderer(InitialStateNode.class, new CircularStateNodeRenderer(this, false));

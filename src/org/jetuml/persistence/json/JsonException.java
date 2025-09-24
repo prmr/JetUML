@@ -23,36 +23,32 @@ package org.jetuml.persistence.json;
  * Represents an error while processing JSON data.
  */
 @SuppressWarnings("serial")
-public class JsonException extends RuntimeException 
-{
-    /**
-     * Constructs a JSONException with a message.
-     *
-     * @param pMessage Details about the reason for the exception.
-     */
-    public JsonException(String pMessage)
-    {
-        super(pMessage);
-    }
+public class JsonException extends RuntimeException {
+	/**
+	 * Constructs a JSONException with a message.
+	 *
+	 * @param pMessage Details about the reason for the exception.
+	 */
+	public JsonException(String pMessage) {
+		super(pMessage);
+	}
 
-    /**
-     * Constructs a JSONException with a message and cause.
-     * 
-     * @param pMessage Details about the reason for the exception.
-     * @param pCause The original exception.
-     */
-    public JsonException(String pMessage, Throwable pCause) 
-    {
-        super(pMessage, pCause);
-    }
+	/**
+	 * Constructs a JSONException with a message and cause.
+	 * 
+	 * @param pMessage Details about the reason for the exception.
+	 * @param pCause   The original exception.
+	 */
+	public JsonException(String pMessage, Throwable pCause) {
+		super(pMessage, pCause);
+	}
 
-    /**
-     * Constructs a new JSONException with the specified cause.
-     * 
-     * @param pCause The cause.
-     */
-    public JsonException(Throwable pCause) 
-    {
-        super(pCause.getMessage(), pCause);
-    }
+	/**
+	 * Constructs a new JSONException with the specified cause.
+	 * 
+	 * @param pCause The cause.
+	 */
+	public JsonException(Throwable pCause) {
+		super(pCause.getMessage(), pCause);
+	}
 }

@@ -23,23 +23,20 @@ package org.jetuml.persistence;
 import org.jetuml.diagram.Diagram;
 
 /**
- * A serialization context automatically finds all the nodes
- * in a diagram, including children nodes, and creates a new map between
- * nodes and identifiers.
+ * A serialization context automatically finds all the nodes in a diagram,
+ * including children nodes, and creates a new map between nodes and
+ * identifiers.
  */
-public class SerializationContext extends AbstractContext
-{
+public class SerializationContext extends AbstractContext {
 	/**
-	 * Automatically creates the map between nodes in pDiagram
-	 * and fresh identifiers.
+	 * Automatically creates the map between nodes in pDiagram and fresh
+	 * identifiers.
 	 * 
 	 * @param pDiagram The diagram to load into the context.
 	 * @pre pDiagram != null.
 	 */
-	public SerializationContext(Diagram pDiagram)
-	{
+	public SerializationContext(Diagram pDiagram) {
 		super(pDiagram);
-		pDiagram.allNodes()
-				.forEach(node -> aNodes.put(node, aNodes.size()));
+		pDiagram.allNodes().forEach(node -> aNodes.put(node, aNodes.size()));
 	}
 }

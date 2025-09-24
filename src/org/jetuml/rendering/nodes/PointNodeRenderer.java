@@ -32,45 +32,38 @@ import org.jetuml.rendering.RenderingContext;
 /**
  * An object to render a PointNode.
  */
-public final class PointNodeRenderer extends AbstractNodeRenderer
-{
+public final class PointNodeRenderer extends AbstractNodeRenderer {
 	private static final int SELECTION_DISTANCE = 5;
-	
+
 	/**
 	 * @param pParent Renderer of the parent diagram.
 	 */
-	public PointNodeRenderer(DiagramRenderer pParent)
-	{
+	public PointNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		return new Dimension(0, 0);
 	}
-	
+
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
+	protected Rectangle internalGetBounds(Node pNode) {
 		return new Rectangle(pNode.position().x(), pNode.position().y(), 0, 0);
 	}
 
 	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
-		return ((Node)pElement).position().distance(pPoint) < SELECTION_DISTANCE;
+	public boolean contains(DiagramElement pElement, Point pPoint) {
+		return ((Node) pElement).position().distance(pPoint) < SELECTION_DISTANCE;
 	}
 
 	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
 		return pNode.position();
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext) 
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		// Do nothing, a point is invisible.
 	}
 }

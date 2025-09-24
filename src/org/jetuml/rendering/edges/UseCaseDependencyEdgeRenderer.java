@@ -35,22 +35,19 @@ import org.jetuml.rendering.StringRenderer;
 import javafx.scene.canvas.Canvas;
 
 /**
- * A straight dotted line with a V end decoration and special icons 
- * to distinguish between dependency types.
+ * A straight dotted line with a V end decoration and special icons to
+ * distinguish between dependency types.
  */
-public final class UseCaseDependencyEdgeRenderer extends LabeledStraightEdgeRenderer
-{	
+public final class UseCaseDependencyEdgeRenderer extends LabeledStraightEdgeRenderer {
 	/**
 	 * Creates a viewer for UseCaseDependencyEdge instances.
 	 */
-	public UseCaseDependencyEdgeRenderer(DiagramRenderer pParent)
-	{
-		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((UseCaseDependencyEdge)edge).getType().getLabel());
+	public UseCaseDependencyEdgeRenderer(DiagramRenderer pParent) {
+		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((UseCaseDependencyEdge) edge).getType().getLabel());
 	}
-	
+
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		Edge edge = (Edge) pElement;
 		Canvas canvas = super.createIcon(pDiagramType, edge);
 		final float scale = 0.75f;
@@ -60,8 +57,7 @@ public final class UseCaseDependencyEdgeRenderer extends LabeledStraightEdgeRend
 		return canvas;
 	}
 
-	private static String getIconTag(Edge pEdge)
-	{
-		return ((UseCaseDependencyEdge)pEdge).getType().getLabel().substring(1, 2).toUpperCase();
+	private static String getIconTag(Edge pEdge) {
+		return ((UseCaseDependencyEdge) pEdge).getType().getLabel().substring(1, 2).toUpperCase();
 	}
 }

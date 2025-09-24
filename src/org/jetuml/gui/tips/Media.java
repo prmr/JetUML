@@ -23,7 +23,6 @@ package org.jetuml.gui.tips;
 /**
  * A media type for a tip element.
  */
-enum Media 
-{
+enum Media {
 	TEXT, IMAGE
 }

@@ -39,35 +39,33 @@ import org.jetuml.rendering.SequenceDiagramRenderer;
 /**
  * An object to render a call node in a Sequence diagram.
  */
-public final class CallNodeRenderer extends AbstractNodeRenderer
-{
+public final class CallNodeRenderer extends AbstractNodeRenderer {
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
-	
-	/* Number of pixels to shift a call node that is nested within another call on the same object. */
+
+	/*
+	 * Number of pixels to shift a call node that is nested within another call on
+	 * the same object.
+	 */
 	private static final int NESTING_SHIFT_DISTANCE = 10;
-	
+
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
-	public CallNodeRenderer(DiagramRenderer pParent)
-	{
+	public CallNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		return new Dimension(WIDTH, DEFAULT_HEIGHT);
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
-		if(((CallNode)pElement).isOpenBottom())
-		{
-			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), 
-					ColorScheme.get().fill(), Optional.of(ColorScheme.get().dropShadow()));
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
+		if (((CallNode) pElement).isOpenBottom()) {
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), ColorScheme.get().fill(),
+					Optional.of(ColorScheme.get().dropShadow()));
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.x();
 			int x2 = bounds.maxX();
@@ -80,48 +78,42 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 			pContext.strokeLine(x1, y2, x1, y3, ColorScheme.get().stroke(), LineStyle.DOTTED);
 			pContext.strokeLine(x2, y2, x2, y3, ColorScheme.get().stroke(), LineStyle.DOTTED);
 		}
-		else
-		{
-			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), 
-					ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
+		else {
+			pContext.drawRectangle(getBounds(pElement), ColorScheme.get().fill(), ColorScheme.get().stroke(),
+					Optional.of(ColorScheme.get().dropShadow()));
 		}
 	}
 
 	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
-		if(pDirection == Direction.EAST)
-		{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
+		if (pDirection == Direction.EAST) {
 			return new Point(getBounds(pNode).maxX(), getBounds(pNode).y());
 		}
-		else
-		{
+		else {
 			return new Point(getBounds(pNode).x(), getBounds(pNode).y());
 		}
 	}
-	
+
 	/*
-	 * The x position is a function of the position of the implicit parameter
-	 * node and the nesting depth of the call node.
+	 * The x position is a function of the position of the implicit parameter node
+	 * and the nesting depth of the call node.
 	 */
-	private int getX(Node pNode)
-	{
-		final int nestingDepth = parent().getNestingDepth((CallNode)pNode);
-		final int lifelineXCoordinate = SequenceDiagramRenderer.getCenterXCoordinate((ImplicitParameterNode)pNode.getParent());
+	private int getX(Node pNode) {
+		final int nestingDepth = parent().getNestingDepth((CallNode) pNode);
+		final int lifelineXCoordinate = SequenceDiagramRenderer
+				.getCenterXCoordinate((ImplicitParameterNode) pNode.getParent());
 		return lifelineXCoordinate - NESTING_SHIFT_DISTANCE + (NESTING_SHIFT_DISTANCE * nestingDepth);
 	}
-	
+
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
+	protected Rectangle internalGetBounds(Node pNode) {
 		final int y = parent().getY(pNode);
 		final int maxY = parent().getMaxY(pNode);
-		return new Rectangle(getX(pNode), y, WIDTH, maxY-y);
+		return new Rectangle(getX(pNode), y, WIDTH, maxY - y);
 	}
-	
+
 	@Override
-	protected SequenceDiagramRenderer parent()
-	{
+	protected SequenceDiagramRenderer parent() {
 		return (SequenceDiagramRenderer) super.parent();
 	}
 }

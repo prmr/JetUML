@@ -29,51 +29,50 @@ import org.jetuml.rendering.DiagramElementRenderer;
 import org.jetuml.rendering.Side;
 
 /**
- * Abstract strategy that describes objects that can draw and
- * compute various geometric properties of nodes.
+ * Abstract strategy that describes objects that can draw and compute various
+ * geometric properties of nodes.
  */
-public interface NodeRenderer extends DiagramElementRenderer
-{
-   	/**
-     * Get the best connection point to connect this node 
-     * with another node. This should be a point on the boundary
-     * of the shape of this node.
-     * @param pNode The target node.
-     * @param pDirection the direction from the center 
-     *     of the bounding rectangle towards the boundary 
-     * @return the recommended connection point
-     * @pre pNode != null && pDirection != null
+public interface NodeRenderer extends DiagramElementRenderer {
+	/**
+	 * Get the best connection point to connect this node with another node. This
+	 * should be a point on the boundary of the shape of this node.
+	 * 
+	 * @param pNode      The target node.
+	 * @param pDirection the direction from the center of the bounding rectangle
+	 *                   towards the boundary
+	 * @return the recommended connection point
+	 * @pre pNode != null && pDirection != null
 	 */
 	Point getConnectionPoint(Node pNode, Direction pDirection);
-	
+
 	/**
 	 * Activates the NodeStorage.
 	 */
 	void activateNodeStorage();
-	
+
 	/**
-	 * Deactivates and clears the NodeStorage. 
+	 * Deactivates and clears the NodeStorage.
 	 */
 	void deactivateAndClearNodeStorage();
-	
+
 	/**
-	 * The face of a node corresponds to the line to which edges can attach.
-	 * For rectangular nodes, this is the same as the side of the bound rectangle.
-	 * However, for nodes with a different geometry (e.g., Package nodes),
-	 * the side can differ from the bounds.
+	 * The face of a node corresponds to the line to which edges can attach. For
+	 * rectangular nodes, this is the same as the side of the bound rectangle.
+	 * However, for nodes with a different geometry (e.g., Package nodes), the side
+	 * can differ from the bounds.
 	 * 
 	 * @param pSide The side of the node.
 	 * @param pNode The target node.
-	 * @return The line that corresponds to the visible edge of the node to which edges can
-	 * be attached.
+	 * @return The line that corresponds to the visible edge of the node to which
+	 *         edges can be attached.
 	 * @pre pSide != null && pNode != null;
 	 */
 	Line getFace(Node pNode, Side pSide);
-	
+
 	/**
 	 * @param pNode The node of interest.
-	 * @return The dimensions of the default version of this node, when it's just been
-	 * added to a diagram.
+	 * @return The dimensions of the default version of this node, when it's just
+	 *         been added to a diagram.
 	 */
 	Dimension getDefaultDimension(Node pNode);
 }

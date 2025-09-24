@@ -38,54 +38,46 @@ import javafx.scene.paint.Color;
 /**
  * An object to render a initial or final node.
  */
-public final class CircularStateNodeRenderer extends AbstractNodeRenderer
-{
+public final class CircularStateNodeRenderer extends AbstractNodeRenderer {
 	private static final int DIAMETER = 20;
 	private final boolean aFinal;
-	
+
 	/**
 	 * @param pFinal true if this is a final node, false if it is an initial node.
 	 */
-	public CircularStateNodeRenderer(DiagramRenderer pParent, boolean pFinal)
-	{
+	public CircularStateNodeRenderer(DiagramRenderer pParent, boolean pFinal) {
 		super(pParent);
 		aFinal = pFinal;
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		return new Dimension(DIAMETER, DIAMETER);
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		final Rectangle bounds = getBounds(pElement);
-		if( aFinal )
-		{
+		if (aFinal) {
 			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.WHITE, ColorScheme.get().stroke(),
 					Optional.of(ColorScheme.get().dropShadow()));
-			int innerDiameter = DIAMETER/2;
-			pContext.drawOval(bounds.x() + innerDiameter/2, 
-					bounds.y() + innerDiameter/2, innerDiameter, innerDiameter, Color.BLACK, Color.BLACK, Optional.empty());
+			int innerDiameter = DIAMETER / 2;
+			pContext.drawOval(bounds.x() + innerDiameter / 2, bounds.y() + innerDiameter / 2, innerDiameter,
+					innerDiameter, Color.BLACK, Color.BLACK, Optional.empty());
 		}
-		else
-		{
+		else {
 			pContext.drawOval(bounds.x(), bounds.y(), DIAMETER, DIAMETER, Color.BLACK, ColorScheme.get().stroke(),
 					Optional.of(ColorScheme.get().dropShadow()));
 		}
 	}
-	
-	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
-		return GeomUtils.intersectCircle(getBounds(pNode), pDirection);
-	}   	 
 
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
+		return GeomUtils.intersectCircle(getBounds(pNode), pDirection);
+	}
+
+	@Override
+	protected Rectangle internalGetBounds(Node pNode) {
 		return new Rectangle(pNode.position().x(), pNode.position().y(), DIAMETER, DIAMETER);
 	}
 }

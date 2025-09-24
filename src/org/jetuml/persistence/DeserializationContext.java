@@ -30,8 +30,7 @@ import org.jetuml.diagram.Node;
  * up the context. The identifiers that correspond to objects must be 
  * specified explicitly. 
  */
-public class DeserializationContext extends AbstractContext
-{
+public class DeserializationContext extends AbstractContext {
 	/**
 	 * Initializes an empty context and associates it with
 	 * pDiagram.
@@ -39,9 +38,8 @@ public class DeserializationContext extends AbstractContext
 	 * @param pDiagram The diagram associated with the context.
 	 * @pre pDiagram != null.
 	 */
-	public DeserializationContext(Diagram pDiagram)
-	{
-		super( pDiagram );
+	public DeserializationContext(Diagram pDiagram) {
+		super(pDiagram);
 	}
 	
 	/**
@@ -51,8 +49,7 @@ public class DeserializationContext extends AbstractContext
 	 * @param pId The id to associated with this node.
 	 * @pre pNode != null;
 	 */
-	public void addNode(Node pNode, int pId)
-	{
+	public void addNode(Node pNode, int pId) {
 		assert pNode != null;
 		aNodes.put(pNode, pId);
 	}
@@ -62,8 +59,7 @@ public class DeserializationContext extends AbstractContext
 	 * @return The node associated with this identifier.
 	 * @pre idExists(pId)
 	 */
-	public Node getNode(int pId)
-	{
+	public Node getNode(int pId) {
 		assert idExists(pId);
 		return aNodes.entrySet().stream()
 			.filter(entry -> entry.getValue() == pId)

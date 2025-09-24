@@ -39,50 +39,42 @@ import org.jetuml.rendering.StringRenderer;
 /**
  * An object to render a StateNode.
  */
-public final class StateNodeRenderer extends AbstractNodeRenderer
-{
+public final class StateNodeRenderer extends AbstractNodeRenderer {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int PADDING = 15;
 	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER);
-	
+
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
-	public StateNodeRenderer(DiagramRenderer pParent)
-	{
+	public StateNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		final Rectangle bounds = getBounds(pElement);
-		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(), 
+		pContext.drawRoundedRectangle(bounds, ColorScheme.get().fill(), ColorScheme.get().stroke(),
 				Optional.of(ColorScheme.get().dropShadow()));
-		String name = ((StateNode)pElement).getName();
-		LABEL_RENDERER.draw(name, 
-				bounds.centerSlice(LABEL_RENDERER.getDimension(name).height()),
-				pContext);
+		String name = ((StateNode) pElement).getName();
+		LABEL_RENDERER.draw(name, bounds.centerSlice(LABEL_RENDERER.getDimension(name).height()), pContext);
 	}
-	
+
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
-		Dimension bounds = LABEL_RENDERER.getDimension(((StateNode)pNode).getName());
-		return new Rectangle(pNode.position().x(), pNode.position().y(), 
+	protected Rectangle internalGetBounds(Node pNode) {
+		Dimension bounds = LABEL_RENDERER.getDimension(((StateNode) pNode).getName());
+		return new Rectangle(pNode.position().x(), pNode.position().y(),
 				Math.max(bounds.width() + PADDING, DEFAULT_WIDTH), Math.max(bounds.height() + PADDING, DEFAULT_HEIGHT));
 	}
-	
+
 	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
 		return GeomUtils.intersectRoundedRectangle(getBounds(pNode), pDirection);
-	}   	
+	}
 }

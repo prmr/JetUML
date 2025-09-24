@@ -49,135 +49,119 @@ import javafx.scene.paint.Color;
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  */
-public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
-{
+public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer {
 	public static final int TOP_HEIGHT = 60;
-	
+
 	private static final int ICON_HEIGHT = 120;
 	private static final int ICON_WIDTH = 80;
 
-	
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
-	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
+	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit
+														// parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
-	private static final StringRenderer LABEL_RENDERER = 
-			new StringRenderer(Alignment.CENTER, Decoration.UNDERLINED);
-	
+	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER, Decoration.UNDERLINED);
+
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
-	public ImplicitParameterNodeRenderer(DiagramRenderer pParent)
-	{
+	public ImplicitParameterNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
-		Rectangle top = getTopRectangle((Node)pElement);
-		pContext.drawRectangle(top, ColorScheme.get().fill(), 
-				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		LABEL_RENDERER.draw(((ImplicitParameterNode)pElement).getName(), 
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
+		Rectangle top = getTopRectangle((Node) pElement);
+		pContext.drawRectangle(top, ColorScheme.get().fill(), ColorScheme.get().stroke(),
+				Optional.of(ColorScheme.get().dropShadow()));
+		LABEL_RENDERER.draw(((ImplicitParameterNode) pElement).getName(),
 				top.centerSlice(LABEL_RENDERER.getDimension("|").height()), pContext);
 		int xmid = top.center().x();
-		pContext.strokeLine(xmid,  top.maxY(), xmid, getBounds(pElement).maxY(), 
-				ColorScheme.get().stroke(),
+		pContext.strokeLine(xmid, top.maxY(), xmid, getBounds(pElement).maxY(), ColorScheme.get().stroke(),
 				LineStyle.DOTTED);
 	}
-	
+
 	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
+	public boolean contains(DiagramElement pElement, Point pPoint) {
 		final Rectangle bounds = getBounds(pElement);
 		return bounds.x() <= pPoint.x() && pPoint.x() <= bounds.x() + bounds.width();
 	}
 
 	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
 		Rectangle bounds = getBounds(pNode);
-		if(pDirection == Direction.EAST)
-		{
+		if (pDirection == Direction.EAST) {
 			return new Point(bounds.maxX(), bounds.y() + TOP_HEIGHT / 2);
 		}
-		else
-		{
+		else {
 			return new Point(bounds.x(), bounds.y() + TOP_HEIGHT / 2);
 		}
 	}
-	
+
 	/*
 	 * @return The width of the top rectangle.
 	 */
-	private static int getWidth(DiagramElement pElement)
-	{
+	private static int getWidth(DiagramElement pElement) {
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;
-		int labelWidth = LABEL_RENDERER.getDimension(((ImplicitParameterNode)pElement).getName()).width();
+		int labelWidth = LABEL_RENDERER.getDimension(((ImplicitParameterNode) pElement).getName()).width();
 		return Math.max(labelWidth + HORIZONTAL_PADDING, DEFAULT_WIDTH);
 	}
-	
-	private Point getMaxXYofChildren(Node pNode)
-	{
+
+	private Point getMaxXYofChildren(Node pNode) {
 		int maxY = 0;
 		int maxX = 0;
-		for( Node child : ((ImplicitParameterNode)pNode).getChildren() )
-		{
+		for (Node child : ((ImplicitParameterNode) pNode).getChildren()) {
 			Rectangle bounds = parent().getBounds(child);
-			maxX = Math.max(maxX,  bounds.maxX());
+			maxX = Math.max(maxX, bounds.maxX());
 			maxY = Math.max(maxY, bounds.maxY());
 		}
 		return new Point(maxX, maxY);
 	}
-	
+
 	/**
-     * Returns the rectangle at the top of the object node.
-     * @param pNode the node.
-     * @return the top rectangle
+	 * Returns the rectangle at the top of the object node.
+	 * 
+	 * @param pNode the node.
+	 * @return the top rectangle
 	 */
-	public Rectangle getTopRectangle(Node pNode)
-	{
-		return new Rectangle(pNode.position().x(), 				
-				((SequenceDiagramRenderer)parent()).getLifelineTop((ImplicitParameterNode) pNode) - TOP_HEIGHT,
-				getWidth(pNode), 									
-				TOP_HEIGHT);										
+	public Rectangle getTopRectangle(Node pNode) {
+		return new Rectangle(pNode.position().x(),
+				((SequenceDiagramRenderer) parent()).getLifelineTop((ImplicitParameterNode) pNode) - TOP_HEIGHT,
+				getWidth(pNode), TOP_HEIGHT);
 	}
-	
+
 	/**
 	 * @return The x-coordinate of the center of pNode.
 	 * @pre pNode != null;
 	 */
-	public static int getCenterXCoordinate(Node pNode)
-	{
+	public static int getCenterXCoordinate(Node pNode) {
 		assert pNode != null;
-		return Math.max(LABEL_RENDERER.getDimension(((ImplicitParameterNode)pNode).getName()).width() + HORIZONTAL_PADDING, 
-				DEFAULT_WIDTH)/2 + pNode.position().x();
+		return Math.max(
+				LABEL_RENDERER.getDimension(((ImplicitParameterNode) pNode).getName()).width() + HORIZONTAL_PADDING,
+				DEFAULT_WIDTH) / 2 + pNode.position().x();
 	}
 
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
+	protected Rectangle internalGetBounds(Node pNode) {
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);
 		int width = max(topRectangle.width(), DEFAULT_WIDTH, childrenMaxXY.x() - pNode.position().x());
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.y() + TAIL_HEIGHT) - topRectangle.y();	
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.y() + TAIL_HEIGHT) - topRectangle.y();
 		return new Rectangle(pNode.position().x(), topRectangle.y(), width, height);
 	}
-	
+
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		int width = ICON_WIDTH;
 		int height = ICON_HEIGHT;
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+		double scaleX = (BUTTON_SIZE - OFFSET) / (double) width;
+		double scaleY = (BUTTON_SIZE - OFFSET) / (double) height;
 		double scale = Math.min(scaleX, scaleY);
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
@@ -187,12 +171,10 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		graphics.setStroke(Color.BLACK);
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, TOP_HEIGHT);
 		GraphicsRenderingContext context = new GraphicsRenderingContext(canvas.getGraphicsContext2D());
-		context.drawRectangle(top, ColorScheme.get().fill(), 
-				ColorScheme.get().stroke(), Optional.of(ColorScheme.get().dropShadow()));
-		int xmid = DEFAULT_WIDTH/2;
-		context.strokeLine(xmid,  top.maxY(), xmid, height, 
-				ColorScheme.get().stroke(),
-				LineStyle.DOTTED);
+		context.drawRectangle(top, ColorScheme.get().fill(), ColorScheme.get().stroke(),
+				Optional.of(ColorScheme.get().dropShadow()));
+		int xmid = DEFAULT_WIDTH / 2;
+		context.strokeLine(xmid, top.maxY(), xmid, height, ColorScheme.get().stroke(), LineStyle.DOTTED);
 		return canvas;
 	}
 }

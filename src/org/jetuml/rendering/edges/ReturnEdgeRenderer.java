@@ -41,52 +41,46 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
- * Viewer for a labeled, straight edge with customized code to
- * compute connection points.
+ * Viewer for a labeled, straight edge with customized code to compute
+ * connection points.
  */
-public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
-{	
+public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer {
 	/**
 	 * Creates a new viewer.
 	 */
-	public ReturnEdgeRenderer(DiagramRenderer pParent)
-	{
-		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((ReturnEdge)edge).getMiddleLabel());
+	public ReturnEdgeRenderer(DiagramRenderer pParent) {
+		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((ReturnEdge) edge).getMiddleLabel());
 	}
-	
+
 	@Override
-	public Line getConnectionPoints(Edge pEdge)
-	{
+	public Line getConnectionPoints(Edge pEdge) {
 		Rectangle start = parent().getBounds(pEdge.start());
 		Rectangle end = parent().getBounds(pEdge.end());
-		
-		if(pEdge.end() instanceof PointNode) // show nicely in tool bar
-		{
+
+		if (pEdge.end() instanceof PointNode) { // show nicely in tool bar
 			return new Line(new Point(end.x(), end.y()), new Point(start.maxX(), end.y()));
-		}      
-		else if(start.center().x() < end.center().x())
-		{
+		}
+		else if (start.center().x() < end.center().x()) {
 			return new Line(new Point(start.maxX(), start.maxY()), new Point(end.x(), start.maxY()));
 		}
-		else
-		{
+		else {
 			return new Line(new Point(start.x(), start.maxY()), new Point(end.maxX(), start.maxY()));
 		}
 	}
-	
+
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		final float scale = 0.6f;
 		final int offset = 25;
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		canvas.getGraphicsContext2D().scale(scale, scale);
 		Path path = new Path();
-		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
+		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE * (1 / scale) - 1, offset));
 		GraphicsRenderingContext context = new GraphicsRenderingContext(graphics);
 		context.strokePath(path, ColorScheme.get().stroke(), LineStyle.DOTTED);
-		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
+		ArrowHeadRenderer.draw(context, ArrowHead.V, new Point((int) (BUTTON_SIZE * (1 / scale) - 1), offset),
+				new Point(1, offset));
 		return canvas;
 	}
 }

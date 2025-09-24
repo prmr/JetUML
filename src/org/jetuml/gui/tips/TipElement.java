@@ -26,37 +26,33 @@ import org.jetuml.annotations.Immutable;
  * Tip element represented as a Media/content pair.
  */
 @Immutable
-final class TipElement 
-{
+final class TipElement {
 	private final Media aMedia;
 	private final String aContent;
-	
+
 	/**
-	 * @param pMedia Media of the tip element
-	 * @param pContent content that will be displayed by the tip (image name with file
-	 * 		  extension if the Media is IMAGE). 
+	 * @param pMedia   Media of the tip element
+	 * @param pContent content that will be displayed by the tip (image name with
+	 *                 file extension if the Media is IMAGE).
 	 * @pre pMedia != null && pContent != null
 	 */
-	TipElement(Media pMedia, String pContent)
-	{
+	TipElement(Media pMedia, String pContent) {
 		assert pMedia != null && pContent != null;
 		aMedia = pMedia;
 		aContent = pContent;
 	}
-	
+
 	/**
 	 * @return String containing the tip content
 	 */
-	public String getContent()
-	{
+	public String getContent() {
 		return aContent;
 	}
-	
+
 	/**
 	 * @return Media type of the TipElement
 	 */
-	public Media getMedia()
-	{
+	public Media getMedia() {
 		return aMedia;
 	}
 }

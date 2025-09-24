@@ -27,13 +27,11 @@ import org.jetuml.rendering.LineStyle;
 /**
  * A straight solid line.
  */
-public final class UseCaseAssociationEdgeRenderer extends StraightEdgeRenderer
-{	
+public final class UseCaseAssociationEdgeRenderer extends StraightEdgeRenderer {
 	/**
 	 * Creates a viewer for UseCaseAssociationEdge instances.
 	 */
-	public UseCaseAssociationEdgeRenderer(DiagramRenderer pParent)
-	{
+	public UseCaseAssociationEdgeRenderer(DiagramRenderer pParent) {
 		super(pParent, LineStyle.SOLID, ArrowHead.NONE);
 	}
 }

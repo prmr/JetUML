@@ -23,31 +23,27 @@ package org.jetuml.rendering;
 /**
  * This class defines arrowheads of various shapes.
  */
-public enum ArrowHead
-{
+public enum ArrowHead {
 	NONE, TRIANGLE, BLACK_TRIANGLE, V, HALF_V, DIAMOND, BLACK_DIAMOND;
-	
+
 	/**
 	 * @return True iif this arrow head is in the shape of a triangle.
 	 */
-	public boolean isTriangle()
-	{
+	public boolean isTriangle() {
 		return this == TRIANGLE || this == BLACK_TRIANGLE;
 	}
-	
+
 	/**
 	 * @return True iif this arrow head is in the shape of a diamond.
 	 */
-	public boolean isDiamond()
-	{
+	public boolean isDiamond() {
 		return this == DIAMOND || this == BLACK_DIAMOND;
 	}
-	
+
 	/**
 	 * @return True iif this arrow head is filled with a solid color.
 	 */
-	public boolean isFilled()
-	{
+	public boolean isFilled() {
 		return this == BLACK_TRIANGLE || this == BLACK_DIAMOND;
 	}
 }

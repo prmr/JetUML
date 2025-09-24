@@ -33,13 +33,11 @@ import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 /**
  * The renderer for object diagrams.
  */
-public final class ObjectDiagramRenderer extends AbstractDiagramRenderer
-{
+public final class ObjectDiagramRenderer extends AbstractDiagramRenderer {
 	/**
 	 * @param pDiagram Diagram being rendered.
 	 */
-	public ObjectDiagramRenderer(Diagram pDiagram)
-	{
+	public ObjectDiagramRenderer(Diagram pDiagram) {
 		super(pDiagram);
 		addElementRenderer(FieldNode.class, new FieldNodeRenderer(this));
 		addElementRenderer(ObjectNode.class, new ObjectNodeRenderer(this));

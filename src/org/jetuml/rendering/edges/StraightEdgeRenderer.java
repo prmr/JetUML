@@ -39,61 +39,56 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
- * Can draw an edge as a straight line between the connection
- * points of the start and end nodes that are closest to each
- * other. The LineStyle and end ArrowHead can be customized. The 
- * start ArrowHead is NONE. There is no label.
+ * Can draw an edge as a straight line between the connection points of the
+ * start and end nodes that are closest to each other. The LineStyle and end
+ * ArrowHead can be customized. The start ArrowHead is NONE. There is no label.
  */
-public class StraightEdgeRenderer extends AbstractEdgeRenderer
-{	
+public class StraightEdgeRenderer extends AbstractEdgeRenderer {
+	
 	private final LineStyle aLineStyle;
 	private final ArrowHead aArrowHead;
-	
+
 	/**
 	 * Creates a new view with the required LineStyle and ArrowHead.
 	 * 
 	 * @param pLineStyle The line style for the edge.
-	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
+	 * @param pArrowHead The arrow head for the end of the arrow. The start is
+	 *                   always NONE.
 	 */
-	public StraightEdgeRenderer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead)
-	{
+	public StraightEdgeRenderer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead) {
 		super(pParent);
 		aLineStyle = pLineStyle;
 		aArrowHead = pArrowHead;
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		Edge edge = (Edge) pElement;
 		Path shape = (Path) getShape(edge);
 		pContext.strokePath(shape, ColorScheme.get().stroke(), aLineStyle);
 		Line connectionPoints = getConnectionPoints(edge);
 		ArrowHeadRenderer.draw(pContext, aArrowHead, connectionPoints);
 	}
-	
+
 	@Override
-	public Rectangle getBounds(DiagramElement pElement)
-	{
+	public Rectangle getBounds(DiagramElement pElement) {
 		Rectangle bounds = super.getBounds(pElement);
 		Edge edge = (Edge) pElement;
-		if( aArrowHead != ArrowHead.NONE )
-		{
+		if (aArrowHead != ArrowHead.NONE) {
 			bounds = bounds.add(ArrowHeadRenderer.getBounds(aArrowHead, getConnectionPoints(edge)));
 		}
 		return bounds;
 	}
-	
+
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
-		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
+		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET));
 		GraphicsRenderingContext context = new GraphicsRenderingContext(canvas.getGraphicsContext2D());
 		context.strokePath(path, ColorScheme.get().stroke(), aLineStyle);
-		ArrowHeadRenderer.draw(context, aArrowHead, 
-				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
+		ArrowHeadRenderer.draw(context, aArrowHead, new Point(OFFSET, OFFSET),
+				new Point(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET));
 		return canvas;
 	}
 }

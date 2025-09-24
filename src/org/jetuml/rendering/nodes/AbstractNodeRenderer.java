@@ -39,55 +39,50 @@ import javafx.scene.paint.Color;
 /**
  * Basic services for drawing nodes.
  */
-public abstract class AbstractNodeRenderer implements NodeRenderer
-{
+public abstract class AbstractNodeRenderer implements NodeRenderer {
 	public static final int BUTTON_SIZE = 25;
 	public static final int OFFSET = 3;
-	
+
 	private NodeStorage aNodeStorage = new NodeStorage();
 	private final DiagramRenderer aParent;
-	
-	protected AbstractNodeRenderer(DiagramRenderer pParent)
-	{
+
+	protected AbstractNodeRenderer(DiagramRenderer pParent) {
 		aParent = pParent;
 	}
-	
-	protected DiagramRenderer parent()
-	{
+
+	protected DiagramRenderer parent() {
 		return aParent;
 	}
-	
-	/* 
-	 * The default behavior for containment is to return true if the point is
-	 * within the bounding box of the node view.
+
+	/*
+	 * The default behavior for containment is to return true if the point is within
+	 * the bounding box of the node view.
+	 * 
 	 * @see org.jetuml.rendering.DiagramElementView#contains(org.jetuml.geom.Point)
 	 */
 	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
+	public boolean contains(DiagramElement pElement, Point pPoint) {
 		return getBounds(pElement).contains(pPoint);
 	}
-	
-	/* 
-	 * The default behavior is to returns a point on the bounds of the node that intersects
-	 * the side of the node at the point where a line in pDirection originating from the center
-	 * intersects it.
+
+	/*
+	 * The default behavior is to returns a point on the bounds of the node that
+	 * intersects the side of the node at the point where a line in pDirection
+	 * originating from the center intersects it.
 	 */
 	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
+	public Point getConnectionPoint(Node pNode, Direction pDirection) {
 		return GeomUtils.intersectRectangle(getBounds(pNode), pDirection);
 	}
-	
+
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		Node node = (Node) pElement;
 		Rectangle bounds = getBounds(node);
 		int width = bounds.width();
 		int height = bounds.height();
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+		double scaleX = (BUTTON_SIZE - OFFSET) / (double) width;
+		double scaleY = (BUTTON_SIZE - OFFSET) / (double) height;
 		double scale = Math.min(scaleX, scaleY);
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
@@ -98,40 +93,37 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 		draw(node, new GraphicsRenderingContext(canvas.getGraphicsContext2D()));
 		return canvas;
 	}
-	
+
 	@Override
-	public final Rectangle getBounds(DiagramElement pElement)
-	{
-		return aNodeStorage.getBounds((Node)pElement, this::internalGetBounds);
+	public final Rectangle getBounds(DiagramElement pElement) {
+		return aNodeStorage.getBounds((Node) pElement, this::internalGetBounds);
 	}
-	
+
 	@Override
-	public final void activateNodeStorage()
-	{
+	public final void activateNodeStorage() {
 		aNodeStorage.activate();
 	}
-	
+
 	@Override
-	public final void deactivateAndClearNodeStorage() 
-	{
+	public final void deactivateAndClearNodeStorage() {
 		aNodeStorage.deactivateAndClear();
 	}
-	
+
 	/**
-     * Gets the smallest rectangle that bounds this element.
-     * The bounding rectangle contains all labels.
-     * @param pNode The node whose bounds we want.
-     * @pre pNode != null
-     * @return the bounding rectangle
-   	 */
+	 * Gets the smallest rectangle that bounds this element. The bounding rectangle
+	 * contains all labels.
+	 * 
+	 * @param pNode The node whose bounds we want.
+	 * @pre pNode != null
+	 * @return the bounding rectangle
+	 */
 	protected abstract Rectangle internalGetBounds(Node pNode);
-	
+
 	/*
 	 * By default we return the side of the node's bounds.
 	 */
 	@Override
-	public Line getFace(Node pNode, Side pSide) 
-	{
+	public Line getFace(Node pNode, Side pSide) {
 		assert pNode != null && pSide != null;
 		return pSide.getCorrespondingLine(getBounds(pNode));
 	}

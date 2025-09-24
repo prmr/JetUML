@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.jetuml.gui.tips;
 
-enum View 
-{
+enum View {
 	TOPIC, LEVEL, DIAGRAM
 }

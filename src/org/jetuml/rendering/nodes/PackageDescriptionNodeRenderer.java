@@ -39,53 +39,46 @@ import javafx.scene.canvas.Canvas;
 /**
  * An object to render a package in a class diagram.
  */
-public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
-{
+public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer {
 	private static final StringRenderer CONTENT_RENDERER = new StringRenderer(Alignment.CENTER);
-	
+
 	/**
 	 * @param pParent Renderer of the parent diagram.
 	 */
-	public PackageDescriptionNodeRenderer(DiagramRenderer pParent)
-	{
+	public PackageDescriptionNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		super.draw(pElement, pContext);
-		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		String content = ((PackageDescriptionNode)pElement).getContents();
-		CONTENT_RENDERER.draw(((PackageDescriptionNode)pElement).getContents(), 
-				bottomBounds.centerSlice(CONTENT_RENDERER.getDimension(content).height()), 
-				pContext);
+		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode) pElement);
+		String content = ((PackageDescriptionNode) pElement).getContents();
+		CONTENT_RENDERER.draw(((PackageDescriptionNode) pElement).getContents(),
+				bottomBounds.centerSlice(CONTENT_RENDERER.getDimension(content).height()), pContext);
 	}
-	
+
 	@Override
-	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
-	{
-		Dimension contentsBounds = CONTENT_RENDERER.getDimension(((PackageDescriptionNode)pNode).getContents());
+	protected Rectangle getBottomBounds(AbstractPackageNode pNode) {
+		Dimension contentsBounds = CONTENT_RENDERER.getDimension(((PackageDescriptionNode) pNode).getContents());
 		int width = max(contentsBounds.width() + 2 * PADDING, DEFAULT_WIDTH);
 		int height = max(contentsBounds.height() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
-		
+
 		Dimension topDimension = getTopDimension(pNode);
-		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
-		
-		return new Rectangle(pNode.position().x(), pNode.position().y() + topDimension.height(), 
-				width, height);
+		width = max(width, topDimension.width() + (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
+
+		return new Rectangle(pNode.position().x(), pNode.position().y() + topDimension.height(), width, height);
 	}
-	
+
 	/*
 	 * Custom version to distinguish package descriptions from package nodes.
 	 */
 	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) {
 		assert pElement instanceof AbstractPackageNode;
 		Canvas icon = super.createIcon(pDiagramType, pElement);
-		CONTENT_RENDERER.draw("description", 
-				getBottomBounds((AbstractPackageNode)pElement).centerSlice(CONTENT_RENDERER.lineHeight()), 
+		CONTENT_RENDERER.draw("description",
+				getBottomBounds((AbstractPackageNode) pElement).centerSlice(CONTENT_RENDERER.lineHeight()),
 				new GraphicsRenderingContext(icon.getGraphicsContext2D()));
 		return icon;
 	}

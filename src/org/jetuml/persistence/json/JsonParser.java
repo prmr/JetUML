@@ -20,26 +20,25 @@
 package org.jetuml.persistence.json;
 
 /**
- * Attempts to parse an input text assumed to be in JSON notation
- * into a JsonObject. This implementation supports only a subset of the ECMA-404 2nd
- * edition (December 2017) standard. The standard is supported except for:
- * * Non-integer number values
- * * Null values
+ * Attempts to parse an input text assumed to be in JSON notation into a
+ * JsonObject. This implementation supports only a subset of the ECMA-404 2nd
+ * edition (December 2017) standard. The standard is supported except for: *
+ * Non-integer number values * Null values
  */
-public final class JsonParser 
-{
+public final class JsonParser {
+	
 	private static final JsonObjectParser PARSER = new JsonObjectParser();
-	
-	private JsonParser() {}
-	
-    /**
-     * Parses a string into a JsonObject.
-     * 
-     * @param pInput The input string, in JSON.
-     * @return The JsonObject represented by the string.
-     */
-    public static JsonObject parse(String pInput)
-    {
-    	return PARSER.parse(new ParsableCharacterBuffer(pInput));
-    }
+
+	private JsonParser() {
+	}
+
+	/**
+	 * Parses a string into a JsonObject.
+	 * 
+	 * @param pInput The input string, in JSON.
+	 * @return The JsonObject represented by the string.
+	 */
+	public static JsonObject parse(String pInput) {
+		return PARSER.parse(new ParsableCharacterBuffer(pInput));
+	}
 }

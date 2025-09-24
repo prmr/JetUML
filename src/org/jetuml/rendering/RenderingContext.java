@@ -39,15 +39,14 @@ import javafx.scene.text.Font;
  * (e.g., lines) for performance reasons: to avoid creating an object for every
  * call to a rendering primitive.
  */
-public interface RenderingContext 
-{
+public interface RenderingContext {
 	/**
 	 * Stroke a line with a specified color and line style.
 	 * 
-	 * @param pX1 The x-coordinate of the first point.
-	 * @param pY1 The y-coordinate of the first point.
-	 * @param pX2 The x-coordinate of the second point.
-	 * @param pY2 The y-coordinate of the second point.
+	 * @param pX1    The x-coordinate of the first point.
+	 * @param pY1    The y-coordinate of the first point.
+	 * @param pX2    The x-coordinate of the second point.
+	 * @param pY2    The y-coordinate of the second point.
 	 * @param pColor The color for the line.
 	 * @param pStyle The line style for the path.
 	 */
@@ -63,12 +62,12 @@ public interface RenderingContext
 	/**
 	 * Draws an oval.
 	 * 
-	 * @param pX The x-coordinate of the top-left of the oval.
-	 * @param pY The y-coordinate of the top-left of the oval.
+	 * @param pX         The x-coordinate of the top-left of the oval.
+	 * @param pY         The y-coordinate of the top-left of the oval.
 	 * @param pFillColor The color with which to fill the oval.
-	 * @param pWidth The width of the oval to draw
-	 * @param pHeight The height of the oval to draw.
-	 * @param pShadow The drop shadow, if there is one.
+	 * @param pWidth     The width of the oval to draw
+	 * @param pHeight    The height of the oval to draw.
+	 * @param pShadow    The drop shadow, if there is one.
 	 */
 	void drawOval(int pX, int pY, int pWidth, int pHeight, Color pFillColor, Color pStrokeColor,
 			Optional<DropShadow> pShadow);
@@ -76,13 +75,13 @@ public interface RenderingContext
 	/**
 	 * Strokes an open arc.
 	 * 
-	 * @param pCenterX The x coordinate of the center of the arc
-	 * @param pCenterY The y coordinate of the center of the arc
-	 * @param pRadius The radius of the arc, in pixels.
-	 * @param pStartAngle The start angle in degrees, 0 being at the bottom
-	 * middle of the circle.
-	 * @param pLength The length of the arc in degrees, moving counter-clockwise
-	 * from the start angle.
+	 * @param pCenterX     The x coordinate of the center of the arc
+	 * @param pCenterY     The y coordinate of the center of the arc
+	 * @param pRadius      The radius of the arc, in pixels.
+	 * @param pStartAngle  The start angle in degrees, 0 being at the bottom middle
+	 *                     of the circle.
+	 * @param pLength      The length of the arc in degrees, moving
+	 *                     counter-clockwise from the start angle.
 	 * @param pStrokeColor The color of the stroke
 	 */
 	void strokeArc(int pCenterX, int pCenterY, int pRadius, int pStartAngle, int pLength, Color pStrokeColor);
@@ -90,19 +89,19 @@ public interface RenderingContext
 	/**
 	 * Strokes a path.
 	 * 
-	 * @param pPath The path to stroke
+	 * @param pPath        The path to stroke
 	 * @param pStrokeColor The color of the path.
-	 * @param pStyle The line style for the path.
+	 * @param pStyle       The line style for the path.
 	 */
 	void strokePath(Path pPath, Color pStrokeColor, LineStyle pStyle);
 
 	/**
 	 * Strokes and fills a path assumed to be closed.
 	 * 
-	 * @param pPath The path to stroke
-	 * @param pFillColor The fill color for the path.
+	 * @param pPath        The path to stroke
+	 * @param pFillColor   The fill color for the path.
 	 * @param pStrokeColor The stroke color.
-	 * @param pShadow The drop shadow
+	 * @param pShadow      The drop shadow
 	 */
 	void drawClosedPath(Path pPath, Color pFillColor, Color pStrokeColor, Optional<DropShadow> pDropShadow);
 
@@ -118,13 +117,14 @@ public interface RenderingContext
 	 * Draw pText within pBounds. The text should be centered vertically within
 	 * pBounds and aligned horizontally according to pTextPosition.
 	 * 
-	 * @param pText The text to draw
-	 * @param pBounds The box in which to draw the text.
-	 * @param pTextPosition The position of the text within pBounds.
-	 * @param pTextColor The color of the text.
-	 * @param pFont The font to use.
+	 * @param pText          The text to draw
+	 * @param pBounds        The box in which to draw the text.
+	 * @param pTextPosition  The position of the text within pBounds.
+	 * @param pTextColor     The color of the text.
+	 * @param pFont          The font to use.
 	 * @param pFontDimension The dimension of pFont.
 	 */
-	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont, FontDimension pFontDimension);
+	void drawText(String pText, Rectangle pBounds, Alignment pTextPosition, Color pTextColor, Font pFont,
+			FontDimension pFontDimension);
 
 }

@@ -26,16 +26,14 @@ import org.jetuml.rendering.DiagramRenderer;
 /**
  * An object to render an interface in a class diagram.
  */
-public final class InterfaceNodeRenderer extends TypeNodeRenderer
-{
+public final class InterfaceNodeRenderer extends TypeNodeRenderer {
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
-	public InterfaceNodeRenderer(DiagramRenderer pParent)
-	{
+	public InterfaceNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	/**
 	 * Adds the interface Stereotype to the name.
 	 * 
@@ -44,8 +42,7 @@ public final class InterfaceNodeRenderer extends TypeNodeRenderer
 	 * @pre pNode != null
 	 */
 	@Override
-	protected String getNameText(TypeNode pNode)
-	{
+	protected String getNameText(TypeNode pNode) {
 		return "\u00ABinterface\u00BB\n" + pNode.getName();
 	}
 }

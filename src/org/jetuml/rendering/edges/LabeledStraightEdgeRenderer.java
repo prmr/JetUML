@@ -35,69 +35,64 @@ import org.jetuml.rendering.RenderingContext;
 import org.jetuml.rendering.StringRenderer;
 
 /**
- * Can draw a straight edge with a label than can be obtained dynamically. 
+ * Can draw a straight edge with a label than can be obtained dynamically.
  */
-public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
-{	
+public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer {
 	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER);
-	
+
 	private final Function<Edge, String> aLabelExtractor;
-	
+
 	/**
-	 * Creates a new view with the required LineStyle and ArrowHead and label provider.
+	 * Creates a new view with the required LineStyle and ArrowHead and label
+	 * provider.
 	 * 
-	 * @param pLineStyle The line style for the edge.
-	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
+	 * @param pLineStyle      The line style for the edge.
+	 * @param pArrowHead      The arrow head for the end of the arrow. The start is
+	 *                        always NONE.
 	 * @param pLabelExtractor A function to extract for the edge's label.
 	 */
 	public LabeledStraightEdgeRenderer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead,
-			Function<Edge, String> pLabelExtractor)
-	{
+			Function<Edge, String> pLabelExtractor) {
 		super(pParent, pLineStyle, pArrowHead);
 		aLabelExtractor = pLabelExtractor;
 	}
-	
+
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		super.draw(pElement, pContext);
 		Edge edge = (Edge) pElement;
 		String label = wrapLabel(edge);
-		
-		if( label.length() > 0 )
-		{
-			LABEL_RENDERER.draw(label, getConnectionPoints(edge).spanning()
-					.translated(0, -LABEL_RENDERER.getDimension(label).height()), pContext);
+
+		if (label.length() > 0) {
+			LABEL_RENDERER.draw(label,
+					getConnectionPoints(edge).spanning().translated(0, -LABEL_RENDERER.getDimension(label).height()),
+					pContext);
 		}
 	}
-	
-	private String wrapLabel(Edge pEdge) 
-	{
-		int distanceInX = Math.abs(parent().getBounds(pEdge.start()).center().x() -
-				parent().getBounds(pEdge.end()).center().x());
-		int distanceInY = Math.abs(parent().getBounds(pEdge.start()).center().y() -
-				parent().getBounds(pEdge.end()).center().y());
+
+	private String wrapLabel(Edge pEdge) {
+		int distanceInX = Math
+				.abs(parent().getBounds(pEdge.start()).center().x() - parent().getBounds(pEdge.end()).center().x());
+		int distanceInY = Math
+				.abs(parent().getBounds(pEdge.start()).center().y() - parent().getBounds(pEdge.end()).center().y());
 		return super.wrapLabel(aLabelExtractor.apply(pEdge), distanceInX, distanceInY);
 	}
 
-	private Rectangle getStringBounds(Edge pEdge)
-	{
+	private Rectangle getStringBounds(Edge pEdge) {
 		String label = wrapLabel(pEdge);
 		assert label != null && label.length() > 0;
 		Point center = getConnectionPoints(pEdge).spanning().center();
 		Dimension textDimension = LABEL_RENDERER.getDimension(label);
-		return new Rectangle(center.x() - textDimension.width()/2, center.y() - textDimension.height()/2, textDimension.width(), 
-				textDimension.height());
+		return new Rectangle(center.x() - textDimension.width() / 2, center.y() - textDimension.height() / 2,
+				textDimension.width(), textDimension.height());
 	}
-	
+
 	@Override
-	public Rectangle getBounds(DiagramElement pElement)
-	{
+	public Rectangle getBounds(DiagramElement pElement) {
 		Rectangle bounds = super.getBounds(pElement);
 		Edge edge = (Edge) pElement;
 		String label = aLabelExtractor.apply(edge);
-		if( label.length() > 0 )
-		{
+		if (label.length() > 0) {
 			bounds = bounds.add(getStringBounds(edge));
 		}
 		return bounds;

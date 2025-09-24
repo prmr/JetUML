@@ -28,102 +28,94 @@ import java.util.Objects;
 import org.jetuml.geom.Point;
 
 /**
- * Represents the path of an edge on a diagram as a list of points. 
+ * Represents the path of an edge on a diagram as a list of points.
  * Non-segmented paths consist of 2 points (the start and end points).
  */
-public final class EdgePath implements Iterable<Point>
-{
+public final class EdgePath implements Iterable<Point> {
 	private List<Point> aPoints;
-	
+
 	/**
 	 * Initializes an EdgePath composed of pPoints.
-	 * @param pPoints the points of an edge (the start point, possible segment connections, and the end point)
+	 * 
+	 * @param pPoints the points of an edge (the start point, possible segment
+	 *                connections, and the end point)
 	 * @pre pPoints.length >= 2
 	 */
-	public EdgePath(Point...pPoints)
-	{
+	public EdgePath(Point... pPoints) {
 		assert pPoints.length >= 2;
 		aPoints = Arrays.asList(pPoints);
 	}
-	
+
 	/**
 	 * Gets the starting point for the path.
+	 * 
 	 * @return the Point where the edge starts.
 	 */
-	public Point getStartPoint()
-	{
+	public Point getStartPoint() {
 		return aPoints.get(0);
-	}
-	
-	/**
-	 * Gets the end point of the edge.
-	 * @return the Point where the edge ends.
-	 */
-	public Point getEndPoint()
-	{
-		return aPoints.get(aPoints.size()-1);
 	}
 
 	/**
-	 * Returns the point in the edge path at position pIndex, where index 0 refers to the start point.
+	 * Gets the end point of the edge.
+	 * 
+	 * @return the Point where the edge ends.
+	 */
+	public Point getEndPoint() {
+		return aPoints.get(aPoints.size() - 1);
+	}
+
+	/**
+	 * Returns the point in the edge path at position pIndex, where index 0 refers
+	 * to the start point.
+	 * 
 	 * @param pIndex the index of aPoints
 	 * @return the Point in aPoints at pIndex < aPoints.size()
 	 * @pre pIndex > 0 && pIndex
 	 */
-	public Point getPointByIndex(int pIndex)
-	{
+	public Point getPointByIndex(int pIndex) {
 		assert pIndex >= 0 && pIndex < aPoints.size();
 		return aPoints.get(pIndex);
 	}
 
 	@Override
-	public int hashCode() 
-	{
+	public int hashCode() {
 		return Objects.hash(aPoints);
 	}
 
 	@Override
-	public boolean equals(Object pObj) 
-	{
-		if(this == pObj)
-		{
+	public boolean equals(Object pObj) {
+		if (this == pObj) {
 			return true;
 		}
-		if(pObj == null)
-		{
+		if (pObj == null) {
 			return false;
 		}
-		if(getClass() != pObj.getClass())
-		{
+		if (getClass() != pObj.getClass()) {
 			return false;
 		}
 		EdgePath other = (EdgePath) pObj;
-		if(other.aPoints.size() != this.aPoints.size())
-		{
+		if (other.aPoints.size() != this.aPoints.size()) {
 			return false;
 		}
-		for(int i = 0; i < aPoints.size(); i++)
-		{
-			if(!other.aPoints.get(i).equals(aPoints.get(i)))
-			{
+		for (int i = 0; i < aPoints.size(); i++) {
+			if (!other.aPoints.get(i).equals(aPoints.get(i))) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns the number of points in the path.
+	 * 
 	 * @return an integer representing the size of the EdgePath
 	 */
-	public int size()
-	{
+	public int size() {
 		return aPoints.size();
 	}
 
 	@Override
-	public Iterator<Point> iterator() 
-	{
+	public Iterator<Point> iterator() {
 		return aPoints.iterator();
-	}	
+	}
 }

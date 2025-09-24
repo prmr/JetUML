@@ -31,8 +31,7 @@ import static java.lang.Character.isWhitespace;
  * character read. This position is initialized at -1. A character buffer is
  * only expected to be traversed once.
  */
-class CharacterBuffer
-{
+class CharacterBuffer {
 	private final String aCharacters;
 	private int aPosition = -1;
 
@@ -42,8 +41,7 @@ class CharacterBuffer
 	 * @param pInput The string to use as character sequence.
 	 * @pre pInput != null
 	 */
-	CharacterBuffer(String pInput)
-	{
+	CharacterBuffer(String pInput) {
 		assert pInput != null;
 		aCharacters = pInput;
 	}
@@ -51,28 +49,25 @@ class CharacterBuffer
 	/**
 	 * @return True iif there is at least one more character to read.
 	 */
-	boolean hasMore()
-	{
+	boolean hasMore() {
 		return aPosition + 1 < aCharacters.length();
-	}
-
-	/**
-	 * @return The position of the last read character.
-	 */
-	int position()
-	{
-		return aPosition;
 	}
 
 	/**
 	 * @param pNumberOfCharacters To check
 	 * @return True iif there is at least pNumberOfCharacters more character to
-	 * read.
+	 *         read.
 	 */
-	boolean hasMore(int pNumberOfCharacters)
-	{
+	boolean hasMore(int pNumberOfCharacters) {
 		assert pNumberOfCharacters > 0;
 		return aPosition + pNumberOfCharacters < aCharacters.length();
+	}
+	
+	/**
+	 * @return The position of the last read character.
+	 */
+	int position() {
+		return aPosition;
 	}
 
 	/**
@@ -80,25 +75,20 @@ class CharacterBuffer
 	 * 
 	 * @pre canBackUp()
 	 */
-	void backUp()
-	{
+	void backUp() {
 		assert aPosition >= 0;
 		aPosition--;
 	}
 
 	/**
-	 * Move the position ahead until the first non-blank character is found, or
-	 * the end of the buffer is reached. Positions the buffer before the next
-	 * non-blank character, so that the next call to next() returns that
-	 * character.
+	 * Move the position ahead until the first non-blank character is found, or the
+	 * end of the buffer is reached. Positions the buffer before the next non-blank
+	 * character, so that the next call to next() returns that character.
 	 */
-	void skipBlanks()
-	{
-		while (hasMore())
-		{
+	void skipBlanks() {
+		while (hasMore()) {
 			char character = next();
-			if(!isWhitespace(character))
-			{
+			if (!isWhitespace(character)) {
 				backUp();
 				return;
 			}
@@ -111,8 +101,7 @@ class CharacterBuffer
 	 * @return The next character, assumed to exist.
 	 * @pre hasMore()
 	 */
-	char next()
-	{
+	char next() {
 		assert hasMore();
 		aPosition++;
 		return aCharacters.charAt(aPosition);
@@ -121,26 +110,21 @@ class CharacterBuffer
 	/**
 	 * @param pCharacter A character to check
 	 * @return True iif there is another character in the buffer and it is
-	 * pCharacter.
+	 *         pCharacter.
 	 */
-	boolean isNext(char pCharacter)
-	{
+	boolean isNext(char pCharacter) {
 		return hasMore() && aCharacters.charAt(aPosition + 1) == pCharacter;
 	}
 
 	@Override
-	public String toString()
-	{
-		if(aPosition >= 0 && aPosition < aCharacters.length())
-		{
+	public String toString() {
+		if (aPosition >= 0 && aPosition < aCharacters.length()) {
 			return String.format("At position %d [%s]", aPosition, aCharacters.charAt(aPosition));
 		}
-		else if(aPosition < 0)
-		{
+		else if (aPosition < 0) {
 			return "Positioned at the beginning";
 		}
-		else
-		{
+		else {
 			return "Positioned at the end";
 		}
 	}

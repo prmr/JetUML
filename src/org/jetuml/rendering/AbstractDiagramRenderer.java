@@ -45,16 +45,15 @@ import javafx.scene.canvas.Canvas;
 /**
  * Default implementation of the rendering operations.
  */
-public abstract class AbstractDiagramRenderer implements DiagramRenderer
-{
+public abstract class AbstractDiagramRenderer implements DiagramRenderer {
+	
 	private final IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = new IdentityHashMap<>();
 	private final Diagram aDiagram;
 	
 	/*
 	 * Add renderers for elements that are present in all diagrams. 
 	 */
-	protected AbstractDiagramRenderer(Diagram pDiagram)
-	{
+	protected AbstractDiagramRenderer(Diagram pDiagram) {
 		aDiagram = pDiagram;
 		addElementRenderer(NoteNode.class, new NoteNodeRenderer(this));
 		addElementRenderer(PointNode.class, new PointNodeRenderer(this));
@@ -62,29 +61,24 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 	
 	// Recursively enlarge the current rectangle to include the selected DiagramElements
-	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
-	{
-		if( pElement instanceof Node node && node.hasParent())
-		{
+	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement) {
+		if (pElement instanceof Node node && node.hasParent()) {
 			return addBounds(pBounds, node.getParent());
 		}
-		else
-		{
+		else {
 			return pBounds.add(getBounds(pElement));
 		}
 	}
 	
 	protected void addElementRenderer(Class<? extends DiagramElement> pElementClass,
-			DiagramElementRenderer pElementRenderer)
-	{
+			DiagramElementRenderer pElementRenderer) {
 		aRenderers.put(pElementClass, pElementRenderer);
 	}
 
 	/**
 	 * Activates all the NodeStorages of the NodeViewers present in the renderer.
 	 */
-	protected void activateNodeStorages()
-	{
+	protected void activateNodeStorages() {
 		aRenderers.values().stream().filter(renderer -> NodeRenderer.class.isAssignableFrom(renderer.getClass()))
 				.map(NodeRenderer.class::cast).forEach(NodeRenderer::activateNodeStorage);
 	}
@@ -92,20 +86,17 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	/**
 	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the renderer.
 	 */
-	protected void deactivateAndClearNodeStorages()
-	{
+	protected void deactivateAndClearNodeStorages() {
 		aRenderers.values().stream().filter(renderer -> NodeRenderer.class.isAssignableFrom(renderer.getClass()))
 				.map(NodeRenderer.class::cast).forEach(NodeRenderer::deactivateAndClearNodeStorage);
 	}
 
-	protected void drawNode(Node pNode, RenderingContext pContext)
-	{
+	protected void drawNode(Node pNode, RenderingContext pContext) {
 		draw(pNode, pContext);
 		pNode.getChildren().forEach(node -> drawNode(node, pContext));
 	}
 	
-	protected Optional<Node> deepFindNode(Node pNode, Point pPoint)
-	{
+	protected Optional<Node> deepFindNode(Node pNode, Point pPoint) {
 		assert pNode != null && pPoint != null;
 
 		return pNode.getChildren().stream()
@@ -117,44 +108,35 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		Rectangle bounds = null;
-		for(Node node : aDiagram.rootNodes())
-		{
-			if(bounds == null)
-			{
+		for (Node node : aDiagram.rootNodes()) {
+			if (bounds == null) {
 				bounds = getBounds(node);
 			}
-			else
-			{
+			else {
 				bounds = bounds.add(getBounds(node));
 			}
 		}
-		for(Edge edge : aDiagram.edges())
-		{
+		for (Edge edge : aDiagram.edges()) {
 			bounds = bounds.add(getBounds(edge));
 		}
-		if(bounds == null)
-		{
+		if (bounds == null) {
 			return new Rectangle(0, 0, 0, 0);
 		}
-		else
-		{
+		else {
 			return new Rectangle(bounds.x(), bounds.y(), bounds.width(), bounds.height());
 		}
 	}
 	
 	@Override
-	public DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
-	{
+	public DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass) {
 		assert aRenderers.containsKey(pClass);
 		return aRenderers.get(pClass);
 	}
 
 	@Override
-	public void draw(RenderingContext pContext)
-	{
+	public void draw(RenderingContext pContext) {
 		assert pContext != null;
 		activateNodeStorages();
 		aDiagram.rootNodes().forEach(node -> drawNode(node, pContext));
@@ -163,14 +145,12 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		aRenderers.get(pElement.getClass()).draw(pElement, pContext);
 	}
 
 	@Override
-	public Optional<Edge> edgeAt(Point pPoint)
-	{
+	public Optional<Edge> edgeAt(Point pPoint) {
 		assert pPoint != null;
 		return aDiagram.edges().stream()
 				.filter(edge -> contains(edge, pPoint))
@@ -178,8 +158,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public Optional<Node> nodeAt(Point pPoint)
-	{
+	public Optional<Node> nodeAt(Point pPoint) {
 		assert pPoint != null;
 		return aDiagram.rootNodes().stream()
 				.map(node -> deepFindNode(node, pPoint))
@@ -189,85 +168,73 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
+	public boolean contains(DiagramElement pElement, Point pPoint) {
 		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
 
 	@Override
-	public Canvas createIcon(DiagramElement pElement)
-	{
+	public Canvas createIcon(DiagramElement pElement) {
 		assert pElement != null;
 		return aRenderers.get(pElement.getClass()).createIcon(DiagramType.USECASE, pElement);
 	}
 
 	@Override
-	public Line getConnectionPoints(Edge pEdge)
-	{
+	public Line getConnectionPoints(Edge pEdge) {
 		assert pEdge != null;
 		return ((EdgeRenderer) aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
 
 	@Override
-	public Point getConnectionPoints(Node pNode, Direction pDirection)
-	{
+	public Point getConnectionPoints(Node pNode, Direction pDirection) {
 		assert pNode != null && pDirection != null;
 		return ((NodeRenderer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
 	
 	@Override
-	public Optional<Node> selectableNodeAt(Point pPoint)
-	{
+	public Optional<Node> selectableNodeAt(Point pPoint) {
 		return nodeAt(pPoint);
 	}
 	
 	@Override
-	public final Diagram diagram()
-	{
+	public final Diagram diagram() {
 		return aDiagram;
 	}
 	
 	@Override
-	public Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
-	{
+	public Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements) {
 		assert pElements != null;
 		assert pElements.iterator().hasNext();
 		Iterator<DiagramElement> elements = pElements.iterator();
 		DiagramElement next = elements.next();
 		Rectangle bounds = getBounds(next);
 		bounds = addBounds(bounds, next);
-		while( elements.hasNext() )
-		{
+		while (elements.hasNext()) {
 			bounds = addBounds(bounds, elements.next());
 		}
 		return bounds;
 	}
 	
 	@Override
-	public final Rectangle getBoundsNotIncludingParents(Iterable<DiagramElement> pElements)
-	{
+	public final Rectangle getBoundsNotIncludingParents(Iterable<DiagramElement> pElements) {
 		assert pElements != null;
 		assert pElements.iterator().hasNext();
 		Iterator<DiagramElement> elements = pElements.iterator();
 		DiagramElement next = elements.next();
 		Rectangle bounds = getBounds(next);
-		while( elements.hasNext() )
-		{
+		while (elements.hasNext()) {
 			bounds = bounds.add(getBounds(elements.next()));
 		}
 		return bounds;
 	}
 	
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
-		return ((NodeRenderer)rendererFor(pNode.getClass())).getDefaultDimension(pNode);
+	public Dimension getDefaultDimension(Node pNode) {
+		return ((NodeRenderer) rendererFor(pNode.getClass())).getDefaultDimension(pNode);
 	}
-	
+
 	// CSOFF: Not sure why it complains about the placement of this method
 	@Override
-	public Rectangle getBounds(DiagramElement pElement)
-	{
+	public Rectangle getBounds(DiagramElement pElement) {
 		assert pElement != null;
 		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}

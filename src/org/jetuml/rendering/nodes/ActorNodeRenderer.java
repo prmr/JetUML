@@ -41,61 +41,51 @@ import javafx.scene.shape.QuadCurveTo;
 /**
  * An object to render an actor in a use case diagram.
  */
-public final class ActorNodeRenderer extends AbstractNodeRenderer
-{
+public final class ActorNodeRenderer extends AbstractNodeRenderer {
 	private static final StringRenderer LABEL_RENDERER = new StringRenderer(Alignment.CENTER);
-	
+
 	private static final int HEAD_SIZE = 16;
 	private static final int BODY_SIZE = 20;
-	private static final int LEG_SIZE  = 20;
+	private static final int LEG_SIZE = 20;
 	private static final int ARMS_SIZE = 24;
 	private static final int WIDTH = GeomUtils.round(LEG_SIZE / Math.sqrt(2)) * 2;
 	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + GeomUtils.round(LEG_SIZE / Math.sqrt(2));
-	
+
 	/**
 	 * @param pParent The renderer for the parent diagram.
 	 */
-	public ActorNodeRenderer(DiagramRenderer pParent)
-	{
+	public ActorNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	@Override
-	public Dimension getDefaultDimension(Node pNode)
-	{
+	public Dimension getDefaultDimension(Node pNode) {
 		Rectangle bounds = internalGetBounds(pNode);
 		return new Dimension(bounds.width(), bounds.height());
 	}
-	
+
 	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
-		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode)pNode).getName());
-		Rectangle bounds = 
-		new Rectangle(
-				pNode.position().x() + Math.min(0, (WIDTH - textDimension.width()) / 2), 
-				pNode.position().y(),
-				Math.max(WIDTH, textDimension.width()),
-				HEIGHT + textDimension.height());
+	protected Rectangle internalGetBounds(Node pNode) {
+		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode) pNode).getName());
+		Rectangle bounds = new Rectangle(pNode.position().x() + Math.min(0, (WIDTH - textDimension.width()) / 2),
+				pNode.position().y(), Math.max(WIDTH, textDimension.width()), HEIGHT + textDimension.height());
 		return bounds;
 	}
 
 	@Override
-	public void draw(DiagramElement pElement, RenderingContext pContext)
-	{
+	public void draw(DiagramElement pElement, RenderingContext pContext) {
 		Rectangle bounds = getBounds(pElement);
 		Node node = (Node) pElement;
-		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode)node).getName());
-		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - textDimension.width()) / 2, 
+		Dimension textDimension = LABEL_RENDERER.getDimension(((ActorNode) node).getName());
+		Rectangle nameBox = new Rectangle(node.position().x() + (WIDTH - textDimension.width()) / 2,
 				bounds.y() + HEIGHT, textDimension.width(), textDimension.height());
-		LABEL_RENDERER.draw(((ActorNode)node).getName(), nameBox, pContext);
+		LABEL_RENDERER.draw(((ActorNode) node).getName(), nameBox, pContext);
 		pContext.strokePath(createStickManPath(node), ColorScheme.get().stroke(), LineStyle.SOLID);
 	}
-	
-	private static Path createStickManPath(Node pNode)
-	{
+
+	private static Path createStickManPath(Node pNode) {
 		Path path = new Path();
-		
+
 		int neckX = pNode.position().x() + WIDTH / 2;
 		int neckY = pNode.position().y() + HEAD_SIZE;
 		int hipX = neckX;
@@ -103,20 +93,16 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 		float dx = (float) (LEG_SIZE / Math.sqrt(2));
 		float feetX1 = hipX - dx;
 		float feetX2 = hipX + dx + 1;
-		float feetY  = hipY + dx + 1;
-		
-		path.getElements().addAll(
-				new MoveTo(neckX, neckY),
+		float feetY = hipY + dx + 1;
+
+		path.getElements().addAll(new MoveTo(neckX, neckY),
 				new QuadCurveTo(neckX + HEAD_SIZE / 2, neckY, neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE / 2),
 				new QuadCurveTo(neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX, neckY - HEAD_SIZE),
-				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX-HEAD_SIZE / 2, neckY - HEAD_SIZE / 2),
-				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY, neckX, neckY),
-				new LineTo(hipX, hipY),
+				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE / 2),
+				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY, neckX, neckY), new LineTo(hipX, hipY),
 				new MoveTo(neckX - ARMS_SIZE / 2, neckY + BODY_SIZE / 3),
-				new LineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3),
-				new MoveTo(feetX1, feetY),
-				new LineTo(hipX, hipY),
-				new LineTo(feetX2, feetY));	
+				new LineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3), new MoveTo(feetX1, feetY),
+				new LineTo(hipX, hipY), new LineTo(feetX2, feetY));
 		return path;
 	}
 }

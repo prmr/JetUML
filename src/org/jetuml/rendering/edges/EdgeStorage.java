@@ -34,119 +34,113 @@ import org.jetuml.rendering.EdgePath;
 /**
  * Stores the EdgePaths of Edges for class diagrams.
  */
-public class EdgeStorage
-{
+public class EdgeStorage {
 	private Map<Edge, EdgePath> aEdgePaths = new IdentityHashMap<>();
- 	
- 	/**
- 	 * Adds pEdge and pEdgePath into storage.
- 	 * If pEdge is already in storage, then its EdgePath is updated to pEdgePath.
- 	 * @param pEdge the edge to store
- 	 * @pre pEdge!=null
- 	 * @pre pEdgePath!=null
- 	 */
- 	public void store(Edge pEdge, EdgePath pEdgePath)
- 	{
- 		assert pEdge!=null && pEdgePath!=null;
- 		aEdgePaths.put(pEdge, pEdgePath);
- 	}
- 
- 	
- 	/**
- 	 * Returns whether storage is empty.  
- 	 * @return true if aEdgePaths is empty, false otherwise.
- 	 */
- 	public boolean isEmpty()
- 	{
- 		return aEdgePaths.isEmpty();
- 	}
- 	
- 	/**
- 	 * Returns pEdge's EdgePath from storage.
- 	 * @param pEdge the stored edge of interest
- 	 * @return the EdgePath for pEdge from storage 
- 	 * @pre pEdge!=null
- 	 * @pre this.contains(pEdge)
- 	 */
- 	public EdgePath getEdgePath(Edge pEdge)
- 	{
- 		assert pEdge!=null;
- 		assert this.contains(pEdge);
- 		return aEdgePaths.get(pEdge);
-	
- 	}
- 	
- 	/**
- 	 * Returns whether pEdge is in storage.
- 	 * @param pEdge the edge of interest
- 	 * @return true if pEdge is in storage, false otherwise
- 	 * @pre pEdge!=null
- 	 */
- 	public boolean contains(Edge pEdge)
- 	{
- 		assert pEdge!=null;
- 		return aEdgePaths.containsKey(pEdge);
- 	}
 
- 	/**
- 	 * Returns a list of edges in storage which are connected to pNode.
+	/**
+	 * Adds pEdge and pEdgePath into storage. If pEdge is already in storage, then
+	 * its EdgePath is updated to pEdgePath.
+	 * 
+	 * @param pEdge the edge to store
+	 * @pre pEdge!=null
+	 * @pre pEdgePath!=null
+	 */
+	public void store(Edge pEdge, EdgePath pEdgePath) {
+		assert pEdge != null && pEdgePath != null;
+		aEdgePaths.put(pEdge, pEdgePath);
+	}
+
+	/**
+	 * Returns whether storage is empty.
+	 * 
+	 * @return true if aEdgePaths is empty, false otherwise.
+	 */
+	public boolean isEmpty() {
+		return aEdgePaths.isEmpty();
+	}
+
+	/**
+	 * Returns pEdge's EdgePath from storage.
+	 * 
+	 * @param pEdge the stored edge of interest
+	 * @return the EdgePath for pEdge from storage
+	 * @pre pEdge!=null
+	 * @pre this.contains(pEdge)
+	 */
+	public EdgePath getEdgePath(Edge pEdge) {
+		assert pEdge != null;
+		assert this.contains(pEdge);
+		return aEdgePaths.get(pEdge);
+
+	}
+
+	/**
+	 * Returns whether pEdge is in storage.
+	 * 
+	 * @param pEdge the edge of interest
+	 * @return true if pEdge is in storage, false otherwise
+	 * @pre pEdge!=null
+	 */
+	public boolean contains(Edge pEdge) {
+		assert pEdge != null;
+		return aEdgePaths.containsKey(pEdge);
+	}
+
+	/**
+	 * Returns a list of edges in storage which are connected to pNode.
+	 * 
 	 * @param pNode The node of interest
 	 * @return All the edges connected to pNode
 	 * @pre pNode != null
 	 */
-	public List<Edge> edgesConnectedTo(Node pNode)
-	{
+	public List<Edge> edgesConnectedTo(Node pNode) {
 		assert pNode != null;
 		List<Edge> result = new ArrayList<>();
-		for( Edge edge : aEdgePaths.keySet() )
-		{
-			if( edge.start() == pNode || edge.end() == pNode )
-			{
+		for (Edge edge : aEdgePaths.keySet()) {
+			if (edge.start() == pNode || edge.end() == pNode) {
 				result.add(edge);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Returns whether pConnectionPoint is available.
+	 * 
 	 * @param pConnectionPoint a Point in the diagram
-	 * @return false if pPoint is a start or end connection point for an edge in storage, true otherwise
+	 * @return false if pPoint is a start or end connection point for an edge in
+	 *         storage, true otherwise
 	 * @pre pConnectionPoint !=null;
 	 */
-	public boolean connectionPointIsAvailable(Point pConnectionPoint)
-	{
-		assert pConnectionPoint !=null;
-		for( EdgePath path : aEdgePaths.values() )
-		{
-			if(path.getStartPoint().equals(pConnectionPoint) || path.getEndPoint().equals(pConnectionPoint))
-			{
+	public boolean connectionPointIsAvailable(Point pConnectionPoint) {
+		assert pConnectionPoint != null;
+		for (EdgePath path : aEdgePaths.values()) {
+			if (path.getStartPoint().equals(pConnectionPoint) || path.getEndPoint().equals(pConnectionPoint)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Returns a list of edges which share the same two attached nodes as pEdge, reffered to as "shared-node edges".
-	 * Based on diagram constraints, this list will typically either be empty or contain a maximum of 1 edge. 
+	 * Returns a list of edges which share the same two attached nodes as pEdge,
+	 * reffered to as "shared-node edges". Based on diagram constraints, this list
+	 * will typically either be empty or contain a maximum of 1 edge.
+	 * 
 	 * @param pEdge the edge of interest
-	 * @return a list of edges from storage which are also attached to pEdge.getStart() and pEdge.getEnd(). 	 
+	 * @return a list of edges from storage which are also attached to
+	 *         pEdge.getStart() and pEdge.getEnd().
 	 */
-	public List<Edge> getEdgesWithSameNodes(Edge pEdge)
-	{
-		return aEdgePaths.keySet().stream()
-				.filter(edge -> edge.start() == pEdge.start() || edge.start() == pEdge.end())
+	public List<Edge> getEdgesWithSameNodes(Edge pEdge) {
+		return aEdgePaths.keySet().stream().filter(edge -> edge.start() == pEdge.start() || edge.start() == pEdge.end())
 				.filter(edge -> edge.end() == pEdge.start() || edge.end() == pEdge.end())
-				.filter(edge -> !edge.equals(pEdge))
-				.collect(Collectors.toList());
+				.filter(edge -> !edge.equals(pEdge)).collect(Collectors.toList());
 	}
-	
+
 	/**
 	 * Clears edge storage.
 	 */
-	public void clearStorage()
-	{
+	public void clearStorage() {
 		aEdgePaths.clear();
 	}
 }

@@ -21,16 +21,13 @@
 package org.jetuml.gui.tips;
 
 /**
- * Names of the fields used for encoding tips
- * in their JSON file. The actual field names 
- * are lowercase versions of the enum constant names.
+ * Names of the fields used for encoding tips in their JSON file. The actual
+ * field names are lowercase versions of the enum constant names.
  */
-enum TipFieldName
-{
+enum TipFieldName {
 	TITLE, CONTENT, TAGS;
-	
-	public String asString()
-	{
+
+	public String asString() {
 		return name().toLowerCase();
 	}
 }

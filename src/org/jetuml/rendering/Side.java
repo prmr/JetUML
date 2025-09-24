@@ -27,83 +27,67 @@ import org.jetuml.geom.Rectangle;
 /**
  * Represents one side of a rectangular node.
  */
-public enum Side 
-{
+public enum Side {
 	TOP, BOTTOM, RIGHT, LEFT;
-	
+
 	/**
-	 * @return True if this side is a horizontal line, that is, 
-	 * the top or the bottom side.
+	 * @return True if this side is a horizontal line, that is, the top or the
+	 *         bottom side.
 	 */
-	public boolean isHorizontal()
-	{
+	public boolean isHorizontal() {
 		return this == TOP || this == BOTTOM;
 	}
-	
+
 	/**
-	 * @return True if this side is a vertical line, that is, the 
-	 * right or the left side.
+	 * @return True if this side is a vertical line, that is, the right or the left
+	 *         side.
 	 */
-	public boolean isVertical()
-	{
+	public boolean isVertical() {
 		return this == RIGHT || this == LEFT;
 	}
-	
+
 	/**
-	 * @return The side opposite the current side on
-	 *     the rectangle.
+	 * @return The side opposite the current side on the rectangle.
 	 */
-	public Side mirrored()
-	{
-		if( this == TOP )
-		{
+	public Side mirrored() {
+		if (this == TOP) {
 			return BOTTOM;
 		}
-		else if( this == BOTTOM)
-		{
+		else if (this == BOTTOM) {
 			return TOP;
 		}
-		else if( this == RIGHT)
-		{
+		else if (this == RIGHT) {
 			return LEFT;
 		}
-		else 
-		{
+		else {
 			return RIGHT;
 		}
 	}
-	
+
 	/**
-	 * Returns a new Line object that corresponds to the corresponding
-	 * side of the input rectangle.
+	 * Returns a new Line object that corresponds to the corresponding side of the
+	 * input rectangle.
 	 * 
 	 * @param pSide The required side.
 	 * @return A line with the geometry of the required side.
 	 * @pre pSide != null
 	 */
-	public Line getCorrespondingLine(Rectangle pRectangle)
-	{
+	public Line getCorrespondingLine(Rectangle pRectangle) {
 		assert pRectangle != null;
-		if( this == Side.TOP )
-		{
-			return new Line(new Point(pRectangle.x(), pRectangle.y()), 
-					new Point(pRectangle.maxX(), pRectangle.y()));
+		if (this == Side.TOP) {
+			return new Line(new Point(pRectangle.x(), pRectangle.y()), new Point(pRectangle.maxX(), pRectangle.y()));
 		}
-		else if( this == Side.BOTTOM)
-		{
-			return new Line(new Point(pRectangle.x(), pRectangle.maxY()), 
+		else if (this == Side.BOTTOM) {
+			return new Line(new Point(pRectangle.x(), pRectangle.maxY()),
 					new Point(pRectangle.maxX(), pRectangle.maxY()));
 		}
-		else if( this == Side.RIGHT)
-		{
-			return new Line(new Point(pRectangle.maxX(), pRectangle.y()), 
+		else if (this == Side.RIGHT) {
+			return new Line(new Point(pRectangle.maxX(), pRectangle.y()),
 					new Point(pRectangle.maxX(), pRectangle.maxY()));
 		}
-		else
-		{
+		else {
 			assert this == Side.LEFT;
-			return new Line(new Point(pRectangle.x(), pRectangle.y()), 
-					new Point(pRectangle.x(), pRectangle.maxY()));
+			return new Line(new Point(pRectangle.x(), pRectangle.y()), new Point(pRectangle.x(), pRectangle.maxY()));
 		}
 	}
 }

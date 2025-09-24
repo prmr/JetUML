@@ -25,18 +25,17 @@ import org.jetuml.geom.Line;
 import org.jetuml.rendering.DiagramElementRenderer;
 
 /**
- * Abstract strategy that describes objects that can draw and
- * compute various geometric properties of edges.
+ * Abstract strategy that describes objects that can draw and compute various
+ * geometric properties of edges.
  */
-public interface EdgeRenderer extends DiagramElementRenderer
-{
-   	/**
-     * Gets the points at which pEdge is connected to
-     * its nodes.
-     * @param pEdge The target edge
-     * @return a line joining the two connection points
-     * @pre pEdge != null
-     * 
-     */
-   	Line getConnectionPoints(Edge pEdge);
+public interface EdgeRenderer extends DiagramElementRenderer {
+	/**
+	 * Gets the points at which pEdge is connected to its nodes.
+	 * 
+	 * @param pEdge The target edge
+	 * @return a line joining the two connection points
+	 * @pre pEdge != null
+	 * 
+	 */
+	Line getConnectionPoints(Edge pEdge);
 }

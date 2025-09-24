@@ -34,65 +34,58 @@ import org.jetuml.gui.tips.TipLoader.Tip;
  * Script to generate the user guide by collecting all the tips of the day in a
  * single page.
  */
-public final class UserGuideGenerator
-{
+public final class UserGuideGenerator {
 	private static final int NUMBER_OF_TIPS = Integer.parseInt(RESOURCES.getString("tips.quantity"));
 	private static final Path PATH_OUTPUT = Path.of("docs/tips.md");
 	private static final String TEMPLATE_TITLE = "\n### %d. %s";
 	private static final String TEMPLATE_IMAGE = "\n![Image](../tipdata/tip_images/%s)";
 	private static final String HEADER = """
 			## Tips for JetUML Users
-			
+
 			This section lists all the "Tip of the Day" entries available through JetUML's help menu.
 			""";
-	
-	private UserGuideGenerator() {}
-	
+
+	private UserGuideGenerator() {
+	}
+
 	/**
 	 * Use without arguments.
 	 * 
 	 * @param pArgs Not used.
 	 */
-	public static void main(String[] pArgs) throws IOException
-	{
+	public static void main(String[] pArgs) throws IOException {
 		StringBuilder page = new StringBuilder(HEADER);
-		
-		for (int tipNumber = 1; tipNumber <= NUMBER_OF_TIPS; tipNumber++)
-		{
+
+		for (int tipNumber = 1; tipNumber <= NUMBER_OF_TIPS; tipNumber++) {
 			page.append(toMarkdown(TipLoader.loadTip(tipNumber))).append("\n");
 		}
 		Files.write(PATH_OUTPUT, page.toString().getBytes(StandardCharsets.UTF_8));
 		System.out.println("User guide generated with %d tips.".formatted(NUMBER_OF_TIPS));
 	}
-	
+
 	/*
 	 * Creates a markdown representation of pTip suitable for display in the user
 	 * guide.
 	 */
-	private static String toMarkdown(Tip pTip)
-	{
+	private static String toMarkdown(Tip pTip) {
 		StringJoiner markdown = new StringJoiner("\n");
 		markdown.add(TEMPLATE_TITLE.formatted(pTip.getId(), pTip.getTitle()));
-		for (TipElement element : pTip.getElements())
-		{
+		for (TipElement element : pTip.getElements()) {
 			markdown.add(toMarkdown(element));
 		}
 
 		return markdown.toString();
 	}
-	
+
 	/*
 	 * Creates a markdown representation of pTipElement suitable for display in the
 	 * user guide.
 	 */
-	private static String toMarkdown(TipElement pTipElement)
-	{
-		if (pTipElement.getMedia() == Media.TEXT)
-		{
+	private static String toMarkdown(TipElement pTipElement) {
+		if (pTipElement.getMedia() == Media.TEXT) {
 			return "\n" + pTipElement.getContent().replace(" | ", " > ");
-		}
-		else
-		{
+		} 
+		else {
 			return TEMPLATE_IMAGE.formatted(pTipElement.getContent());
 		}
 	}

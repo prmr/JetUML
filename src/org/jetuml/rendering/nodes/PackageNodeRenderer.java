@@ -35,84 +35,71 @@ import org.jetuml.rendering.DiagramRenderer;
 /**
  * An object to render a package in a class diagram.
  */
-public final class PackageNodeRenderer extends AbstractPackageNodeRenderer
-{
+public final class PackageNodeRenderer extends AbstractPackageNodeRenderer {
 	/**
 	 * @param pParent Renderer of the parent diagram.
 	 */
-	public PackageNodeRenderer(DiagramRenderer pParent)
-	{
+	public PackageNodeRenderer(DiagramRenderer pParent) {
 		super(pParent);
 	}
-	
+
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */
-	private Optional<Rectangle> getChildrenBounds(Node pNode)
-	{
-		if( ((PackageNode)pNode).getChildren().isEmpty() )
-		{
+	private Optional<Rectangle> getChildrenBounds(Node pNode) {
+		if (((PackageNode) pNode).getChildren().isEmpty()) {
 			return Optional.empty();
 		}
 		Rectangle childBounds = null;
-		for( Node child : ((PackageNode)pNode).getChildren() )
-		{
-			if( childBounds == null )
-			{
+		for (Node child : ((PackageNode) pNode).getChildren()) {
+			if (childBounds == null) {
 				childBounds = parent().getBounds(child);
 			}
-			else
-			{
+			else {
 				childBounds = childBounds.add(parent().getBounds(child));
 			}
 		}
 		assert childBounds != null;
 		return Optional.of(childBounds);
 	}
-	
+
 	/*
-	 * The node's position might have to get adjusted if there are children
-	 * whose position is to the left or up of the node's position.
+	 * The node's position might have to get adjusted if there are children whose
+	 * position is to the left or up of the node's position.
 	 */
-	private Point getPosition(AbstractPackageNode pNode, Optional<Rectangle> pChildrenBounds)
-	{
-		if( !pChildrenBounds.isPresent() )
-		{
+	private Point getPosition(AbstractPackageNode pNode, Optional<Rectangle> pChildrenBounds) {
+		if (!pChildrenBounds.isPresent()) {
 			return pNode.position();
 		}
-		return new Point(pChildrenBounds.get().x() - PADDING, 
+		return new Point(pChildrenBounds.get().x() - PADDING,
 				pChildrenBounds.get().y() - PADDING - getTopDimension(pNode).height());
 	}
-	
+
 	@Override
-	protected Rectangle getTopBounds(AbstractPackageNode pNode)
-	{
+	protected Rectangle getTopBounds(AbstractPackageNode pNode) {
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
 		Point position = getPosition(pNode, childrenBounds);
 		Dimension topDimension = getTopDimension(pNode);
 		return new Rectangle(position.x(), position.y(), topDimension.width(), topDimension.height());
 	}
-	
+
 	@Override
-	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
-	{
+	protected Rectangle getBottomBounds(AbstractPackageNode pNode) {
 		int width = DEFAULT_WIDTH;
 		int height = DEFAULT_BOTTOM_HEIGHT;
-		
+
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
 		Point position = getPosition(pNode, childrenBounds);
-		
+
 		Dimension topDimension = getTopDimension(pNode);
-		
-		if( childrenBounds.isPresent() )
-		{
-			width = max( width, childrenBounds.get().maxX() + PADDING - position.x());
-			height = max( height, childrenBounds.get().maxY() + PADDING - position.y() - topDimension.height());
+
+		if (childrenBounds.isPresent()) {
+			width = max(width, childrenBounds.get().maxX() + PADDING - position.x());
+			height = max(height, childrenBounds.get().maxY() + PADDING - position.y() - topDimension.height());
 		}
-		
-		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
-		
-		return new Rectangle(position.x(), position.y() + topDimension.height(), 
-				width, height);
+
+		width = max(width, topDimension.width() + (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
+
+		return new Rectangle(position.x(), position.y() + topDimension.height(), width, height);
 	}
 }

@@ -28,44 +28,49 @@ import org.jetuml.geom.Rectangle;
 import javafx.scene.canvas.Canvas;
 
 /**
- * A wrapper around a Diagram object that is able to compute the geometry
- * of the diagram and render it on a rendering context.
+ * A wrapper around a Diagram object that is able to compute the geometry of the
+ * diagram and render it on a rendering context.
  */
-public interface DiagramElementRenderer
-{
+public interface DiagramElementRenderer {
 	/**
 	 * Returns an icon that represents pElement.
-	 * @param pElement The element for which we need an icon.
-	 * @param pDiagramType The diagram type that is the context for creating this icon. It is necessary to include this 
-	 * parameter because prototype nodes that represent diagram tools are not part of any diagram from which it would be possible to 
-	 * obtain the type.
+	 * 
+	 * @param pElement     The element for which we need an icon.
+	 * @param pDiagramType The diagram type that is the context for creating this
+	 *                     icon. It is necessary to include this parameter because
+	 *                     prototype nodes that represent diagram tools are not part
+	 *                     of any diagram from which it would be possible to obtain
+	 *                     the type.
 	 * @return A canvas object on which the icon is painted.
 	 * @pre pElement != null
 	 */
 	Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement);
-	
+
 	/**
-     * Gets the smallest rectangle that bounds the element.
-     * The bounding rectangle contains all labels.
-     * @param pElement The element whose bounds we wish to compute.
-     * @return the bounding rectangle
-     * @pre pElement != null
-   	 */
-	Rectangle getBounds(DiagramElement pElement);
-	
-  	/**
-     * Tests whether pElement contains a point.
-     * @param pElement the element to test
-     * @param pPoint the point to test
-     * @return true if this element contains aPoint
-     */
-   	boolean contains(DiagramElement pElement, Point pPoint);
-   	
-	/**
-     * Draws the element.
-     * @param pElement The element to draw.
-     * @param pContext The rendering context on which to draw the element.
-     * @pre pElement != null
+	 * Gets the smallest rectangle that bounds the element. The bounding rectangle
+	 * contains all labels.
+	 * 
+	 * @param pElement The element whose bounds we wish to compute.
+	 * @return the bounding rectangle
+	 * @pre pElement != null
 	 */
-   	void draw(DiagramElement pElement, RenderingContext pContext);
+	Rectangle getBounds(DiagramElement pElement);
+
+	/**
+	 * Tests whether pElement contains a point.
+	 * 
+	 * @param pElement the element to test
+	 * @param pPoint   the point to test
+	 * @return true if this element contains aPoint
+	 */
+	boolean contains(DiagramElement pElement, Point pPoint);
+
+	/**
+	 * Draws the element.
+	 * 
+	 * @param pElement The element to draw.
+	 * @param pContext The rendering context on which to draw the element.
+	 * @pre pElement != null
+	 */
+	void draw(DiagramElement pElement, RenderingContext pContext);
 }

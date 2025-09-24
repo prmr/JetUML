@@ -22,64 +22,55 @@ package org.jetuml.persistence.json;
 import java.util.StringJoiner;
 
 /**
- * Parses objects in JSON document according to the ECMA-404 2nd
- * edition December 2017. Also provides support for writing JsonObjects 
- * in JSON text.
+ * Parses objects in JSON document according to the ECMA-404 2nd edition
+ * December 2017. Also provides support for writing JsonObjects in JSON text.
  */
-final class JsonObjectParser implements JsonValueParser
-{
+final class JsonObjectParser implements JsonValueParser {
 	private static final JsonStringParser STRING_PARSER = new JsonStringParser();
 	private static final JsonAnyValueParser VALUE_PARSER = new JsonAnyValueParser();
-	
+
 	private static final char CHAR_START_OBJECT = '{';
 	private static final char CHAR_END_OBJECT = '}';
 	private static final char CHAR_COMMA = ',';
 	private static final char CHAR_COLON = ':';
-	
+
 	@Override
-	public boolean isApplicable(ParsableCharacterBuffer pInput)
-	{
+	public boolean isApplicable(ParsableCharacterBuffer pInput) {
 		return pInput.isNext(CHAR_START_OBJECT);
 	}
 
 	@Override
-	public JsonObject parse(ParsableCharacterBuffer pInput)
-	{
+	public JsonObject parse(ParsableCharacterBuffer pInput) {
 		JsonObject object = new JsonObject();
-        
+
 		pInput.consume(CHAR_START_OBJECT);
-			
-        while(true)
-		{
-        	pInput.skipBlanks();
-            if( pInput.isNext(CHAR_END_OBJECT))
-            {
-            	pInput.consume(CHAR_END_OBJECT);
-            	return object;
-            }
-            
-            if(object.numberOfProperties() > 0)
-            {
-            	pInput.consume(CHAR_COMMA);
-            	pInput.skipBlanks();
-            }
-       
-        	String key = STRING_PARSER.parse(pInput);
-        	pInput.skipBlanks();
-        	pInput.consume(CHAR_COLON);
-        	pInput.skipBlanks();
+
+		while (true) {
+			pInput.skipBlanks();
+			if (pInput.isNext(CHAR_END_OBJECT)) {
+				pInput.consume(CHAR_END_OBJECT);
+				return object;
+			}
+
+			if (object.numberOfProperties() > 0) {
+				pInput.consume(CHAR_COMMA);
+				pInput.skipBlanks();
+			}
+
+			String key = STRING_PARSER.parse(pInput);
+			pInput.skipBlanks();
+			pInput.consume(CHAR_COLON);
+			pInput.skipBlanks();
 			Object value = VALUE_PARSER.parse(pInput);
-			if( object.hasProperty(key))
-			{
+			if (object.hasProperty(key)) {
 				throw new JsonParsingException(pInput.position());
 			}
-			else
-			{
+			else {
 				object.put(key, value);
 			}
 		}
 	}
-	
+
 	/**
 	 * Serializes this object into its standard JSON notation.
 	 * 
@@ -87,13 +78,12 @@ final class JsonObjectParser implements JsonValueParser
 	 * @return The serialized object.
 	 * @throws JsonException if pObject is not an instance of JsonObject.
 	 */
-	static String writeJsonObject(Object pObject)
-	{
+	static String writeJsonObject(Object pObject) {
 		JsonObject jsonObject = JsonValueValidator.asJsonObject(pObject);
 		StringJoiner result = new StringJoiner("" + CHAR_COMMA);
-		for(String property : jsonObject.properties() )
-		{
-			result.add(JsonStringParser.writeJsonString(property) + CHAR_COLON + JsonWriter.write(jsonObject.get(property)));
+		for (String property : jsonObject.properties()) {
+			result.add(JsonStringParser.writeJsonString(property) + CHAR_COLON
+					+ JsonWriter.write(jsonObject.get(property)));
 		}
 		return CHAR_START_OBJECT + result.toString() + CHAR_END_OBJECT;
 	}

@@ -35,13 +35,11 @@ import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 /**
  * The renderer for use case diagrams.
  */
-public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
-{
+public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer {
 	/**
 	 * @param pDiagram The diagram being rendered.
 	 */
-	public UseCaseDiagramRenderer(Diagram pDiagram)
-	{
+	public UseCaseDiagramRenderer(Diagram pDiagram) {
 		super(pDiagram);
 		addElementRenderer(ActorNode.class, new ActorNodeRenderer(this));
 		addElementRenderer(UseCaseNode.class, new UseCaseNodeRenderer(this));

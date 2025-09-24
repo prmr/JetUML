@@ -28,14 +28,11 @@ import org.jetuml.rendering.LineStyle;
 /**
  * A straight solid line with an optional label.
  */
-public final class ObjectCollaborationEdgeRenderer extends LabeledStraightEdgeRenderer
-{	
+public final class ObjectCollaborationEdgeRenderer extends LabeledStraightEdgeRenderer {
 	/**
 	 * Creates a viewer for ObjectCollaborationEdge instances.
 	 */
-	public ObjectCollaborationEdgeRenderer(DiagramRenderer pParent)
-	{
-		super(pParent, LineStyle.SOLID, ArrowHead.NONE, 
-				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
+	public ObjectCollaborationEdgeRenderer(DiagramRenderer pParent) {
+		super(pParent, LineStyle.SOLID, ArrowHead.NONE, edge -> ((ObjectCollaborationEdge) edge).getMiddleLabel());
 	}
 }

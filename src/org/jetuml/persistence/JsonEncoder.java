@@ -30,24 +30,21 @@ import org.jetuml.persistence.json.JsonArray;
 import org.jetuml.persistence.json.JsonObject;
 
 /**
- * Converts a graph to JSON notation. The notation includes:
- * * The JetUML version
- * * The graph type
- * * An array of node encodings
- * * An array of edge encodings
+ * Converts a graph to JSON notation. The notation includes: * The JetUML
+ * version * The graph type * An array of node encodings * An array of edge
+ * encodings
  */
-public final class JsonEncoder
-{
-	private JsonEncoder() {}
-	
+public final class JsonEncoder {
+	private JsonEncoder() {
+	}
+
 	/**
 	 * @param pDiagram The diagram to serialize.
 	 * @return A JSON object that encodes the diagram.
 	 */
-	public static JsonObject encode(Diagram pDiagram)
-	{
+	public static JsonObject encode(Diagram pDiagram) {
 		assert pDiagram != null;
-		
+
 		JsonObject object = new JsonObject();
 		object.put("version", JetUML.VERSION.toString());
 		object.put("diagram", pDiagram.getName());
@@ -56,69 +53,57 @@ public final class JsonEncoder
 		object.put("edges", encodeEdges(context));
 		return object;
 	}
-	
-	private static JsonArray encodeNodes(SerializationContext pContext)
-	{
+
+	private static JsonArray encodeNodes(SerializationContext pContext) {
 		JsonArray nodes = new JsonArray();
-		for( Node node : pContext ) 
-		{
+		for (Node node : pContext) {
 			nodes.add(encodeNode(node, pContext));
 		}
 		return nodes;
 	}
-	
-	private static JsonObject encodeNode(Node pNode, SerializationContext pContext)
-	{
+
+	private static JsonObject encodeNode(Node pNode, SerializationContext pContext) {
 		JsonObject object = toJSONObject(pNode.properties());
 		object.put("id", pContext.getId(pNode));
 		object.put("type", pNode.getClass().getSimpleName());
 		object.put("x", pNode.position().x());
 		object.put("y", pNode.position().y());
-		if( pNode.getChildren().size() > 0 )
-		{
+		if (pNode.getChildren().size() > 0) {
 			object.put("children", encodeChildren(pNode, pContext));
 		}
 		return object;
 	}
-	
-	private static JsonArray encodeChildren(Node pNode, SerializationContext pContext)
-	{
+
+	private static JsonArray encodeChildren(Node pNode, SerializationContext pContext) {
 		JsonArray children = new JsonArray();
 		pNode.getChildren().forEach(child -> children.add(pContext.getId(child)));
 		return children;
 	}
-	
-	private static JsonArray encodeEdges(AbstractContext pContext)
-	{
+
+	private static JsonArray encodeEdges(AbstractContext pContext) {
 		JsonArray edges = new JsonArray();
-		for( Edge edge : pContext.diagram().edges() ) 
-		{
+		for (Edge edge : pContext.diagram().edges()) {
 			JsonObject object = toJSONObject(edge.properties());
 			object.put("type", edge.getClass().getSimpleName());
 			object.put("start", pContext.getId(edge.start()));
 			object.put("end", pContext.getId(edge.end()));
-			
+
 			edges.add(object);
 		}
 		return edges;
 	}
-	
-	private static JsonObject toJSONObject(Properties pProperties)
-	{
+
+	private static JsonObject toJSONObject(Properties pProperties) {
 		JsonObject object = new JsonObject();
-		for( Property property : pProperties )
-		{
+		for (Property property : pProperties) {
 			Object value = property.get();
-			if( value instanceof String || value instanceof Enum )
-			{
+			if (value instanceof String || value instanceof Enum) {
 				object.put(property.name().external(), value.toString());
 			}
-			else if( value instanceof Integer)
-			{
+			else if (value instanceof Integer) {
 				object.put(property.name().external(), value);
 			}
-			else if( value instanceof Boolean)
-			{
+			else if (value instanceof Boolean) {
 				object.put(property.name().external(), value);
 			}
 		}

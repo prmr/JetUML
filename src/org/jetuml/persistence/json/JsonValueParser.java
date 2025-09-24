@@ -19,16 +19,15 @@
  *******************************************************************************/
 package org.jetuml.persistence.json;
 
-interface JsonValueParser
-{
+interface JsonValueParser {
 	/**
 	 * Determines if this parser is applicable to parse the next 
 	 * token in the input.
 	 * 
 	 * @param pInput An input buffer, possible at the end.
 	 * @return True iff this parser is applicable to the input
-	 * given the next character. Always returns false if the input has no
-	 * readable character.
+	 *     given the next character. Always returns false if the input has no
+	 *     readable character.
 	 * @pre pInput != null
 	 */
 	boolean isApplicable(ParsableCharacterBuffer pInput);
@@ -40,7 +39,7 @@ interface JsonValueParser
 	 * @param pInput The input to parse.
 	 * @return A valid JSON value parsed from pInput.
 	 * @throws JsonParsingException if there is a problem parsing
-	 * a value from the input.
+	 *     a value from the input.
 	 * @pre pInput != null
 	 */
 	Object parse(ParsableCharacterBuffer pInput);

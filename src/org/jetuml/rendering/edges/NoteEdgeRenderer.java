@@ -27,13 +27,11 @@ import org.jetuml.rendering.LineStyle;
 /**
  * A straight dotted line.
  */
-public final class NoteEdgeRenderer extends StraightEdgeRenderer
-{	
+public final class NoteEdgeRenderer extends StraightEdgeRenderer {
 	/**
 	 * Creates a viewer for NoteEdge instances.
 	 */
-	public NoteEdgeRenderer(DiagramRenderer pParent)
-	{
+	public NoteEdgeRenderer(DiagramRenderer pParent) {
 		super(pParent, LineStyle.DOTTED, ArrowHead.NONE);
 	}
 }

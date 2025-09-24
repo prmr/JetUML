@@ -23,27 +23,24 @@ package org.jetuml.persistence.json;
  * Represents an error while parsing JSON text.
  */
 @SuppressWarnings("serial")
-public class JsonParsingException extends JsonException 
-{
+public class JsonParsingException extends JsonException {
 	private final int aPosition;
 
-    /**
-     * Creates an exception that indicates a problem at a specific
-     * position in a JSON input text.
-     * 
-     * @param pPosition The problematic character position.
-     */
-    public JsonParsingException(int pPosition) 
-    {
-        super(String.format("Invalid JSON text at character position: %d", pPosition));
-        aPosition = pPosition;
-    }
-    
-    /**
-     * @return The problematic position.
-     */
-    public int position()
-    {
-    	return aPosition;
-    }
+	/**
+	 * Creates an exception that indicates a problem at a specific position in a
+	 * JSON input text.
+	 * 
+	 * @param pPosition The problematic character position.
+	 */
+	public JsonParsingException(int pPosition) {
+		super(String.format("Invalid JSON text at character position: %d", pPosition));
+		aPosition = pPosition;
+	}
+
+	/**
+	 * @return The problematic position.
+	 */
+	public int position() {
+		return aPosition;
+	}
 }

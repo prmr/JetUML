@@ -27,13 +27,11 @@ import org.jetuml.rendering.LineStyle;
 /**
  * A straight solid line with a triangle end decoration.
  */
-public final class UseCaseGeneralizationEdgeRenderer extends StraightEdgeRenderer
-{	
+public final class UseCaseGeneralizationEdgeRenderer extends StraightEdgeRenderer {
 	/**
 	 * Creates a viewer for UseCaseGeneralizationEdge instances.
 	 */
-	public UseCaseGeneralizationEdgeRenderer(DiagramRenderer pParent)
-	{
+	public UseCaseGeneralizationEdgeRenderer(DiagramRenderer pParent) {
 		super(pParent, LineStyle.SOLID, ArrowHead.TRIANGLE);
 	}
 }
