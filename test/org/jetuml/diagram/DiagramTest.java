@@ -44,78 +44,70 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class TestDiagram 
-{
+class DiagramTest {
+
 	private Diagram aDiagram = new Diagram(null);
 	private Node aNode1 = new StubNode();
 	private Node aNode2 = new PackageNode();
 	private Node aNode3 = new ClassNode();
 	private Node aNode4 = new PackageNode();
-	
-	static class StubNode extends AbstractNode{ }
-	
+
+	static class StubNode extends AbstractNode {}
+
 	@Test
-	void testContainsAsRoot_RootNode()
-	{
+	void testContainsAsRoot_RootNode() {
 		aDiagram.addRootNode(aNode1);
 		assertTrue(aDiagram.containsAsRoot(aNode1));
 	}
-	
+
 	@Test
-	void testContainsAsRoot_NonRootNode()
-	{
+	void testContainsAsRoot_NonRootNode() {
 		assertFalse(aDiagram.containsAsRoot(aNode1));
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("argumentsForFileExtensions")
-	public void testFileExtensions(Diagram pDiagram, String pExtension)
-	{
+	public void testFileExtensions(Diagram pDiagram, String pExtension) {
 		assertEquals(pExtension, pDiagram.getFileExtension());
 	}
-	
+
 	private static Stream<Arguments> argumentsForFileExtensions() {
-	    return Stream.of(
-	      Arguments.of(new Diagram(DiagramType.CLASS), ".class"),
-	      Arguments.of(new Diagram(DiagramType.SEQUENCE), ".sequence"),
-	      Arguments.of(new Diagram(DiagramType.STATE), ".state"),
-	      Arguments.of(new Diagram(DiagramType.OBJECT), ".object"),
-	      Arguments.of(new Diagram(DiagramType.USECASE), ".usecase")
-	    );
+		return Stream.of(Arguments.of(new Diagram(DiagramType.CLASS), ".class"),
+				Arguments.of(new Diagram(DiagramType.SEQUENCE), ".sequence"),
+				Arguments.of(new Diagram(DiagramType.STATE), ".state"),
+				Arguments.of(new Diagram(DiagramType.OBJECT), ".object"),
+				Arguments.of(new Diagram(DiagramType.USECASE), ".usecase"));
 	}
-	
+
 	@Test
-	void testPlaceOnTop_NonRootNode()
-	{
+	void testPlaceOnTop_NonRootNode() {
 		aDiagram.addRootNode(aNode2);
 		aDiagram.placeOnTop(aNode1);
 		List<Node> rootList = aDiagram.rootNodes();
 		assertSame(rootList.get(0), aNode2);
-		assertTrue(rootList.size()==1);
+		assertTrue(rootList.size() == 1);
 	}
-	
+
 	@Test
-	void testPlaceOnTop_ChildNodeWithParent()
-	{
+	void testPlaceOnTop_ChildNodeWithParent() {
 		aNode4.addChild(aNode2);
 		aNode2.link(aNode4);
 		aNode4.addChild(aNode3);
 		aNode3.link(aNode4);
-		
+
 		aDiagram.addRootNode(aNode4);
 		aDiagram.addRootNode(aNode1);
 		aDiagram.placeOnTop(aNode2);
-		
+
 		List<Node> rootList = aDiagram.rootNodes();
 		assertSame(rootList.get(0), aNode1);
 		assertSame(rootList.get(1), aNode4);
 		// Ensure that the moved child node is now on top of all children
 		assertSame(aNode4.getChildren().get(1), aNode2);
 	}
-	
+
 	@Test
-	void testPlaceOnTop_SequenceDiagramWithCallNodes()
-	{
+	void testPlaceOnTop_SequenceDiagramWithCallNodes() {
 		ImplicitParameterNode implicitParameterNode = new ImplicitParameterNode();
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
@@ -124,33 +116,30 @@ public class TestDiagram
 		Diagram sequenceDiagram = new Diagram(DiagramType.SEQUENCE);
 		sequenceDiagram.addRootNode(implicitParameterNode);
 		sequenceDiagram.placeOnTop(callNode1);
-		
+
 		// The order of the call nodes remains the same
 		List<Node> childNodes = implicitParameterNode.getChildren();
-		assertSame(childNodes.get(0),callNode1);
+		assertSame(childNodes.get(0), callNode1);
 		assertSame(childNodes.get(1), callNode2);
 	}
-	
+
 	@Test
-	void testAllNodes_SingleRoot()
-	{
+	void testAllNodes_SingleRoot() {
 		Diagram diagram = new Diagram(null);
 		diagram.addRootNode(aNode1);
 		assertThat(diagram.allNodes(), hasElementsSameAs, aNode1);
 	}
-	
+
 	@Test
-	void testAllNodes_TwoChildlessRoots()
-	{
+	void testAllNodes_TwoChildlessRoots() {
 		Diagram diagram = new Diagram(null);
 		diagram.addRootNode(aNode2);
 		diagram.addRootNode(aNode4);
 		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, aNode2, aNode4);
 	}
-	
+
 	@Test
-	void testAllNodes_TwoParents()
-	{
+	void testAllNodes_TwoParents() {
 		Diagram diagram = new Diagram(null);
 		ClassNode node1 = new ClassNode();
 		aNode2.addChild(node1);
@@ -159,43 +148,39 @@ public class TestDiagram
 		diagram.addRootNode(aNode4);
 		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, node1, aNode2, aNode3, aNode4);
 	}
-	
+
 	@Test
-	void testAllNodes_ThreeHierarchicalLevels()
-	{
+	void testAllNodes_ThreeHierarchicalLevels() {
 		Diagram diagram = new Diagram(null);
 		aNode4.addChild(aNode2);
 		aNode2.addChild(aNode3);
 		diagram.addRootNode(aNode4);
 		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, aNode2, aNode3, aNode4);
 	}
-	
+
 	@Test
-	void testEdgesConnectedTo_NoEdges()
-	{
+	void testEdgesConnectedTo_NoEdges() {
 		aDiagram.addRootNode(aNode1);
 		aDiagram.addRootNode(aNode2);
 		assertFalse(aDiagram.edgesConnectedTo(aNode1).iterator().hasNext());
 	}
-	
+
 	@Test
-	void testEdgesTo_Empty()
-	{
+	void testEdgesTo_Empty() {
 		aDiagram.addRootNode(aNode1);
 		assertTrue(aDiagram.edgesTo(aNode1, DependencyEdge.class).isEmpty());
 	}
-	
+
 	@Test
-	void testEdgesTo_NodeSelection()
-	{
+	void testEdgesTo_NodeSelection() {
 		aDiagram.addRootNode(aNode1);
 		aDiagram.addRootNode(aNode2);
 		aDiagram.addRootNode(aNode3);
-		
+
 		Edge edge1 = new DependencyEdge();
 		edge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge1);
-		
+
 		Edge edge2 = new DependencyEdge();
 		edge2.connect(aNode2, aNode3);
 		aDiagram.addEdge(edge2);
@@ -203,17 +188,16 @@ public class TestDiagram
 		assertThat(aDiagram.edgesTo(aNode1, DependencyEdge.class), CollectionAssertions.isEmpty);
 		assertThat(aDiagram.edgesTo(aNode2, DependencyEdge.class), hasElementsSameAs, edge1);
 	}
-	
+
 	@Test
-	void testEdgesTo_TypeSelection()
-	{
+	void testEdgesTo_TypeSelection() {
 		aDiagram.addRootNode(aNode1);
 		aDiagram.addRootNode(aNode2);
-		
+
 		Edge edge1 = new DependencyEdge();
 		edge1.connect(aNode1, aNode2);
 		aDiagram.addEdge(edge1);
-		
+
 		Edge edge2 = new AssociationEdge();
 		edge2.connect(aNode1, aNode1);
 		aDiagram.addEdge(edge2);

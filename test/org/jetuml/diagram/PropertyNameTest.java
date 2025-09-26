@@ -20,40 +20,25 @@
  *******************************************************************************/
 package org.jetuml.diagram;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import org.jetuml.JavaFXLoader;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestDiagramType
-{
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
+class PropertyNameTest {
+
 	@Test
-	public void testFromName_Valid()
-	{
-		assertSame(DiagramType.CLASS, DiagramType.fromName(DiagramType.CLASS.getName()));
-		assertSame(DiagramType.OBJECT, DiagramType.fromName(DiagramType.OBJECT.getName()));
-		assertSame(DiagramType.SEQUENCE, DiagramType.fromName(DiagramType.SEQUENCE.getName()));
-		assertSame(DiagramType.STATE, DiagramType.fromName(DiagramType.STATE.getName()));
-		assertSame(DiagramType.USECASE, DiagramType.fromName(DiagramType.USECASE.getName()));
+	void test_externalName() {
+		assertEquals("Aggregation Type", PropertyName.AGGREGATION_TYPE.external());
 	}
-	
+
+	/*
+	 * Tests that all properties have a visible name
+	 */
 	@Test
-	public void testFromName_InvalidNotNull()
-	{
-		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName("XXX")); 
-	}
-	
-	@Test
-	public void testFromName_Null()
-	{
-		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName(null)); 
+	void test_visibleNames() {
+		for (PropertyName propertyName : PropertyName.values()) {
+			assertNotEquals("[Resource cannot be found]", propertyName.visible(), propertyName.toString());
+		}
 	}
 }

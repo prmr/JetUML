@@ -35,106 +35,95 @@ import org.jetuml.diagram.builder.DiagramOperation;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.junit.jupiter.api.Test;
 
-public class TestPropertyChangeTracker
-{
+class PropertyChangeTrackerTest {
+
 	private Object aTracker;
 	private ClassNode aNode;
 	private Field aOperationsField;
-	
-	public TestPropertyChangeTracker()
-	{
+
+	PropertyChangeTrackerTest() {
 		aNode = new ClassNode();
-		try
-		{
+		try {
 			aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
 			aOperationsField.setAccessible(true);
 			Constructor<?> constructor = Class.forName("org.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
 					.getDeclaredConstructor(DiagramElement.class);
 			constructor.setAccessible(true);
 			aTracker = constructor.newInstance(aNode);
-			
+
 		}
-		catch( ReflectiveOperationException exception )
-		{
+		catch (ReflectiveOperationException exception) {
 			fail();
 		}
 	}
-	
-	private void startTracking() throws ReflectiveOperationException
-	{
+
+	private void startTracking() throws ReflectiveOperationException {
 		Method method = Class.forName("org.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
-			.getDeclaredMethod("startTracking");
+				.getDeclaredMethod("startTracking");
 		method.setAccessible(true);
 		method.invoke(aTracker);
 	}
-	
-	private CompoundOperation stopTracking() throws ReflectiveOperationException
-	{
+
+	private CompoundOperation stopTracking() throws ReflectiveOperationException {
 		Method method = Class.forName("org.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
-			.getDeclaredMethod("stopTracking");
+				.getDeclaredMethod("stopTracking");
 		method.setAccessible(true);
 		return (CompoundOperation) method.invoke(aTracker);
 	}
-	
+
 	@Test
-	void testNoChanges() throws ReflectiveOperationException
-	{
+	void testNoChanges() throws ReflectiveOperationException {
 		startTracking();
 		CompoundOperation operation = stopTracking();
 		assertTrue(operation.isEmpty());
 	}
-	
+
 	@Test
-	void testOneChangeString() throws ReflectiveOperationException
-	{
+	void testOneChangeString() throws ReflectiveOperationException {
 		startTracking();
 		aNode.setName("Foo");
 		CompoundOperation operation = stopTracking();
-		
+
 		assertEquals(1, getOperations(operation).size());
-		
+
 		operation.undo();
 		assertEquals("", aNode.getName());
 		operation.execute();
 		assertEquals("Foo", aNode.getName());
 	}
-	
+
 	@Test
-	void testTwoChanges() throws ReflectiveOperationException
-	{
+	void testTwoChanges() throws ReflectiveOperationException {
 		startTracking();
 		aNode.setAttributes("Bar");
 		aNode.setName("Foo");
 		CompoundOperation command = stopTracking();
 		List<DiagramOperation> operations = getOperations(command);
-		
+
 		assertEquals(2, operations.size());
-		
+
 		operations.get(0).undo();
 		assertEquals("Bar", aNode.getAttributes());
 		assertEquals("", aNode.getName());
 		operations.get(0).execute();
 		assertEquals("Bar", aNode.getAttributes());
 		assertEquals("Foo", aNode.getName());
-		
+
 		operations.get(1).undo();
 		assertEquals("", aNode.getAttributes());
 		assertEquals("Foo", aNode.getName());
 		operations.get(1).execute();
 		assertEquals("Bar", aNode.getAttributes());
 		assertEquals("Foo", aNode.getName());
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private List<DiagramOperation> getOperations(CompoundOperation pOperation)
-	{
-		try
-		{
-			return (List<DiagramOperation>)aOperationsField.get(pOperation);
+	private List<DiagramOperation> getOperations(CompoundOperation pOperation) {
+		try {
+			return (List<DiagramOperation>) aOperationsField.get(pOperation);
 		}
-		catch( ReflectiveOperationException pException )
-		{
+		catch (ReflectiveOperationException pException) {
 			fail();
 			return null;
 		}

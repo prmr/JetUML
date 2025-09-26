@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.jetuml.application;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
@@ -68,10 +67,9 @@ public final class Clipboard {
 	private final List<Edge> aEdges = new ArrayList<>();
 
 	/**
-	 * Creates an empty clip-board.
+	 * Creates an empty clipboard.
 	 */
-	private Clipboard() {
-	}
+	private Clipboard() {}
 
 	/**
 	 * @return The Singleton instance of the Clipboard.
@@ -81,7 +79,7 @@ public final class Clipboard {
 	}
 
 	/**
-	 * Copies the elements in pSelection into the clip board. The list of
+	 * Copies the elements in pSelection into the clipboard. The list of
 	 * elements stored into the clipboard is assumed to respect the
 	 * non-redundancy constraint that no element whose deletion leads to the
 	 * deletion of a node is selected with the node. The transformation
@@ -123,8 +121,11 @@ public final class Clipboard {
 	 * clipboard
 	 */
 	private static List<Edge> copyEdges(Iterable<DiagramElement> pSelection) {
-		return stream(pSelection.spliterator(), false).filter(Edge.class::isInstance).map(Edge.class::cast)
-				.map(Edge::clone).collect(toList());
+		return stream(pSelection.spliterator(), false)
+				.filter(Edge.class::isInstance)
+				.map(Edge.class::cast)
+				.map(Edge::clone)
+				.toList();
 	}
 
 	/**
@@ -137,7 +138,9 @@ public final class Clipboard {
 	 */
 	public boolean overlapsWithElementOf(Diagram pDiagram) {
 		Set<Point> positions = aNodes.stream().map(Node::position).collect(toSet());
-		return pDiagram.allNodes().stream().map(Node::position).anyMatch(positions::contains);
+		return pDiagram.allNodes().stream()
+				.map(Node::position)
+				.anyMatch(positions::contains);
 	}
 
 	/*
@@ -259,6 +262,9 @@ public final class Clipboard {
 		if (pElement.getClass() == PointNode.class) {
 			return true;
 		}
-		return pDiagram.getPrototypes().stream().map(Object::getClass).anyMatch(Predicate.isEqual(pElement.getClass()));
+		return pDiagram.getPrototypes()
+				.stream()
+				.map(Object::getClass)
+				.anyMatch(Predicate.isEqual(pElement.getClass()));
 	}
 }

@@ -18,24 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.diagram;
+package org.jetuml.application;
 
+import static org.jetuml.application.ApplicationResources.RESOURCES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class TestProperty
-{
+class ApplicationResourcesTest {
 	@Test
-	public void testProperty()
-	{
-		class Stub { String aValue = "value"; }
-		Stub stub = new Stub();
-		Property property = new Property(PropertyName.NAME, () -> stub.aValue, newval -> stub.aValue = (String) newval);
-		assertEquals(PropertyName.NAME, property.name());
-		assertEquals("value", property.get());
-		
-		property.set("foo");
-		assertEquals("foo", property.get());
+	void testStringFound() {
+		assertEquals("JetUML", RESOURCES.getString("application.name"));
+	}
+
+	@Test
+	void testStringNotFound() {
+		assertEquals("[Resource cannot be found]", RESOURCES.getString("zzzzzzzzzzzzzz"));
 	}
 }

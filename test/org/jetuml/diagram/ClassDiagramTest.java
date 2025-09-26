@@ -22,71 +22,123 @@ package org.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /*
  * This class is used to test the methods of the abstract
  * class as well.
  */
-public class TestClassDiagram
-{
-	private Diagram aDiagram;
-	private DiagramAccessor aDiagramAccessor;
-	private PackageNode aPackageNode1;
-	private ClassNode aClassNode1;
-	private ClassNode aClassNode2;
-	private ClassNode aClassNode3;
-	private DependencyEdge aEdge1;
-	private DependencyEdge aEdge2;
-	private DependencyEdge aEdge3;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.CLASS);
-		aDiagramAccessor = new DiagramAccessor(aDiagram);
-		aClassNode1 = new ClassNode();
-		aClassNode2 = new ClassNode();
-		aClassNode3 = new ClassNode();
-		aPackageNode1 = new PackageNode();
-		aEdge1 = new DependencyEdge();
-		aEdge2 = new DependencyEdge();
-		aEdge3 = new DependencyEdge();
+class ClassDiagramTest {
+
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private DiagramAccessor aDiagramAccessor = new DiagramAccessor(aDiagram);
+	private PackageNode aPackageNode1 = new PackageNode();
+	private ClassNode aClassNode1 = new ClassNode();
+	private ClassNode aClassNode2 = new ClassNode();
+	private ClassNode aClassNode3 = new ClassNode();
+	private DependencyEdge aEdge1 = new DependencyEdge();
+	private DependencyEdge aEdge2 = new DependencyEdge();
+	private DependencyEdge aEdge3 = new DependencyEdge();
+
+	@Test
+	void testInit() {
+		assertEquals(0, aDiagramAccessor.edges().size());
+		assertEquals(0, aDiagramAccessor.rootNodes().size());
 	}
 	
 	@Test
-	public void testInit()
-	{
-		assertEquals(0, aDiagramAccessor.getEdges().size());
-		assertEquals(0, aDiagramAccessor.getRootNodes().size());
+	void testDuplicate_empty() {
+		assertEquals(0, aDiagram.duplicate().edges().size());
+		assertEquals(0, aDiagram.duplicate().rootNodes().size());
 	}
 	
 	@Test
-	public void testNumberOfEdgesEmpty()
-	{
+	void testDuplicate_NoEdges() {
+		aDiagram.addRootNode(new ClassNode());
+		Diagram copy = aDiagram.duplicate();
+		assertEquals(0, aDiagram.duplicate().edges().size());
+		assertEquals(1, copy.rootNodes().size());
+		Node node = copy.rootNodes().get(0);
+		assertNotSame(aDiagram.rootNodes().get(0), node);
+	}
+	
+	@Test
+	void testDuplicate_oneEdge() {
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node1, node2);
+		aDiagram.addEdge(edge);
+		Diagram copy = aDiagram.duplicate();
+		assertNotSame(aDiagram.rootNodes().get(0), copy.rootNodes().get(0));
+		assertNotSame(aDiagram.rootNodes().get(1), copy.rootNodes().get(1));
+		assertNotSame(aDiagram.edges().get(0), copy.edges().get(0));
+		assertSame(copy.rootNodes().get(0), copy.edges().get(0).start());
+		assertSame(copy.rootNodes().get(1), copy.edges().get(0).end());
+	}
+	
+	@Test
+	void testDuplicate_DiagramReassignmentInNodes() {
+		aDiagram.addRootNode(new ClassNode());
+		Diagram copy = aDiagram.duplicate();
+		assertEquals(0, copy.edges().size());
+		assertEquals(1, copy.rootNodes().size());
+	}
+	
+	@Test
+	void testDuplicate_edgeInnerNodeToInnerNode() {
+		PackageNode p1 = new PackageNode();
+		PackageNode p2 = new PackageNode();
+		ClassNode n1 = new ClassNode();
+		ClassNode n2 = new ClassNode();
+		p1.setName("p1");
+		p2.setName("p2");
+		n1.setName("n1");
+		n2.setName("n2");
+		DependencyEdge edge = new DependencyEdge();
+		aDiagram.addRootNode(p1);
+		aDiagram.addRootNode(p2);
+		p1.addChild(n1);
+		p2.addChild(n2);
+		edge.connect(n1, n2);
+		aDiagram.addEdge(edge);
+		Diagram copy = aDiagram.duplicate();
+		PackageNode p1Copy = (PackageNode) copy.rootNodes().get(0);
+		PackageNode p2Copy = (PackageNode) copy.rootNodes().get(1);
+		assertNotSame(p1, p1Copy);
+		assertNotSame(p2, p2Copy);
+		assertEquals("p1", p1Copy.getName());
+		assertEquals("p2", p2Copy.getName());
+		ClassNode n1Copy = (ClassNode) p1Copy.getChildren().get(0);
+		ClassNode n2Copy = (ClassNode) p2Copy.getChildren().get(0);
+		assertNotSame(n1, n1Copy);
+		assertNotSame(n2, n2Copy);
+		assertEquals("n1", n1Copy.getName());
+		assertEquals("n2", n2Copy.getName());
+		DependencyEdge edgeCopy = (DependencyEdge) copy.edges().get(0);
+		assertNotSame(edge, edgeCopy);
+		assertSame(n1Copy, edgeCopy.start());
+		assertSame(n2Copy, edgeCopy.end());
+	}
+
+	@Test
+	void testNumberOfEdgesEmpty() {
 		assertEquals(0, aDiagram.edges().size());
 	}
-	
+
 	@Test
-	public void testNumberOfEdgesNotEmpty()
-	{
+	void testNumberOfEdgesNotEmpty() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -95,10 +147,9 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge2);
 		assertEquals(2, aDiagram.edges().size());
 	}
-	
+
 	@Test
-	public void testIndexOf()
-	{
+	void testIndexOf() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -108,10 +159,9 @@ public class TestClassDiagram
 		assertEquals(0, aDiagram.indexOf(aEdge1));
 		assertEquals(1, aDiagram.indexOf(aEdge2));
 	}
-	
+
 	@Test
-	public void testAddEdgeIndexEmpty()
-	{
+	void testAddEdgeIndexEmpty() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -119,10 +169,9 @@ public class TestClassDiagram
 		assertEquals(1, aDiagram.edges().size());
 		assertEquals(0, aDiagram.indexOf(aEdge1));
 	}
-	
+
 	@Test
-	public void testAddEdgeIndexBefore()
-	{
+	void testAddEdgeIndexBefore() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -130,13 +179,12 @@ public class TestClassDiagram
 		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(0, aEdge2);
 		assertEquals(2, aDiagram.edges().size());
-		assertSame(aEdge2, aDiagramAccessor.getEdges().get(0));
-		assertSame(aEdge1, aDiagramAccessor.getEdges().get(1));
+		assertSame(aEdge2, aDiagramAccessor.edges().get(0));
+		assertSame(aEdge1, aDiagramAccessor.edges().get(1));
 	}
-	
+
 	@Test
-	public void testAddEdgeIndexAfter()
-	{
+	void testAddEdgeIndexAfter() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -144,68 +192,64 @@ public class TestClassDiagram
 		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(1, aEdge2);
 		assertEquals(2, aDiagram.edges().size());
-		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
-		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
+		assertSame(aEdge1, aDiagramAccessor.edges().get(0));
+		assertSame(aEdge2, aDiagramAccessor.edges().get(1));
 	}
-	
+
 	@Test
-	public void testAddRemoveRootNode()
-	{
+	void testAddRemoveRootNode() {
 		aDiagram.addRootNode(aClassNode1);
-		assertEquals(1, aDiagramAccessor.getRootNodes().size());
-		assertSame(aClassNode1, aDiagramAccessor.getRootNodes().get(0));
+		assertEquals(1, aDiagramAccessor.rootNodes().size());
+		assertSame(aClassNode1, aDiagramAccessor.rootNodes().get(0));
 		aDiagram.addRootNode(aClassNode2);
-		assertEquals(2, aDiagramAccessor.getRootNodes().size());
-		assertSame(aClassNode2, aDiagramAccessor.getRootNodes().get(1));
-		
+		assertEquals(2, aDiagramAccessor.rootNodes().size());
+		assertSame(aClassNode2, aDiagramAccessor.rootNodes().get(1));
+
 		aDiagram.removeRootNode(aClassNode2);
-		assertEquals(1, aDiagramAccessor.getRootNodes().size());
-		assertSame(aClassNode1, aDiagramAccessor.getRootNodes().get(0));
-		
+		assertEquals(1, aDiagramAccessor.rootNodes().size());
+		assertSame(aClassNode1, aDiagramAccessor.rootNodes().get(0));
+
 		aDiagram.removeRootNode(aClassNode1);
-		assertEquals(0, aDiagramAccessor.getRootNodes().size());
+		assertEquals(0, aDiagramAccessor.rootNodes().size());
 	}
-	
+
 	@Test
-	public void testAddRemoveEdge()
-	{
+	void testAddRemoveEdge() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
 		aDiagram.addEdge(aEdge1);
-		assertEquals(1, aDiagramAccessor.getEdges().size());
+		assertEquals(1, aDiagramAccessor.edges().size());
 		aEdge2.connect(aClassNode1, aClassNode2);
 		aDiagram.addEdge(aEdge2);
-		assertEquals(2, aDiagramAccessor.getEdges().size());
-		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
-		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
+		assertEquals(2, aDiagramAccessor.edges().size());
+		assertSame(aEdge1, aDiagramAccessor.edges().get(0));
+		assertSame(aEdge2, aDiagramAccessor.edges().get(1));
 		aEdge3.connect(aClassNode2, aClassNode1);
 		aDiagram.addEdge(aEdge3);
-		assertEquals(3, aDiagramAccessor.getEdges().size());
-		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
-		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
-		assertSame(aEdge3, aDiagramAccessor.getEdges().get(2));
-		
+		assertEquals(3, aDiagramAccessor.edges().size());
+		assertSame(aEdge1, aDiagramAccessor.edges().get(0));
+		assertSame(aEdge2, aDiagramAccessor.edges().get(1));
+		assertSame(aEdge3, aDiagramAccessor.edges().get(2));
+
 		aDiagram.removeEdge(aEdge2);
-		assertEquals(2, aDiagramAccessor.getEdges().size());
-		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
-		assertSame(aEdge3, aDiagramAccessor.getEdges().get(1));
-		
+		assertEquals(2, aDiagramAccessor.edges().size());
+		assertSame(aEdge1, aDiagramAccessor.edges().get(0));
+		assertSame(aEdge3, aDiagramAccessor.edges().get(1));
+
 		aDiagram.removeEdge(aEdge1);
-		assertEquals(1, aDiagramAccessor.getEdges().size());
-		assertSame(aEdge3, aDiagramAccessor.getEdges().get(0));
+		assertEquals(1, aDiagramAccessor.edges().size());
+		assertSame(aEdge3, aDiagramAccessor.edges().get(0));
 	}
-	
+
 	@Test
-	public void testContainsEmpty()
-	{
+	void testContainsEmpty() {
 		assertFalse(aDiagram.contains(aClassNode1));
 		assertFalse(aDiagram.contains(aEdge1));
 	}
-	
+
 	@Test
-	public void testContainsEdge()
-	{
+	void testContainsEdge() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1);
@@ -217,20 +261,18 @@ public class TestClassDiagram
 		assertTrue(aDiagram.contains(aEdge2));
 		assertFalse(aDiagram.contains(aEdge3));
 	}
-	
+
 	@Test
-	public void testContainsNodeRoot()
-	{
+	void testContainsNodeRoot() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		assertTrue(aDiagram.contains(aClassNode1));
 		assertTrue(aDiagram.contains(aClassNode2));
 		assertFalse(aDiagram.contains(aClassNode3));
 	}
-	
+
 	@Test
-	public void testContainsNodeChild()
-	{
+	void testContainsNodeChild() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aDiagram.addRootNode(aPackageNode1);
@@ -240,10 +282,9 @@ public class TestClassDiagram
 		assertTrue(aDiagram.contains(aClassNode3));
 		assertTrue(aDiagram.contains(aPackageNode1));
 	}
-	
+
 	@Test
-	public void testContainsNodeChildChild()
-	{
+	void testContainsNodeChildChild() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aDiagram.addRootNode(aPackageNode1);
@@ -263,17 +304,15 @@ public class TestClassDiagram
 		assertTrue(aDiagram.contains(child));
 		assertTrue(aDiagram.contains(packageNode));
 	}
-	
+
 	@Test
-	public void testEdgesConnectedToEmpty()
-	{
+	void testEdgesConnectedToEmpty() {
 		aDiagram.addRootNode(aClassNode1);
-		assertTrue(aDiagramAccessor.getEdgesConnectedTo(aClassNode1).isEmpty());
+		assertTrue(aDiagramAccessor.edgesConnectedTo(aClassNode1).isEmpty());
 	}
-	
+
 	@Test
-	public void testEdgesConnectedToTwoEdges()
-	{
+	void testEdgesConnectedToTwoEdges() {
 		aDiagram.addRootNode(aClassNode1);
 		aDiagram.addRootNode(aClassNode2);
 		aDiagram.addRootNode(aClassNode3);
@@ -283,10 +322,10 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aDiagram.addEdge(aEdge2);
 		aDiagram.addEdge(aEdge3);
-		assertTrue(aDiagramAccessor.getEdgesConnectedTo(aClassNode1).isEmpty());
-		List<Edge> result = aDiagramAccessor.getEdgesConnectedTo(aClassNode2);
+		assertTrue(aDiagramAccessor.edgesConnectedTo(aClassNode1).isEmpty());
+		List<Edge> result = aDiagramAccessor.edgesConnectedTo(aClassNode2);
 		assertEquals(3, result.size());
-		result = aDiagramAccessor.getEdgesConnectedTo(aClassNode3);
+		result = aDiagramAccessor.edgesConnectedTo(aClassNode3);
 		assertEquals(2, result.size());
 		assertTrue(result.contains(aEdge2));
 		assertTrue(result.contains(aEdge3));

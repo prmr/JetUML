@@ -26,47 +26,31 @@ import java.util.List;
 /**
  * Broadens the interface to a diagram, to facilitate testing.
  */
-public class DiagramAccessor
-{
+public class DiagramAccessor {
+
 	private final Diagram aDiagram;
-	
-	public DiagramAccessor(Diagram pDiagram)
-	{
+
+	public DiagramAccessor(Diagram pDiagram) {
 		aDiagram = pDiagram;
 	}
-	
-	public List<Node> getRootNodes()
-	{
-		ArrayList<Node> result = new ArrayList<>();
-		for( Node node : aDiagram.rootNodes() )
-		{
-			result.add(node);
-		}
-		return result;
+
+	public List<Node> rootNodes() {
+		return aDiagram.rootNodes();
 	}
-	
-	public List<Edge> getEdges()
-	{
+
+	public List<Edge> edges() {
+		return aDiagram.edges();
+	}
+
+	public List<Edge> edgesConnectedTo(Node pNode) {
 		ArrayList<Edge> result = new ArrayList<>();
-		for( Edge edge : aDiagram.edges() )
-		{
+		for (Edge edge : aDiagram.edgesConnectedTo(pNode)) {
 			result.add(edge);
 		}
 		return result;
 	}
-	
-	public List<Edge> getEdgesConnectedTo(Node pNode)
-	{
-		ArrayList<Edge> result = new ArrayList<>();
-		for( Edge edge : aDiagram.edgesConnectedTo(pNode))
-		{
-			result.add(edge);
-		}
-		return result;
-	}
-	
-	public void connectAndAdd(Edge pEdge, Node pStart, Node pEnd)
-	{
+
+	public void connectAndAdd(Edge pEdge, Node pStart, Node pEnd) {
 		pEdge.connect(pStart, pEnd);
 		aDiagram.addEdge(pEdge);
 	}

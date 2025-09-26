@@ -29,7 +29,7 @@ import java.util.List;
 public interface DiagramData {
 
 	/**
-	 * @return An iterable of all the root nodes of the diagram.
+	 * @return An unmodifiable list of all the root nodes of the diagram.
 	 */
 	List<Node> rootNodes();
 

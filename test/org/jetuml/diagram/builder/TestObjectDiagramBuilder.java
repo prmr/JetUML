@@ -158,8 +158,8 @@ public class TestObjectDiagramBuilder
 		Edge edge = new NoteEdge();
 		DiagramOperation operation = aBuilder.createAddEdgeOperation(edge, new Point(20,20), new Point(310,310));
 		operation.execute();
-		assertEquals(1, aAccessor.getEdges().size());
-		assertSame(edge, aAccessor.getEdges().get(0));
+		assertEquals(1, aAccessor.edges().size());
+		assertSame(edge, aAccessor.edges().get(0));
 		assertSame(aObjectNode1, edge.start());
 		assertSame(aNote, edge.end());
 	}
@@ -172,14 +172,14 @@ public class TestObjectDiagramBuilder
 		aObjectNode1.addChild(aFieldNode1);
 		DiagramOperation operation = aBuilder.createAddEdgeOperation(aReference1, new Point(10,75), new Point(110,110));
 		operation.execute();
-		assertEquals(1, aAccessor.getEdges().size());
-		assertSame(aReference1, aAccessor.getEdges().get(0));
+		assertEquals(1, aAccessor.edges().size());
+		assertSame(aReference1, aAccessor.edges().get(0));
 		assertEquals("", aFieldNode1.getValue());
 		assertSame(aFieldNode1, aReference1.start());
 		assertSame(aObjectNode2, aReference1.end());
 		
 		operation.undo();
-		assertEquals(0, aAccessor.getEdges().size());
+		assertEquals(0, aAccessor.edges().size());
 		assertEquals("value", aFieldNode1.getValue());
 	}
 }

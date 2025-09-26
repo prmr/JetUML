@@ -32,130 +32,116 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestProperties
-{
-	static class Stub { String aValue = ""; }
-	private Stub aStub;
-	private Properties aProperties;
-	
-	@BeforeEach
-	public void setup()
-	{
-		aStub = new Stub();
-		aProperties = new Properties();
+class PropertiesTest {
+
+	static class Stub {
+		String aValue = "";
 	}
-	
+
+	private Stub aStub = new Stub();
+	private Properties aProperties = new Properties();
+
 	/* Convenience accessor */
-	private List<Property> getProperties()
-	{
-		return StreamSupport
-			.stream(aProperties.spliterator(), false)
-			.collect(Collectors.toList());
+	private List<Property> getProperties() {
+		return StreamSupport.stream(aProperties.spliterator(), false).collect(Collectors.toList());
 	}
-	
+
 	@Test
-	public void testEmpty()
-	{
+	void testEmpty() {
 		assertFalse(aProperties.iterator().hasNext());
 	}
-	
+
 	@Test
-	public void testAddOne()
-	{
+	void testAddOne() {
 		aProperties.add(PropertyName.AGGREGATION_TYPE, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		assertEquals(1, size());
 		Property prop = aProperties.get(PropertyName.AGGREGATION_TYPE);
 		assertEquals(PropertyName.AGGREGATION_TYPE, prop.name());
 		assertEquals("", prop.get());
 	}
-	
+
 	@Test
-	public void testAddTwo()
-	{
+	void testAddTwo() {
 		aProperties.add(PropertyName.AGGREGATION_TYPE, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		assertEquals(1, size());
 		Property prop = aProperties.get(PropertyName.AGGREGATION_TYPE);
 		assertSame(PropertyName.AGGREGATION_TYPE, prop.name());
 		assertEquals("", prop.get());
-		
+
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue + "X", val -> aStub.aValue = (String) val + "X");
 		assertEquals(2, size());
 		prop = aProperties.get(PropertyName.ATTRIBUTES);
 		assertSame(PropertyName.ATTRIBUTES, prop.name());
 		assertEquals("X", prop.get());
 	}
-	
+
 	@Test
-	public void testAddAt0()
-	{
+	void testAddAt0() {
 		aProperties.addAt(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
 		assertEquals(1, size());
 		Property prop = aProperties.iterator().next();
 		assertEquals(PropertyName.ATTRIBUTES, prop.name());
 		assertEquals("", prop.get());
 	}
-	
+
 	@Test
-	public void testAddAt0of2()
-	{
+	void testAddAt0of2() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.CONTENTS, PropertyName.ATTRIBUTES);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.CONTENTS,
+				PropertyName.ATTRIBUTES);
 	}
-	
+
 	@Test
-	public void testAddAt1of2()
-	{
+	void testAddAt1of2() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES,
+				PropertyName.CONTENTS);
 	}
-	
+
 	@Test
-	public void testAddAt0of3()
-	{
+	void testAddAt0of3() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.DIRECTIONALITY, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.DIRECTIONALITY,
+				PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
 	}
-	
+
 	@Test
-	public void testAddAt1of3()
-	{
+	void testAddAt1of3() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES,
+				PropertyName.DIRECTIONALITY, PropertyName.CONTENTS);
 	}
-	
+
 	@Test
-	public void testAddAt2of3()
-	{
+	void testAddAt2of3() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 2);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS, PropertyName.DIRECTIONALITY);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES,
+				PropertyName.CONTENTS, PropertyName.DIRECTIONALITY);
 	}
-	
+
 	@Test
-	public void testAddAt1of3AndSome()
-	{
+	void testAddAt1of3AndSome() {
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
 		aProperties.add(PropertyName.END_LABEL, () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS, PropertyName.END_LABEL);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES,
+				PropertyName.DIRECTIONALITY, PropertyName.CONTENTS, PropertyName.END_LABEL);
 	}
-	
-	private int size()
-	{
+
+	private int size() {
 		int size = 0;
-		for(Iterator<Property> iterator = aProperties.iterator(); iterator.hasNext();)
-		{
+		for (Iterator<Property> iterator = aProperties.iterator(); iterator.hasNext();) {
 			iterator.next();
 			size++;
 		}

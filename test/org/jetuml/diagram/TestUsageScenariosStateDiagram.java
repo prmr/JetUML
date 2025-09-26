@@ -25,77 +25,58 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.builder.StateDiagramBuilder;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.diagram.validator.StateDiagramValidator;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
-{
-	private StateNode aStateNode1;
-	private StateNode aStateNode2;
-	private InitialStateNode aInitialNode;
-	private FinalStateNode aFinalNode;
-	private StateTransitionEdge aTransitionEdge1;
-	private StateTransitionEdge aTransitionEdge2;
-	private StateTransitionEdge aTransitionEdge3;
-	private StateTransitionEdge aTransitionEdge4;
-	private StateTransitionEdge aTransitionEdge5;
+public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios {
 
-	@BeforeEach
-	@Override
-	public void setup()
-	{
-		super.setup();
-		aDiagram = new Diagram(DiagramType.STATE);
-		aBuilder = new StateDiagramBuilder(aDiagram);
-		aValidator = new StateDiagramValidator(aDiagram);
-		aStateNode1 = new StateNode();
-		aStateNode2 = new StateNode();
-		aInitialNode = new InitialStateNode();
-		aFinalNode = new FinalStateNode();
-		aTransitionEdge1 = new StateTransitionEdge();
-		aTransitionEdge2 = new StateTransitionEdge();
-		aTransitionEdge3 = new StateTransitionEdge();
-		aTransitionEdge4 = new StateTransitionEdge();
-		aTransitionEdge5 = new StateTransitionEdge();
+	private StateNode aStateNode1 = new StateNode();
+	private StateNode aStateNode2 = new StateNode();
+	private InitialStateNode aInitialNode = new InitialStateNode();
+	private FinalStateNode aFinalNode = new FinalStateNode();;
+	private StateTransitionEdge aTransitionEdge1 = new StateTransitionEdge();;
+	private StateTransitionEdge aTransitionEdge2 = new StateTransitionEdge();;
+	private StateTransitionEdge aTransitionEdge3 = new StateTransitionEdge();;
+	private StateTransitionEdge aTransitionEdge4 = new StateTransitionEdge();;
+	private StateTransitionEdge aTransitionEdge5 = new StateTransitionEdge();;
+
+	TestUsageScenariosStateDiagram() {
+		super(new Diagram(DiagramType.STATE));
 	}
-	
+
 	@Test
-	public void testStateDiagramCreate()
-	{
+	void testStateDiagramCreate() {
 		aStateNode1.setName("Node 1");
 		aStateNode2.setName("Node 2");
-		addNode(aStateNode1, new Point(30,30));
+		addNode(aStateNode1, new Point(30, 30));
 		addNode(aStateNode2, new Point(30, 100));
 		addNode(aInitialNode, new Point(5, 5));
 		addNode(aFinalNode, new Point(30, 200));
 		assertEquals(4, numberOfRootNodes());
-		
+
 		aTransitionEdge1.setMiddleLabel("Edge 1");
 		addEdge(aTransitionEdge1, new Point(6, 6), new Point(35, 35));
-		
+
 		aTransitionEdge2.setMiddleLabel("Edge 2");
 		addEdge(aTransitionEdge2, new Point(35, 35), new Point(35, 105));
-		
+
 		aTransitionEdge3.setMiddleLabel("Edge 3");
 		addEdge(aTransitionEdge3, new Point(35, 105), new Point(35, 35));
-		
+
 		aTransitionEdge4.setMiddleLabel("Edge 4");
 		addEdge(aTransitionEdge4, new Point(35, 105), new Point(32, 202));
 		assertEquals(4, numberOfEdges());
 
-		assertTrue(aValidator.isValid());
+		assertTrue(validator().isValid());
 		addEdge(aNoteEdge, new Point(6, 6), new Point(35, 35));
 		assertEquals(5, numberOfEdges());
-		assertFalse(aValidator.isValid());
+		assertFalse(validator().isValid());
 
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(new Point(30, 30), aStateNode1.position());
@@ -104,66 +85,64 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals("Node 2", aStateNode2.getName());
 		assertEquals(new Point(5, 5), aInitialNode.position());
 		assertEquals(new Point(30, 200), aFinalNode.position());
-		
+
 		assertEquals(5, numberOfEdges());
 		assertEquals("Edge 1", aTransitionEdge1.getMiddleLabel());
 		assertSame(aInitialNode, aTransitionEdge1.start());
 		assertSame(aStateNode1, aTransitionEdge1.end());
-		
+
 		assertEquals("Edge 2", aTransitionEdge2.getMiddleLabel());
 		assertSame(aStateNode1, aTransitionEdge2.start());
 		assertSame(aStateNode2, aTransitionEdge2.end());
-		
+
 		assertEquals("Edge 3", aTransitionEdge3.getMiddleLabel());
 		assertSame(aStateNode2, aTransitionEdge3.start());
 		assertSame(aStateNode1, aTransitionEdge3.end());
-		
+
 		assertEquals("Edge 4", aTransitionEdge4.getMiddleLabel());
 		assertSame(aStateNode2, aTransitionEdge4.start());
 		assertSame(aFinalNode, aTransitionEdge4.end());
 	}
-	
+
 	@Test
-	public void testStateDiagramCreateNotes()
-	{
+	void testStateDiagramCreateNotes() {
 		aStateNode1.setName("Node 1");
-		addNode(aStateNode1, new Point(30,30));
-		addNode(aNoteNode, new Point(130,130));
-		
+		addNode(aStateNode1, new Point(30, 30));
+		addNode(aNoteNode, new Point(130, 130));
+
 		assertEquals(2, numberOfRootNodes());
-		
+
 		// Note edge with a point node not overlapping any nodes
-		addEdge(aNoteEdge, new Point(135,135), new Point(300,300));
+		addEdge(aNoteEdge, new Point(135, 135), new Point(300, 300));
 		assertEquals(3, numberOfRootNodes());
 		assertTrue(getRootNode(2) instanceof PointNode);
 		assertEquals(1, numberOfEdges());
-		
+
 		// Note edge with a point node overlapping a nodes
 		NoteEdge edge2 = new NoteEdge();
-		addEdge(edge2, new Point(135,135), new Point(40,40));
+		addEdge(edge2, new Point(135, 135), new Point(40, 40));
 		assertEquals(4, numberOfRootNodes());
 		assertTrue(getRootNode(3) instanceof PointNode);
 		assertEquals(2, numberOfEdges());
-		
+
 		// Note edge with a starting point on a node
 		NoteEdge edge3 = new NoteEdge();
-		addEdge(edge3, new Point(35,35), new Point(135,135));
+		addEdge(edge3, new Point(35, 35), new Point(135, 135));
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(3, numberOfEdges());
 		assertEquals(aStateNode1, edge3.start());
 		assertEquals(aNoteNode, edge3.end());
 	}
-	
+
 	@Test
-	public void testCreateStateDiagram()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
+	void testCreateStateDiagram() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
 
 		assertEquals(4, numberOfRootNodes());
-		
+
 		// test creation of edges, directly link InitialNode to FinalNode is allowed
 		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
 		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
@@ -172,50 +151,48 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(5, numberOfEdges());
 
-		assertTrue(aValidator.isValid());
+		assertTrue(validator().isValid());
 		// invalid edge
 		addEdge(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20));
-		assertFalse(aValidator.isValid());
+		assertFalse(validator().isValid());
 
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
 
 		// invalid edge
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
-		assertFalse(aValidator.isValid());
+		assertFalse(validator().isValid());
 
 		assertEquals(8, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testConnectStateNodeWithNoteEdge()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
-		
+	void testConnectStateNodeWithNoteEdge() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
+
 		NoteEdge noteEdge1 = new NoteEdge();
-		assertTrue(aValidator.isValid());
+		assertTrue(validator().isValid());
 		addEdge(noteEdge1, new Point(25, 25), new Point(55, 25));
-		assertFalse(aValidator.isValid());
+		assertFalse(validator().isValid());
 		assertEquals(1, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testConnectNoteNodeWithNoteEdge()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
+	void testConnectNoteNodeWithNoteEdge() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
 		addNode(aNoteNode, new Point(50, 200));
-		
+
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
-		
+
 		addEdge(noteEdge1, new Point(50, 200), new Point(55, 25));
 		addEdge(noteEdge2, new Point(50, 200), new Point(155, 25));
 		addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
@@ -223,22 +200,21 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
 		assertEquals(5, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testConnectStateNodeWithNoteNode()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
+	void testConnectStateNodeWithNoteNode() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
 		addNode(aNoteNode, new Point(50, 200));
-		
+
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
-		
+
 		// valid operations
 		addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
 		addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
@@ -246,68 +222,65 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(3, numberOfEdges());
 		// invalid operations, cannot connect any StateNode with NoteEdges
 		// still allowing the edge to be added, but diagram will be invalid
-		assertTrue(aValidator.isValid());
+		assertTrue(validator().isValid());
 		addEdge(noteEdge4, new Point(20, 20), new Point(-20, 200));
 		addEdge(noteEdge5, new Point(150, 20), new Point(-50, 200));
 		addEdge(new NoteEdge(), new Point(20, 20), new Point(50, 49));
-		assertFalse(aValidator.isValid());
+		assertFalse(validator().isValid());
 
 		assertEquals(6, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testIndividualNodeMovement()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
-		
+	void testIndividualNodeMovement() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
+
 		moveNode(aInitialNode, 3, 12);
 		moveNode(aStateNode1, -5, 80);
 		moveNode(aStateNode2, 15, -30);
 		moveNode(aFinalNode, 40, 20);
-		
+
 		assertEquals(new Point(23, 32), aInitialNode.position());
 		assertEquals(new Point(45, 100), aStateNode1.position());
 		assertEquals(new Point(165, -10), aStateNode2.position());
 		assertEquals(new Point(290, 40), aFinalNode.position());
 	}
-	
+
 	@Test
-	public void testNodesAndEdgesMovement()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
-		
+	void testNodesAndEdgesMovement() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
+
 		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
 		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-		
+
 		select(aInitialNode, aStateNode1, aTransitionEdge1, aTransitionEdge2, aTransitionEdge3);
 
 		moveSelection(26, 37);
-		
+
 		assertEquals(new Point(46, 57), aInitialNode.position());
 		assertEquals(new Point(76, 57), aStateNode1.position());
 		assertEquals(new Point(150, 20), aStateNode2.position());
 		assertEquals(new Point(250, 20), aFinalNode.position());
 	}
-	
+
 	@Test
-	public void testRemoveStartNode()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
+	void testRemoveStartNode() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
 		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		
+
 		select(aInitialNode);
 		deleteSelected();
-		
+
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(0, numberOfEdges());
 
@@ -315,17 +288,16 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testRemoveEndNode()
-	{
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
+	void testRemoveEndNode() {
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
 		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		
+
 		select(aFinalNode);
 		deleteSelected();
-		
+
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(0, numberOfEdges());
 
@@ -333,24 +305,23 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testRemoveStateNode()
-	{
-		addNode(aInitialNode, new Point(20,20));
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
-		addNode(aFinalNode, new Point(250,20));
-		
+	void testRemoveStateNode() {
+		addNode(aInitialNode, new Point(20, 20));
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
+		addNode(aFinalNode, new Point(250, 20));
+
 		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
 		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-		
+
 		select(aStateNode2);
 		deleteSelected();
-		
+
 		assertEquals(3, numberOfRootNodes());
 		assertEquals(2, numberOfEdges());
 
@@ -358,56 +329,52 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(5, numberOfEdges());
 	}
-	
+
 	@Test
-	public void testCopyStateNode()
-	{
-		addNode(aStateNode1, new Point(50,20));
+	void testCopyStateNode() {
+		addNode(aStateNode1, new Point(50, 20));
 		select(aStateNode1);
 		copy();
 		paste();
-		
+
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(new Point(50,20), (((StateNode) getRootNode(1)).position()));
-	}
-	
-	@Test
-	public void testCutStateNode()
-	{
-		addNode(aStateNode1, new Point(50,20));
-		select(aStateNode1);
-		cut();
-		assertEquals(0, numberOfRootNodes());
-		
-		paste();
-		
-		assertEquals(1, numberOfRootNodes());
-		assertEquals(new Point(50,20), (((StateNode) getRootNode(0)).position()));
+		assertEquals(new Point(50, 20), (((StateNode) getRootNode(1)).position()));
 	}
 
 	@Test
-	public void testCopyNodesWithEdge()
-	{
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
+	void testCutStateNode() {
+		addNode(aStateNode1, new Point(50, 20));
+		select(aStateNode1);
+		cut();
+		assertEquals(0, numberOfRootNodes());
+
+		paste();
+
+		assertEquals(1, numberOfRootNodes());
+		assertEquals(new Point(50, 20), (((StateNode) getRootNode(0)).position()));
+	}
+
+	@Test
+	void testCopyNodesWithEdge() {
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
 		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		
+
 		selectAll();
 		copy();
 		paste();
 
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(2, numberOfEdges());
-		assertEquals(new Point(50,20), (((StateNode) getRootNode(2)).position()));
+		assertEquals(new Point(50, 20), (((StateNode) getRootNode(2)).position()));
 	}
-	
+
 	@Test
-	public void testCutNodesWithEdge()
-	{
-		addNode(aStateNode1, new Point(50,20));
-		addNode(aStateNode2, new Point(150,20));
+	void testCutNodesWithEdge() {
+		addNode(aStateNode1, new Point(50, 20));
+		addNode(aStateNode2, new Point(150, 20));
 		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		
+
 		selectAll();
 		cut();
 		assertEquals(0, numberOfRootNodes());
@@ -416,6 +383,6 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		paste();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
-		assertEquals(new Point(50,20), (((StateNode) getRootNode(0)).position()));
+		assertEquals(new Point(50, 20), (((StateNode) getRootNode(0)).position()));
 	}
 }

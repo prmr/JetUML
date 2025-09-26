@@ -36,25 +36,22 @@ import org.junit.jupiter.api.Test;
 
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public class TestFileExtensions 
-{
+class FileExtensionsTest {
+
 	@Test
-	void all() 
-	{
+	void all() {
 		List<ExtensionFilter> filters = FileExtensions.all();
 		assertThat(filters, hasSize, 7);
-		assertThat(filters, hasNoNullElements );
+		assertThat(filters, hasNoNullElements);
 	}
-	
+
 	@Test
-	void all_Values_size()
-	{
-		FileExtensions.all().forEach( ext -> assertEquals(1, ext.getExtensions().size() ));
+	void all_Values_size() {
+		FileExtensions.all().forEach(ext -> assertEquals(1, ext.getExtensions().size()));
 	}
-	
+
 	@Test
-	void all_Values_order()
-	{
+	void all_Values_order() {
 		List<ExtensionFilter> filters = FileExtensions.all();
 		assertEquals("*.jet", filters.get(0).getExtensions().get(0));
 		assertEquals("*.class.jet", filters.get(1).getExtensions().get(0));
@@ -64,28 +61,25 @@ public class TestFileExtensions
 		assertEquals("*.usecase.jet", filters.get(5).getExtensions().get(0));
 		assertEquals("*.*", filters.get(6).getExtensions().get(0));
 	}
-	
+
 	@Test
-	void test_forDiagram()
-	{
-		for( DiagramType type : DiagramType.values() )
-		{
+	void test_forDiagram() {
+		for (DiagramType type : DiagramType.values()) {
 			assertTrue(FileExtensions.all().contains(FileExtensions.forDiagramType(type)));
 		}
 	}
-	
+
 	@Test
-	void testClipApplicationExtension_noExtension()
-	{
+	void testClipApplicationExtension_noExtension() {
 		File file = new File("XXX");
 		assertSame(file, FileExtensions.clipApplicationExtension(file));
 	}
-	
+
 	@Test
-	void testClipApplicationExtension_hasExtension()
-	{
+	void testClipApplicationExtension_hasExtension() {
 		File file = new File("XXX.jet");
 		assertNotSame(file, FileExtensions.clipApplicationExtension(file));
-		assertEquals(new File("XXX").getAbsolutePath(), FileExtensions.clipApplicationExtension(file).getAbsolutePath());
+		assertEquals(new File("XXX").getAbsolutePath(),
+				FileExtensions.clipApplicationExtension(file).getAbsolutePath());
 	}
 }

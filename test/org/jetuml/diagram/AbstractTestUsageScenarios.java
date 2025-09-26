@@ -25,10 +25,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.application.Clipboard;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.builder.CompoundOperation;
 import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -37,154 +34,125 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.validator.DiagramValidator;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 
 /**
- * Helper functionality to test various diagram modification
- * scenarios.
+ * Helper functionality to test various diagram modification scenarios.
  */
-public class AbstractTestUsageScenarios 
-{
-	private static int userDefinedFontSize;
-	protected Diagram aDiagram;
-	protected DiagramBuilder aBuilder;
-	protected DiagramValidator aValidator;
-	private DiagramOperationProcessor aProcessor;
-	protected NoteNode aNoteNode;
-	protected NoteEdge aNoteEdge;
-	private List<DiagramElement> aSelection;
-	private Clipboard aClipboard;
+class AbstractTestUsageScenarios {
+
+	private Diagram aDiagram;
+	private DiagramBuilder aBuilder;
+	private DiagramValidator aValidator;
+	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
+	protected NoteNode aNoteNode = new NoteNode();
+	protected NoteEdge aNoteEdge = new NoteEdge();
+	private List<DiagramElement> aSelection = new ArrayList<>();
 	
-	@BeforeAll
-	public static void setupClass()
-	{
-		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
-		JavaFXLoader.load();
+	protected AbstractTestUsageScenarios(Diagram pDiagram) {
+		aDiagram = pDiagram;
+		aBuilder = DiagramType.newBuilderInstanceFor(aDiagram);
+		aValidator = DiagramType.newValidatorInstanceFor(aDiagram);
+	}
+
+	protected Diagram diagram() {
+		return aDiagram;
 	}
 	
-	@AfterAll
-	public static void restorePreferences()
-	{
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
+	protected DiagramBuilder builder() {
+		return aBuilder;
 	}
 	
-	protected void setup()
-	{
-		aProcessor = new DiagramOperationProcessor();
-		aNoteNode = new NoteNode();
-		aNoteEdge = new NoteEdge();
-		aSelection = new ArrayList<>();
-		aClipboard = Clipboard.instance();
+	protected DiagramValidator validator() {
+		return aValidator;
 	}
-	
-	protected Iterable<DiagramElement> getClipboardContent()
-	{
-		return aClipboard.getElements();
+
+	protected Iterable<DiagramElement> getClipboardContent() {
+		return Clipboard.instance().getElements();
 	}
-	
-	protected void addNode(Node pNode, Point pRequestedPosition)
-	{
+
+	protected void addNode(Node pNode, Point pRequestedPosition) {
 		aProcessor.executeNewOperation(aBuilder.createAddNodeOperation(pNode, pRequestedPosition));
 	}
-	
-	protected void addEdge(Edge pEdge, Point pStart, Point pEnd)
-	{
+
+	protected void addEdge(Edge pEdge, Point pStart, Point pEnd) {
 		aProcessor.executeNewOperation(aBuilder.createAddEdgeOperation(pEdge, pStart, pEnd));
 	}
-	
-	protected void moveNode(Node pNode, int pX, int pY)
-	{
+
+	protected void moveNode(Node pNode, int pX, int pY) {
 		aProcessor.executeNewOperation(DiagramBuilder.createMoveNodeOperation(pNode, pX, pY));
 	}
-	
-	protected void moveSelection(int pX, int pY)
-	{
+
+	protected void moveSelection(int pX, int pY) {
 		CompoundOperation operation = new CompoundOperation();
-		for( DiagramElement element : aSelection)
-		{
-			if( element instanceof Node node)
-			{
+		for (DiagramElement element : aSelection) {
+			if (element instanceof Node node) {
 				operation.add(DiagramBuilder.createMoveNodeOperation(node, pX, pY));
 			}
 		}
 		aProcessor.executeNewOperation(operation);
 	}
-	
-	protected void setProperty(Property pProperty, Object pValue)
-	{
+
+	protected void setProperty(Property pProperty, Object pValue) {
 		Object oldValue = pProperty.get();
-		aProcessor.executeNewOperation(new SimpleOperation(()-> pProperty.set(pValue), ()-> pProperty.set(oldValue)));
+		aProcessor.executeNewOperation(new SimpleOperation(() -> pProperty.set(pValue), () -> pProperty.set(oldValue)));
 	}
-	
-	protected void deleteSelected()
-	{
+
+	protected void deleteSelected() {
 		aProcessor.executeNewOperation(aBuilder.createRemoveElementsOperation(aSelection));
 		aSelection.clear();
 	}
-	
-	protected void copy()
-	{
-		aClipboard.copy(aSelection);
+
+	protected void copy() {
+		Clipboard.instance().copy(aSelection);
 	}
-	
-	protected void paste()
-	{
-		aProcessor.executeNewOperation(aBuilder.createAddElementsOperation(aClipboard.getElements()));
+
+	protected void paste() {
+		aProcessor.executeNewOperation(aBuilder.createAddElementsOperation(Clipboard.instance().getElements()));
 	}
-	
-	protected void cut()
-	{
-		aClipboard.copy(aSelection);
+
+	protected void cut() {
+		Clipboard.instance().copy(aSelection);
 		aProcessor.executeNewOperation(aBuilder.createRemoveElementsOperation(aSelection));
 	}
-	
-	protected void select(DiagramElement... pElements)
-	{
+
+	protected void select(DiagramElement... pElements) {
 		aSelection.clear();
 		aSelection.addAll(Arrays.asList(pElements));
 	}
-	
-	protected void selectAll()
-	{
+
+	protected void selectAll() {
 		aSelection.clear();
 		aDiagram.rootNodes().forEach(aSelection::add);
 		aDiagram.edges().forEach(aSelection::add);
 	}
-	
-	protected void undo()
-	{
+
+	protected void undo() {
 		aProcessor.undoLastExecutedOperation();
 	}
-	
-	protected int numberOfRootNodes()
-	{
+
+	protected int numberOfRootNodes() {
 		int sum = 0;
-		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
-		{
+		for (@SuppressWarnings("unused")
+		Node node : aDiagram.rootNodes()) {
 			sum++;
 		}
 		return sum;
 	}
-	
-	protected int numberOfEdges()
-	{
+
+	protected int numberOfEdges() {
 		int sum = 0;
-		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
-		{
+		for (@SuppressWarnings("unused")
+		Edge edge : aDiagram.edges()) {
 			sum++;
 		}
 		return sum;
 	}
-	
-	protected Node getRootNode(int pIndex)
-	{
+
+	protected Node getRootNode(int pIndex) {
 		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
 		int i = 0;
 		Node node = iterator.next();
-		while( i < pIndex )
-		{
+		while (i < pIndex) {
 			i++;
 			node = iterator.next();
 		}
