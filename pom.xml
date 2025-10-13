@@ -119,6 +119,65 @@
         </configuration>
       </plugin>
 
+      <!-- PIT Mutation Testing Plugin -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.15.8</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.2.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <!-- Classes to mutate -->
+          <targetClasses>
+            <param>org.jetuml.application.*</param>
+            <param>org.jetuml.diagram.*</param>
+            <param>org.jetuml.geom.*</param>
+            <param>org.jetuml.persistence.*</param>
+            <param>org.jetuml.rendering.*</param>
+          </targetClasses>
+          <!-- Test classes to run -->
+          <targetTests>
+            <param>org.jetuml.*</param>
+          </targetTests>
+          <!-- Classes to exclude from mutation -->
+          <excludedClasses>
+
+          </excludedClasses>
+          <!-- Methods to exclude -->
+          <excludedMethods>
+            <param>toString</param>
+            <param>hashCode</param>
+            <param>equals</param>
+          </excludedMethods>
+          <!-- Mutation operators to use -->
+          <mutators>
+            <mutator>DEFAULTS</mutator>
+          </mutators>
+          <!-- Output formats -->
+          <outputFormats>
+            <outputFormat>HTML</outputFormat>
+            <outputFormat>XML</outputFormat>
+          </outputFormats>
+          <!-- Number of threads -->
+          <threads>2</threads>
+          <!-- Timeout in milliseconds -->
+          <timeoutConstant>4000</timeoutConstant>
+          <!-- Memory in MB -->
+          <jvmArgs>
+            <jvmArg>-Xmx1024m</jvmArg>
+          </jvmArgs>
+          <!-- Verbose reporting for education -->
+          <verbose>true</verbose>
+          <!-- Skip failing tests -->
+          <skipFailingTests>true</skipFailingTests>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
