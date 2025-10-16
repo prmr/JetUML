@@ -26,12 +26,11 @@ import org.jetuml.rendering.Side;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestSide
-{
+public class SideTest {
+
 	@Test
 	@DisplayName("All sides of an empty rectangle at origin")
-	void testWithEmptyRectangleAtOrigin()
-	{
+	void testWithEmptyRectangleAtOrigin() {
 		Rectangle rectangle = new Rectangle(0, 0, 0, 0);
 		assertEquals(new Line(0, 0, 0, 0), Side.TOP.getCorrespondingLine(rectangle));
 		assertEquals(new Line(0, 0, 0, 0), Side.BOTTOM.getCorrespondingLine(rectangle));
@@ -41,8 +40,7 @@ public class TestSide
 
 	@Test
 	@DisplayName("All sides of an empty rectangle not at origin")
-	void testWithEmptyRectangleNotAtOrigin()
-	{
+	void testWithEmptyRectangleNotAtOrigin() {
 		Rectangle rectangle = new Rectangle(1, 2, 0, 0);
 		assertEquals(new Line(1, 2, 1, 2), Side.TOP.getCorrespondingLine(rectangle));
 		assertEquals(new Line(1, 2, 1, 2), Side.BOTTOM.getCorrespondingLine(rectangle));
@@ -52,32 +50,28 @@ public class TestSide
 
 	@Test
 	@DisplayName("For the top side")
-	void testTop()
-	{
+	void testTop() {
 		Rectangle rectangle = new Rectangle(10, 10, 60, 40);
 		assertEquals(new Line(10, 10, 70, 10), Side.TOP.getCorrespondingLine(rectangle));
 	}
 
 	@Test
 	@DisplayName("For the bottom side")
-	void testBottom()
-	{
+	void testBottom() {
 		Rectangle rectangle = new Rectangle(10, 10, 60, 40);
 		assertEquals(new Line(10, 50, 70, 50), Side.BOTTOM.getCorrespondingLine(rectangle));
 	}
 
 	@Test
 	@DisplayName("For the right side")
-	void testRight()
-	{
+	void testRight() {
 		Rectangle rectangle = new Rectangle(10, 10, 60, 40);
 		assertEquals(new Line(70, 10, 70, 50), Side.RIGHT.getCorrespondingLine(rectangle));
 	}
 
 	@Test
 	@DisplayName("For the left side")
-	void testLeft()
-	{
+	void testLeft() {
 		Rectangle rectangle = new Rectangle(10, 10, 60, 40);
 		assertEquals(new Line(10, 10, 10, 50), (Side.LEFT.getCorrespondingLine(rectangle)));
 	}

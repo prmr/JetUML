@@ -26,86 +26,76 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TestDimension
-{
+public class DimensionTest {
+
 	// Fields because immutable, no need for @Before method
 	private static Dimension DIM_0 = new Dimension(0, 0);
 	private static Dimension DIM_1 = new Dimension(10, 10);
 	private static Dimension DIM_2 = new Dimension(5, 5);
 	private static Dimension DIM_3 = new Dimension(10, 5);
 	private static Dimension DIM_4 = new Dimension(5, 10);
-	
+
 	@Test
-	void testEquals_Same()
-	{
-		assertTrue( DIM_0.equals(DIM_0));
+	void testEquals_Same() {
+		assertTrue(DIM_0.equals(DIM_0));
 	}
-	
+
 	@Test
-	void testEquals_Equal()
-	{
-		assertTrue( DIM_0.equals(new Dimension(0,0)));
-		assertTrue( DIM_1.equals(new Dimension(10,10)));
-		assertTrue( DIM_2.equals(new Dimension(5,5)));
+	void testEquals_Equal() {
+		assertTrue(DIM_0.equals(new Dimension(0, 0)));
+		assertTrue(DIM_1.equals(new Dimension(10, 10)));
+		assertTrue(DIM_2.equals(new Dimension(5, 5)));
 	}
-	
+
 	@Test
-	void testEquals_Null()
-	{
-		assertFalse( DIM_0.equals(null));
+	void testEquals_Null() {
+		assertFalse(DIM_0.equals(null));
 	}
-	
+
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
-	void testEquals_NotSameClass()
-	{
-		assertFalse( DIM_0.equals("foo"));
+	void testEquals_NotSameClass() {
+		assertFalse(DIM_0.equals("foo"));
 	}
-	
+
 	@Test
-	void testEquals_NotEqual()
-	{
-		assertFalse( DIM_0.equals(DIM_1));
-		assertFalse( DIM_0.equals(DIM_2));
-		assertFalse( DIM_0.equals(DIM_3));
-		assertFalse( DIM_0.equals(DIM_4));
-		assertFalse( DIM_1.equals(DIM_0));
-		assertFalse( DIM_1.equals(DIM_2));
-		assertFalse( DIM_1.equals(DIM_3));
-		assertFalse( DIM_1.equals(DIM_4));
+	void testEquals_NotEqual() {
+		assertFalse(DIM_0.equals(DIM_1));
+		assertFalse(DIM_0.equals(DIM_2));
+		assertFalse(DIM_0.equals(DIM_3));
+		assertFalse(DIM_0.equals(DIM_4));
+		assertFalse(DIM_1.equals(DIM_0));
+		assertFalse(DIM_1.equals(DIM_2));
+		assertFalse(DIM_1.equals(DIM_3));
+		assertFalse(DIM_1.equals(DIM_4));
 
 	}
-	
+
 	@Test
-	void testInclude_Zero()
-	{
-		assertEquals(new Dimension(0,0), DIM_0.include(0, 0));
-		assertEquals(new Dimension(10,10), DIM_1.include(0, 0));
-		assertEquals(new Dimension(5,5), DIM_2.include(0, 0));
+	void testInclude_Zero() {
+		assertEquals(new Dimension(0, 0), DIM_0.include(0, 0));
+		assertEquals(new Dimension(10, 10), DIM_1.include(0, 0));
+		assertEquals(new Dimension(5, 5), DIM_2.include(0, 0));
 	}
-	
+
 	@Test
-	void testInclude_Grow()
-	{
-		assertEquals(new Dimension(10,10), DIM_2.include(10, 10));
-		assertEquals(new Dimension(5,10), DIM_2.include(5, 10));
+	void testInclude_Grow() {
+		assertEquals(new Dimension(10, 10), DIM_2.include(10, 10));
+		assertEquals(new Dimension(5, 10), DIM_2.include(5, 10));
 	}
-	
+
 	@Test
-	void testToString()
-	{
+	void testToString() {
 		assertEquals("Dimension[width=5, height=10]", DIM_4.toString());
 	}
-	
+
 	@Test
-	void testWidth()
-	{
+	void testWidth() {
 		assertEquals(10, DIM_1.width());
 	}
-	
+
 	@Test
-	void testHeight()
-	{
+	void testHeight() {
 		assertEquals(10, DIM_1.height());
 	}
 }

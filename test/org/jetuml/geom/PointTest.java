@@ -26,50 +26,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TestPoint
-{
-	private static final Point ZERO = new Point(0,0);
-	private static final Point ONE = new Point(1,1);
+public class PointTest {
+
+	private static final Point ZERO = new Point(0, 0);
+	private static final Point ONE = new Point(1, 1);
 	private static final Point M_ONE = new Point(-1, -1);
-	
+
 	@Test
-	public void testToString()
-	{
+	void testToString() {
 		assertEquals("Point[x=0, y=0]", ZERO.toString());
 		assertEquals("Point[x=-1, y=-1]", M_ONE.toString());
 	}
-	
+
 	@Test
-	public void testDistance()
-	{
+	void testDistance() {
 		assertEquals(0, ZERO.distance(ZERO), 0);
 		assertEquals(1.4142, ZERO.distance(ONE), 0.0001);
-		assertEquals(2.8284, ONE.distance(M_ONE),0.0001);
+		assertEquals(2.8284, ONE.distance(M_ONE), 0.0001);
 	}
-	
+
 	@Test
-	public void testCopy()
-	{
-		Point point = new Point(0,0);
+	void testCopy() {
+		Point point = new Point(0, 0);
 		Point clone = point.copy();
-		assertTrue( clone != point );
-		assertEquals( point.x(), clone.x());
-		assertEquals( point.y(), clone.y());
+		assertTrue(clone != point);
+		assertEquals(point.x(), clone.x());
+		assertEquals(point.y(), clone.y());
 	}
-	
+
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
-	public void testEquals()
-	{
-		Point point1 = new Point(0,0);
-		Point point2 = new Point(0,0);
+	void testEquals() {
+		Point point1 = new Point(0, 0);
+		Point point2 = new Point(0, 0);
 		assertTrue(point1.equals(point1));
 		assertTrue(point1.equals(point2));
 		assertTrue(point2.equals(point1));
 		assertFalse(point1.equals(null));
-		assertFalse(point1.equals(new Point(1,1)));
+		assertFalse(point1.equals(new Point(1, 1)));
 		assertFalse(point1.equals("Foo"));
-		assertFalse(point1.equals(new Point(0,1)));
-		assertFalse(point1.equals(new Point(1,0)));
+		assertFalse(point1.equals(new Point(0, 1)));
+		assertFalse(point1.equals(new Point(1, 0)));
 	}
 }
