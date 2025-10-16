@@ -18,51 +18,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.diagram.nodes;
+package org.jetuml.diagram.edges;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.jetuml.diagram.PropertyName;
 import org.junit.jupiter.api.Test;
 
-public class TestInterfaceNode
-{
-	private InterfaceNode aNode1;
+public class CallEdgeTest {
 	
-	@BeforeEach
-	public void setup()
-	{
-		aNode1 = new InterfaceNode();
-	}
-	
+	private final CallEdge aCallEdge = new CallEdge();
+
 	@Test
-	public void testDefault()
-	{
-		assertEquals("", aNode1.getName());
-		String methods = aNode1.getMethods();
-		assertEquals("", methods);
-		assertFalse(aNode1.hasParent());
+	void testGetWithProperty() {
+		assertFalse(aCallEdge.isSignal());
+		aCallEdge.setSignal(true);
+		assertTrue(aCallEdge.isSignal());
+		assertTrue((boolean) aCallEdge.properties().get(PropertyName.SIGNAL).get());
+		aCallEdge.properties().get(PropertyName.SIGNAL).set(false);
+		assertFalse((boolean) aCallEdge.properties().get(PropertyName.SIGNAL).get());
+		assertFalse(aCallEdge.isSignal());
+
+		aCallEdge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
+		assertEquals("Foo", aCallEdge.getMiddleLabel());
 	}
-	
+
 	@Test
-	public void testSetName()
-	{
-		aNode1.setName("Foo");
-		assertEquals("Foo", aNode1.getName());
-	}
-	
-	@Test
-	public void testSetParent()
-	{
-		PackageNode package1 = new PackageNode();
-		PackageNode package2 = new PackageNode();
-		aNode1.link(package1);
-		assertTrue( aNode1.getParent() == package1 );
-		aNode1.link(package2);
-		assertTrue( aNode1.getParent() == package2 );
-		aNode1.unlink();
-		assertFalse( aNode1.hasParent() );
+	void testGetWithPropertyAndClone() {
+		CallEdge clone = (CallEdge) aCallEdge.clone();
+
+		aCallEdge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
+
+		assertEquals("Foo", aCallEdge.properties().get(PropertyName.MIDDLE_LABEL).get());
+		assertEquals("", clone.properties().get(PropertyName.MIDDLE_LABEL).get());
 	}
 }

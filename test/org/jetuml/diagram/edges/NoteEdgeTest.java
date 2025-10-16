@@ -27,7 +27,7 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestNoteEdge
+public class NoteEdgeTest
 {
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;

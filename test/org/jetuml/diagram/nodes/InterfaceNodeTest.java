@@ -18,42 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.diagram.edges;
+package org.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.diagram.PropertyName;
 import org.junit.jupiter.api.Test;
 
-public class TestCallEdge
-{
+public class InterfaceNodeTest {
+
+	private InterfaceNode aNode1 = new InterfaceNode();
+
 	@Test
-	public void testGetWithProperty()
-	{
-		CallEdge edge = new CallEdge();
-		assertFalse(edge.isSignal());
-		edge.setSignal(true);
-		assertTrue(edge.isSignal());
-		assertTrue((boolean) edge.properties().get(PropertyName.SIGNAL).get());
-		edge.properties().get(PropertyName.SIGNAL).set(false);
-		assertFalse((boolean) edge.properties().get(PropertyName.SIGNAL).get());
-		assertFalse(edge.isSignal());
-		
-		edge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
-		assertEquals("Foo", edge.getMiddleLabel());
+	void testDefault() {
+		assertEquals("", aNode1.getName());
+		String methods = aNode1.getMethods();
+		assertEquals("", methods);
+		assertFalse(aNode1.hasParent());
 	}
-	
+
 	@Test
-	public void testGetWithPropertyAndClone()
-	{
-		CallEdge edge = new CallEdge();
-		CallEdge clone = (CallEdge) edge.clone();
-		
-		edge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
-		
-		assertEquals("Foo", edge.properties().get(PropertyName.MIDDLE_LABEL).get());
-		assertEquals("", clone.properties().get(PropertyName.MIDDLE_LABEL).get());
+	void testSetName() {
+		aNode1.setName("Foo");
+		assertEquals("Foo", aNode1.getName());
+	}
+
+	@Test
+	void testSetParent() {
+		PackageNode package1 = new PackageNode();
+		PackageNode package2 = new PackageNode();
+		aNode1.link(package1);
+		assertTrue(aNode1.getParent() == package1);
+		aNode1.link(package2);
+		assertTrue(aNode1.getParent() == package2);
+		aNode1.unlink();
+		assertFalse(aNode1.hasParent());
 	}
 }

@@ -23,116 +23,100 @@ package org.jetuml.diagram.nodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestPackageNode
-{
-	private PackageNode aPackage1;
-	private PackageNode aPackage2;
-	private ClassNode aClass1;
-	private ClassNode aClass2;
-	private ClassNode aClass3;
-	
-	@BeforeEach
-	public void setup()
-	{
-		aPackage1 = new PackageNode();
-		aPackage2 = new PackageNode();
-		aClass1 = new ClassNode();
-		aClass2 = new ClassNode();
-		aClass2 = new ClassNode();
-		aClass3 = new ClassNode();
-	}
-	
+public class PackageNodeTest {
+
+	private PackageNode aPackage1 = new PackageNode();
+	private PackageNode aPackage2 = new PackageNode();
+	private ClassNode aClass1 = new ClassNode();
+	private ClassNode aClass2 = new ClassNode();
+	private ClassNode aClass3 = new ClassNode();
+
 	@Test
-	public void testDefault()
-	{
-		assertEquals(0,aPackage1.getChildren().size());
+	void testDefault() {
+		assertEquals(0, aPackage1.getChildren().size());
 		assertEquals("", aPackage1.getName().toString());
 		assertFalse(aPackage1.hasParent());
 	}
-	
+
 	@Test
-	public void testAddChild()
-	{
+	void testAddChild() {
 		aPackage1.addChild(aClass1);
-		assertEquals( 1, aPackage1.getChildren().size());
-		assertEquals( aPackage1, aClass1.getParent());
-		assertEquals( aClass1, aPackage1.getChildren().get(0));
-		
+		assertEquals(1, aPackage1.getChildren().size());
+		assertEquals(aPackage1, aClass1.getParent());
+		assertEquals(aClass1, aPackage1.getChildren().get(0));
+
 		aPackage1.addChild(aPackage2);
-		assertEquals( 2, aPackage1.getChildren().size());
-		assertEquals( aPackage1, aClass1.getParent());
-		assertEquals( aPackage1, aPackage2.getParent());
-		assertEquals( aClass1, aPackage1.getChildren().get(0));
-		assertEquals( aPackage2, aPackage1.getChildren().get(1));
-		
+		assertEquals(2, aPackage1.getChildren().size());
+		assertEquals(aPackage1, aClass1.getParent());
+		assertEquals(aPackage1, aPackage2.getParent());
+		assertEquals(aClass1, aPackage1.getChildren().get(0));
+		assertEquals(aPackage2, aPackage1.getChildren().get(1));
+
 		aPackage1.addChild(1, aClass2);
-		assertEquals( 3, aPackage1.getChildren().size());
-		assertEquals( aPackage1, aClass1.getParent());
-		assertEquals( aPackage1, aPackage2.getParent());
-		assertEquals( aPackage1, aClass2.getParent());
-		assertEquals( aClass1, aPackage1.getChildren().get(0));
-		assertEquals( aClass2, aPackage1.getChildren().get(1));
-		assertEquals( aPackage2, aPackage1.getChildren().get(2));
-		
+		assertEquals(3, aPackage1.getChildren().size());
+		assertEquals(aPackage1, aClass1.getParent());
+		assertEquals(aPackage1, aPackage2.getParent());
+		assertEquals(aPackage1, aClass2.getParent());
+		assertEquals(aClass1, aPackage1.getChildren().get(0));
+		assertEquals(aClass2, aPackage1.getChildren().get(1));
+		assertEquals(aPackage2, aPackage1.getChildren().get(2));
+
 		aPackage2.addChild(aClass3);
-		assertEquals( 3, aPackage1.getChildren().size());
-		assertEquals( 1, aPackage2.getChildren().size());
-		assertEquals( aClass3, aPackage2.getChildren().get(0));
-		
+		assertEquals(3, aPackage1.getChildren().size());
+		assertEquals(1, aPackage2.getChildren().size());
+		assertEquals(aClass3, aPackage2.getChildren().get(0));
+
 		// Add class3 to package1, which should remove it from package2
 		aPackage1.addChild(aClass3);
-		assertEquals( 4, aPackage1.getChildren().size());
-		assertEquals( aClass3, aPackage1.getChildren().get(3));
-		assertEquals( aPackage1, aClass3.getParent());
-		assertEquals( 0, aPackage2.getChildren().size());
+		assertEquals(4, aPackage1.getChildren().size());
+		assertEquals(aClass3, aPackage1.getChildren().get(3));
+		assertEquals(aPackage1, aClass3.getParent());
+		assertEquals(0, aPackage2.getChildren().size());
 	}
-	
+
 	@Test
-	public void testRemoveChild()
-	{
+	void testRemoveChild() {
 		aPackage1.addChild(aClass1);
 		aPackage1.addChild(aPackage2);
 		aPackage1.addChild(aClass2);
-		
+
 		aPackage1.removeChild(aPackage2);
-		assertEquals( 2, aPackage1.getChildren().size());
-		assertEquals( aClass1, aPackage1.getChildren().get(0));
-		assertEquals( aClass2, aPackage1.getChildren().get(1));
-		assertFalse( aPackage2.hasParent());
-		
+		assertEquals(2, aPackage1.getChildren().size());
+		assertEquals(aClass1, aPackage1.getChildren().get(0));
+		assertEquals(aClass2, aPackage1.getChildren().get(1));
+		assertFalse(aPackage2.hasParent());
+
 		aPackage1.removeChild(aClass1);
-		assertEquals( 1, aPackage1.getChildren().size());
-		assertEquals( aClass2, aPackage1.getChildren().get(0));
-		assertFalse( aClass1.hasParent());
-		
+		assertEquals(1, aPackage1.getChildren().size());
+		assertEquals(aClass2, aPackage1.getChildren().get(0));
+		assertFalse(aClass1.hasParent());
+
 		aPackage1.removeChild(aClass2);
-		assertEquals( 0, aPackage1.getChildren().size());
-		assertFalse( aClass2.hasParent());
+		assertEquals(0, aPackage1.getChildren().size());
+		assertFalse(aClass2.hasParent());
 	}
-	
-	@Test 
-	public void testClone()
-	{
+
+	@Test
+	void testClone() {
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
-		assertEquals(0,clone.getChildren().size());
+		assertEquals(0, clone.getChildren().size());
 		assertEquals("Package", clone.getName().toString());
 		assertFalse(clone.hasParent());
-		
+
 		aPackage2.setName("p2");
 		aClass1.setName("c1");
 		aClass2.setName("c2");
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aClass1);
 		aPackage2.addChild(aClass2);
-		
+
 		clone = aPackage1.clone();
 		assertEquals(1, clone.getChildren().size());
 		PackageNode p2Clone = (PackageNode) clone.getChildren().get(0);
-		assertFalse( p2Clone == aPackage2 );
+		assertFalse(p2Clone == aPackage2);
 		assertEquals("p2", p2Clone.getName());
 		assertEquals(2, p2Clone.getChildren().size());
 		ClassNode c1Clone = (ClassNode) p2Clone.getChildren().get(0);

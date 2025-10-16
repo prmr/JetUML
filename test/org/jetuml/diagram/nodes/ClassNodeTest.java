@@ -25,51 +25,40 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestClassNode
-{
-	private ClassNode aNode1;
-	
-	@BeforeEach
-	public void setup()
-	{
-		aNode1 = new ClassNode();
-	}
-	
+public class ClassNodeTest {
+
+	private ClassNode aNode1 = new ClassNode();
+
 	@Test
-	public void testDefault()
-	{
+	void testDefault() {
 		assertEquals("", aNode1.getName());
 		String attributes = aNode1.getAttributes();
 		assertEquals("", attributes);
 		assertFalse(aNode1.hasParent());
 	}
-	
+
 	@Test
-	public void testSetName()
-	{
+	void testSetName() {
 		aNode1.setName("Foo");
 		assertEquals("Foo", aNode1.getName());
 	}
-	
+
 	@Test
-	public void testLink()
-	{
+	void testLink() {
 		PackageNode package1 = new PackageNode();
 		PackageNode package2 = new PackageNode();
 		aNode1.link(package1);
-		assertTrue( aNode1.getParent() == package1 );
+		assertTrue(aNode1.getParent() == package1);
 		aNode1.link(package2);
-		assertTrue( aNode1.getParent() == package2 );
+		assertTrue(aNode1.getParent() == package2);
 		aNode1.unlink();
-		assertFalse( aNode1.hasParent() );
+		assertFalse(aNode1.hasParent());
 	}
-	
+
 	@Test
-	public void testClone_PropertiesCopied()
-	{
+	void testClone_PropertiesCopied() {
 		aNode1.setName("FOO");
 		aNode1.setMethods("FOO1");
 		aNode1.setAttributes("FIELDS");
@@ -78,24 +67,22 @@ public class TestClassNode
 		assertEquals("FOO1", clone.getMethods());
 		assertEquals("FIELDS", clone.getAttributes());
 	}
-	
+
 	/**
 	 * Copying a class node makes a shallow copy of the parent.
 	 */
 	@Test
-	public void testClone_ParentCopied()
-	{
+	void testClone_ParentCopied() {
 		PackageNode package1 = new PackageNode();
 		package1.setName("Foo");
 		aNode1.link(package1);
 		ClassNode clone = (ClassNode) aNode1.clone();
-		assertEquals("Foo", ((PackageNode)clone.getParent()).getName());
+		assertEquals("Foo", ((PackageNode) clone.getParent()).getName());
 		assertSame(package1, clone.getParent());
 	}
-	
+
 	@Test
-	public void testRequiresParent()
-	{
+	void testRequiresParent() {
 		assertFalse(aNode1.requiresParent());
 	}
 }

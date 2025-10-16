@@ -25,63 +25,49 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestPackageDescriptionNode
-{
-	private PackageDescriptionNode aPackageDescriptionNode;
-	private PackageNode aPackageNode;
-	
-	@BeforeEach
-	public void setup()
-	{
-		aPackageDescriptionNode = new PackageDescriptionNode();
-		aPackageNode = new PackageNode();
-	}
-	
+public class PackageDescriptionNodeTest {
+
+	private PackageDescriptionNode aPackageDescriptionNode = new PackageDescriptionNode();
+	private PackageNode aPackageNode = new PackageNode();
+
 	@Test
-	public void testDefault()
-	{
-		assertEquals(0,aPackageDescriptionNode.getChildren().size());
+	void testDefault() {
+		assertEquals(0, aPackageDescriptionNode.getChildren().size());
 		assertEquals("", aPackageDescriptionNode.getName().toString());
 		assertFalse(aPackageDescriptionNode.hasParent());
 	}
-	
+
 	@Test
-	public void testLink()
-	{
+	void testLink() {
 		aPackageDescriptionNode.link(aPackageNode);
 		assertTrue(aPackageDescriptionNode.hasParent());
 		assertSame(aPackageNode, aPackageDescriptionNode.getParent());
-		
+
 		aPackageDescriptionNode.unlink();
 		assertFalse(aPackageDescriptionNode.hasParent());
 	}
-	
+
 	@Test
-	public void testRequiresParent()
-	{
+	void testRequiresParent() {
 		assertFalse(aPackageDescriptionNode.requiresParent());
 	}
-	
+
 	@Test
-	public void testSetName()
-	{
+	void testSetName() {
 		aPackageDescriptionNode.setName("Foo");
 		assertEquals("Foo", aPackageDescriptionNode.getName());
 	}
-	
+
 	@Test
-	public void testSetContents()
-	{
+	void testSetContents() {
 		aPackageDescriptionNode.setContents("Foo");
 		assertEquals("Foo", aPackageDescriptionNode.getContents());
 	}
-	
+
 	@Test
-	public void testClone()
-	{
+	void testClone() {
 		aPackageDescriptionNode.setName("Name");
 		aPackageDescriptionNode.setContents("Contents");
 		aPackageDescriptionNode.link(aPackageNode);

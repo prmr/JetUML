@@ -30,100 +30,83 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.PropertyName;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestActorNode
-{
-	private ActorNode aNode;
-	
-	@BeforeEach
-	public void setup()
-	{
-		aNode = new ActorNode();
-	}
-	
+public class ActorNodeTest {
+
+	private ActorNode aNode = new ActorNode();
+
 	@Test
-	public void testGetProperties()
-	{
+	void testGetProperties() {
 		Properties properties = aNode.properties();
-		
+
 		assertEquals("Actor", properties.get(PropertyName.NAME).get());
-		
+
 		aNode.setName("Foo");
 		aNode.translate(10, 20);
 		properties = aNode.properties();
 		assertEquals("Foo", properties.get(PropertyName.NAME).get());
 	}
-	
+
 	@Test
-	public void testProperty_Name()
-	{
+	void testProperty_Name() {
 		aNode.setName("Foo");
 		assertEquals("Foo", aNode.getName());
 	}
-	
+
 	@Test
-	public void testInitialPosition()
-	{
-		assertEquals(new Point(0,0), aNode.position());
+	void testInitialPosition() {
+		assertEquals(new Point(0, 0), aNode.position());
 	}
-	
+
 	@Test
-	public void testMoveTo()
-	{
+	void testMoveTo() {
 		aNode.moveTo(new Point(10, 20));
-		assertEquals(new Point(10,20), aNode.position());
+		assertEquals(new Point(10, 20), aNode.position());
 	}
-	
+
 	/*
 	 * The position should be a clone
 	 */
 	@Test
-	public void testClone_OfPosition()
-	{
+	void testClone_OfPosition() {
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertNotSame(aNode.position(), clone.position());
 		clone.properties().get(PropertyName.NAME).set("Foo");
 		assertNotEquals("Foo", aNode.properties().get(PropertyName.NAME));
 	}
-	
+
 	/*
 	 * The name should be the same object
 	 */
 	@Test
-	public void testClone_OfName()
-	{
+	void testClone_OfName() {
 		aNode.setName("Foo");
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertSame(aNode.getName(), clone.getName());
 	}
-	
+
 	/*
 	 * The name should be the same object
 	 */
 	@Test
-	public void testClone_OfProperties()
-	{
+	void testClone_OfProperties() {
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertNotSame(aNode.properties(), clone.properties());
 	}
-	
+
 	@Test
-	public void testHasParent()
-	{
+	void testHasParent() {
 		assertFalse(aNode.hasParent());
 	}
-	
+
 	@Test
-	public void testRequiresParent()
-	{
+	void testRequiresParent() {
 		assertFalse(aNode.requiresParent());
 	}
-	
+
 	@Test
-	public void testGetChildren()
-	{
+	void testGetChildren() {
 		assertTrue(aNode.getChildren().isEmpty());
 	}
 }

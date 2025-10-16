@@ -26,11 +26,10 @@ import org.jetuml.diagram.PropertyName;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge.Type;
 import org.junit.jupiter.api.Test;
 
-public class TestUseCaseDependencyEdge
-{
+public class UseCaseDependencyEdgeTest {
+
 	@Test
-	public void testGetProperties()
-	{
+	void testGetProperties() {
 		UseCaseDependencyEdge edge = new UseCaseDependencyEdge();
 		assertEquals(Type.None, edge.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get());
 		edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
