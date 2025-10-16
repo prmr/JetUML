@@ -42,22 +42,21 @@ import org.jetuml.geom.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestMoveTracker
-{
+public class MoveTrackerTest {
+
 	// A stub that returns a 40x60 rectangle with origin at the node's position
-	private static final Function<Node, Rectangle> BOUND_CALCULATOR_STUB =
-			(node) -> new Rectangle(node.position().x(), node.position().y(), 40, 60);
-	
+	private static final Function<Node, Rectangle> BOUND_CALCULATOR_STUB = (node) -> new Rectangle(node.position().x(),
+			node.position().y(), 40, 60);
+
 	private MoveTracker aTracker = new MoveTracker(BOUND_CALCULATOR_STUB);
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
 	private DependencyEdge aEdge1;
 	private Field aOperationsField;
-	
+
 	@BeforeEach
-	void setup() throws ReflectiveOperationException
-	{
+	void setup() throws ReflectiveOperationException {
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);
 		aNode2 = new ClassNode();
@@ -70,23 +69,22 @@ public class TestMoveTracker
 	}
 
 	@Test
-	void moveSingleObjectFourTimes()
-	{
+	void moveSingleObjectFourTimes() {
 		aTracker.start(asList(aNode1));
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
 		aNode1.translate(50, 50);
 		CompoundOperation operation = aTracker.stop();
-		
+
 		assertThat(getOperations(operation), hasSize, 1);
-		
+
 		operation.undo();
 		assertEquals(150, aNode1.position().x());
 		assertEquals(150, aNode1.position().y());
 		operation.execute();
 		assertEquals(220, aNode1.position().x());
 		assertEquals(420, aNode1.position().y());
-		
+
 		// No change in selection, move only X
 		aTracker.start(asList(aNode1));
 		aNode1.translate(200, 0);
@@ -98,7 +96,7 @@ public class TestMoveTracker
 		operation.execute();
 		assertEquals(420, aNode1.position().x());
 		assertEquals(420, aNode1.position().y());
-		
+
 		// No change in selection, move only Y
 		aTracker.start(asList(aNode1));
 		aNode1.translate(0, 200);
@@ -110,24 +108,23 @@ public class TestMoveTracker
 		operation.execute();
 		assertEquals(420, aNode1.position().x());
 		assertEquals(620, aNode1.position().y());
-		
+
 		// No change in selection, null move
 		aTracker.start(asList(aNode1));
 		aNode1.translate(0, 0);
 		operation = aTracker.stop();
-		assertThat(getOperations(operation), isEmpty );
+		assertThat(getOperations(operation), isEmpty);
 	}
-	
+
 	@Test
-	void moveNodesAndEdges()
-	{
+	void moveNodesAndEdges() {
 		aTracker.start(asList(aNode1, aNode2, aEdge1));
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
 		CompoundOperation operation = aTracker.stop();
 		List<DiagramOperation> operations = getOperations(operation);
 		assertThat(operations, hasSize, 2);
-		
+
 		operations.get(0).undo();
 		assertEquals(150, aNode1.position().x());
 		assertEquals(150, aNode1.position().y());
@@ -138,7 +135,7 @@ public class TestMoveTracker
 		assertEquals(170, aNode1.position().y());
 		assertEquals(420, aNode2.position().x());
 		assertEquals(420, aNode2.position().y());
-		
+
 		operations.get(1).undo();
 		assertEquals(170, aNode1.position().x());
 		assertEquals(170, aNode1.position().y());
@@ -155,10 +152,10 @@ public class TestMoveTracker
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
 		operation = aTracker.stop();
-		
+
 		operations = getOperations(operation);
 		assertThat(operations, hasSize, 2);
-		
+
 		operations.get(0).undo();
 		assertEquals(170, aNode1.position().x());
 		assertEquals(170, aNode1.position().y());
@@ -169,7 +166,7 @@ public class TestMoveTracker
 		assertEquals(190, aNode1.position().y());
 		assertEquals(440, aNode2.position().x());
 		assertEquals(440, aNode2.position().y());
-		
+
 		operations.get(1).undo();
 		assertEquals(190, aNode1.position().x());
 		assertEquals(190, aNode1.position().y());
@@ -181,16 +178,13 @@ public class TestMoveTracker
 		assertEquals(440, aNode2.position().x());
 		assertEquals(440, aNode2.position().y());
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private List<DiagramOperation> getOperations(CompoundOperation pOperation)
-	{
-		try
-		{
-			return (List<DiagramOperation>)aOperationsField.get(pOperation);
+	private List<DiagramOperation> getOperations(CompoundOperation pOperation) {
+		try {
+			return (List<DiagramOperation>) aOperationsField.get(pOperation);
 		}
-		catch( ReflectiveOperationException pException )
-		{
+		catch (ReflectiveOperationException pException) {
 			fail();
 			return null;
 		}

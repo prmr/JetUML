@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class TestNotificationService {
+public class NotificationServiceTest {
+
 	/* The aNotifications field in NotificationService. */
 	private static Field aNotifications;
 

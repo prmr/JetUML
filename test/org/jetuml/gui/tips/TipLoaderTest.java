@@ -36,7 +36,7 @@ import org.jetuml.persistence.json.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestTipLoader 
+public class TipLoaderTest 
 {
 	private static final String TIP_TITLE_FIELD = TipFieldName.TITLE.asString();
 	private static final String TIP_CONTENT_FIELD = TipFieldName.CONTENT.asString();
@@ -53,96 +53,81 @@ public class TestTipLoader
 	
 	
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		WELL_FORMATTED_TIP = JsonParser.parse(WELL_FORMATTED_TIP_STRING);
 	}
 	
 	@Test
-	void testTipLoader_loadTipCanLoadTipFromCorrectId()
-	{
+	void testTipLoader_loadTipCanLoadTipFromCorrectId() {
 		Tip tip = TipLoader.loadTip(1);
 		assertTrue(tip != null);
 	}
-	
+
 	@Test
-	void testTipLoader_loadTipCreatesTipsWithRightId()
-	{
+	void testTipLoader_loadTipCreatesTipsWithRightId() {
 		Tip tip1 = TipLoader.loadTip(1);
 		assertEquals(tip1.getId(), 1);
 		Tip tip2 = TipLoader.loadTip(2);
 		assertEquals(tip2.getId(), 2);
 	}
-	
+
 	@Test
-	void testTipConvertJSONObjectToTipElements_listHasRightSize()
-	{
+	void testTipConvertJSONObjectToTipElements_listHasRightSize() {
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		assertEquals(tipElements.size(), 2);
 	}
-	
+
 	@Test
-	void testTipConvertJSONObjectToTipElements_elementsHaveRightMedia()
-	{
+	void testTipConvertJSONObjectToTipElements_elementsHaveRightMedia() {
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		TipElement tipElement1 = tipElements.get(0);
 		TipElement tipElement2 = tipElements.get(1);
-		
+
 		assertEquals(tipElement1.getMedia(), Media.TEXT);
 		assertEquals(tipElement2.getMedia(), Media.IMAGE);
 	}
-	
+
 	@Test
-	void testTipConvertJSONObjectToTipElements_elementsHaveRightContent()
-	{
+	void testTipConvertJSONObjectToTipElements_elementsHaveRightContent() {
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		TipElement tipElement1 = tipElements.get(0);
 		TipElement tipElement2 = tipElements.get(1);
-		
+
 		assertEquals(tipElement1.getContent(), "sample text");
 		assertEquals(tipElement2.getContent(), "image.png");
 	}
-	
+
 	@Test
-	void testinputStreamToString()
-	{
-		try(InputStream stream = new FileInputStream("testdata/streamtest.txt"))
-		{
+	void testinputStreamToString() {
+		try (InputStream stream = new FileInputStream("testdata/streamtest.txt")) {
 			String result = inputStreamToString(stream);
 			assertEquals("ABCDE", result);
 		}
-		catch( IOException e )
-		{
+		catch (IOException e) {
 			fail();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private static List<TipElement> convertJSONObjectToTipElements(JsonObject pTip)
-	{
-		try
-		{
+	private static List<TipElement> convertJSONObjectToTipElements(JsonObject pTip) {
+		try {
 			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJsonObjectToTipElements", JsonObject.class);
 			method.setAccessible(true);
 			return (List<TipElement>) method.invoke(null, pTip);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
-	static String inputStreamToString(InputStream pStream)
-	{
-		try
-		{
+
+	static String inputStreamToString(InputStream pStream) {
+		try {
 			Method method = TipLoader.class.getDeclaredMethod("inputStreamToString", InputStream.class);
 			method.setAccessible(true);
 			return (String) method.invoke(null, pStream);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}

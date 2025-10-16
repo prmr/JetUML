@@ -27,88 +27,71 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestViewedTips {
+public class ViewedTipsTest {
 
-	private ViewedTips aViewedTipsFirst;
-	private ViewedTips aViewedTipsLast;
-	
-	@BeforeEach
-	public void setupClass()
-	{
-		aViewedTipsFirst = new ViewedTips(1);
-		aViewedTipsLast = new ViewedTips(NUM_TIPS);
-	}
-	
-	@Test 
-	public void testViewedTips_getNextTipIdIncrementsForIdOne()
-	{
-		assertEquals(aViewedTipsFirst.getNextTipId(), 2); 
-		// Assuming there are at least 2 tips, 
+	private ViewedTips aViewedTipsFirst = new ViewedTips(1);
+	private ViewedTips aViewedTipsLast = new ViewedTips(NUM_TIPS);
+
+	@Test
+	void testViewedTips_getNextTipIdIncrementsForIdOne() {
+		assertEquals(aViewedTipsFirst.getNextTipId(), 2);
+		// Assuming there are at least 2 tips,
 		// this is checked by TestTipJsons.java
 	}
-	
+
 	@Test
-	public void testViewedTips_getNextTipIdWrapsAround()
-	{
+	void testViewedTips_getNextTipIdWrapsAround() {
 		assertEquals(aViewedTipsLast.getNextTipId(), 1);
 	}
-	
-	@Test 
-	public void testViewedTips_getPreviousTipIdDecrementsForGreatestId()
-	{
-		assertEquals(aViewedTipsLast.getPreviousTipId(), NUM_TIPS - 1); 
-		// Assuming there are at least 2 tips, 
+
+	@Test
+	void testViewedTips_getPreviousTipIdDecrementsForGreatestId() {
+		assertEquals(aViewedTipsLast.getPreviousTipId(), NUM_TIPS - 1);
+		// Assuming there are at least 2 tips,
 		// this is checked by TestTipJsons.java
 	}
-	
+
 	@Test
-	public void testViewedTips_getPreviousTipIdWrapsAround()
-	{
+	void testViewedTips_getPreviousTipIdWrapsAround() {
 		assertEquals(aViewedTipsFirst.getPreviousTipId(), NUM_TIPS);
 	}
-	
-	@Test 
-	public void testViewedTips_newViewedTipsCorrectNextTipOfTheDay()
-	{
+
+	@Test
+	void testViewedTips_newViewedTipsCorrectNextTipOfTheDay() {
 		assertEquals(aViewedTipsFirst.getNewNextTipOfTheDayId(), 2);
 		assertEquals(aViewedTipsLast.getNewNextTipOfTheDayId(), 1);
 	}
-	
-	@Test 
-	public void testViewedTips_getNextTipIdIncrementsTipOfTheDayIfLastNextTip()
-	{
+
+	@Test
+	void testViewedTips_getNextTipIdIncrementsTipOfTheDayIfLastNextTip() {
 		int currentNextTipOfTheDayId = aViewedTipsLast.getNewNextTipOfTheDayId();
-		
+
 		assertTrue(currentNextTipOfTheDayId != NUM_TIPS);
-		
+
 		aViewedTipsLast.getNextTipId();
 		int newNextTipOfTheDayId = aViewedTipsLast.getNewNextTipOfTheDayId();
-		
-		assertEquals(newNextTipOfTheDayId, currentNextTipOfTheDayId + 1); 
+
+		assertEquals(newNextTipOfTheDayId, currentNextTipOfTheDayId + 1);
 	}
-	
+
 	@Test
-	public void testViewedTips_getNextTipNoIncrementIfNotLastNextTip()
-	{
-		
+	void testViewedTips_getNextTipNoIncrementIfNotLastNextTip() {
+
 		int initialTipOfTheDayId = aViewedTipsLast.getNewNextTipOfTheDayId();
-		
-		try
-		{
+
+		try {
 			Field currentTipId = ViewedTips.class.getDeclaredField("aCurrentTipId");
 			currentTipId.setAccessible(true);
 			currentTipId.set(aViewedTipsLast, 1);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			fail();
 		}
-		
+
 		aViewedTipsLast.getNextTipId();
-		
+
 		assertTrue(aViewedTipsLast.getNewNextTipOfTheDayId() == initialTipOfTheDayId);
 	}
 }

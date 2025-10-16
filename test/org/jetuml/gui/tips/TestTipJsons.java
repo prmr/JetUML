@@ -44,78 +44,65 @@ import org.junit.jupiter.api.Test;
 /**
  * Test Class to check the formatting of the tip jsons (data testing).
  */
-public class TestTipJsons
-{
+public class TestTipJsons {
+
 	private static final String TIPS_JSONS_DIR = RESOURCES.getString("tips.jsons.directory");
 	private static String TIP_FILE_PATH_FORMAT;
 
 	@BeforeAll
 	public static void setupClass()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
-	{
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		TIP_FILE_PATH_FORMAT = getTipFilePathFormatString();
 	}
 
 	@Test
-	public void testTipJsons_testCorrectNumberOfTips() throws URISyntaxException
-	{
+	void testTipJsons_testCorrectNumberOfTips() throws URISyntaxException {
 		File dir = getTipJsonsDirectoryAsFile();
 		int numTipFiles = dir.listFiles().length;
 		assertEquals(NUM_TIPS, numTipFiles);
 	}
 
 	@Test
-	public void testTipJsons_atLeastTwoTips() throws URISyntaxException
-	{
+	void testTipJsons_atLeastTwoTips() throws URISyntaxException {
 		File dir = getTipJsonsDirectoryAsFile();
 		int numTipFiles = dir.listFiles().length;
 		assertTrue(numTipFiles >= 2);
 	}
 
 	@Test
-	public void testTipJsons_testAllTipIdsInRangeOpenableAsInputStream()
-	{
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
-			try(InputStream inputStream = TestTipJsons.class
-					.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, id)))
-			{
+	void testTipJsons_testAllTipIdsInRangeOpenableAsInputStream() {
+		for (int id = 1; id <= NUM_TIPS; id++) {
+			try (InputStream inputStream = TestTipJsons.class
+					.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, id))) {
 				assertTrue(inputStream != null);
 			}
-			catch(IOException e)
-			{
+			catch (IOException e) {
 				fail();
 			}
 		}
 	}
 
 	@Test
-	public void testTipJsons_testTipsCanBeOpenedAsJsonObjects() throws IOException
-	{
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
+	void testTipJsons_testTipsCanBeOpenedAsJsonObjects() throws IOException {
+		for (int id = 1; id <= NUM_TIPS; id++) {
 			JsonObject tip = loadTipAsJsonObject(id);
 			assertTrue(tip != null);
 		}
 	}
 
 	@Test
-	public void testTipJsons_testTipsHaveTwoFieldsOnly() throws IOException
-	{
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
+	void testTipJsons_testTipsHaveTwoFieldsOnly() throws IOException {
+		for (int id = 1; id <= NUM_TIPS; id++) {
 			JsonObject jObj = loadTipAsJsonObject(id);
 			assertEquals(jObj.numberOfProperties(), 3);
 		}
 	}
 
 	@Test
-	public void testTipJsons_testTipTitleIsWellFormatted() throws IOException
-	{
+	void testTipJsons_testTipTitleIsWellFormatted() throws IOException {
 		assertTrue(tipsAllHaveField(TipFieldName.TITLE));
 
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
+		for (int id = 1; id <= NUM_TIPS; id++) {
 			JsonObject jObj = loadTipAsJsonObject(id);
 			Object title = jObj.get(TipFieldName.TITLE.asString());
 			assertTrue(title instanceof String);
@@ -123,25 +110,20 @@ public class TestTipJsons
 	}
 
 	@Test
-	public void testTipJsons_testTipContentsAreWellFormatted() throws IOException
-	{
+	void testTipJsons_testTipContentsAreWellFormatted() throws IOException {
 		assertTrue(tipsAllHaveField(TipFieldName.CONTENT));
 
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
+		for (int id = 1; id <= NUM_TIPS; id++) {
 			JsonObject jObj = loadTipAsJsonObject(id);
 			Object obj = jObj.get(TipFieldName.CONTENT.asString());
 			assertTrue(obj instanceof JsonArray);
 			JsonArray jArr = (JsonArray) obj;
-			for(Object contentElement : jArr)
-			{
+			for (Object contentElement : jArr) {
 				assertTrue(contentElement instanceof JsonObject);
 				JsonObject contentElementJsonObj = (JsonObject) contentElement;
 				assertEquals(contentElementJsonObj.numberOfProperties(), 1);
-				for(Media media : Media.values())
-				{
-					if(contentElementJsonObj.hasProperty(media.name().toLowerCase()))
-					{
+				for (Media media : Media.values()) {
+					if (contentElementJsonObj.hasProperty(media.name().toLowerCase())) {
 						return;
 					}
 				}
@@ -150,40 +132,33 @@ public class TestTipJsons
 		}
 	}
 
-	private static boolean tipsAllHaveField(TipFieldName pTipFieldName) throws IOException
-	{
-		for(int id = 1; id <= NUM_TIPS; id++)
-		{
+	private static boolean tipsAllHaveField(TipFieldName pTipFieldName) throws IOException {
+		for (int id = 1; id <= NUM_TIPS; id++) {
 			JsonObject jObj = loadTipAsJsonObject(id);
-			if (!jObj.hasProperty(pTipFieldName.asString()))
-			{
+			if (!jObj.hasProperty(pTipFieldName.asString())) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private static JsonObject loadTipAsJsonObject(int pId) throws IOException
-	{
-		try (InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
-		{
-			String input = TestTipLoader.inputStreamToString(inputStream);
+	private static JsonObject loadTipAsJsonObject(int pId) throws IOException {
+		try (InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId))) {
+			String input = TipLoaderTest.inputStreamToString(inputStream);
 			JsonObject jObj = JsonParser.parse(input);
 			return jObj;
 		}
 	}
 
 	private static String getTipFilePathFormatString()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
-	{
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Field field = TipLoader.class.getDeclaredField("TIP_FILE_PATH_FORMAT");
 		field.setAccessible(true);
 		return (String) field.get(null);
 	}
 
-	private static File getTipJsonsDirectoryAsFile() throws URISyntaxException
-	{
-		URI uri = TestTipLoader.class.getResource(TIPS_JSONS_DIR).toURI();
+	private static File getTipJsonsDirectoryAsFile() throws URISyntaxException {
+		URI uri = TipLoaderTest.class.getResource(TIPS_JSONS_DIR).toURI();
 		Path tipsDirPath = Paths.get(uri);
 		File dir = tipsDirPath.toFile();
 		return dir;

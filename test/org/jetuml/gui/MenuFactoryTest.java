@@ -40,90 +40,80 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCombination.ModifierValue;
 
-public class TestMenuFactory 
-{
+public class MenuFactoryTest {
+
 	private MenuFactory aMenuFactory;
 	private Method aInstallMnenomicMethod;
-	
-	public TestMenuFactory() throws Exception
-	{
+
+	public MenuFactoryTest() throws Exception {
 		aInstallMnenomicMethod = MenuFactory.class.getDeclaredMethod("installMnemonic", String.class, String.class);
 		aInstallMnenomicMethod.setAccessible(true);
 	}
-	
-	public String installMnemonic(String pText, String pMnemonic)
-	{
-		try
-		{
+
+	public String installMnemonic(String pText, String pMnemonic) {
+		try {
 			return (String) aInstallMnenomicMethod.invoke(aMenuFactory, pText, pMnemonic);
 		}
-		catch( Exception e )
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 			fail();
 			return null;
 		}
 	}
-	
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		JavaFXLoader.load();
 	}
-	
+
 	@BeforeEach
-	public void setup() throws Exception
-	{
+	public void setup() throws Exception {
 		Constructor<?> defaultConstructor = ApplicationResources.class.getDeclaredConstructor();
 		defaultConstructor.setAccessible(true);
 		ApplicationResources testResources = (ApplicationResources) defaultConstructor.newInstance();
 		Field resourceBundleField = ApplicationResources.class.getDeclaredField("aResouceBundle");
 		resourceBundleField.setAccessible(true);
-		resourceBundleField.set(testResources, ResourceBundle.getBundle(TestMenuFactory.class.getName()));
+		resourceBundleField.set(testResources, ResourceBundle.getBundle(MenuFactoryTest.class.getName()));
 		// Confirm that everything works
 		assert testResources.containsKey("file.text");
 		aMenuFactory = new MenuFactory(testResources);
 	}
-	
+
 	@Test
-	public void testInstallMnemonic()
-	{
-		assertEquals("_File", installMnemonic("File", "F"));		
+	void testInstallMnemonic() {
+		assertEquals("_File", installMnemonic("File", "F"));
 		assertEquals("Fil_e", installMnemonic("File", "e"));
 		assertEquals("F_ile", installMnemonic("File", "i"));
 		assertEquals("File", installMnemonic("File", "x"));
 	}
-	
+
 	@Test
-	public void testCreateMenuWithTextAndMnemonic()
-	{
+	void testCreateMenuWithTextAndMnemonic() {
 		MenuItem item = aMenuFactory.createMenu("file", false);
 		assertEquals("_File", item.getText());
 	}
-	
+
 	@Test
-	public void testCreateMenuItemWithAll()
-	{
-		MenuItem item = aMenuFactory.createMenuItem("file.open", false, e -> {});
+	void testCreateMenuItemWithAll() {
+		MenuItem item = aMenuFactory.createMenuItem("file.open", false, e -> {
+		});
 		assertEquals("_Open", item.getText());
 		assertNotNull(item.getGraphic());
 		KeyCombination accelerator = item.getAccelerator();
 		assertNotNull(accelerator);
-		if( System.getProperty("os.name", "unknown").toLowerCase().startsWith("mac") )
-		{
+		if (System.getProperty("os.name", "unknown").toLowerCase().startsWith("mac")) {
 			assertEquals("Meta+O", accelerator.getName());
 		}
-		else
-		{
+		else {
 			assertEquals(ModifierValue.DOWN, accelerator.getControl());
 			assertEquals("Ctrl+O", accelerator.getName());
 		}
 	}
-	
+
 	@Test
-	public void testCreateMenuItemWithTextOnly()
-	{
-		MenuItem item = aMenuFactory.createMenuItem("file.new", false, e -> {});
+	void testCreateMenuItemWithTextOnly() {
+		MenuItem item = aMenuFactory.createMenuItem("file.new", false, e -> {
+		});
 		assertEquals("New", item.getText());
 		assertNull(item.getGraphic());
 		assertNull(item.getAccelerator());

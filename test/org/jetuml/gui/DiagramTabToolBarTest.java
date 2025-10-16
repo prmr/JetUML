@@ -36,61 +36,53 @@ import org.junit.jupiter.api.Test;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
 
-public class TestDiagramTabToolBar
-{
+public class DiagramTabToolBarTest {
+
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(DiagramType.newRendererInstanceFor(aDiagram));
-	
+
 	@SuppressWarnings("unchecked")
-	private SelectableToolButton getButtonAtPosition(int pPosition)
-	{
-		try
-		{
+	private SelectableToolButton getButtonAtPosition(int pPosition) {
+		try {
 			final List<Node> nodes = (List<Node>) ToolBar.class.getDeclaredMethod("getItems").invoke(aToolbar);
 			return (SelectableToolButton) nodes.get(pPosition);
 		}
-		catch( ReflectiveOperationException exception )
-		{
+		catch (ReflectiveOperationException exception) {
 			exception.printStackTrace();
 			fail();
 		}
 		return null;
 	}
-	
-	private SelectableToolButton invokeGetSelectedTool()
-	{
-		try
-		{
+
+	private SelectableToolButton invokeGetSelectedTool() {
+		try {
 			Method method = DiagramTabToolBar.class.getDeclaredMethod("getSelectedTool");
 			method.setAccessible(true);
 			return (SelectableToolButton) method.invoke(aToolbar);
 		}
-		catch( ReflectiveOperationException exception )
-		{
+		catch (ReflectiveOperationException exception) {
 			fail();
 		}
 		return null;
 	}
-	
+
 	/*
-	 * Tests that an object has the selection tool as the first 
-	 * button, and that it is selected.
+	 * Tests that an object has the selection tool as the first button, and that it
+	 * is selected.
 	 */
 	@Test
-	public void testInit()
-	{
+	void testInit() {
 		SelectableToolButton firstButton = getButtonAtPosition(0);
 		assertEquals(RESOURCES.getString("toolbar.select.tooltip"), firstButton.getTooltip().getText());
 		assertTrue(firstButton.isSelected());
 	}
-	
+
 	/*
-	 * Tests that firing a tool button selects it, and that
-	 * getSelectedTool returns the correct selection.
+	 * Tests that firing a tool button selects it, and that getSelectedTool returns
+	 * the correct selection.
 	 */
 	@Test
-	public void testSelection()
-	{
+	void testSelection() {
 		SelectableToolButton thirdButton = getButtonAtPosition(2);
 		assert !thirdButton.isSelected();
 		thirdButton.fire();
