@@ -22,34 +22,17 @@ package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestUseCaseDiagramBuilder
-{
-	private Diagram aDiagram;
-	private UseCaseDiagramBuilder aBuilder;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.USECASE);
-		aBuilder = new UseCaseDiagramBuilder(aDiagram);
-	}
+public class UseCaseDiagramBuilderTest {
+
+	private Diagram aDiagram = new Diagram(DiagramType.USECASE);
+	private UseCaseDiagramBuilder aBuilder = new UseCaseDiagramBuilder(aDiagram);
 
 	@Test
-	public void testConstructor()
-	{
+	public void testConstructor() {
 		assertEquals(DiagramType.USECASE, aBuilder.diagram().getType());
 	}
 }

@@ -22,34 +22,23 @@ package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jetuml.JavaFXLoader;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestStateDiagramBuilder
-{
-	private Diagram aDiagram;
-	private StateDiagramBuilder aBuilder;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.STATE);
-		aBuilder = new StateDiagramBuilder(aDiagram);
+public class SimpleOperationTest {
+
+	private class Box {
+
+		int aValue = 0;
 	}
 
 	@Test
-	public void testConstructor()
-	{
-		assertEquals(DiagramType.STATE, aBuilder.diagram().getType());
+	void testExecuteAndUndo() {
+		final Box box = new Box();
+		SimpleOperation operation = new SimpleOperation(() -> box.aValue = 1, () -> box.aValue = 2);
+		assertEquals(0, box.aValue);
+		operation.execute();
+		assertEquals(1, box.aValue);
+		operation.undo();
+		assertEquals(2, box.aValue);
 	}
 }

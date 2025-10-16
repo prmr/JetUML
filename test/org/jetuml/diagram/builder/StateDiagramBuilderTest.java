@@ -22,24 +22,17 @@ package org.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.junit.jupiter.api.Test;
 
-public class TestSimpleOperation
-{
-	private class Box
-	{
-		int aValue = 0;
-	}
-	
+public class StateDiagramBuilderTest {
+
+	private Diagram aDiagram = new Diagram(DiagramType.STATE);
+	private StateDiagramBuilder aBuilder = new StateDiagramBuilder(aDiagram);
+
 	@Test
-	public void testExecuteAndUndo()
-	{
-		final Box box = new Box();
-		SimpleOperation operation = new SimpleOperation( ()-> box.aValue = 1, ()-> box.aValue = 2);
-		assertEquals(0, box.aValue);
-		operation.execute();
-		assertEquals(1, box.aValue);
-		operation.undo();
-		assertEquals(2, box.aValue);
+	void testConstructor() {
+		assertEquals(DiagramType.STATE, aBuilder.diagram().getType());
 	}
 }

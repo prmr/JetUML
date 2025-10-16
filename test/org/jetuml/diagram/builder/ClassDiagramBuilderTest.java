@@ -48,143 +48,132 @@ import org.junit.jupiter.api.Test;
  * This class also holds the tests for the code implemented in 
  * DiagramBuilder.
  */
-public class TestClassDiagramBuilder
-{
+public class ClassDiagramBuilderTest {
+
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private ClassDiagramBuilder aBuilder = new ClassDiagramBuilder(aDiagram);
-	
-	private int numberOfRootNodes()
-	{
+
+	private int numberOfRootNodes() {
 		return aDiagram.rootNodes().size();
 	}
-	
-	private int numberOfEdges()
-	{
+
+	private int numberOfEdges() {
 		return aDiagram.edges().size();
 	}
-	
-	private Node getRootNode(int pIndex)
-	{
+
+	private Node getRootNode(int pIndex) {
 		return aDiagram.rootNodes().get(pIndex);
 	}
-	
+
 	@Test
-	void testcreateAddNodeOperationSimple()
-	{
+	void testcreateAddNodeOperationSimple() {
 		ClassNode node = new ClassNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10, 10));
 		assertEquals(0, numberOfRootNodes());
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(10,10), node.position());
+		assertEquals(new Point(10, 10), node.position());
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
 	}
-	
+
 	@Test
-	void testcreateAddEdgeOperationNoteNode() 
-	{
+	void testcreateAddEdgeOperationNoteNode() {
 		NoteNode node = new NoteNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10, 10));
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(10,10), node.position());
+		assertEquals(new Point(10, 10), node.position());
 		NoteEdge edge = new NoteEdge();
-		aBuilder.createAddEdgeOperation(edge, new Point(11,11), new Point(100,100)).execute();
+		aBuilder.createAddEdgeOperation(edge, new Point(11, 11), new Point(100, 100)).execute();
 		assertEquals(1, aDiagram.edges().size());
 		assertSame(node, edge.start());
 	}
-	
+
 	@Test
-	void testcreateAddNodeOperationReposition()
-	{
+	void testcreateAddNodeOperationReposition() {
 		ClassNode node = new ClassNode();
-		aBuilder.setCanvasDimension(new Dimension(500,500));
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450,450));
+		aBuilder.setCanvasDimension(new Dimension(500, 500));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450, 450));
 		assertEquals(0, numberOfRootNodes());
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(400,440), node.position());
+		assertEquals(new Point(400, 440), node.position());
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(400,440), node.position());
+		assertEquals(new Point(400, 440), node.position());
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
 	}
-	
+
 	/*
-	 * Adding a node that can't be a child to the root
-	 * of the diagram, so, no over any other node.
+	 * Adding a node that can't be a child to the root of the diagram, so, no over
+	 * any other node.
 	 */
 	@Test
-	void testCreateAddNodeOperationInvalidChildNotOverNode()
-	{
+	void testCreateAddNodeOperationInvalidChildNotOverNode() {
 		NoteNode node = new NoteNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50, 50));
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(50,50), node.position());
+		assertEquals(new Point(50, 50), node.position());
 	}
-	
+
 	/*
-	 * Adding a node that can't be a child over another node that
-	 * can be a parent.
+	 * Adding a node that can't be a child over another node that can be a parent.
 	 */
 	@Test
-	void testCreateAddNodeOperationInvalidChildOverNode()
-	{
+	void testCreateAddNodeOperationInvalidChildOverNode() {
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
 		NoteNode node2 = new NoteNode();
-		aBuilder.createAddNodeOperation(node2, new Point(20,20)).execute();
+		aBuilder.createAddNodeOperation(node2, new Point(20, 20)).execute();
 		assertEquals(2, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node2));
-		assertEquals(new Point(20,20), node2.position());
+		assertEquals(new Point(20, 20), node2.position());
 	}
-	
+
 	@Test
-	void testCreateAddNodeOperationValidChildAddition()
-	{
+	void testCreateAddNodeOperationValidChildAddition() {
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
 		InterfaceNode node2 = new InterfaceNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node2, new Point(10,10));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node2, new Point(10, 10));
 		operation.execute();
 		assertEquals(1, numberOfRootNodes());
 		assertTrue(aDiagram.contains(node));
-		assertEquals(new Point(0,0), node.position());
-		
+		assertEquals(new Point(0, 0), node.position());
+
 		assertEquals(1, node.getChildren().size());
 		assertSame(node2, node.getChildren().get(0));
-		assertEquals(new Point(10,30), node2.position());
-		
+		assertEquals(new Point(10, 30), node2.position());
+
 		operation.undo();
 		assertEquals(0, node.getChildren().size());
 	}
-	
+
 	@Test
-	void testCreateAddNodeOperationValidSubChildAddition()
-	{
+	void testCreateAddNodeOperationValidSubChildAddition() {
 		PackageNode bottom = new PackageNode();
 		aDiagram.addRootNode(bottom);
-		
+
 		PackageNode middle = new PackageNode();
-		aBuilder.createAddNodeOperation(middle, new Point(10,10)).execute();
-		
+		aBuilder.createAddNodeOperation(middle, new Point(10, 10)).execute();
+
 		assertEquals(1, numberOfRootNodes());
 		assertSame(bottom, getRootNode(0));
 		assertEquals(1, bottom.getChildren().size());
 		assertSame(middle, bottom.getChildren().get(0));
-		
+
 		InterfaceNode top = new InterfaceNode();
-		aBuilder.createAddNodeOperation(top, new Point(20,40)).execute();
+		aBuilder.createAddNodeOperation(top, new Point(20, 40)).execute();
 		assertEquals(1, numberOfRootNodes());
 		assertSame(bottom, getRootNode(0));
 		assertEquals(1, bottom.getChildren().size());
@@ -194,8 +183,7 @@ public class TestClassDiagramBuilder
 	}
 
 	@Test
-	void testCreateAddElementsOperationNothing()
-	{
+	void testCreateAddElementsOperationNothing() {
 		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
 		operation.execute();
 		assertTrue(numberOfRootNodes() == 0);
@@ -204,47 +192,44 @@ public class TestClassDiagramBuilder
 		assertTrue(numberOfRootNodes() == 0);
 		assertTrue(numberOfEdges() == 0);
 	}
-	
+
 	@Test
-	void testCreateAddElementsOperationNodesAndEdges()
-	{
+	void testCreateAddElementsOperationNodesAndEdges() {
 		ArrayList<DiagramElement> elements = new ArrayList<>();
 		ClassNode node1 = new ClassNode();
-		node1.moveTo(new Point(10,10));
+		node1.moveTo(new Point(10, 10));
 		ClassNode node2 = new ClassNode();
-		node2.moveTo(new Point(100,100));
+		node2.moveTo(new Point(100, 100));
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(node1, node2);
-		elements.addAll(Arrays.asList(new DiagramElement[]{edge, node1, node2}));
-		
+		elements.addAll(Arrays.asList(new DiagramElement[] { edge, node1, node2 }));
+
 		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
 		operation.execute();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
 		assertSame(node1, getRootNode(0));
 		assertSame(node2, getRootNode(1));
-		
+
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, numberOfEdges());
 	}
-	
+
 	@Test
-	void testCreateRemoveElementsOperationEmpty()
-	{
+	void testCreateRemoveElementsOperationEmpty() {
 		DiagramOperation operation = aBuilder.createRemoveElementsOperation(new ArrayList<>());
 		operation.execute();
 		assertEquals(0, numberOfRootNodes());
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
 	}
-	
+
 	@Test
-	void testCreateRemoveElementsOperationSingleNode()
-	{
+	void testCreateRemoveElementsOperationSingleNode() {
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
-		node2.moveTo(new Point(100,100));
+		node2.moveTo(new Point(100, 100));
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
 		ArrayList<DiagramElement> selection = new ArrayList<>();
@@ -256,10 +241,9 @@ public class TestClassDiagramBuilder
 		operation.undo();
 		assertEquals(2, numberOfRootNodes());
 	}
-	
+
 	@Test
-	void testCanAttachToPackageMultipleNodes()
-	{
+	void testCanAttachToPackageMultipleNodes() {
 		ClassNode child1 = new ClassNode();
 		InterfaceNode child2 = new InterfaceNode();
 		PackageNode parent = new PackageNode();
@@ -268,32 +252,28 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(parent);
 		assertTrue(aBuilder.canLinkToPackage(Arrays.asList(child1, child2)));
 	}
-	
+
 	@Test
-	void testCanAttachToPackage_EmptyList()
-	{
+	void testCanAttachToPackage_EmptyList() {
 		assertFalse(aBuilder.canLinkToPackage(Arrays.asList()));
 	}
-	
+
 	@Test
-	void testCanDetachFromPackage_EmptyList()
-	{
+	void testCanDetachFromPackage_EmptyList() {
 		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList()));
 	}
-	
+
 	@Test
-	void testCanAttachToPackageNoNullParent()
-	{
+	void testCanAttachToPackageNoNullParent() {
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		assertFalse(aBuilder.canLinkToPackage(Arrays.asList(child)));
 	}
-	
+
 	@Test
-	void testCanAttachToPackageNoPackageToAttach()
-	{
+	void testCanAttachToPackageNoPackageToAttach() {
 		ClassNode node1 = new ClassNode();
 		PackageNode node2 = new PackageNode();
 		node2.translate(5, 5);
@@ -301,30 +281,27 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(node2);
 		assertFalse(aBuilder.canLinkToPackage(Arrays.asList(node1)));
 	}
-	
+
 	@Test
-	void testCanDetachFromPackageSimple()
-	{
+	void testCanDetachFromPackageSimple() {
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		assertTrue(aBuilder.canUnlinkFromPackage(Arrays.asList(child)));
 	}
-	
+
 	@Test
-	void testCanDetachFromPackageNullParent()
-	{
+	void testCanDetachFromPackageNullParent() {
 		ClassNode node1 = new ClassNode();
 		PackageNode node2 = new PackageNode();
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
 		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList(node1)));
 	}
-	
+
 	@Test
-	void testCanDetachFromPackageNoSharedParent()
-	{
+	void testCanDetachFromPackageNoSharedParent() {
 		ClassNode child1 = new ClassNode();
 		InterfaceNode child2 = new InterfaceNode();
 		PackageNode parent1 = new PackageNode();
@@ -335,17 +312,16 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(parent2);
 		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList(child1, child2)));
 	}
-	
+
 	@Test
-	void testCreateAttachToPackageOperation()
-	{
+	void testCreateAttachToPackageOperation() {
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
 		aDiagram.addRootNode(child);
 		aDiagram.addRootNode(parent);
 		List<Node> selection = Arrays.asList(child);
 		assertTrue(aBuilder.canLinkToPackage(selection));
-		
+
 		DiagramOperation operation = aBuilder.createLinkToPackageOperation(selection);
 		operation.execute();
 		assertFalse(aDiagram.rootNodes().contains(child));
@@ -356,17 +332,16 @@ public class TestClassDiagramBuilder
 		assertFalse(parent.getChildren().contains(child));
 		assertFalse(child.hasParent());
 	}
-	
+
 	@Test
-	void testCreateDetachFromPackageOperationSimple()
-	{
+	void testCreateDetachFromPackageOperationSimple() {
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		List<Node> selection = Arrays.asList(child);
 		assertTrue(aBuilder.canUnlinkFromPackage(selection));
-		
+
 		DiagramOperation operation = aBuilder.createUnlinkFromPackageOperation(selection);
 		operation.execute();
 		assertTrue(aDiagram.rootNodes().contains(child));
@@ -377,10 +352,9 @@ public class TestClassDiagramBuilder
 		assertTrue(parent.getChildren().contains(child));
 		assertSame(parent, child.getParent());
 	}
-	
+
 	@Test
-	void testCreateDetachFromPackageOperationWithOuterParent()
-	{
+	void testCreateDetachFromPackageOperationWithOuterParent() {
 		ClassNode child = new ClassNode();
 		PackageNode innerParent = new PackageNode();
 		PackageNode outerParent = new PackageNode();
@@ -389,7 +363,7 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(outerParent);
 		List<Node> selection = Arrays.asList(child);
 		assertTrue(aBuilder.canUnlinkFromPackage(selection));
-		
+
 		DiagramOperation operation = aBuilder.createUnlinkFromPackageOperation(selection);
 		operation.execute();
 		assertTrue(outerParent.getChildren().contains(child));
@@ -400,10 +374,9 @@ public class TestClassDiagramBuilder
 		assertTrue(innerParent.getChildren().contains(child));
 		assertSame(innerParent, child.getParent());
 	}
-	
+
 	@Test
-	void testPointNodeGetsRemovedWhenNoteEdgeRemoved()
-	{
+	void testPointNodeGetsRemovedWhenNoteEdgeRemoved() {
 		NoteNode noteNode = new NoteNode();
 		PointNode pointNode = new PointNode();
 		NoteEdge edge = new NoteEdge();
@@ -415,13 +388,12 @@ public class TestClassDiagramBuilder
 		assertFalse(aDiagram.contains(edge));
 		assertFalse(aDiagram.contains(pointNode));
 	}
-	
+
 	/*
-	 * Bug https://github.com/prmr/JetUML/issues/522 
+	 * Bug https://github.com/prmr/JetUML/issues/522
 	 */
 	@Test
-	void testPointNodeGetsRemovedWhenNoteNodeRemoved()
-	{
+	void testPointNodeGetsRemovedWhenNoteNodeRemoved() {
 		NoteNode noteNode = new NoteNode();
 		PointNode pointNode = new PointNode();
 		NoteEdge edge = new NoteEdge();
