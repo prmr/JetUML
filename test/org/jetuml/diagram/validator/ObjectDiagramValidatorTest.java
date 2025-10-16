@@ -59,63 +59,55 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class TestObjectDiagramValidator
-{
-	private final ObjectDiagramValidator aValidator =
-			new ObjectDiagramValidator(new Diagram(DiagramType.OBJECT));
+public class ObjectDiagramValidatorTest {
+
+	private final ObjectDiagramValidator aValidator = new ObjectDiagramValidator(new Diagram(DiagramType.OBJECT));
 	private final NoteNode aNoteNode = new NoteNode();
 	private final ObjectNode aObject1 = new ObjectNode();
 	private final ObjectNode aObject2 = new ObjectNode();
 	private final FieldNode aField1 = new FieldNode();
 	private final FieldNode aField2 = new FieldNode();
-	
-	private Diagram diagram()
-	{
+
+	private Diagram diagram() {
 		return aValidator.diagram();
 	}
 
-	private static List<Node> provideInvalidNodes()
-	{
-		return List.of(new ActorNode(), new CallNode(), new ClassNode(), new FinalStateNode(), 
-				new ImplicitParameterNode(), new InitialStateNode(), new InterfaceNode(), 
-				new PackageDescriptionNode(), new PackageNode(), new StateNode(), new UseCaseNode());
+	private static List<Node> provideInvalidNodes() {
+		return List.of(new ActorNode(), new CallNode(), new ClassNode(), new FinalStateNode(),
+				new ImplicitParameterNode(), new InitialStateNode(), new InterfaceNode(), new PackageDescriptionNode(),
+				new PackageNode(), new StateNode(), new UseCaseNode());
 	}
-	
-	private static List<Edge> provideInvalidEdges()
-	{
-		return List.of(new AggregationEdge(), new AssociationEdge(), new CallEdge(), new ConstructorEdge(), 
-				new DependencyEdge(), new GeneralizationEdge(), new ReturnEdge(), new StateTransitionEdge(), 
+
+	private static List<Edge> provideInvalidEdges() {
+		return List.of(new AggregationEdge(), new AssociationEdge(), new CallEdge(), new ConstructorEdge(),
+				new DependencyEdge(), new GeneralizationEdge(), new ReturnEdge(), new StateTransitionEdge(),
 				new UseCaseAssociationEdge(), new UseCaseDependencyEdge(), new UseCaseGeneralizationEdge());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidNodes")
-	void testInvalidElement_Node(Node pNode)
-	{
+	void testInvalidElement_Node(Node pNode) {
 		diagram().addRootNode(pNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidEdges")
-	void testInvalidElement_Edge(Edge pEdge)
-	{
+	void testInvalidElement_Edge(Edge pEdge) {
 		pEdge.connect(aNoteNode, aNoteNode);
 		diagram().addEdge(pEdge);
 		diagram().addRootNode(aNoteNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testFieldAsRootNodes()
-	{
+	void testFieldAsRootNodes() {
 		diagram().addRootNode(aField1);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceFromFieldToNote()
-	{
+	void testReferenceFromFieldToNote() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aNoteNode);
 		aObject1.addChild(aField1);
@@ -124,10 +116,9 @@ public class TestObjectDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceFromFieldToField()
-	{
+	void testReferenceFromFieldToField() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aObject2);
 		aObject1.addChild(aField1);
@@ -137,10 +128,9 @@ public class TestObjectDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceFromObjectToObject()
-	{
+	void testReferenceFromObjectToObject() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aObject2);
 		Edge edge = new ObjectReferenceEdge();
@@ -148,10 +138,9 @@ public class TestObjectDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceFromObjectToField()
-	{
+	void testReferenceFromObjectToField() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aObject2);
 		aObject1.addChild(aField1);
@@ -160,10 +149,9 @@ public class TestObjectDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationFromObjectToNote()
-	{
+	void testCollaborationFromObjectToNote() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aNoteNode);
 		Edge edge = new ObjectCollaborationEdge();
@@ -171,103 +159,95 @@ public class TestObjectDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationFromNoteToObject()
-	{
+	void testCollaborationFromNoteToObject() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aNoteNode);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aNoteNode, aObject1 );
+		edge.connect(aNoteNode, aObject1);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationFromFieldToObject()
-	{
+	void testCollaborationFromFieldToObject() {
 		diagram().addRootNode(aObject1);
 		aObject1.addChild(aField1);
 		diagram().addRootNode(aObject2);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aField1, aObject2 );
+		edge.connect(aField1, aObject2);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationFromFieldToField()
-	{
+	void testCollaborationFromFieldToField() {
 		diagram().addRootNode(aObject1);
 		aObject1.addChild(aField1);
 		diagram().addRootNode(aObject2);
 		aObject2.addChild(aField2);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aField1, aField2 );
+		edge.connect(aField1, aField2);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationNoSelfEdge()
-	{
+	void testCollaborationNoSelfEdge() {
 		diagram().addRootNode(aObject1);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aObject1, aObject1 );
+		edge.connect(aObject1, aObject1);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceNoSelfEdge()
-	{
+	void testReferenceNoSelfEdge() {
 		diagram().addRootNode(aObject1);
 		aObject1.addChild(aField1);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aField1, aField1 );
+		edge.connect(aField1, aField1);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReferenceNoDuplicatedEdge()
-	{
+	void testReferenceNoDuplicatedEdge() {
 		diagram().addRootNode(aObject1);
 		aObject1.addChild(aField1);
 		diagram().addRootNode(aObject2);
 		Edge edge = new ObjectReferenceEdge();
-		edge.connect(aField1, aObject2 );
+		edge.connect(aField1, aObject2);
 		diagram().addEdge(edge);
 		Edge edge2 = new ObjectReferenceEdge();
-		edge2.connect(aField1, aObject2 );
+		edge2.connect(aField1, aObject2);
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationNoDuplicatedEdge()
-	{
+	void testCollaborationNoDuplicatedEdge() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aObject2);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aObject1, aObject2 );
+		edge.connect(aObject1, aObject2);
 		diagram().addEdge(edge);
 		Edge edge2 = new ObjectCollaborationEdge();
-		edge2.connect(aObject1, aObject2 );
+		edge2.connect(aObject1, aObject2);
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCollaborationDirectCycle()
-	{
+	void testCollaborationDirectCycle() {
 		diagram().addRootNode(aObject1);
 		diagram().addRootNode(aObject2);
 		Edge edge = new ObjectCollaborationEdge();
-		edge.connect(aObject1, aObject2 );
+		edge.connect(aObject1, aObject2);
 		diagram().addEdge(edge);
 		Edge edge2 = new ObjectCollaborationEdge();
-		edge2.connect(aObject2, aObject1 );
+		edge2.connect(aObject2, aObject1);
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}

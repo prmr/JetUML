@@ -35,97 +35,86 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test for the rules that apply to all diagrams. These
- * rules are related to UML notes. The tests are done via 
- * a ClassDiagramValidator because we need an instance, but 
- * this class should not be used to hold test specific to class
+ * Test for the rules that apply to all diagrams. These rules are related to UML
+ * notes. The tests are done via a ClassDiagramValidator because we need an
+ * instance, but this class should not be used to hold test specific to class
  * diagrams.
  */
-public class TestAbstractDiagramValidator
-{
-	private final ClassDiagramValidator aValidator =
-			new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
-	
+public class AbstractDiagramValidatorTest {
+
+	private final ClassDiagramValidator aValidator = new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
+
 	private final NoteNode aNoteNode1 = new NoteNode();
 	private final NoteNode aNoteNode2 = new NoteNode();
 	private final ClassNode aClassNode = new ClassNode();
 	private final PointNode aPointNode = new PointNode();
 	private final NoteEdge aNoteEdge = new NoteEdge();
-	
-	private Diagram diagram()
-	{
+
+	private Diagram diagram() {
 		return aValidator.diagram();
 	}
-	
+
 	@Test
-	void testPointNodeNotConnected()
-	{
+	void testPointNodeNotConnected() {
 		diagram().addRootNode(new PointNode());
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromNoteToNote()
-	{
+	void testNoteEdgeFromNoteToNote() {
 		diagram().addRootNode(aNoteNode1);
 		diagram().addRootNode(aNoteNode2);
 		aNoteEdge.connect(aNoteNode1, aNoteNode2);
 		diagram().addEdge(aNoteEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromClassToPoint()
-	{
+	void testNoteEdgeFromClassToPoint() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aPointNode);
 		aNoteEdge.connect(aClassNode, aPointNode);
 		diagram().addEdge(aNoteEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromPointToClass()
-	{
+	void testNoteEdgeFromPointToClass() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aPointNode);
-		aNoteEdge.connect(aPointNode, aClassNode );
+		aNoteEdge.connect(aPointNode, aClassNode);
 		diagram().addEdge(aNoteEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromNoteToPoint()
-	{
+	void testNoteEdgeFromNoteToPoint() {
 		diagram().addRootNode(aNoteNode1);
 		diagram().addRootNode(aPointNode);
-		aNoteEdge.connect(aNoteNode1, aPointNode );
+		aNoteEdge.connect(aNoteNode1, aPointNode);
 		diagram().addEdge(aNoteEdge);
 		assertTrue(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromClassNodeToNote()
-	{
+	void testNoteEdgeFromClassNodeToNote() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aNoteNode1);
-		aNoteEdge.connect(aClassNode, aNoteNode1 );
+		aNoteEdge.connect(aClassNode, aNoteNode1);
 		diagram().addEdge(aNoteEdge);
 		assertTrue(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeFromClassNodeToClass()
-	{
+	void testNoteEdgeFromClassNodeToClass() {
 		diagram().addRootNode(aClassNode);
-		aNoteEdge.connect(aClassNode, aClassNode );
+		aNoteEdge.connect(aClassNode, aClassNode);
 		diagram().addEdge(aNoteEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDependencyEdgeToPointNode()
-	{
+	void testDependencyEdgeToPointNode() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aPointNode);
 		Edge edge = new DependencyEdge();
@@ -133,10 +122,9 @@ public class TestAbstractDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testAggregationEdgeToPointNode()
-	{
+	void testAggregationEdgeToPointNode() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aPointNode);
 		Edge edge = new AggregationEdge();
@@ -144,10 +132,9 @@ public class TestAbstractDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testGeneralizationEdgeToPointNode()
-	{
+	void testGeneralizationEdgeToPointNode() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aPointNode);
 		Edge edge = new AggregationEdge();
@@ -155,10 +142,9 @@ public class TestAbstractDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDuplicatedNoteEdge()
-	{
+	void testDuplicatedNoteEdge() {
 		diagram().addRootNode(aClassNode);
 		diagram().addRootNode(aNoteNode1);
 		Edge edge1 = new NoteEdge();

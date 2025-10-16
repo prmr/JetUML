@@ -20,28 +20,26 @@
  *******************************************************************************/
 package org.jetuml.diagram.validator.constraints;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.edges.DependencyEdge;
+import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.nodes.ClassNode;
+import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.junit.jupiter.api.Test;
 
-public class TestConstraintNoEdgeToNoteExceptNoteEdge
-{
-	private static final ConstraintNoEdgeToNoteExceptNoteEdge CONSTRAINT = 
-			new ConstraintNoEdgeToNoteExceptNoteEdge();
-	
+public class ConstraintCallEdgeBetweenCallNodesTest {
+
+	private static final ConstraintCallEdgeBetweenCallNodes CONSTRAINT = new ConstraintCallEdgeBetweenCallNodes();
+
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	
+
 	@Test
-	void testSatistified_True_NoteEdge()
-	{
+	void testSatistified_True_NotACallEdge() {
 		NoteEdge edge = new NoteEdge();
 		NoteNode nodeA = new NoteNode();
 		PointNode nodeB = new PointNode();
@@ -49,63 +47,46 @@ public class TestConstraintNoEdgeToNoteExceptNoteEdge
 		aDiagram.addRootNode(nodeA);
 		aDiagram.addRootNode(nodeB);
 		aDiagram.addEdge(edge);
-		
+
 		assertTrue(CONSTRAINT.satisfied(edge, aDiagram));
 	}
 	
 	@Test
-	void testSatistified_False_NoteAtStart()
-	{
-		DependencyEdge edge = new DependencyEdge();
-		NoteNode nodeA = new NoteNode();
-		ClassNode nodeB = new ClassNode();
+	void testSatistified_True_BothCallNodes() {
+		CallEdge edge = new CallEdge();
+		CallNode nodeA = new CallNode();
+		CallNode nodeB = new CallNode();
 		edge.connect(nodeA, nodeB);
 		aDiagram.addRootNode(nodeA);
 		aDiagram.addRootNode(nodeB);
 		aDiagram.addEdge(edge);
-		
-		assertFalse(CONSTRAINT.satisfied(edge, aDiagram));
-	}
-	
-	@Test
-	void testSatistified_False_NoteAtEnd()
-	{
-		DependencyEdge edge = new DependencyEdge();
-		NoteNode nodeA = new NoteNode();
-		ClassNode nodeB = new ClassNode();
-		edge.connect(nodeB, nodeA);
-		aDiagram.addRootNode(nodeA);
-		aDiagram.addRootNode(nodeB);
-		aDiagram.addEdge(edge);
-		
-		assertFalse(CONSTRAINT.satisfied(edge, aDiagram));
-	}
-	
-	@Test
-	void testSatistified_False_NoteAtStartAndEnd()
-	{
-		DependencyEdge edge = new DependencyEdge();
-		NoteNode nodeA = new NoteNode();
-		NoteNode nodeB = new NoteNode();
-		edge.connect(nodeB, nodeA);
-		aDiagram.addRootNode(nodeA);
-		aDiagram.addRootNode(nodeB);
-		aDiagram.addEdge(edge);
-		
-		assertFalse(CONSTRAINT.satisfied(edge, aDiagram));
-	}
-	
-	@Test
-	void testSatistified_True_NoteAtNeither()
-	{
-		DependencyEdge edge = new DependencyEdge();
-		ClassNode nodeA = new ClassNode();
-		ClassNode nodeB = new ClassNode();
-		edge.connect(nodeB, nodeA);
-		aDiagram.addRootNode(nodeA);
-		aDiagram.addRootNode(nodeB);
-		aDiagram.addEdge(edge);
-		
+
 		assertTrue(CONSTRAINT.satisfied(edge, aDiagram));
+	}
+	
+	@Test
+	void testSatistified_False_FirstNotCallNode() {
+		CallEdge edge = new CallEdge();
+		PointNode nodeA = new PointNode();
+		CallNode nodeB = new CallNode();
+		edge.connect(nodeA, nodeB);
+		aDiagram.addRootNode(nodeA);
+		aDiagram.addRootNode(nodeB);
+		aDiagram.addEdge(edge);
+
+		assertFalse(CONSTRAINT.satisfied(edge, aDiagram));
+	}
+	
+	@Test
+	void testSatistified_False_SecondNotCallNode() {
+		CallEdge edge = new CallEdge();
+		PointNode nodeA = new PointNode();
+		CallNode nodeB = new CallNode();
+		edge.connect(nodeB, nodeA);
+		aDiagram.addRootNode(nodeA);
+		aDiagram.addRootNode(nodeB);
+		aDiagram.addEdge(edge);
+
+		assertFalse(CONSTRAINT.satisfied(edge, aDiagram));
 	}
 }

@@ -63,13 +63,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests the complete structural and semantic validation of sequence diagrams.
- * Tests should focus on invalid diagrams. False positives (valid semantics detected as invalid)
- * are easy to detect just from using the tool.
+ * Tests should focus on invalid diagrams. False positives (valid semantics
+ * detected as invalid) are easy to detect just from using the tool.
  */
-public class TestSequenceDiagramValidator
-{
-	private final SequenceDiagramValidator aValidator = new SequenceDiagramValidator(
-			new Diagram(DiagramType.SEQUENCE));
+public class SequenceDiagramValidatorTest {
+
+	private final SequenceDiagramValidator aValidator = new SequenceDiagramValidator(new Diagram(DiagramType.SEQUENCE));
 	private final ImplicitParameterNode aImplicitParameterNode = new ImplicitParameterNode();
 	private final CallNode aCallNode = new CallNode();
 	private final NoteNode aNoteNode = new NoteNode();
@@ -77,47 +76,40 @@ public class TestSequenceDiagramValidator
 	private final ReturnEdge aReturnEdge = new ReturnEdge();
 	private final CallEdge aConstructor = new ConstructorEdge();
 
-	private Diagram diagram()
-	{
+	private Diagram diagram() {
 		return aValidator.diagram();
 	}
-	
-	private static List<Node> provideInvalidNodes()
-	{
-		return List.of(new ActorNode(), new ClassNode(), new FieldNode(), new FinalStateNode(), 
-				new InitialStateNode(), new InterfaceNode(), new ObjectNode(), new PackageDescriptionNode(), 
-				new PackageNode(), new StateNode(), new UseCaseNode());
+
+	private static List<Node> provideInvalidNodes() {
+		return List.of(new ActorNode(), new ClassNode(), new FieldNode(), new FinalStateNode(), new InitialStateNode(),
+				new InterfaceNode(), new ObjectNode(), new PackageDescriptionNode(), new PackageNode(), new StateNode(),
+				new UseCaseNode());
 	}
-	
-	private static List<Edge> provideInvalidEdges()
-	{
-		return List.of(new AggregationEdge(), new AssociationEdge(), new DependencyEdge(),
-				new GeneralizationEdge(), new ObjectCollaborationEdge(), new ObjectReferenceEdge(), 
-				new ReturnEdge(), new StateTransitionEdge(), new UseCaseAssociationEdge(),
-				new UseCaseDependencyEdge(), new UseCaseGeneralizationEdge());
+
+	private static List<Edge> provideInvalidEdges() {
+		return List.of(new AggregationEdge(), new AssociationEdge(), new DependencyEdge(), new GeneralizationEdge(),
+				new ObjectCollaborationEdge(), new ObjectReferenceEdge(), new ReturnEdge(), new StateTransitionEdge(),
+				new UseCaseAssociationEdge(), new UseCaseDependencyEdge(), new UseCaseGeneralizationEdge());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidNodes")
-	void testInvalidElement_Node(Node pNode)
-	{
+	void testInvalidElement_Node(Node pNode) {
 		diagram().addRootNode(pNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidEdges")
-	void testInvalidElement_Edge(Edge pEdge)
-	{
+	void testInvalidElement_Edge(Edge pEdge) {
 		pEdge.connect(aNoteNode, aNoteNode);
 		diagram().addEdge(pEdge);
 		diagram().addRootNode(aNoteNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeConnectsTwoNoteNodes()
-	{
+	void testNoteEdgeConnectsTwoNoteNodes() {
 		Node node2 = new NoteNode();
 		Edge edge = new NoteEdge();
 		edge.connect(aNoteNode, node2);
@@ -126,33 +118,29 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoteEdgeConnectstAtLeastOneNoteNode()
-	{
+	void testNoteEdgeConnectstAtLeastOneNoteNode() {
 		Edge edge = new NoteEdge();
 		edge.connect(aImplicitParameterNode, new ImplicitParameterNode());
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCallNodeHasParent()
-	{
+	void testCallNodeHasParent() {
 		diagram().addRootNode(aCallNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testPointNodeNotConnected()
-	{
+	void testPointNodeNotConnected() {
 		diagram().addRootNode(new PointNode());
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCallNodeToNoteNode()
-	{
+	void testCallNodeToNoteNode() {
 		diagram().addRootNode(aImplicitParameterNode);
 		aImplicitParameterNode.addChild(aCallNode);
 		diagram().addRootNode(aNoteNode);
@@ -160,10 +148,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aCallEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testConstructorNodeToNoteNode()
-	{
+	void testConstructorNodeToNoteNode() {
 		diagram().addRootNode(aImplicitParameterNode);
 		aImplicitParameterNode.addChild(aCallNode);
 		diagram().addRootNode(aNoteNode);
@@ -171,10 +158,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aConstructor);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testImplicitParameterToCall()
-	{
+	void testImplicitParameterToCall() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -183,10 +169,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aCallEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testImplicitParameterToCall2()
-	{
+	void testImplicitParameterToCall2() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -195,10 +180,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aConstructor);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCallToImplicitParameter()
-	{
+	void testCallToImplicitParameter() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -207,10 +191,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aCallEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCallToImplicitParameter2()
-	{
+	void testCallToImplicitParameter2() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -219,54 +202,51 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aConstructor);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testMultipleCallers()
-	{
+	void testMultipleCallers() {
 		ImplicitParameterNode object1 = new ImplicitParameterNode();
 		CallNode call1 = new CallNode();
 		diagram().addRootNode(object1);
 		object1.addChild(call1);
-		
+
 		ImplicitParameterNode object2 = new ImplicitParameterNode();
 		CallNode call2 = new CallNode();
 		diagram().addRootNode(object2);
 		object1.addChild(call2);
-		
+
 		ImplicitParameterNode object3 = new ImplicitParameterNode();
 		CallNode call3 = new CallNode();
 		diagram().addRootNode(object3);
 		object1.addChild(call3);
-		
+
 		Edge callEdge1 = new CallEdge();
 		callEdge1.connect(call1, call2);
 		diagram().addEdge(callEdge1);
-		
+
 		Edge callEdge2 = new CallEdge();
 		callEdge2.connect(call2, call3);
 		diagram().addEdge(callEdge2);
-		
+
 		Edge callEdge3 = new CallEdge();
 		callEdge3.connect(call1, call3);
 		diagram().addEdge(callEdge3);
-		
+
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testMultipleRoots()
-	{
+	void testMultipleRoots() {
 		diagram().addRootNode(aImplicitParameterNode);
 		aImplicitParameterNode.addChild(aCallNode);
 		aImplicitParameterNode.addChild(new CallNode());
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	/// -------------- 
-	
+
 	@Test
-	void testReturnCallNodeToNoteNode()
-	{
+	void testReturnCallNodeToNoteNode() {
 		diagram().addRootNode(aImplicitParameterNode);
 		aImplicitParameterNode.addChild(aCallNode);
 		diagram().addRootNode(aNoteNode);
@@ -274,10 +254,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aReturnEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReturnNodeToNoteNode()
-	{
+	void testReturnNodeToNoteNode() {
 		diagram().addRootNode(aImplicitParameterNode);
 		aImplicitParameterNode.addChild(aCallNode);
 		diagram().addRootNode(aNoteNode);
@@ -285,10 +264,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aReturnEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReturnImplicitParameterToCall()
-	{
+	void testReturnImplicitParameterToCall() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -297,10 +275,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aReturnEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReturnToImplicitParameter()
-	{
+	void testReturnToImplicitParameter() {
 		diagram().addRootNode(aImplicitParameterNode);
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -309,10 +286,9 @@ public class TestSequenceDiagramValidator
 		diagram().addEdge(aReturnEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReturnToNonCaller()
-	{
+	void testReturnToNonCaller() {
 		diagram().addRootNode(aImplicitParameterNode);
 		Node node2 = new ImplicitParameterNode();
 		diagram().addRootNode(node2);
@@ -330,26 +306,25 @@ public class TestSequenceDiagramValidator
 		Edge edge2 = new CallEdge();
 		edge2.connect(callNode2, callNode3);
 		diagram().addEdge(edge2);
-		
+
 		Edge returnEdge = new ReturnEdge();
 		returnEdge.connect(callNode3, callNode1);
 		diagram().addEdge(returnEdge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testReturnFromSelfCall()
-	{
+	void testReturnFromSelfCall() {
 		diagram().addRootNode(aImplicitParameterNode);
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
 		aImplicitParameterNode.addChild(callNode1);
 		aImplicitParameterNode.addChild(callNode2);
-		
+
 		Edge edge1 = new CallEdge();
 		edge1.connect(callNode1, callNode2);
 		diagram().addEdge(edge1);
-				
+
 		Edge returnEdge = new ReturnEdge();
 		returnEdge.connect(callNode2, callNode1);
 		diagram().addEdge(returnEdge);

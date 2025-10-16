@@ -21,6 +21,7 @@
 package org.jetuml.diagram.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -59,92 +60,99 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class TestUseCaseDiagramValidator
-{
-	private final UseCaseDiagramValidator aValidator =
-			new UseCaseDiagramValidator(new Diagram(DiagramType.USECASE));
+public class StateDiagramValidatorTest {
+
+	private final StateDiagramValidator aValidator = new StateDiagramValidator(new Diagram(DiagramType.STATE));
 	private final NoteNode aNoteNode = new NoteNode();
-	private final Node aCase1 = new UseCaseNode();
-	private final Node aCase2 = new UseCaseNode();
-	private final Node aActor1 = new ActorNode();
-	private final Edge aDependency = new UseCaseDependencyEdge();
-	private final Edge aAssociation = new UseCaseAssociationEdge();
-	private final Edge aGeneralization = new UseCaseGeneralizationEdge();
-	
-	private Diagram diagram()
-	{
+	private final InitialStateNode aStart = new InitialStateNode();
+	private final FinalStateNode aEnd = new FinalStateNode();
+	private final StateNode aState1 = new StateNode();
+	private final StateNode aState2 = new StateNode();
+	private final StateTransitionEdge aEdge1 = new StateTransitionEdge();
+
+	private Diagram diagram() {
 		return aValidator.diagram();
 	}
 
-	private static List<Node> provideInvalidNodes()
-	{
-		return List.of(new CallNode(), new ClassNode(), new FieldNode(), new FinalStateNode(),
-				new ImplicitParameterNode(), new InitialStateNode(), new InterfaceNode(), new ObjectNode(),
-				new PackageDescriptionNode(), new PackageNode(), new StateNode());
+	private static List<Node> provideInvalidNodes() {
+		return List.of(new ActorNode(), new CallNode(), new ClassNode(), new FieldNode(), new ImplicitParameterNode(),
+				new InterfaceNode(), new ObjectNode(), new PackageDescriptionNode(), new PackageNode(),
+				new UseCaseNode());
 	}
-	
-	private static List<Edge> provideInvalidEdges()
-	{
-		return List.of(new AggregationEdge(), new AssociationEdge(), new CallEdge(), new ConstructorEdge(), 
-				new DependencyEdge(), new GeneralizationEdge(), new ObjectCollaborationEdge(), 
-				new ObjectReferenceEdge(), new ReturnEdge(), new StateTransitionEdge());
+
+	private static List<Edge> provideInvalidEdges() {
+		return List.of(new AggregationEdge(), new AssociationEdge(), new CallEdge(), new ConstructorEdge(),
+				new DependencyEdge(), new GeneralizationEdge(), new ObjectCollaborationEdge(),
+				new ObjectReferenceEdge(), new ReturnEdge(), new UseCaseAssociationEdge(), new UseCaseDependencyEdge(),
+				new UseCaseGeneralizationEdge());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidNodes")
-	void testInvalidElement_Node(Node pNode)
-	{
+	void testInvalidElement_Node(Node pNode) {
 		diagram().addRootNode(pNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidEdges")
-	void testInvalidElement_Edge(Edge pEdge)
-	{
+	void testInvalidElement_Edge(Edge pEdge) {
 		pEdge.connect(aNoteNode, aNoteNode);
 		diagram().addEdge(pEdge);
 		diagram().addRootNode(aNoteNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testTwoEdgesBetweenNodes()
-	{
-		diagram().addRootNode(aCase1);
-		diagram().addRootNode(aCase2);
-		aDependency.connect(aCase1, aCase2);
-		diagram().addEdge(aDependency);
-		Edge edge = new DependencyEdge();
-		edge.connect(aCase1, aCase2);
-		diagram().addEdge(edge);
+	void testEdgeToNote() {
+		diagram().addRootNode(aState1);
+		diagram().addRootNode(aNoteNode);
+		aEdge1.connect(aState1, aNoteNode);
+		diagram().addEdge(aEdge1);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testSelfAssociation()
-	{
-		diagram().addRootNode(aActor1);
-		aAssociation.connect(aActor1, aActor1);
-		diagram().addEdge(aAssociation);
+	void testEdgeFromNote() {
+		diagram().addRootNode(aState1);
+		diagram().addRootNode(aNoteNode);
+		aEdge1.connect(aNoteNode, aState1);
+		diagram().addEdge(aEdge1);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testSelfGeneralization()
-	{
-		diagram().addRootNode(aActor1);
-		aGeneralization.connect(aActor1, aActor1);
-		diagram().addEdge(aGeneralization);
+	void testEdgeFromFinalNode() {
+		diagram().addRootNode(aState1);
+		diagram().addRootNode(aEnd);
+		aEdge1.connect(aEnd, aState1);
+		diagram().addEdge(aEdge1);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testSelfDependency()
-	{
-		diagram().addRootNode(aActor1);
-		aDependency.connect(aActor1, aActor1);
-		diagram().addEdge(aDependency);
+	void testEdgeToStartNode() {
+		diagram().addRootNode(aState1);
+		diagram().addRootNode(aStart);
+		aEdge1.connect(aState1, aStart);
+		diagram().addEdge(aEdge1);
 		assertFalse(aValidator.isValid());
+	}
+
+	@Test
+	void testEdgeBetweenStateNodes() {
+		diagram().addRootNode(aState1);
+		diagram().addRootNode(aState2);
+		aEdge1.connect(aState1, aState2);
+		diagram().addEdge(aEdge1);
+		assertTrue(aValidator.isValid());
+	}
+
+	@Test
+	void testSelfEdge_Valid() {
+		diagram().addRootNode(aState1);
+		aEdge1.connect(aState1, aState1);
+		diagram().addEdge(aEdge1);
+		assertTrue(aValidator.isValid());
 	}
 }

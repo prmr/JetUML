@@ -56,57 +56,50 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class TestClassDiagramValidator
-{
-	private final ClassDiagramValidator aValidator =
-			new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
+public class ClassDiagramValidatorTest {
+
+	private final ClassDiagramValidator aValidator = new ClassDiagramValidator(new Diagram(DiagramType.CLASS));
 	private final NoteNode aNoteNode = new NoteNode();
 	private final ClassNode aClassNode1 = new ClassNode();
 	private final ClassNode aClassNode2 = new ClassNode();
 	private final ClassNode aClassNode3 = new ClassNode();
 	private final DependencyEdge aDependencyEdge1 = new DependencyEdge();
 	private final DependencyEdge aDependencyEdge2 = new DependencyEdge();
-	
-	private Diagram diagram()
-	{
+
+	private Diagram diagram() {
 		return aValidator.diagram();
 	}
 
-	private static List<Node> provideInvalidNodes()
-	{
-		return List.of(new ActorNode(), new CallNode(), new FieldNode(), new FinalStateNode(), 
-				new ImplicitParameterNode(), new InitialStateNode(), new ObjectNode(), new StateNode(), 
+	private static List<Node> provideInvalidNodes() {
+		return List.of(new ActorNode(), new CallNode(), new FieldNode(), new FinalStateNode(),
+				new ImplicitParameterNode(), new InitialStateNode(), new ObjectNode(), new StateNode(),
 				new UseCaseNode());
 	}
-	
-	private static List<Edge> provideInvalidEdges()
-	{
-		return List.of(new CallEdge(), new ObjectCollaborationEdge(), new ObjectReferenceEdge(), 
-				new ReturnEdge(), new StateTransitionEdge(), new UseCaseAssociationEdge(),
-				new UseCaseDependencyEdge(), new UseCaseGeneralizationEdge());
+
+	private static List<Edge> provideInvalidEdges() {
+		return List.of(new CallEdge(), new ObjectCollaborationEdge(), new ObjectReferenceEdge(), new ReturnEdge(),
+				new StateTransitionEdge(), new UseCaseAssociationEdge(), new UseCaseDependencyEdge(),
+				new UseCaseGeneralizationEdge());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidNodes")
-	void testInvalidElement_Node(Node pNode)
-	{
+	void testInvalidElement_Node(Node pNode) {
 		diagram().addRootNode(pNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideInvalidEdges")
-	void testInvalidElement_Edge(Edge pEdge)
-	{
+	void testInvalidElement_Edge(Edge pEdge) {
 		pEdge.connect(aNoteNode, aNoteNode);
 		diagram().addEdge(pEdge);
 		diagram().addRootNode(aNoteNode);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testTwoEdgesBetweenNodesSameDirection()
-	{
+	void testTwoEdgesBetweenNodesSameDirection() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		aDependencyEdge1.connect(aClassNode1, aClassNode2);
@@ -115,10 +108,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(aDependencyEdge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testTwoEdgesBetweenNodesOppositeDirection()
-	{
+	void testTwoEdgesBetweenNodesOppositeDirection() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		aDependencyEdge1.connect(aClassNode1, aClassNode2);
@@ -127,10 +119,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(aDependencyEdge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testSameStartNodeDifferentEndNodes()
-	{
+	void testSameStartNodeDifferentEndNodes() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		diagram().addRootNode(aClassNode3);
@@ -140,30 +131,27 @@ public class TestClassDiagramValidator
 		diagram().addEdge(aDependencyEdge2);
 		assertTrue(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testSelfGeneralization()
-	{
+	void testSelfGeneralization() {
 		GeneralizationEdge edge = new GeneralizationEdge();
 		diagram().addRootNode(aClassNode1);
 		edge.connect(aClassNode1, aClassNode1);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoSelfDependency()
-	{
+	void testNoSelfDependency() {
 		DependencyEdge edge = new DependencyEdge();
 		diagram().addRootNode(aClassNode1);
 		edge.connect(aClassNode1, aClassNode1);
 		diagram().addEdge(edge);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDirectCycleGeneralizationEdge()
-	{
+	void testDirectCycleGeneralizationEdge() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new GeneralizationEdge();
@@ -174,10 +162,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDirectCycleDependencyEdge()
-	{
+	void testDirectCycleDependencyEdge() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new DependencyEdge();
@@ -188,10 +175,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDirectCycleAggregationEdge()
-	{
+	void testDirectCycleAggregationEdge() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new AggregationEdge();
@@ -202,10 +188,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testDirectCycleAssociationEdge()
-	{
+	void testDirectCycleAssociationEdge() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new AssociationEdge();
@@ -216,10 +201,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoDirectCycle()
-	{
+	void testNoDirectCycle() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new DependencyEdge();
@@ -230,10 +214,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertTrue(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCombinedAssociationAggregationSameDirection()
-	{
+	void testCombinedAssociationAggregationSameDirection() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new AggregationEdge();
@@ -244,10 +227,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testCombinedAssociationAggregationDifferentDirection()
-	{
+	void testCombinedAssociationAggregationDifferentDirection() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new AggregationEdge();
@@ -258,10 +240,9 @@ public class TestClassDiagramValidator
 		diagram().addEdge(edge2);
 		assertFalse(aValidator.isValid());
 	}
-	
+
 	@Test
-	void testNoCombinedAssociationAggregationDirection()
-	{
+	void testNoCombinedAssociationAggregationDirection() {
 		diagram().addRootNode(aClassNode1);
 		diagram().addRootNode(aClassNode2);
 		Edge edge1 = new GeneralizationEdge();
