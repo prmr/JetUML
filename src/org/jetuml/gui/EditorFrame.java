@@ -103,6 +103,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
+        moveMenuBarToMacNativeMenuBar(menuBar);
 		setTop(menuBar);
 		
 		TabPane tabPane = new TabPane();
@@ -146,6 +147,19 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		}
 		return validFormats.toArray(new String[validFormats.size()]);
 	}
+
+    /*
+     * Moves the menu bar to the system menu bar on macOS systems.
+     * A macOS system is indicated by the string "Mac OS X" in
+     * System property `os.name`.
+     */
+    private void moveMenuBarToMacNativeMenuBar(MenuBar pMenuBar)
+    {
+        if (System.getProperty("os.name").equals("Mac OS X"))
+        {
+            pMenuBar.setUseSystemMenuBar(true);
+        }
+    }
 	
 	/*
 	 * Traverses all menu items up to the second level (top level
