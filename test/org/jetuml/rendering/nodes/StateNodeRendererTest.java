@@ -23,55 +23,38 @@ package org.jetuml.rendering.nodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestStateNodeViewer
-{
-	private StateNode aNode; 
-	private final StateNodeRenderer aViewer = new StateNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)));
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		aNode = new StateNode();
-	}
-	
+public class StateNodeRendererTest {
+
+	private StateNode aNode = new StateNode();
+	private final StateNodeRenderer aViewer = new StateNodeRenderer(
+			DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)));
+
 	@Test
-	public void testGetBounds_NoName()
-	{
+	void testGetBounds_NoName() {
 		aNode.setName("");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(0, 0), aViewer.getBounds(aNode).origin());
 		assertEquals(80, aViewer.getBounds(aNode).width());
 		assertEquals(60, aViewer.getBounds(aNode).height());
 	}
-	
+
 	@Test
-	public void testGetBounds_ShortName()
-	{
+	void testGetBounds_ShortName() {
 		aNode.setName("X");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(0, 0), aViewer.getBounds(aNode).origin());
 		assertEquals(80, aViewer.getBounds(aNode).width());
 		assertEquals(60, aViewer.getBounds(aNode).height());
 	}
-	
+
 	@Test
-	public void testGetBounds_LongName()
-	{	
+	void testGetBounds_LongName() {
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(0, 0), aViewer.getBounds(aNode).origin());
 		assertTrue(aViewer.getBounds(aNode).width() > 80);
 		assertEquals(60, aViewer.getBounds(aNode).height());
 	}

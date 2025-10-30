@@ -37,97 +37,85 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Test for the NodeIndex methods. 
+ * Test for the NodeIndex methods.
  */
-public class TestNodeIndex 
-{
+public class NodeIndexTest {
+
 	private final Node aNode = new ClassNode();
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	
-	TestNodeIndex()
-	{
+
+	NodeIndexTest() {
 		aDiagram.addRootNode(aNode);
 		aNode.moveTo(new Point(0, 0));
 	}
-	
+
 	@Test
-	void testToPoint_north()
-	{
+	void testToPoint_north() {
 		Line nodeFace = new Line(new Point(0, 0), new Point(100, 0));
 		assertEquals(new Point(30, 0), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.TOP));
 		assertEquals(new Point(50, 0), NodeIndex.ZERO.toPoint(nodeFace, Side.TOP));
 		assertEquals(new Point(90, 0), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Side.TOP));
 	}
-	
+
 	@Test
-	void testToPoint_south()
-	{
+	void testToPoint_south() {
 		Line nodeFace = new Line(new Point(0, 60), new Point(100, 60));
 		assertEquals(new Point(30, 60), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.BOTTOM));
 		assertEquals(new Point(50, 60), NodeIndex.ZERO.toPoint(nodeFace, Side.BOTTOM));
 		assertEquals(new Point(90, 60), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Side.BOTTOM));
 	}
-	
+
 	@Test
-	void testToPoint_west()
-	{
+	void testToPoint_west() {
 		Line nodeFace = new Line(new Point(0, 0), new Point(0, 60));
 		assertEquals(new Point(0, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.LEFT));
 		assertEquals(new Point(0, 30), NodeIndex.ZERO.toPoint(nodeFace, Side.LEFT));
 		assertEquals(new Point(0, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Side.LEFT));
 	}
-	
+
 	@Test
-	void testToPoint_east()
-	{
+	void testToPoint_east() {
 		Line nodeFace = new Line(new Point(100, 0), new Point(100, 60));
 		assertEquals(new Point(100, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.RIGHT));
 		assertEquals(new Point(100, 30), NodeIndex.ZERO.toPoint(nodeFace, Side.RIGHT));
 		assertEquals(new Point(100, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Side.RIGHT));
 	}
-	
+
 	@ParameterizedTest
-	@ValueSource(ints = {60,70,80,90,95,100,110,180,190})
-	void testSpaceBetweenConnectionPoints_Horizontal_noExpansion(int pWidth)
-	{
+	@ValueSource(ints = { 60, 70, 80, 90, 95, 100, 110, 180, 190 })
+	void testSpaceBetweenConnectionPoints_Horizontal_noExpansion(int pWidth) {
 		assertEquals(10, spaceBetweenConnectionPoints(new Line(0, 10, pWidth, 10), Side.TOP));
 	}
-	
+
 	@ParameterizedTest
-	@ValueSource(ints = {200,250,270,280,285})
-	void testSpaceBetweenConnectionPoints_Horizontal_withExpansion(int pWidth)
-	{
+	@ValueSource(ints = { 200, 250, 270, 280, 285 })
+	void testSpaceBetweenConnectionPoints_Horizontal_withExpansion(int pWidth) {
 		assertEquals(20, spaceBetweenConnectionPoints(new Line(0, 10, pWidth, 10), Side.TOP));
 	}
-	
+
 	@ParameterizedTest
-	@ValueSource(ints = {60,100,115,116,117})
-	void testSpaceBetweenConnectionPoints_Vertical_noExpansion(int pHeight)
-	{
+	@ValueSource(ints = { 60, 100, 115, 116, 117 })
+	void testSpaceBetweenConnectionPoints_Vertical_noExpansion(int pHeight) {
 		assertEquals(10, spaceBetweenConnectionPoints(new Line(10, 0, 10, pHeight), Side.RIGHT));
 	}
-	
+
 	@ParameterizedTest
-	@ValueSource(ints = {118,150,165,166,167})
-	void testSpaceBetweenConnectionPoints_Vertical_withExpansion(int pHeight)
-	{
+	@ValueSource(ints = { 118, 150, 165, 166, 167 })
+	void testSpaceBetweenConnectionPoints_Vertical_withExpansion(int pHeight) {
 		assertEquals(20, spaceBetweenConnectionPoints(new Line(10, 0, 10, pHeight), Side.RIGHT));
 	}
-	
-	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
-	{
-		try
-		{
+
+	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide) {
+		try {
 			Method method = NodeIndex.class.getDeclaredMethod("spaceBetweenConnectionPoints", Line.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(null, pNodeFace, pAttachmentSide);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 			fail();
 			return -1;
 		}
 	}
-	
+
 }

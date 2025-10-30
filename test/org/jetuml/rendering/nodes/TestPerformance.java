@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
- import java.nio.file.Path;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -33,44 +33,40 @@ import org.jetuml.rendering.GraphicsRenderingContext;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
- /**
-  * Tests the performance of drawing a diagram. 
-  */
- public final class TestPerformance 
- {
- 	private static final int NUMBER_OF_TRIALS = 10;
- 	
- 	private TestPerformance() {}
+/**
+ * Tests the performance of drawing a diagram.
+ */
+public final class TestPerformance {
 
- 	/**
- 	 * Test method. 
- 	 */
- 	public static void main(String[] pArgs) throws Exception
- 	{
- 		Canvas canvas = new Canvas();
- 		GraphicsContext graphicContext = canvas.getGraphicsContext2D();
- 		Diagram diagram = PersistenceService.read(Path.of("testdata", "performanceDiagram.class.jet").toFile());
- 		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
+	private static final int NUMBER_OF_TRIALS = 10;
 
- 		double avgExecutionTime = 0.0;
- 		for(int i = 0; i < NUMBER_OF_TRIALS+1; i++)
- 		{
- 			Instant start = Instant.now();
- 			renderer.draw(new GraphicsRenderingContext(graphicContext));
- 			Instant stop = Instant.now();
+	private TestPerformance() {}
 
- 			if (i == 0)
- 			{
- 				continue;
- 			}
- 			else
- 			{
- 				avgExecutionTime += Duration.between(start, stop).toMillis();
- 			}
- 		}
- 		avgExecutionTime = avgExecutionTime / NUMBER_OF_TRIALS;
+	/**
+	 * Test method.
+	 */
+	public static void main(String[] pArgs) throws Exception {
+		Canvas canvas = new Canvas();
+		GraphicsContext graphicContext = canvas.getGraphicsContext2D();
+		Diagram diagram = PersistenceService.read(Path.of("testdata", "performanceDiagram.class.jet").toFile());
+		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 
- 		System.out.println("Test DiagramRenderer.draw(diagram) : ");
- 		System.out.println("Average Duration (ms) of " + NUMBER_OF_TRIALS + " trials : " + avgExecutionTime);
- 	}
- }
+		double avgExecutionTime = 0.0;
+		for (int i = 0; i < NUMBER_OF_TRIALS + 1; i++) {
+			Instant start = Instant.now();
+			renderer.draw(new GraphicsRenderingContext(graphicContext));
+			Instant stop = Instant.now();
+
+			if (i == 0) {
+				continue;
+			}
+			else {
+				avgExecutionTime += Duration.between(start, stop).toMillis();
+			}
+		}
+		avgExecutionTime = avgExecutionTime / NUMBER_OF_TRIALS;
+
+		System.out.println("Test DiagramRenderer.draw(diagram) : ");
+		System.out.println("Average Duration (ms) of " + NUMBER_OF_TRIALS + " trials : " + avgExecutionTime);
+	}
+}

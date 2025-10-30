@@ -34,87 +34,67 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestCallNodeViewer
-{
+public class CallNodeRendererTest {
+
 	private static int userDefinedFontSize;
-	private ImplicitParameterNode aImplicitParameterNode1;
-	private ImplicitParameterNode aImplicitParameterNode2;
-	private Diagram aDiagram;
-	private SequenceDiagramRenderer aRenderer;
-	private CallNode aDefaultCallNode1;
-	private CallNode aDefaultCallNode2;
-	private CallNode aCallNode1;
-	private CallEdge aCallEdge1;
-	private CallEdge aCallEdge2;
-	private ConstructorEdge aConstructorEdge;
-	
+	private ImplicitParameterNode aImplicitParameterNode1 = new ImplicitParameterNode();
+	private ImplicitParameterNode aImplicitParameterNode2 = new ImplicitParameterNode();
+	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
+	private SequenceDiagramRenderer aRenderer = new SequenceDiagramRenderer(aDiagram);
+	private CallNode aDefaultCallNode1 = new CallNode();
+	private CallNode aDefaultCallNode2 = new CallNode();
+	private CallNode aCallNode1 = new CallNode();
+	private CallEdge aCallEdge1 = new CallEdge();
+	private CallEdge aCallEdge2 = new CallEdge();
+	private ConstructorEdge aConstructorEdge = new ConstructorEdge();
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
-	
-	@BeforeEach
-	void setup()
-	{
-		aDiagram = new Diagram(DiagramType.SEQUENCE);
-		aRenderer = new SequenceDiagramRenderer(aDiagram);
-		aImplicitParameterNode1 = new ImplicitParameterNode();
-		aImplicitParameterNode2 = new ImplicitParameterNode();
-		aDefaultCallNode1 = new CallNode();
-		aDefaultCallNode2 = new CallNode();
-		aCallNode1 = new CallNode();
-		aCallEdge1 = new CallEdge();
-		aCallEdge2 = new CallEdge();
-		aConstructorEdge = new ConstructorEdge();
-	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@Test
-	void testGetBoundsSecondCalleeOfCaller()
-	{
+	void testGetBoundsSecondCalleeOfCaller() {
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
 		aImplicitParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
-		
+
 		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2);
 		aDiagram.addEdge(aCallEdge1);
-		
+
 		aImplicitParameterNode2.addChild(aCallNode1);
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1);
 		aDiagram.addEdge(aCallEdge2);
-		
+
 		aRenderer.getBounds(); // Trigger rendering pass
-		
+
 		assertEquals(new Rectangle(30, 80, 16, 120), aRenderer.getBounds(aDefaultCallNode1));
 		assertEquals(new Rectangle(230, 100, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
 		assertEquals(new Rectangle(230, 150, 16, 30), aRenderer.getBounds(aCallNode1));
-	}	
-	
+	}
+
 	@Test
-	void testGetBoundsWithConstructorCall()
-	{
+	void testGetBoundsWithConstructorCall() {
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
-		
+
 		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2);
 		aDiagram.addEdge(aConstructorEdge);
-		
+
 		aRenderer.getBounds(); // Trigger rendering pass
-		
+
 		assertEquals(new Rectangle(30, 80, 16, 135), aRenderer.getBounds(aDefaultCallNode1));
 		assertEquals(new Rectangle(30, 165, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
 	}

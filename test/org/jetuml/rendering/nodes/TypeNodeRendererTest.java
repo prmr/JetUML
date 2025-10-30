@@ -47,145 +47,117 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class TestTypeNodeViewer
-{
+public class TypeNodeRendererTest {
+
 	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
-	private static final TypeNodeRenderer aViewer = new TypeNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
+	private static final TypeNodeRenderer aViewer = new TypeNodeRenderer(
+			DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
 	private final Method aMethodNameBoxHeight;
-	
-	public TestTypeNodeViewer() throws ReflectiveOperationException
-	{
-		aMethodNameBoxHeight = TypeNodeRenderer.class.getDeclaredMethod("nameBoxHeight", 
-				TypeNode.class, int.class, int.class);
+
+	public TypeNodeRendererTest() throws ReflectiveOperationException {
+		aMethodNameBoxHeight = TypeNodeRenderer.class.getDeclaredMethod("nameBoxHeight", TypeNode.class, int.class,
+				int.class);
 		aMethodNameBoxHeight.setAccessible(true);
 	}
-	
-	private int callNameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight)
-	{
-		try
-		{
+
+	private int callNameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight) {
+		try {
 			return (int) aMethodNameBoxHeight.invoke(aViewer, pNode, pAttributeBoxHeight, pMethodBoxHeight);
 		}
-		catch( ReflectiveOperationException e )
-		{
+		catch (ReflectiveOperationException e) {
 			fail("Reflection problem: " + e.getMessage());
 			return -1;
 		}
 	}
-	
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
 		UserPreferences.instance().setString(StringPreference.fontName, UserPreferences.DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
 	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideArgumentsForTestBounds")
 	@EnabledOnOs(OS.WINDOWS)
-	public void testBounds(TypeNode pNode, Rectangle pOracle)
-	{
+	void testBounds(TypeNode pNode, Rectangle pOracle) {
 		assertEquals(pOracle, aViewer.getBounds(pNode));
 	}
-	
+
 	private static Stream<Arguments> provideArgumentsForTestBounds() {
-	    return Stream.of(
-	      createClassNode1(),
-	      createClassNode2(),
-	      createClassNode3(),
-	      createClassNode4(),
-	      createClassNode5(),
-	      createClassNode6()
-	    );
+		return Stream.of(createClassNode1(), createClassNode2(), createClassNode3(), createClassNode4(),
+				createClassNode5(), createClassNode6());
 	}
-	
+
 	// At (0,0); name is just the interface prototype, no methods
-	private static Arguments createClassNode1()
-	{
-		return Arguments.of(new ClassNode(), 
-				new Rectangle(0,0, 100, 60)); // Default width and height
+	private static Arguments createClassNode1() {
+		return Arguments.of(new ClassNode(), new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
-	
+
 	// At (10,20); name is just the interface prototype, no methods
-	private static Arguments createClassNode2()
-	{
+	private static Arguments createClassNode2() {
 		ClassNode node = new ClassNode();
-		node.moveTo(new Point(10,20));
-		return Arguments.of(node, 
-				new Rectangle(10, 20, 100, 60)); // Default width and height, translated
+		node.moveTo(new Point(10, 20));
+		return Arguments.of(node, new Rectangle(10, 20, 100, 60)); // Default width and height, translated
 	}
-	
+
 	// At (0,0), name is a single line
-	private static Arguments createClassNode3()
-	{
+	private static Arguments createClassNode3() {
 		ClassNode node = new ClassNode();
 		node.setName(node.getName() + "NAME");
-		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, 60)); // Default width and height
+		return Arguments.of(node, new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
-	
+
 	// At (0,0) name is two lines, no methods
-	private static Arguments createClassNode4()
-	{
+	private static Arguments createClassNode4() {
 		ClassNode node = new ClassNode();
 		node.setName(node.getName() + "NAME");
-		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, 60)); // Default width and height
+		return Arguments.of(node, new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
-	
+
 	// At (0,0) name is four lines, no methods
-	private static Arguments createClassNode5()
-	{
+	private static Arguments createClassNode5() {
 		ClassNode node = new ClassNode();
 		node.setName("NAME1\nNAME2\nNAME3\nNAME4");
-		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, 76)); // Default width and additional height
+		return Arguments.of(node, new Rectangle(0, 0, 100, 76)); // Default width and additional height
 	}
 
 	// Name is just the interface prototype, one methods
-	private static Arguments createClassNode6()
-	{
+	private static Arguments createClassNode6() {
 		ClassNode node = new ClassNode();
 		node.setMethods("METHODS");
-		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, 60)); // Default width and height
+		return Arguments.of(node, new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
-	
+
 	@Test
-	public void testNameBoxHeight_OneLineName()
-	{
+	void testNameBoxHeight_OneLineName() {
 		assertEquals(60, callNameBoxHeight(new InterfaceNode(), 0, 0));
 	}
-	
+
 	@Test
-	public void testNameBoxHeight_MultiLineName()
-	{
+	void testNameBoxHeight_MultiLineName() {
 		InterfaceNode node = new InterfaceNode();
 		node.setName("X\nX\nX\nX\nX");
 		assertTrue(callNameBoxHeight(node, 0, 0) > 60);
 	}
-	
+
 	@Test
-	public void testNameBoxHeight_OneLineNameAndAttribute()
-	{
+	void testNameBoxHeight_OneLineNameAndAttribute() {
 		ClassNode node = new ClassNode();
 		assertEquals(40, callNameBoxHeight(node, 20, 0));
 	}
-	
+
 	@Test
-	public void testNameBoxHeight_OneLineNameAndAttributeAndMethods()
-	{
+	void testNameBoxHeight_OneLineNameAndAttributeAndMethods() {
 		ClassNode node = new ClassNode();
 		assertEquals(20, callNameBoxHeight(node, 20, 40));
 	}

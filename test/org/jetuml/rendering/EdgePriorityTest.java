@@ -35,8 +35,8 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.junit.jupiter.api.Test;
 
-public class TestEdgePriority 
-{
+public class EdgePriorityTest {
+
 	private Edge aInheritanceEdge = new GeneralizationEdge(Type.Inheritance);
 	private Edge aImplementationEdge = new GeneralizationEdge(Type.Implementation);
 	private Edge aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
@@ -47,62 +47,52 @@ public class TestEdgePriority
 	private Edge aNoteEdge = new NoteEdge();
 	private Node aNode1 = new ClassNode();
 
-	TestEdgePriority()
-	{
+	EdgePriorityTest() {
 		aSelfEdge.connect(aNode1, aNode1);
 	}
-	
+
 	@Test
-	void testPriorityOf_inheritance()
-	{
+	void testPriorityOf_inheritance() {
 		assertEquals(EdgePriority.priorityOf(aInheritanceEdge), EdgePriority.INHERITANCE);
 	}
-	
+
 	@Test
-	void testPriorityOf_implementation()
-	{
+	void testPriorityOf_implementation() {
 		assertEquals(EdgePriority.priorityOf(aImplementationEdge), EdgePriority.IMPLEMENTATION);
 	}
-	
+
 	@Test
-	void testPriorityOf_aggregation()
-	{
+	void testPriorityOf_aggregation() {
 		assertEquals(EdgePriority.priorityOf(aAggregationEdge), EdgePriority.AGGREGATION);
 	}
-	
+
 	@Test
-	void testPriorityOf_composition()
-	{
+	void testPriorityOf_composition() {
 		assertEquals(EdgePriority.priorityOf(aCompositionEdge), EdgePriority.COMPOSITION);
 	}
-	
+
 	@Test
-	void testPriorityOf_association()
-	{
+	void testPriorityOf_association() {
 		assertEquals(EdgePriority.priorityOf(aAssociationEdge), EdgePriority.ASSOCIATION);
 	}
-	
+
 	@Test
-	void testPriorityOf_dependency()
-	{
+	void testPriorityOf_dependency() {
 		assertEquals(EdgePriority.priorityOf(aDependencyEdge), EdgePriority.DEPENDENCY);
 	}
-	
+
 	@Test
-	void testPriorityOf_selfEdge()
-	{
+	void testPriorityOf_selfEdge() {
 		assertEquals(EdgePriority.priorityOf(aSelfEdge), EdgePriority.SELF_EDGE);
 	}
-	
+
 	@Test
-	void testPriorityOf_other()
-	{
+	void testPriorityOf_other() {
 		assertEquals(EdgePriority.priorityOf(aNoteEdge), EdgePriority.OTHER);
 	}
-	
+
 	@Test
-	void testIsSegmented_givenPriority()
-	{
+	void testIsSegmented_givenPriority() {
 		assertTrue(EdgePriority.isSegmented(EdgePriority.INHERITANCE));
 		assertTrue(EdgePriority.isSegmented(EdgePriority.IMPLEMENTATION));
 		assertTrue(EdgePriority.isSegmented(EdgePriority.AGGREGATION));
@@ -112,10 +102,9 @@ public class TestEdgePriority
 		assertFalse(EdgePriority.isSegmented(EdgePriority.OTHER));
 		assertFalse(EdgePriority.isSegmented(EdgePriority.SELF_EDGE));
 	}
-	
+
 	@Test
-	void testIsSegmented_givenEdge()
-	{
+	void testIsSegmented_givenEdge() {
 		assertTrue(EdgePriority.isSegmented(aInheritanceEdge));
 		assertTrue(EdgePriority.isSegmented(aImplementationEdge));
 		assertTrue(EdgePriority.isSegmented(aAggregationEdge));
@@ -125,10 +114,9 @@ public class TestEdgePriority
 		assertFalse(EdgePriority.isSegmented(aSelfEdge));
 		assertFalse(EdgePriority.isSegmented(aNoteEdge));
 	}
-	
+
 	@Test
-	void testIsClassDiagramEdge()
-	{
+	void testIsClassDiagramEdge() {
 		assertTrue(EdgePriority.isStoredEdge(aInheritanceEdge));
 		assertTrue(EdgePriority.isStoredEdge(aImplementationEdge));
 		assertTrue(EdgePriority.isStoredEdge(aAggregationEdge));

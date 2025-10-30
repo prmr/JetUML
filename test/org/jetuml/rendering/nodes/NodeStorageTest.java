@@ -28,25 +28,17 @@ import java.util.function.Function;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Rectangle;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the NodeStorage. 
+ * Tests the NodeStorage.
  */
-public class TestNodeStorage 
-{	
-	private NodeStorage aNodeStorage;
+public class NodeStorageTest {
 
-	@BeforeEach
-	public void setup()
-	{
-		aNodeStorage = new NodeStorage();
-	}
+	private NodeStorage aNodeStorage = new NodeStorage();
 
 	@Test
-	public void testGetBoundsReturnsDifferentBoundsWhenNodeStorageIsNotActive()
-	{
+	void testGetBoundsReturnsDifferentBoundsWhenNodeStorageIsNotActive() {
 		Node node = new NoteNode();
 		Rectangle boundsA = aNodeStorage.getBounds(node, createDefaultBoundCalculator());
 		Rectangle boundsB = aNodeStorage.getBounds(node, createDefaultBoundCalculator());
@@ -54,8 +46,7 @@ public class TestNodeStorage
 	}
 
 	@Test
-	public void testGetBoundsReturnsSameBoundsWhenNodeStorageIsActive()
-	{
+	void testGetBoundsReturnsSameBoundsWhenNodeStorageIsActive() {
 		aNodeStorage.activate();
 		Node node = new NoteNode();
 		Rectangle boundsA = aNodeStorage.getBounds(node, createDefaultBoundCalculator());
@@ -64,8 +55,7 @@ public class TestNodeStorage
 	}
 
 	@Test
-	public void testGetBoundsReturnsDifferentBoundsForDifferentNodesWhenNodeStorageIsActive()
-	{
+	void testGetBoundsReturnsDifferentBoundsForDifferentNodesWhenNodeStorageIsActive() {
 		aNodeStorage.activate();
 		Node node1 = new NoteNode();
 		Node node2 = new NoteNode();
@@ -73,10 +63,9 @@ public class TestNodeStorage
 		Rectangle boundsB = aNodeStorage.getBounds(node2, createDefaultBoundCalculator());
 		assertNotSame(boundsA, boundsB);
 	}
-	
+
 	@Test
-	public void testGetBoundsReturnsDifferentBoundsBeforeAndAfterDeactivationOfNodeStorage()
-	{
+	void testGetBoundsReturnsDifferentBoundsBeforeAndAfterDeactivationOfNodeStorage() {
 		aNodeStorage.activate();
 		Node node = new NoteNode();
 		Rectangle boundsBeforeDeactivation = aNodeStorage.getBounds(node, createDefaultBoundCalculator());
@@ -85,15 +74,12 @@ public class TestNodeStorage
 		assertNotSame(boundsBeforeDeactivation, boundsAfterDeactivation);
 	}
 
-	private static Function<Node, Rectangle> createDefaultBoundCalculator()
-	{
-		return new Function<>()
-		{
+	private static Function<Node, Rectangle> createDefaultBoundCalculator() {
+		return new Function<>() {
 			@Override
-			public Rectangle apply(Node pNode) 
-			{
+			public Rectangle apply(Node pNode) {
 				return new Rectangle(pNode.position().x(), pNode.position().y(), 100, 100);
 			}
 		};
 	}
-} 
+}

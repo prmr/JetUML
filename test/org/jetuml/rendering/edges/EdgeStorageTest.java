@@ -39,61 +39,44 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the EdgeStorage class.
  */
-public class TestEdgeStorage 
-{
-	private EdgeStorage aEdgeStorage;
-	private Edge edge1;
-	private Edge edge2;
-	private Edge edge3;
-	private EdgePath path1;
-	private EdgePath path2;
-	private EdgePath path3;
-	private Node nodeA;
-	private Node nodeB;
-	private Node nodeC;
-	
-	TestEdgeStorage()
-	{
-		edge1 = new AggregationEdge();
-		edge2 = new DependencyEdge();
-		edge3 = new GeneralizationEdge();
-		path1 = new EdgePath(new Point(0,0), new Point(0, 100), new Point(100, 100), new Point(200, 100));
-		path2 = new EdgePath(new Point(300,300), new Point(300,350));
-		path3 = new EdgePath(new Point(0,200), new Point(200, 200), new Point(200, 100), new Point(100, 100));
-		aEdgeStorage = new EdgeStorage();
-		nodeA = new ClassNode();
-		nodeB = new ClassNode();
-		nodeC = new ClassNode();
-	}
-	
+public class EdgeStorageTest {
+
+	private EdgeStorage aEdgeStorage = new EdgeStorage();
+	private Edge edge1 = new AggregationEdge();
+	private Edge edge2 = new DependencyEdge();
+	private Edge edge3 = new GeneralizationEdge();
+	private EdgePath path1 = new EdgePath(new Point(0, 0), new Point(0, 100), new Point(100, 100), new Point(200, 100));
+	private EdgePath path2 = new EdgePath(new Point(300, 300), new Point(300, 350));
+	private EdgePath path3 = new EdgePath(new Point(0, 200), new Point(200, 200), new Point(200, 100),
+			new Point(100, 100));
+	private Node nodeA = new ClassNode();
+	private Node nodeB = new ClassNode();
+	private Node nodeC = new ClassNode();
+
 	@Test
-	void testContains()
-	{
+	void testContains() {
 		aEdgeStorage.store(edge1, path1);
 		assertTrue(aEdgeStorage.contains(edge1));
 		assertFalse(aEdgeStorage.contains(edge3));
 	}
-	
+
 	@Test
-	void testGetEdgePath()
-	{
+	void testGetEdgePath() {
 		aEdgeStorage.store(edge1, path1);
 		assertSame(aEdgeStorage.getEdgePath(edge1), path1);
 	}
-	
+
 	@Test
-	void testStore()
-	{
+	void testStore() {
 		assertFalse(aEdgeStorage.contains(edge3));
 		aEdgeStorage.store(edge3, path3);
 		assertSame(aEdgeStorage.getEdgePath(edge3), path3);
 		aEdgeStorage.store(edge3, path1);
 		assertSame(aEdgeStorage.getEdgePath(edge3), path1);
 	}
-	
+
 	@Test
-	void testEdgesConnectedTo()
-	{
+	void testEdgesConnectedTo() {
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
 		nodeC = new ClassNode();
@@ -108,30 +91,27 @@ public class TestEdgeStorage
 		assertTrue(edgesConnectedToNodeA.contains(edge2));
 		assertFalse(edgesConnectedToNodeA.contains(edge3));
 	}
-	
+
 	@Test
-	void testIsEmpty()
-	{
+	void testIsEmpty() {
 		assertTrue(aEdgeStorage.isEmpty());
 		aEdgeStorage.store(edge1, path1);
 		assertFalse(aEdgeStorage.isEmpty());
 	}
-	
+
 	@Test
-	void testConnectionPointIsAvailable()
-	{
+	void testConnectionPointIsAvailable() {
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
 		aEdgeStorage.store(edge3, path3);
-		assertTrue(aEdgeStorage.connectionPointIsAvailable(new Point(1,1)));
-		assertTrue(aEdgeStorage.connectionPointIsAvailable(new Point(200,200)));
-		assertFalse(aEdgeStorage.connectionPointIsAvailable(new Point(0,0)));
-		assertFalse(aEdgeStorage.connectionPointIsAvailable(new Point(100,100)));
+		assertTrue(aEdgeStorage.connectionPointIsAvailable(new Point(1, 1)));
+		assertTrue(aEdgeStorage.connectionPointIsAvailable(new Point(200, 200)));
+		assertFalse(aEdgeStorage.connectionPointIsAvailable(new Point(0, 0)));
+		assertFalse(aEdgeStorage.connectionPointIsAvailable(new Point(100, 100)));
 	}
-	
+
 	@Test
-	void testEdgesWithSameNodes()
-	{
+	void testEdgesWithSameNodes() {
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
 		edge1.connect(nodeB, nodeA);
@@ -144,10 +124,9 @@ public class TestEdgeStorage
 		assertTrue(sameNodes.size() == 1);
 		assertTrue(sameNodes.contains(edge2));
 	}
-	
+
 	@Test
-	void testClearStorage()
-	{
+	void testClearStorage() {
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
 		aEdgeStorage.store(edge3, path3);
@@ -155,5 +134,5 @@ public class TestEdgeStorage
 		assertFalse(aEdgeStorage.contains(edge1));
 		assertFalse(aEdgeStorage.contains(edge2));
 		assertFalse(aEdgeStorage.contains(edge3));
-	}	
+	}
 }

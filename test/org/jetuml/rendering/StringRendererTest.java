@@ -25,61 +25,48 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.StringPreference;
-import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Alignment;
+import org.jetuml.geom.Dimension;
 import org.jetuml.rendering.StringRenderer.Decoration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-public class TestStringViewer 
-{
+public class StringRendererTest {
 
 	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
-	
-	private StringRenderer topCenter;
-	private StringRenderer topCenterBold;
-	
+
+	private StringRenderer topCenter = new StringRenderer(Alignment.CENTER);;
+	private StringRenderer topCenterBold = new StringRenderer(Alignment.CENTER, Decoration.BOLD);;
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
 		UserPreferences.instance().setString(StringPreference.fontName, UserPreferences.DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		topCenter = new StringRenderer(Alignment.CENTER);
-		topCenterBold = new StringRenderer(Alignment.CENTER, Decoration.BOLD);
-	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	void testDimensionDefaultFont()
-	{
+	void testDimensionDefaultFont() {
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(73, 16), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(79, 16), topCenterBold.getDimension("Display String"));
 	}
-	
+
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	void testDimension8ptFont()
-	{
+	void testDimension8ptFont() {
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 8);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(49, 11), topCenter.getDimension("Display String"));
@@ -89,8 +76,7 @@ public class TestStringViewer
 
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	void testDimension24ptFont()
-	{
+	void testDimension24ptFont() {
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(146, 32), topCenter.getDimension("Display String"));

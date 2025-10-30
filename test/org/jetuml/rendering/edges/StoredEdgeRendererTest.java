@@ -42,45 +42,32 @@ import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.EdgePath;
 import org.jetuml.rendering.LineStyle;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests the StoredEdgeRenderer class.
  */
-public class TestStoredEdgeViewer 
-{
+public class StoredEdgeRendererTest {
+
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private final ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
 	private StoredEdgeRenderer aStoredEdgeViewer = (StoredEdgeRenderer) aRenderer.rendererFor(AggregationEdge.class);
-	private GeneralizationEdge aInheritanceEdge;
-	private GeneralizationEdge aImplementationEdge;
-	private AggregationEdge aAggregationEdge;
-	private AggregationEdge aCompositionEdge;
-	private AssociationEdge aAssociationEdge;
-	private DependencyEdge aDependencyEdge;
-	private ClassNode aNodeA;
-	private ClassNode aNodeB;
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aInheritanceEdge = new GeneralizationEdge(GeneralizationEdge.Type.Inheritance);
-		aImplementationEdge = new GeneralizationEdge(GeneralizationEdge.Type.Implementation);
-		aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
-		aCompositionEdge = new AggregationEdge(AggregationEdge.Type.Composition);
-		aAssociationEdge = new AssociationEdge();
-		aDependencyEdge = new DependencyEdge();
-		aNodeA = new ClassNode();
-		aNodeB = new ClassNode();
+	private GeneralizationEdge aInheritanceEdge = new GeneralizationEdge(GeneralizationEdge.Type.Inheritance);
+	private GeneralizationEdge aImplementationEdge = new GeneralizationEdge(GeneralizationEdge.Type.Implementation);
+	private AggregationEdge aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
+	private AggregationEdge aCompositionEdge = new AggregationEdge(AggregationEdge.Type.Composition);
+	private AssociationEdge aAssociationEdge = new AssociationEdge();
+	private DependencyEdge aDependencyEdge = new DependencyEdge();
+	private ClassNode aNodeA = new ClassNode();
+	private ClassNode aNodeB = new ClassNode();
+
+	StoredEdgeRendererTest() {
 		aDiagram.addRootNode(aNodeA);
 		aDiagram.addRootNode(aNodeB);
-		
 	}
 
 	@Test
-	public void testGetLineStyle()
-	{
+	void testGetLineStyle() {
 		assertEquals(LineStyle.SOLID, getLineStyle(aInheritanceEdge));
 		assertEquals(LineStyle.DOTTED, getLineStyle(aImplementationEdge));
 		assertEquals(LineStyle.SOLID, getLineStyle(aAggregationEdge));
@@ -88,76 +75,67 @@ public class TestStoredEdgeViewer
 		assertEquals(LineStyle.SOLID, getLineStyle(aAssociationEdge));
 		assertEquals(LineStyle.DOTTED, getLineStyle(aDependencyEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowStart_aggregation()
-	{
+	void testGetArrowStart_aggregation() {
 		assertEquals(ArrowHead.DIAMOND, getArrowStart(aAggregationEdge));
 		assertEquals(ArrowHead.BLACK_DIAMOND, getArrowStart(aCompositionEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowStart_generalization()
-	{
+	void testGetArrowStart_generalization() {
 		assertEquals(ArrowHead.NONE, getArrowStart(aInheritanceEdge));
 		assertEquals(ArrowHead.NONE, getArrowStart(aImplementationEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowStart_association()
-	{
+	void testGetArrowStart_association() {
 		assertEquals(ArrowHead.NONE, getArrowStart(aAssociationEdge));
 		aAssociationEdge.setDirectionality(Directionality.Unidirectional);
 		assertEquals(ArrowHead.NONE, getArrowStart(aAssociationEdge));
 		aAssociationEdge.setDirectionality(Directionality.Bidirectional);
 		assertEquals(ArrowHead.V, getArrowStart(aAssociationEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowStart_dependency()
-	{
+	void testGetArrowStart_dependency() {
 		assertEquals(ArrowHead.NONE, getArrowStart(aDependencyEdge));
 		aDependencyEdge.setDirectionality(DependencyEdge.Directionality.Unidirectional);
 		assertEquals(ArrowHead.NONE, getArrowStart(aDependencyEdge));
 		aDependencyEdge.setDirectionality(DependencyEdge.Directionality.Bidirectional);
 		assertEquals(ArrowHead.V, getArrowStart(aDependencyEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowEnd_aggregation()
-	{
+	void testGetArrowEnd_aggregation() {
 		assertEquals(ArrowHead.NONE, getArrowEnd(aAggregationEdge));
 		assertEquals(ArrowHead.NONE, getArrowEnd(aCompositionEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowEnd_generalization()
-	{
+	void testGetArrowEnd_generalization() {
 		assertEquals(ArrowHead.TRIANGLE, getArrowEnd(aInheritanceEdge));
 		assertEquals(ArrowHead.TRIANGLE, getArrowEnd(aImplementationEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowEnd_association()
-	{
+	void testGetArrowEnd_association() {
 		assertEquals(ArrowHead.NONE, getArrowEnd(aAssociationEdge));
 		aAssociationEdge.setDirectionality(Directionality.Unidirectional);
 		assertEquals(ArrowHead.V, getArrowEnd(aAssociationEdge));
 		aAssociationEdge.setDirectionality(Directionality.Bidirectional);
 		assertEquals(ArrowHead.V, getArrowEnd(aAssociationEdge));
 	}
-	
+
 	@Test
-	public void testGetArrowEnd_dependency()
-	{
+	void testGetArrowEnd_dependency() {
 		assertEquals(ArrowHead.V, getArrowEnd(aDependencyEdge));
 		aDependencyEdge.setDirectionality(DependencyEdge.Directionality.Bidirectional);
 		assertEquals(ArrowHead.V, getArrowEnd(aDependencyEdge));
 	}
-	
+
 	@Test
-	public void testgetStartLabel()
-	{
+	void testgetStartLabel() {
 		aAggregationEdge.setStartLabel("test");
 		aCompositionEdge.setStartLabel("test");
 		aAssociationEdge.setStartLabel("test");
@@ -170,8 +148,7 @@ public class TestStoredEdgeViewer
 	}
 
 	@Test
-	public void testgetMiddleLabel()
-	{
+	void testgetMiddleLabel() {
 		aAggregationEdge.setMiddleLabel("test");
 		aCompositionEdge.setMiddleLabel("test");
 		aAssociationEdge.setMiddleLabel("test");
@@ -183,10 +160,9 @@ public class TestStoredEdgeViewer
 		assertEquals("test", getMiddleLabel(aCompositionEdge));
 		assertEquals("test", getMiddleLabel(aAssociationEdge));
 	}
-	
+
 	@Test
-	public void testgetEndLabel()
-	{
+	void testgetEndLabel() {
 		aAssociationEdge.setEndLabel("test");
 		aAggregationEdge.setEndLabel("test");
 		aCompositionEdge.setEndLabel("test");
@@ -199,10 +175,8 @@ public class TestStoredEdgeViewer
 		assertEquals("test", getEndLabel(aAssociationEdge));
 	}
 
-	
 	@Test
-	public void testContains()
-	{
+	void testContains() {
 		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
@@ -212,160 +186,129 @@ public class TestStoredEdgeViewer
 	}
 
 	@Test
-	public void testGetConnectionPoints()
-	{
+	void testGetConnectionPoints() {
 		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
 		assertEquals(new Point(0, 0), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).point1());
 		assertEquals(new Point(0, 100), aStoredEdgeViewer.getConnectionPoints(aDependencyEdge).point2());
 	}
-	
+
 	@Test
-	public void testGetStoredEdgePath()
-	{
+	void testGetStoredEdgePath() {
 		aDependencyEdge.connect(aNodeB, aNodeA);
 		aDiagram.addEdge(aDependencyEdge);
 		store(aDependencyEdge, new EdgePath(new Point(0, 0), new Point(0, 100)));
 		assertEquals(new EdgePath(new Point(0, 0), new Point(0, 100)), getStoredEdgePath(aDependencyEdge));
 	}
-	
-	
-	
-	
-	
+
 	/// Private reflexive helper methods:
-	
-	private LineStyle getLineStyle(Edge pEdge)
-	{
-		try
-		{
+
+	private LineStyle getLineStyle(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getLineStyle", Edge.class);
 			method.setAccessible(true);
 			return (LineStyle) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	private ArrowHead getArrowStart(Edge pEdge)
-	{
-		try
-		{
-			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getArrowStart", Edge.class);
-			method.setAccessible(true);
-			return (ArrowHead) method.invoke(aStoredEdgeViewer, pEdge);
-		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
 
-	private ArrowHead getArrowEnd(Edge pEdge)
-	{
-		try
-		{
+	private ArrowHead getArrowStart(Edge pEdge) {
+		try {
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getArrowStart", Edge.class);
+			method.setAccessible(true);
+			return (ArrowHead) method.invoke(aStoredEdgeViewer, pEdge);
+		}
+		catch (ReflectiveOperationException e) {
+			fail();
+			return null;
+		}
+	}
+
+	private ArrowHead getArrowEnd(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getArrowEnd", Edge.class);
 			method.setAccessible(true);
 			return (ArrowHead) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
-	private String getStartLabel(Edge pEdge)
-	{
-		try
-		{
+
+	private String getStartLabel(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getStartLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
-	private String getMiddleLabel(Edge pEdge)
-	{
-		try
-		{
+
+	private String getMiddleLabel(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getMiddleLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
-	private String getEndLabel(Edge pEdge)
-	{
-		try
-		{
+
+	private String getEndLabel(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getEndLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
-	private EdgePath getStoredEdgePath(Edge pEdge)
-	{
-		try
-		{
+
+	private EdgePath getStoredEdgePath(Edge pEdge) {
+		try {
 			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getStoredEdgePath", Edge.class);
 			method.setAccessible(true);
 			return (EdgePath) method.invoke(aStoredEdgeViewer, pEdge);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}
 	}
-	
+
 	/*
 	 * Stores an edge path in the layouter of the active classdiagramrenderer
 	 */
-	private void store(Edge pEdge, EdgePath pEdgePath)
-	{
-		try 
-		{
+	private void store(Edge pEdge, EdgePath pEdgePath) {
+		try {
 			Field edgeStorage = ClassDiagramRenderer.class.getDeclaredField("aEdgeStorage");
 			edgeStorage.setAccessible(true);
-			((EdgeStorage)edgeStorage.get(aRenderer)).store(pEdge, pEdgePath);
+			((EdgeStorage) edgeStorage.get(aRenderer)).store(pEdge, pEdgePath);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 		}
 	}
-	
+
 	@Test
-	void testWrapString()
-	{
+	void testWrapString() {
 		assertEquals("Display String", AbstractEdgeRenderer.wrapString("Display String", 15));
-		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 
+		assertEquals("A really long\nstring that\nshould probably\nbe wrapped",
 				AbstractEdgeRenderer.wrapString("A really long string that should probably be wrapped", 15));
 		assertEquals("Display\nString", AbstractEdgeRenderer.wrapString("Display String", 1));
-		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
+		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped",
 				AbstractEdgeRenderer.wrapString("A really long string that should probably be wrapped", 1));
 	}
 }

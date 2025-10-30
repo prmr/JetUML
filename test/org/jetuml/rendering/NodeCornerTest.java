@@ -33,68 +33,59 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for the enumerated type NodeCorner
  */
-public class TestNodeCorner 
-{
+public class NodeCornerTest {
+
 	private final Node aNode = new ClassNode();
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	
-	TestNodeCorner()
-	{
+
+	NodeCornerTest() {
 		aDiagram.addRootNode(aNode);
 	}
 
 	@Test
-	void testGetHorizontalIndex_right()
-	{
+	void testGetHorizontalIndex_right() {
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.TOP_RIGHT), NodeIndex.PLUS_THREE);
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.BOTTOM_RIGHT), NodeIndex.PLUS_THREE);
 	}
-	
+
 	@Test
-	void testGetHorizontalIndex_left()
-	{
+	void testGetHorizontalIndex_left() {
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.TOP_LEFT), NodeIndex.MINUS_THREE);
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.BOTTOM_LEFT), NodeIndex.MINUS_THREE);
 	}
-	
+
 	@Test
-	void testGetVerticalIndex_top()
-	{
+	void testGetVerticalIndex_top() {
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.TOP_LEFT), NodeIndex.MINUS_ONE);
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.TOP_RIGHT), NodeIndex.MINUS_ONE);
 	}
-	
+
 	@Test
-	void testGetVerticalIndex_bottom()
-	{
+	void testGetVerticalIndex_bottom() {
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.BOTTOM_LEFT), NodeIndex.PLUS_ONE);
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.BOTTOM_RIGHT), NodeIndex.PLUS_ONE);
 	}
-	
+
 	@Test
-	void testHorizontalSide_top()
-	{
+	void testHorizontalSide_top() {
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.TOP_LEFT), Direction.NORTH);
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.TOP_RIGHT), Direction.NORTH);
 	}
-	
+
 	@Test
-	void testHorizontalSide_bottom()
-	{
+	void testHorizontalSide_bottom() {
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.BOTTOM_LEFT), Direction.SOUTH);
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.BOTTOM_RIGHT), Direction.SOUTH);
 	}
-	
+
 	@Test
-	void testGetVerticalSide_right()
-	{
+	void testGetVerticalSide_right() {
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_RIGHT), Direction.EAST);
 		assertEquals(NodeCorner.verticalSide(NodeCorner.BOTTOM_RIGHT), Direction.EAST);
 	}
-	
+
 	@Test
-	void testGetVerticalSide_left()
-	{
+	void testGetVerticalSide_left() {
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_LEFT), Direction.WEST);
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_LEFT), Direction.WEST);
 	}

@@ -37,8 +37,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class TestStateTransitionEdgeViewer 
-{
+public class StateTransitionEdgeRendererTest {
+
 	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
 
@@ -46,53 +46,46 @@ public class TestStateTransitionEdgeViewer
 	private StateNode aStateNode2;
 	private StateTransitionEdge aTransitionEdge = new StateTransitionEdge();
 	private Diagram aDiagram = new Diagram(DiagramType.STATE);
-	private StateTransitionEdgeRenderer aStateTransitionEdgeViewer = new StateTransitionEdgeRenderer(DiagramType.newRendererInstanceFor(aDiagram));
-	
+	private StateTransitionEdgeRenderer aStateTransitionEdgeViewer = new StateTransitionEdgeRenderer(
+			DiagramType.newRendererInstanceFor(aDiagram));
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
 		UserPreferences.instance().setString(StringPreference.fontName, UserPreferences.DEFAULT_FONT_NAME);
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@ParameterizedTest
-	@CsvSource(value = {
-			"apple banana orange kiwi peach grape raspberry, 1000, 100, 1", 
-			"apple banana orange kiwi peach grape, 250, 100, 2",
-			"apple banana orange kiwi peach grape, 200, 200, 3",
-			"apple banana orange kiwi peach grape raspberry, 100, 0, 4"
-	})
-	public void testWrapLabelForEdgeBetweenTwoStates(String pString, int pDistanceInX, int pDistanceInY, int pExpectedNumberOfLines)
-	{
+	@CsvSource(value = { "apple banana orange kiwi peach grape raspberry, 1000, 100, 1",
+			"apple banana orange kiwi peach grape, 250, 100, 2", "apple banana orange kiwi peach grape, 200, 200, 3",
+			"apple banana orange kiwi peach grape raspberry, 100, 0, 4" })
+	public void testWrapLabelForEdgeBetweenTwoStates(String pString, int pDistanceInX, int pDistanceInY,
+			int pExpectedNumberOfLines) {
 		aStateNode2 = new StateNode();
 		aStateNode2.translate(pDistanceInX, pDistanceInY);
 		aTransitionEdge.setMiddleLabel(pString);
 		aTransitionEdge.connect(aStateNode1, aStateNode2);
 		String label = wrapLabel(aTransitionEdge);
-		int numberOfLines = (int)label.chars().filter(c -> c == '\n').count() + 1;
+		int numberOfLines = (int) label.chars().filter(c -> c == '\n').count() + 1;
 		assertEquals(pExpectedNumberOfLines, numberOfLines);
 	}
 
-	private String wrapLabel(StateTransitionEdge pTransitionEdge) 
-	{
-		try 
-		{
+	private String wrapLabel(StateTransitionEdge pTransitionEdge) {
+		try {
 			Method method = StateTransitionEdgeRenderer.class.getDeclaredMethod("wrapLabel", StateTransitionEdge.class);
 			method.setAccessible(true);
-			String label = (String)method.invoke(aStateTransitionEdgeViewer, pTransitionEdge);
+			String label = (String) method.invoke(aStateTransitionEdgeViewer, pTransitionEdge);
 			return label;
-		} 
-		catch (ReflectiveOperationException e)
-		{
+		}
+		catch (ReflectiveOperationException e) {
 			fail();
 			return "";
 		}

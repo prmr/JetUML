@@ -33,65 +33,54 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-public class TestActorNodeViewer
-{
+public class ActorNodeRendererTest {
+
 	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
-	private ActorNode aNode; 
-	private final ActorNodeRenderer aViewer = new ActorNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
-	
+	private ActorNode aNode = new ActorNode();
+	private final ActorNodeRenderer aViewer = new ActorNodeRenderer(
+			DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
 		UserPreferences.instance().setString(StringPreference.fontName, "System");
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 12);
 		JavaFXLoader.load();
 	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		aNode = new ActorNode();
-	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@Test
-	public void testGetBounds_NoName()
-	{
+	void testGetBounds_NoName() {
 		aNode.setName("");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(0, 0), aViewer.getBounds(aNode).origin());
 		assertEquals(28, aViewer.getBounds(aNode).width());
 		assertEquals(50, aViewer.getBounds(aNode).height());
 	}
-	
+
 	@Test
-	public void testGetBounds_ShortName()
-	{
+	void testGetBounds_ShortName() {
 		aNode.setName("X");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(0, 0), aViewer.getBounds(aNode).origin());
 		assertEquals(28, aViewer.getBounds(aNode).width());
 		assertTrue(aViewer.getBounds(aNode).height() > 64);
 	}
-	
+
 	@Test
 	@EnabledOnOs(OS.WINDOWS)
-	public void testGetBounds_LongName()
-	{
+	void testGetBounds_LongName() {
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(-156,0), aViewer.getBounds(aNode).origin());
+		assertEquals(new Point(-156, 0), aViewer.getBounds(aNode).origin());
 		assertTrue(aViewer.getBounds(aNode).width() > 48);
 		assertTrue(aViewer.getBounds(aNode).height() > 64);
 	}

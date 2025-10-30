@@ -42,84 +42,77 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestSequenceDiagramRenderer
-{
+public class SequenceDiagramRendererTest {
+
 	private static int userDefinedFontSize;
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
 	private DiagramRenderer aRenderer = new SequenceDiagramRenderer(aDiagram);
-	
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, UserPreferences.DEFAULT_FONT_SIZE);
 	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	@Test
-	void testNodeAt_NoneShallow()
-	{
+	void testNodeAt_NoneShallow() {
 		aDiagram.addRootNode(new ImplicitParameterNode());
 		triggerRenderingPass();
-		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
+		assertTrue(aRenderer.nodeAt(new Point(100, 100)).isEmpty());
 	}
-	
-	@Test 
-	void testNodeAt_Note()
-	{
+
+	@Test
+	void testNodeAt_Note() {
 		NoteNode note = new NoteNode();
 		note.translate(50, 50);
 		aDiagram.addRootNode(note);
 		triggerRenderingPass();
-		assertSame(note, aRenderer.nodeAt(new Point(55,55)).get());
+		assertSame(note, aRenderer.nodeAt(new Point(55, 55)).get());
 	}
-	
-	@Test 
-	void testNodeAt_SingleImplicitParameterNode()
-	{
+
+	@Test
+	void testNodeAt_SingleImplicitParameterNode() {
 		ImplicitParameterNode node = new ImplicitParameterNode();
 		node.translate(50, 0);
 		aDiagram.addRootNode(node);
 		triggerRenderingPass();
 		// Inside top rectangle
-		assertSame(node, aRenderer.nodeAt(new Point(60,10)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(60, 10)).get());
 		// Below top rectangle
-		assertSame(node, aRenderer.nodeAt(new Point(60,100)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(60, 100)).get());
 	}
-	
+
 	/*
 	 * When two implicit parameter nodes overlap, we find the last one in the list
 	 */
-	@Test 
-	void testNodeAt_OverlappingImplicitParameterNode()
-	{
+	@Test
+	void testNodeAt_OverlappingImplicitParameterNode() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		node2.translate(20, 0);
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
 		triggerRenderingPass();
-		
+
 		// Inside top rectangle
-		assertSame(node1, aRenderer.nodeAt(new Point(10,10)).get());
-		assertSame(node2, aRenderer.nodeAt(new Point(25,10)).get());
-		assertSame(node2, aRenderer.nodeAt(new Point(65,10)).get());
+		assertSame(node1, aRenderer.nodeAt(new Point(10, 10)).get());
+		assertSame(node2, aRenderer.nodeAt(new Point(25, 10)).get());
+		assertSame(node2, aRenderer.nodeAt(new Point(65, 10)).get());
 	}
-	
-	@Test 
-	void testNodeAt_CallNode()
-	{
+
+	@Test
+	void testNodeAt_CallNode() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		node2.translate(100, 0);
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
-		
+
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
 		node1.addChild(callNode1);
@@ -127,19 +120,18 @@ public class TestSequenceDiagramRenderer
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2);
 		aDiagram.addEdge(edge);
-		
+
 		triggerRenderingPass();
-		
-		assertSame(callNode1, aRenderer.nodeAt(new Point(35,85)).get());
-		assertSame(callNode2, aRenderer.nodeAt(new Point(135,105)).get());
+
+		assertSame(callNode1, aRenderer.nodeAt(new Point(35, 85)).get());
+		assertSame(callNode2, aRenderer.nodeAt(new Point(135, 105)).get());
 	}
-	
-	@Test 
-	void testNodeAt_SelfCallNode()
-	{
+
+	@Test
+	void testNodeAt_SelfCallNode() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		aDiagram.addRootNode(node1);
-		
+
 		CallNode callNode1 = new CallNode();
 		CallNode callNode2 = new CallNode();
 		node1.addChild(callNode1);
@@ -147,102 +139,93 @@ public class TestSequenceDiagramRenderer
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2);
 		aDiagram.addEdge(edge);
-		
+
 		triggerRenderingPass();
 
-		assertSame(callNode1, aRenderer.nodeAt(new Point(38,105)).get());
-		assertSame(callNode2, aRenderer.nodeAt(new Point(42,105)).get());
+		assertSame(callNode1, aRenderer.nodeAt(new Point(38, 105)).get());
+		assertSame(callNode2, aRenderer.nodeAt(new Point(42, 105)).get());
 	}
-	
+
 	@Test
-	void testFindRoot_Empty()
-	{
+	void testFindRoot_Empty() {
 		assertTrue(reflectivelyCallFindRoot().isEmpty());
 	}
-	
+
 	@Test
-	void testFindRoot_NoCallNode()
-	{
+	void testFindRoot_NoCallNode() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		aDiagram.addRootNode(node1);
 		assertTrue(reflectivelyCallFindRoot().isEmpty());
 	}
-	
+
 	@Test
-	void testFindRoot_SingleCallNode()
-	{
+	void testFindRoot_SingleCallNode() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		aDiagram.addRootNode(node1);
-		
+
 		CallNode callNode1 = new CallNode();
 		node1.addChild(callNode1);
-				
+
 		assertSame(callNode1, reflectivelyCallFindRoot().get());
 	}
-	
+
 	@Test
-	void testFindRoot_TwoCallNodes()
-	{
+	void testFindRoot_TwoCallNodes() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
-		
+
 		CallNode callNode1 = new CallNode();
 		node1.addChild(callNode1);
 		CallNode callNode2 = new CallNode();
 		node2.addChild(callNode2);
-		
+
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2);
 		aDiagram.addEdge(edge);
-				
+
 		assertSame(callNode1, reflectivelyCallFindRoot().get());
 	}
-	
+
 	// Exercises bug #478
 	@Test
-	void testFindRoot_ThreeCallNodesWithConstructor()
-	{
+	void testFindRoot_ThreeCallNodesWithConstructor() {
 		ImplicitParameterNode node1 = new ImplicitParameterNode();
 		ImplicitParameterNode node2 = new ImplicitParameterNode();
 		ImplicitParameterNode node3 = new ImplicitParameterNode();
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
-		
+
 		CallNode callNode1 = new CallNode();
 		node1.addChild(callNode1);
 		CallNode callNode2 = new CallNode();
 		node2.addChild(callNode2);
 		CallNode callNode3 = new CallNode();
 		node3.addChild(callNode3);
-		
+
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2);
 		aDiagram.addEdge(edge);
 		ConstructorEdge create = new ConstructorEdge();
 		create.connect(callNode2, callNode3);
 		aDiagram.addEdge(create);
-				
+
 		assertSame(callNode1, reflectivelyCallFindRoot().get());
 	}
-	
-	private void triggerRenderingPass()
-	{
+
+	private void triggerRenderingPass() {
 		aRenderer.getBounds();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private Optional<Node> reflectivelyCallFindRoot()
-	{
-		try
-		{
+	private Optional<Node> reflectivelyCallFindRoot() {
+		try {
 			Method findRootMethod = SequenceDiagramRenderer.class.getDeclaredMethod("findRoot");
 			findRootMethod.setAccessible(true);
 			return (Optional<Node>) findRootMethod.invoke(aRenderer);
 		}
-		catch(ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			fail();
 			return null;
 		}

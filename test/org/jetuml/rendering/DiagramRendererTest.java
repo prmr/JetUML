@@ -32,69 +32,62 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
 
-public class TestDiagramRenderer
-{
+public class DiagramRendererTest {
+
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
 	private final Node aNode = new ClassNode();
 
-	TestDiagramRenderer()
-	{
+	DiagramRendererTest() {
 		aDiagram.addRootNode(aNode);
 	}
-	
+
 	@Test
-	void testNodeAt_NoneShallow()
-	{
+	void testNodeAt_NoneShallow() {
 		aDiagram.addRootNode(new ClassNode());
-		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
+		assertTrue(aRenderer.nodeAt(new Point(100, 100)).isEmpty());
 	}
-	
+
 	@Test
-	void testNodeAt_NoneDeep()
-	{
+	void testNodeAt_NoneDeep() {
 		PackageNode p1 = new PackageNode();
 		PackageNode p2 = new PackageNode();
 		ClassNode c = new ClassNode();
 		p2.addChild(c);
 		p1.addChild(p2);
 		aDiagram.addRootNode(p1);
-		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
+		assertTrue(aRenderer.nodeAt(new Point(100, 100)).isEmpty());
 	}
-	
+
 	@Test
-	void testNodeAt_FoundLevel1WhenNoOther()
-	{
+	void testNodeAt_FoundLevel1WhenNoOther() {
 		ClassNode node = new ClassNode();
 		aDiagram.addRootNode(node);
-		assertSame(node, aRenderer.nodeAt(new Point(20,20)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(20, 20)).get());
 	}
-	
+
 	@Test
-	void testNodeAt_FoundLevel1WhenOther()
-	{
+	void testNodeAt_FoundLevel1WhenOther() {
 		PackageNode p1 = new PackageNode();
 		ClassNode node = new ClassNode();
 		node.translate(10, 10);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(p1, aRenderer.nodeAt(new Point(5,5)).get());
+		assertSame(p1, aRenderer.nodeAt(new Point(5, 5)).get());
 	}
-	
+
 	@Test
-	void testNodeAt_FoundLevel2WhenNoOther()
-	{
+	void testNodeAt_FoundLevel2WhenNoOther() {
 		PackageNode p1 = new PackageNode();
 		ClassNode node = new ClassNode();
 		node.translate(10, 10);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(node, aRenderer.nodeAt(new Point(15,15)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(15, 15)).get());
 	}
-	
+
 	@Test
-	void testNodeAt_FoundLevel2WhenOther()
-	{
+	void testNodeAt_FoundLevel2WhenOther() {
 		PackageNode p1 = new PackageNode();
 		PackageNode p2 = new PackageNode();
 		ClassNode node = new ClassNode();
@@ -104,33 +97,29 @@ public class TestDiagramRenderer
 		node.translate(20, 20);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(p2, aRenderer.nodeAt(new Point(15,15)).get());
+		assertSame(p2, aRenderer.nodeAt(new Point(15, 15)).get());
 	}
-	
+
 	@Test
-	void testToPoints_topRight()
-	{
+	void testToPoints_topRight() {
 		assertEquals(new Point(80, 0), aRenderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[0]);
 		assertEquals(new Point(100, 20), aRenderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[1]);
 	}
-	
+
 	@Test
-	public void testToPoints_bottomRight()
-	{
+	public void testToPoints_bottomRight() {
 		assertEquals(new Point(80, 60), aRenderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[0]);
 		assertEquals(new Point(100, 40), aRenderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[1]);
 	}
-	
+
 	@Test
-	public void testToPoints_topLeft()
-	{
+	public void testToPoints_topLeft() {
 		assertEquals(new Point(20, 0), aRenderer.toPoints(NodeCorner.TOP_LEFT, aNode)[0]);
 		assertEquals(new Point(0, 20), aRenderer.toPoints(NodeCorner.TOP_LEFT, aNode)[1]);
 	}
-	
+
 	@Test
-	public void testToPoints_bottomLeft()
-	{
+	public void testToPoints_bottomLeft() {
 		assertEquals(new Point(20, 60), aRenderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[0]);
 		assertEquals(new Point(0, 40), aRenderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[1]);
 	}
