@@ -53,129 +53,110 @@ import org.junit.jupiter.api.BeforeAll;
  * Declares functionality to load the diagram, and convenience methods
  * to access diagram elements.
  */
-public abstract class AbstractTestDiagramLayout
-{	
+public abstract class AbstractDiagramLayoutTest {
+
 	private static String userDefinedFontName;
 	private static int userDefinedFontSize;
-	
+
 	@BeforeAll
-	public static void setupClass()
-	{
+	public static void setupClass() {
 		userDefinedFontName = UserPreferences.instance().getString(UserPreferences.StringPreference.fontName);
 		UserPreferences.instance().setString(StringPreference.fontName, "System");
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 12);
 	}
-	
+
 	@AfterAll
-	public static void restorePreferences()
-	{
+	public static void restorePreferences() {
 		UserPreferences.instance().setString(StringPreference.fontName, userDefinedFontName);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
+
 	/**
-	 * We add two pixels to the length of an edge to account for the stroke width and/or the arrow head.
+	 * We add two pixels to the length of an edge to account for the stroke width
+	 * and/or the arrow head.
 	 */
-	private static final int BUFFER = 2; 
-	
-	protected final Diagram aDiagram; 
+	private static final int BUFFER = 2;
+
+	protected final Diagram aDiagram;
 	protected final DiagramRenderer aRenderer;
-	
-	AbstractTestDiagramLayout(Path pDiagramPath) throws IOException
-	{
+
+	AbstractDiagramLayoutTest(Path pDiagramPath) throws IOException {
 		aDiagram = PersistenceService.read(pDiagramPath.toFile());
 		aRenderer = DiagramType.newRendererInstanceFor(aDiagram);
 	}
-	
+
 	/**
 	 * Ensures that pActual is either pExpected or within a BUFFER distance,
 	 * inclusively.
+	 * 
 	 * @param pExpected The value we expect.
-	 * @param pActual The actual value.
+	 * @param pActual   The actual value.
 	 */
-	protected static void assertWithDefaultTolerance(int pExpected, int pActual)
-	{
-		assertTrue( (pActual <= pExpected + BUFFER) && (pActual >= pExpected - BUFFER));
+	protected static void assertWithDefaultTolerance(int pExpected, int pActual) {
+		assertTrue((pActual <= pExpected + BUFFER) && (pActual >= pExpected - BUFFER));
 	}
-	
+
 	/*
 	 * Returns a named node with the matching name
 	 */
-	protected Node nodeByName(String pName)
-	{
-		return PersistenceTestUtils.getAllNodes(aDiagram).stream()
-			.filter(node -> node instanceof NamedNode )
-			.filter( node -> node.properties().get(PropertyName.NAME).get().equals(pName))
-			.findFirst()
-			.get();
+	protected Node nodeByName(String pName) {
+		return PersistenceTestUtils.getAllNodes(aDiagram).stream().filter(node -> node instanceof NamedNode)
+				.filter(node -> node.properties().get(PropertyName.NAME).get().equals(pName)).findFirst().get();
 	}
-	
+
 	/*
 	 * Returns the edge with the corresponding middle label
 	 */
-	protected Edge edgeByMiddleLabel(String pLabel)
-	{
-		return aDiagram.edges().stream()
-				.filter(edge -> edge instanceof SingleLabelEdge )
-				.filter( edge -> edge.properties().get(PropertyName.MIDDLE_LABEL).get().equals(pLabel))
-				.findFirst()
+	protected Edge edgeByMiddleLabel(String pLabel) {
+		return aDiagram.edges().stream().filter(edge -> edge instanceof SingleLabelEdge)
+				.filter(edge -> edge.properties().get(PropertyName.MIDDLE_LABEL).get().equals(pLabel)).findFirst()
 				.get();
 	}
-	
+
 	/*
-	 * Returns the edge with the corresponding type and kind.
-	 * This assumes that the kind is available on the type.
+	 * Returns the edge with the corresponding type and kind. This assumes that the
+	 * kind is available on the type.
 	 */
-	protected List<Edge> edgesByType(Class<?> pType)
-	{
-		return aDiagram.edges().stream()
-				.filter(edge -> edge.getClass() == pType)
+	protected List<Edge> edgesByType(Class<?> pType) {
+		return aDiagram.edges().stream().filter(edge -> edge.getClass() == pType)
 				.collect(Collectors.toUnmodifiableList());
 	}
-	
+
 	/*
 	 * Returns all the nodes of a certain type
 	 */
-	protected List<Node> nodesByType(Class<?> pType)
-	{
-		return PersistenceTestUtils.getAllNodes(aDiagram).stream()
-				.filter(node -> node.getClass() == pType)
+	protected List<Node> nodesByType(Class<?> pType) {
+		return PersistenceTestUtils.getAllNodes(aDiagram).stream().filter(node -> node.getClass() == pType)
 				.collect(Collectors.toUnmodifiableList());
 	}
-	
-	protected static int getStaticIntFieldValue(Class<?> pClass, String pFieldName)
-	{
-		try 
-		{
+
+	protected static int getStaticIntFieldValue(Class<?> pClass, String pFieldName) {
+		try {
 			Field field = pClass.getDeclaredField(pFieldName);
 			field.setAccessible(true);
 			int fieldValue = field.getInt(null);
 			return fieldValue;
-		} 
-		catch (ReflectiveOperationException e)
-		{
+		}
+		catch (ReflectiveOperationException e) {
 			assert false;
 			fail();
 			return -1;
 		}
 	}
-	
-	protected void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
-	{
+
+	protected void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight) {
 		Rectangle bounds = aRenderer.getBounds(pNode);
 		assertEquals(pDefaultWidth, bounds.width());
 		assertEquals(pDefaultHeight, bounds.height());
 	}
-	
-	protected static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY)
-	{
+
+	protected static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY) {
 		assertEquals(pExpectedX, pNode.position().x());
 		assertEquals(pExpectedY, pNode.position().y());
 	}
-	
-	protected void verifyNoteNodeDefaultDimensions(Node pNode)
-	{
+
+	protected void verifyNoteNodeDefaultDimensions(Node pNode) {
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);

@@ -40,154 +40,122 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * This class tests that the layout of a manually-created diagram file corresponds to expectations.
+ * This class tests that the layout of a manually-created diagram file
+ * corresponds to expectations.
  */
-public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout 
-{
+public class SequenceDiagramLayoutTest extends AbstractSequenceDiagramLayoutTest {
+
 	private static final Path PATH = Path.of("testdata", "testPersistenceService.sequence.jet");
 
-	TestLayoutSequenceDiagram() throws IOException 
-	{
+	SequenceDiagramLayoutTest() throws IOException {
 		super(PATH);
 	}
 
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@ParameterizedTest
-	@CsvSource({"object1:Type1, 160, 0",
-				":Type2, 370, 0",
-				"object3:, 590, 0",
-				"A note, 440, 200"})
-	void testNamedNodePosition(String pNodeName, int pExpectedX, int pExpectedY)
-	{
+	@CsvSource({ "object1:Type1, 160, 0", ":Type2, 370, 0", "object3:, 590, 0", "A note, 440, 200" })
+	void testNamedNodePosition(String pNodeName, int pExpectedX, int pExpectedY) {
 		verifyPosition(nodeByName(pNodeName), pExpectedX, pExpectedY);
 	}
-	
+
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@Test
-	void testCallNodePositionsBelowObject1Type1Node()
-	{
-		Node largerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
-				.findFirst()
-				.get();
-		Node smallerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
-				.findFirst()
-				.get();
+	void testCallNodePositionsBelowObject1Type1Node() {
+		Node largerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start())).findFirst().get();
+		Node smallerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end())).findFirst().get();
 		verifyPosition(largerCallNode, 202, 77);
 		verifyPosition(smallerCallNode, 210, 106);
 	}
-	
+
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@Test
-	void testCallNodePositionsBelowType2Node()
-	{
+	void testCallNodePositionsBelowType2Node() {
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
 		verifyPosition(callNode, 402, 125);
 	}
-	
+
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@Test
-	void testCallNodePositionsBelowObject3Node()
-	{
+	void testCallNodePositionsBelowObject3Node() {
 		Node callNode = nodeByName("object3:").getChildren().get(0);
 		verifyPosition(callNode, 622, 149);
 	}
-	
+
 	/**
-	 * Tests that all implicit parameter nodes that are supposed to have the default height actually do. 
+	 * Tests that all implicit parameter nodes that are supposed to have the default
+	 * height actually do.
 	 */
 	@ParameterizedTest
-	@ValueSource(strings = {"object1:Type1", ":Type2", "object3:"})
-	void testImplicitParameterNodeDefaultHeight(String pNodeName)
-	{
+	@ValueSource(strings = { "object1:Type1", ":Type2", "object3:" })
+	void testImplicitParameterNodeDefaultHeight(String pNodeName) {
 		verifyImplicitParameterNodeTopRectangleDefaultHeight(nodeByName(pNodeName));
 	}
-	
+
 	/**
 	 * Tests that the call nodes have the default width.
 	 */
 	@Test
-	void testCallNodeDefaultWidthBelowObject1Type1Node()
-	{
-		Node largerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
-				.findFirst()
-				.get();
-		Node smallerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
-				.findFirst()
-				.get();
+	void testCallNodeDefaultWidthBelowObject1Type1Node() {
+		Node largerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start())).findFirst().get();
+		Node smallerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end())).findFirst().get();
 		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(largerCallNode);
 		verifyCallNodeDefaultWidth(smallerCallNode);
 	}
-	
+
 	/**
 	 * Tests that the call node has the default width.
 	 */
 	@Test
-	void testCallNodeDefaultWidthBelowType2Node()
-	{
+	void testCallNodeDefaultWidthBelowType2Node() {
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
 		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(callNode);
 	}
-	
+
 	/**
 	 * Tests that the call node has the default width.
 	 */
 	@Test
-	void testCallNodeDefaultWidthBelowObject3Node()
-	{
+	void testCallNodeDefaultWidthBelowObject3Node() {
 		Node callNode = nodeByName("object3:").getChildren().get(0);
 		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(callNode);
 	}
-	
+
 	/**
 	 * Tests that the note node has the default dimensions.
 	 */
 	@Test
-	void testNoteNodeDefaultDimensions()
-	{
+	void testNoteNodeDefaultDimensions() {
 		verifyNoteNodeDefaultDimensions(nodeByName("A note"));
 	}
-	
+
 	/**
-	 * Tests that the call edge connects to its node boundaries. 
+	 * Tests that the call edge connects to its node boundaries.
 	 */
 	@Test
-	void testSelfCallEdge()
-	{
-		Node largerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start()))
-				.findFirst()
-				.get();
-		Node smallerCallNode = nodeByName("object1:Type1")
-				.getChildren()
-				.stream()
-				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end()))
-				.findFirst()
-				.get();
+	void testSelfCallEdge() {
+		Node largerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").start())).findFirst().get();
+		Node smallerCallNode = nodeByName("object1:Type1").getChildren().stream()
+				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").end())).findFirst().get();
 		aRenderer.getBounds(); // Trigger rendering pass
 		Line selfCallEdgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("selfCall()"));
 		Rectangle largerCallNodeBounds = aRenderer.getBounds(largerCallNode);
@@ -195,13 +163,12 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		assertEquals(largerCallNodeBounds.maxX(), selfCallEdgeLine.point1().x());
 		assertEquals(smallerCallNodeBounds.maxX(), selfCallEdgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the call edge connects to its node boundaries. 
+	 * Tests that the call edge connects to its node boundaries.
 	 */
 	@Test
-	void testSignalCallEdge()
-	{
+	void testSignalCallEdge() {
 		aRenderer.getBounds(); // Trigger rendering pass
 		Edge signalCallEdge = edgeByMiddleLabel("signal");
 		Node startNode = nodeByName("object1:Type1").getChildren().get(1);
@@ -212,23 +179,16 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		assertEquals(startNodeBounds.maxX(), signalCallEdgeLine.point1().x());
 		assertEquals(endNodeBounds.x(), signalCallEdgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the call edge connects to its node boundaries. 
+	 * Tests that the call edge connects to its node boundaries.
 	 */
 	@Test
-	void testCall1CallEdge()
-	{
+	void testCall1CallEdge() {
 		Edge call1Edge = edgeByMiddleLabel("call1()");
-		Node startNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(call1Edge.start()))
-				.findFirst()
+		Node startNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(call1Edge.start())).findFirst()
 				.get();
-		Node endNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(call1Edge.end()))
-				.findFirst()
+		Node endNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(call1Edge.end())).findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
 		Line call1EdgeLine = aRenderer.getConnectionPoints(call1Edge);
@@ -237,23 +197,16 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		assertEquals(startNodeBounds.maxX(), call1EdgeLine.point1().x());
 		assertEquals(endNodeBounds.x(), call1EdgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the return edge connects to its node boundaries. 
+	 * Tests that the return edge connects to its node boundaries.
 	 */
 	@Test
-	void testR1ReturnEdge()
-	{
+	void testR1ReturnEdge() {
 		Edge r1ReturnEdge = edgeByMiddleLabel("r1");
-		Node startNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(r1ReturnEdge.start()))
-				.findFirst()
-				.get();
-		Node endNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(r1ReturnEdge.end()))
-				.findFirst()
+		Node startNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(r1ReturnEdge.start()))
+				.findFirst().get();
+		Node endNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(r1ReturnEdge.end())).findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
 		Line r1ReturnEdgeLine = aRenderer.getConnectionPoints(r1ReturnEdge);
@@ -262,27 +215,17 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		assertEquals(startNodeBounds.x(), r1ReturnEdgeLine.point1().x());
 		assertEquals(endNodeBounds.maxX(), r1ReturnEdgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the return edge connects to its node boundaries. 
+	 * Tests that the return edge connects to its node boundaries.
 	 */
 	@Test
-	void testLastReturnEdge()
-	{
-		Edge returnEdge = edgesByType(ReturnEdge.class)
-				.stream()
-				.filter(edge -> edge.properties().get(PropertyName.MIDDLE_LABEL).get().equals(""))
-				.findFirst()
-				.get();
-		Node startNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(returnEdge.start()))
-				.findFirst()
-				.get();
-		Node endNode = nodesByType(CallNode.class)
-				.stream()
-				.filter(node -> node.equals(returnEdge.end()))
-				.findFirst()
+	void testLastReturnEdge() {
+		Edge returnEdge = edgesByType(ReturnEdge.class).stream()
+				.filter(edge -> edge.properties().get(PropertyName.MIDDLE_LABEL).get().equals("")).findFirst().get();
+		Node startNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(returnEdge.start()))
+				.findFirst().get();
+		Node endNode = nodesByType(CallNode.class).stream().filter(node -> node.equals(returnEdge.end())).findFirst()
 				.get();
 		aRenderer.getBounds(); // Trigger rendering pass
 		Line returnEdgeLine = aRenderer.getConnectionPoints(returnEdge);
@@ -291,13 +234,12 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		assertEquals(startNodeBounds.x(), returnEdgeLine.point1().x());
 		assertEquals(endNodeBounds.maxX(), returnEdgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the return edge connects to its node boundaries. 
+	 * Tests that the return edge connects to its node boundaries.
 	 */
 	@Test
-	void testNoteEdge()
-	{
+	void testNoteEdge() {
 		Node noteNode = nodeByName("A note");
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
 		Line noteEdgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));

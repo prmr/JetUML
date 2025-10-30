@@ -20,39 +20,25 @@
  *******************************************************************************/
 package org.jetuml.layouttests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
-import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.nodes.CircularStateNodeRenderer;
-import org.jetuml.rendering.nodes.StateNodeRenderer;
+import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 
 /**
- * Superclass for classes that test the layout of a state diagram.
- * Declares convenience methods to test diagram elements. 
+ * Superclass for classes that test the layout of an object diagram. Declares
+ * convenience methods to test diagram elements.
  */
-public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagramLayout 
-{
-	AbstractTestStateDiagramLayout(Path pDiagramPath) throws IOException 
-	{
+public abstract class AbstractObjectDiagramLayoutTest extends AbstractDiagramLayoutTest {
+
+	AbstractObjectDiagramLayoutTest(Path pDiagramPath) throws IOException {
 		super(pDiagramPath);
 	}
-	
-	protected void verifyStateNodeDefaultDimensions(Node pNode)
-	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(StateNodeRenderer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(StateNodeRenderer.class, "DEFAULT_HEIGHT");
+
+	protected void verifyObjectNodeDefaultDimensions(Node pNode) {
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeRenderer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
-	
-	protected void verifyCircularStateNodeDefaultDimensions(Node pNode)
-	{
-		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeRenderer.class, "DIAMETER");
-		Rectangle bounds = aRenderer.getBounds(pNode);
-		assertEquals(DIAMETER, bounds.width());
-		assertEquals(DIAMETER, bounds.height());
 	}
 }

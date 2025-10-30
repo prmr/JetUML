@@ -42,172 +42,155 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * This class tests that the layout of a manually-created diagram file corresponds to expectations.
+ * This class tests that the layout of a manually-created diagram file
+ * corresponds to expectations.
  */
-public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout 
-{
+public class StateDiagramLayoutTest extends AbstractStateDiagramLayoutTest {
+
 	private static final Path PATH = Path.of("testdata", "testPersistenceService.state.jet");
-	
-	TestLayoutStateDiagram() throws IOException 
-	{
+
+	StateDiagramLayoutTest() throws IOException {
 		super(PATH);
 	}
 
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@ParameterizedTest
-	@CsvSource({"S1, 250, 100",
-				"S2, 510, 100",
-				"S3, 520, 310"})
-	void testNamedNodePosition(String pNodeName, int pExpectedX, int pExpectedY)
-	{
+	@CsvSource({ "S1, 250, 100", "S2, 510, 100", "S3, 520, 310" })
+	void testNamedNodePosition(String pNodeName, int pExpectedX, int pExpectedY) {
 		verifyPosition(nodeByName(pNodeName), pExpectedX, pExpectedY);
 	}
-	
+
 	/**
-	 * Tests that nodes are in the position that corresponds to their position value in the file. 
+	 * Tests that nodes are in the position that corresponds to their position value
+	 * in the file.
 	 */
 	@ParameterizedTest
-	@CsvSource({"NoteNode, 690, 320",
-		"InitialStateNode, 150, 70",
-		"FinalStateNode, 640, 230"})
-	void testNodePositionByType(String pClassName, int pExpectedX, int pExpectedY)
-	{
+	@CsvSource({ "NoteNode, 690, 320", "InitialStateNode, 150, 70", "FinalStateNode, 640, 230" })
+	void testNodePositionByType(String pClassName, int pExpectedX, int pExpectedY) {
 		String fullyQualifiedClassName = "org.jetuml.diagram.nodes." + pClassName;
-		try 
-		{
+		try {
 			verifyPosition(nodesByType(Class.forName(fullyQualifiedClassName)).get(0), pExpectedX, pExpectedY);
-		} 
-		catch (ClassNotFoundException e) 
-		{
+		}
+		catch (ClassNotFoundException e) {
 			fail();
 		}
 	}
-	
+
 	/**
-	 * Tests that all state nodes that are supposed to have the default dimension actually do. 
+	 * Tests that all state nodes that are supposed to have the default dimension
+	 * actually do.
 	 */
 	@ParameterizedTest
-	@ValueSource(strings = {"S1", "S2", "S3"})
-	void testStateNodesDefaultDimension(String pNodeName)
-	{
+	@ValueSource(strings = { "S1", "S2", "S3" })
+	void testStateNodesDefaultDimension(String pNodeName) {
 		verifyStateNodeDefaultDimensions(nodeByName(pNodeName));
 	}
-	
+
 	/**
-	 * Tests that the note node is expanded horizontally. 
+	 * Tests that the note node is expanded horizontally.
 	 */
 	@Test
-	void testNoteNodeIsExpandedHorizontally()
-	{
+	void testNoteNodeIsExpandedHorizontally() {
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_WIDTH");
 		Rectangle bounds = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
 		assertTrue(bounds.width() > DEFAULT_WIDTH);
 	}
-	
+
 	/**
-	 * Tests that the initial and final state nodes have the default dimensions. 
+	 * Tests that the initial and final state nodes have the default dimensions.
 	 */
 	@Test
-	void testCircularStateNodesDefaultDimension()
-	{
+	void testCircularStateNodesDefaultDimension() {
 		verifyCircularStateNodeDefaultDimensions(nodesByType(InitialStateNode.class).get(0));
 		verifyCircularStateNodeDefaultDimensions(nodesByType(FinalStateNode.class).get(0));
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to its node boundaries. 
+	 * Tests that the transition edge connects to its node boundaries.
 	 */
 	@Test
-	void testTransitionEdgeFromInitialStateToS1()
-	{
+	void testTransitionEdgeFromInitialStateToS1() {
 		Rectangle boundsInitialState = aRenderer.getBounds(nodesByType(InitialStateNode.class).get(0));
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("start"));
 		assertWithDefaultTolerance(boundsInitialState.maxX(), edgeLine.point1().x());
 		assertWithDefaultTolerance(boundsS1.x(), edgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to its node boundaries. 
+	 * Tests that the transition edge connects to its node boundaries.
 	 */
 	@Test
-	void testTransitionEdgesFromS1ToS2()
-	{
+	void testTransitionEdgesFromS1ToS2() {
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsS1.maxX(), edgeLine.point1().x());
 		assertWithDefaultTolerance(boundsS2.x(), edgeLine.point2().x());
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to its node boundaries. 
+	 * Tests that the transition edge connects to its node boundaries.
 	 */
 	@Test
-	void testTransitionEdgesFromS2ToS1()
-	{
+	void testTransitionEdgesFromS2ToS1() {
 		Rectangle boundsS1 = aRenderer.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Line edgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("e2"));
 		assertWithDefaultTolerance(boundsS1.maxX(), edgeLine.point2().x());
 		assertWithDefaultTolerance(boundsS2.x(), edgeLine.point1().x());
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to its node boundaries. 
+	 * Tests that the transition edge connects to its node boundaries.
 	 */
 	@Test
-	void testSelfTransitionEdgeOnS2()
-	{
+	void testSelfTransitionEdgeOnS2() {
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Point arrowBaseConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).point1();
 		Point arrowHeadConnectionPoint = aRenderer.getConnectionPoints(edgeByMiddleLabel("self")).point2();
 		assertWithDefaultTolerance(arrowBaseConnectionPoint.y(), boundsS2.y());
 		assertWithDefaultTolerance(arrowHeadConnectionPoint.x(), boundsS2.maxX());
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to its node boundaries. 
+	 * Tests that the transition edge connects to its node boundaries.
 	 */
 	@Test
-	void testTransitionEdgeFromS2ToS3()
-	{
+	void testTransitionEdgeFromS2ToS3() {
 		Rectangle boundsS2 = aRenderer.getBounds(nodeByName("S2"));
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
-				.filter(edge -> edge.end().equals(nodeByName("S3")))
-				.findFirst()
-				.get();
+				.filter(edge -> edge.end().equals(nodeByName("S3"))).findFirst().get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
 		assertWithDefaultTolerance(boundsS2.maxY(), edgeLine.point1().y());
 		assertWithDefaultTolerance(boundsS3.y(), edgeLine.point2().y());
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to S3's boundary and falls within the final state bounds. 
+	 * Tests that the transition edge connects to S3's boundary and falls within the
+	 * final state bounds.
 	 */
 	@Test
-	void testTransitionEdgeFromS3ToFinalState()
-	{
+	void testTransitionEdgeFromS3ToFinalState() {
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Rectangle boundsFinalState = aRenderer.getBounds(nodesByType(FinalStateNode.class).get(0));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
-				.filter(edge -> edge.end().equals(nodesByType(FinalStateNode.class).get(0)))
-				.findFirst()
-				.get();
+				.filter(edge -> edge.end().equals(nodesByType(FinalStateNode.class).get(0))).findFirst().get();
 		Line edgeLine = aRenderer.getConnectionPoints(transitionEdge);
 		assertWithDefaultTolerance(boundsS3.y(), edgeLine.point1().y());
 		assertTrue(boundsFinalState.contains(edgeLine.point2()));
 	}
-	
+
 	/**
-	 * Tests that the transition edge connects to the note node's boundary and falls within S3. 
+	 * Tests that the transition edge connects to the note node's boundary and falls
+	 * within S3.
 	 */
 	@Test
-	void testNoteEdgeBetweenS3AndNoteNode()
-	{
+	void testNoteEdgeBetweenS3AndNoteNode() {
 		Rectangle boundsS3 = aRenderer.getBounds(nodeByName("S3"));
 		Rectangle boundsNoteNode = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
 		Line edgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));

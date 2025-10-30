@@ -40,45 +40,39 @@ import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 import org.jetuml.rendering.nodes.NodeRenderer;
 
 /**
- * Superclass for classes that test the layout of a sequence diagram.
- * Declares convenience methods to test diagram elements. 
+ * Superclass for classes that test the layout of a sequence diagram. Declares
+ * convenience methods to test diagram elements.
  */
-public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiagramLayout 
-{
-	AbstractTestSequenceDiagramLayout(Path pDiagramPath) throws IOException 
-	{
+public abstract class AbstractSequenceDiagramLayoutTest extends AbstractDiagramLayoutTest {
+
+	AbstractSequenceDiagramLayoutTest(Path pDiagramPath) throws IOException {
 		super(pDiagramPath);
 	}
-	
-	protected static void verifyImplicitParameterNodeTopRectangleDefaultHeight(Node pNode)
-	{
+
+	protected static void verifyImplicitParameterNodeTopRectangleDefaultHeight(Node pNode) {
 		final int TOP_HEIGHT = getStaticIntFieldValue(ImplicitParameterNodeRenderer.class, "TOP_HEIGHT");
 		ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer();
 		Rectangle implicitParameterTopRectangle = instanceOfImplicitParameterNodeViewer.getTopRectangle(pNode);
 		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.height());
 	}
-	
-	protected void verifyCallNodeDefaultWidth(Node pNode)
-	{
+
+	protected void verifyCallNodeDefaultWidth(Node pNode) {
 		final int WIDTH = getStaticIntFieldValue(CallNodeRenderer.class, "WIDTH");
 		Rectangle nodeBounds = aRenderer.getBounds(pNode);
 		assertEquals(WIDTH, nodeBounds.width());
 	}
-	
-	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer()
-	{
-		try
-		{
+
+	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer() {
+		try {
 			Field nodeViewers = AbstractDiagramRenderer.class.getDeclaredField("aRenderers");
 			nodeViewers.setAccessible(true);
 			@SuppressWarnings("unchecked")
-			ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = 
-					(ImplicitParameterNodeRenderer)((IdentityHashMap<Class<? extends Node>, NodeRenderer>)nodeViewers.get(
-							new SequenceDiagramRenderer(new Diagram(DiagramType.SEQUENCE)))).get(ImplicitParameterNode.class);
+			ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = (ImplicitParameterNodeRenderer) ((IdentityHashMap<Class<? extends Node>, NodeRenderer>) nodeViewers
+					.get(new SequenceDiagramRenderer(new Diagram(DiagramType.SEQUENCE))))
+					.get(ImplicitParameterNode.class);
 			return instanceOfImplicitParameterNodeViewer;
 		}
-		catch (ReflectiveOperationException e)
-		{
+		catch (ReflectiveOperationException e) {
 			assert false;
 			fail();
 			return null;

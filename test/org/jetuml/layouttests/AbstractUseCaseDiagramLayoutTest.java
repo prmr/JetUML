@@ -32,30 +32,26 @@ import org.jetuml.rendering.nodes.ActorNodeRenderer;
 import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 
 /**
- * Superclass for classes that test the layout of a use case diagram.
- * Declares convenience methods to test diagram elements. 
+ * Superclass for classes that test the layout of a use case diagram. Declares
+ * convenience methods to test diagram elements.
  */
-public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagramLayout 
-{
+public abstract class AbstractUseCaseDiagramLayoutTest extends AbstractDiagramLayoutTest {
 
-	AbstractTestUseCaseDiagramLayout(Path pDiagramPath) throws IOException 
-	{
+	AbstractUseCaseDiagramLayoutTest(Path pDiagramPath) throws IOException {
 		super(pDiagramPath);
 	}
-	
-	protected void verifyUseCaseNodeDefaultDimensions(Node pNode)
-	{
+
+	protected void verifyUseCaseNodeDefaultDimensions(Node pNode) {
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(UseCaseNodeRenderer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(UseCaseNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
-	
-	protected void verifyActorNodeWithNameDefaultDimensions(Node pNode)
-	{
+
+	protected void verifyActorNodeWithNameDefaultDimensions(Node pNode) {
 		final int WIDTH = getStaticIntFieldValue(ActorNodeRenderer.class, "WIDTH");
 		final int HEIGHT = getStaticIntFieldValue(ActorNodeRenderer.class, "HEIGHT");
 		StringRenderer nameViewer = new StringRenderer(Alignment.CENTER);
-		Dimension nameBounds = nameViewer.getDimension(((ActorNode)pNode).getName());
+		Dimension nameBounds = nameViewer.getDimension(((ActorNode) pNode).getName());
 		int calculatedWidth = Math.max(WIDTH, nameBounds.width());
 		int calculatedHeight = HEIGHT + nameBounds.height();
 		verifyDefaultDimensions(pNode, calculatedWidth, calculatedHeight);
