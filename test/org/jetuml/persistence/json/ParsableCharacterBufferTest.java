@@ -25,13 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-public class TestParsableCharacterBuffer
-{
+public class ParsableCharacterBufferTest {
+
 	private final ParsableCharacterBuffer aBuffer = new ParsableCharacterBuffer("abc");
 
 	@Test
-	void testNext()
-	{
+	void testNext() {
 		assertEquals('a', aBuffer.next());
 		assertEquals('b', aBuffer.next());
 		assertEquals('c', aBuffer.next());
@@ -39,45 +38,38 @@ public class TestParsableCharacterBuffer
 	}
 
 	@Test
-	void testNext_Int_Empty()
-	{
+	void testNext_Int_Empty() {
 		assertEquals("", aBuffer.next(0));
 	}
 
 	@Test
-	void testNext_Int_One()
-	{
+	void testNext_Int_One() {
 		assertEquals("a", aBuffer.next(1));
 	}
 
 	@Test
-	void testNext_Int_All()
-	{
+	void testNext_Int_All() {
 		assertEquals("abc", aBuffer.next(3));
 	}
 
 	@Test
-	void testNext_Int_Error()
-	{
+	void testNext_Int_Error() {
 		assertThrows(JsonParsingException.class, () -> aBuffer.next(4));
 	}
 
 	@Test
-	void testConsume_Correct()
-	{
+	void testConsume_Correct() {
 		aBuffer.consume('a');
 		assertEquals('b', aBuffer.next());
 	}
 
 	@Test
-	void testConsume_Incorrect()
-	{
+	void testConsume_Incorrect() {
 		assertThrows(JsonParsingException.class, () -> aBuffer.consume('x'));
 	}
 
 	@Test
-	void testConsume_ReadPastTheEnd()
-	{
+	void testConsume_ReadPastTheEnd() {
 		aBuffer.next(3);
 		assertThrows(JsonParsingException.class, () -> aBuffer.consume('x'));
 	}

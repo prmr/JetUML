@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Iterator;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
@@ -37,63 +36,46 @@ import org.jetuml.diagram.PropertyName;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.persistence.json.JsonObject;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestJsonEncodingClassDiagram
-{
-	private Diagram aGraph;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		aGraph = new Diagram(DiagramType.CLASS);
-	}
-	
+public class TestJsonEncodingClassDiagram {
+
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+
 	/*
 	 * Initializes a graph with a class node contained in a package node.
 	 */
-	private void initiGraph1()
-	{
+	private void initiGraph1() {
 		PackageNode p = new PackageNode();
 		p.setName("package");
 		ClassNode c = new ClassNode();
 		c.setName("class");
 		p.addChild(c);
-		aGraph.addRootNode(p);
+		aDiagram.addRootNode(p);
 	}
-	
+
 	@Test
-	public void testEmpty()
-	{
-		JsonObject object = JsonEncoder.encode(aGraph);
+	void testEmpty() {
+		JsonObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("ClassDiagram", object.getString("diagram"));
-		assertEquals(0, object.getJsonArray("nodes").size());	
-		assertEquals(0, object.getJsonArray("edges").size());				
+		assertEquals(0, object.getJsonArray("nodes").size());
+		assertEquals(0, object.getJsonArray("edges").size());
 	}
-	
+
 	@Test
-	public void testEncodeDecodeGraph1()
-	{
+	void testEncodeDecodeGraph1() {
 		initiGraph1();
-		Diagram diagram = new JsonDecoder(JsonEncoder.encode(aGraph)).decode();
-		
+		Diagram diagram = new JsonDecoder(JsonEncoder.encode(aDiagram)).decode();
+
 		Iterator<Node> iter = diagram.rootNodes().iterator();
 		iter.next();
 		assertFalse(iter.hasNext());
-		
+
 		PackageNode p = (PackageNode) findRootNode(diagram, PackageNode.class, build(PropertyName.NAME, "package"));
 
 		assertEquals(1, p.getChildren().size());
-		
+
 		ClassNode node = (ClassNode) p.getChildren().get(0);
 		assertSame(p, node.getParent());
 		assertEquals("class", node.getName());

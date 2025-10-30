@@ -26,64 +26,57 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TestCharacterBuffer
-{
+public class CharacterBufferTest {
+
 	private final CharacterBuffer aEmpty = new CharacterBuffer("");
 	private final CharacterBuffer aBuffer1 = new CharacterBuffer("abc\nde\r\b\ffg h");
 	private final CharacterBuffer aBuffer2 = new CharacterBuffer("a  r  ");
-	
+
 	@Test
-	void testSkipBlanks_Empty()
-	{
+	void testSkipBlanks_Empty() {
 		aEmpty.skipBlanks(); // Test that this does not raise an exception, but nothing happens
 	}
-	
+
 	@Test
-	void testSkipBlanks_None()
-	{
-		aBuffer1.skipBlanks(); 
+	void testSkipBlanks_None() {
+		aBuffer1.skipBlanks();
 		assertEquals('a', aBuffer1.next());
 	}
-	
+
 	@Test
-	void testSkipBlanks_One()
-	{
+	void testSkipBlanks_One() {
 		aBuffer1.next();
 		aBuffer1.next();
 		aBuffer1.next();
 		aBuffer1.skipBlanks();
 		assertEquals('d', aBuffer1.next());
 	}
-	
+
 	@Test
-	void testSkipBlanks_Multiple()
-	{
+	void testSkipBlanks_Multiple() {
 		aBuffer2.next();
 		aBuffer2.skipBlanks();
 		assertEquals('r', aBuffer2.next());
 	}
-	
+
 	@Test
-	void testSkipBlanks_ToEnd()
-	{
+	void testSkipBlanks_ToEnd() {
 		aBuffer2.next();
 		aBuffer2.skipBlanks();
 		aBuffer2.next();
 		aBuffer2.skipBlanks();
 		assertFalse(aBuffer2.hasMore());
 	}
-	
+
 	@Test
-	void testBackUp()
-	{
+	void testBackUp() {
 		assertEquals('a', aBuffer1.next());
 		aBuffer1.backUp();
 		assertEquals('a', aBuffer1.next());
 	}
-	
+
 	@Test
-	void testNext()
-	{
+	void testNext() {
 		assertEquals('a', aBuffer1.next());
 		assertEquals('b', aBuffer1.next());
 		assertEquals('c', aBuffer1.next());
@@ -98,17 +91,15 @@ public class TestCharacterBuffer
 		assertEquals(' ', aBuffer1.next());
 		assertEquals('h', aBuffer1.next());
 	}
-	
+
 	@Test
-	void testEmpty()
-	{
+	void testEmpty() {
 		assertFalse(aEmpty.hasMore());
 		assertFalse(aEmpty.hasMore(2));
 	}
-	
+
 	@Test
-	void testHasMore_Int()
-	{
+	void testHasMore_Int() {
 		assertTrue(aBuffer1.hasMore(6));
 		aBuffer1.next();
 		aBuffer1.next();
@@ -124,10 +115,9 @@ public class TestCharacterBuffer
 		aBuffer1.next();
 		assertFalse(aBuffer1.hasMore(6));
 	}
-	
+
 	@Test
-	void testHasMore()
-	{
+	void testHasMore() {
 		assertTrue(aBuffer1.hasMore());
 		aBuffer1.next();
 		assertTrue(aBuffer1.hasMore());

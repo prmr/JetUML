@@ -37,17 +37,16 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.junit.jupiter.api.Test;
 
-public class TestDeserializationContext
-{
+public class DeserializationContextTest {
+
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private DeserializationContext aContext;
-	private ClassNode aClassNode1 = new ClassNode(); 
-	private ClassNode aClassNode2 = new ClassNode(); 
-	private ClassNode aClassNode3 = new ClassNode(); 
+	private ClassNode aClassNode1 = new ClassNode();
+	private ClassNode aClassNode2 = new ClassNode();
+	private ClassNode aClassNode3 = new ClassNode();
 
 	@Test
-	void testIdExists()
-	{
+	void testIdExists() {
 		aContext = new DeserializationContext(aDiagram);
 		aContext.addNode(aClassNode1, 1);
 		aContext.addNode(aClassNode2, 2);
@@ -56,18 +55,16 @@ public class TestDeserializationContext
 		assertFalse(aContext.idExists(3));
 		assertFalse(aContext.idExists(4));
 	}
-	
+
 	@Test
-	void textInit()
-	{
+	void textInit() {
 		aContext = new DeserializationContext(aDiagram);
 		assertEquals(0, size());
 		assertSame(aDiagram, aContext.diagram());
 	}
-	
+
 	@Test
-	void testAddGet()
-	{
+	void testAddGet() {
 		aContext = new DeserializationContext(aDiagram);
 		aContext.addNode(aClassNode1, 0);
 		assertEquals(1, size());
@@ -81,14 +78,14 @@ public class TestDeserializationContext
 		assertSame(aClassNode1, aContext.getNode(0));
 		assertSame(aClassNode2, aContext.getNode(1));
 		assertSame(aClassNode3, aContext.getNode(2));
-		
+
 		// Add the same node again, with the same id.
 		aContext.addNode(aClassNode1, 0);
 		assertEquals(3, size());
 		assertSame(aClassNode1, aContext.getNode(0));
 		assertSame(aClassNode2, aContext.getNode(1));
 		assertSame(aClassNode3, aContext.getNode(2));
-		
+
 		// Add the same node again, with a different id
 		aContext.addNode(aClassNode1, 4);
 		assertEquals(3, size());
@@ -96,10 +93,9 @@ public class TestDeserializationContext
 		assertSame(aClassNode2, aContext.getNode(1));
 		assertSame(aClassNode3, aContext.getNode(2));
 	}
-	
+
 	@Test
-	void testMaintainOrder()
-	{
+	void testMaintainOrder() {
 		Node node1 = new NoteNode();
 		Node node2 = new NoteNode();
 		Node node3 = new NoteNode();
@@ -112,22 +108,19 @@ public class TestDeserializationContext
 		aContext.addNode(node2, 4);
 		aContext.addNode(node3, 5);
 
-		assertThat(nodesInsideContext(), hasElementsSameAs, 
-				aClassNode1, aClassNode2, aClassNode3, node1, node2, node3);
+		assertThat(nodesInsideContext(), hasElementsSameAs, aClassNode1, aClassNode2, aClassNode3, node1, node2, node3);
 	}
-	
-	private List<Node> nodesInsideContext()
-	{
+
+	private List<Node> nodesInsideContext() {
 		List<Node> result = new ArrayList<>();
 		aContext.forEach(node -> result.add(node));
 		return result;
 	}
-	
-	private int size()
-	{
+
+	private int size() {
 		int size = 0;
-		for( @SuppressWarnings("unused") Node n : aContext )
-		{
+		for (@SuppressWarnings("unused")
+		Node n : aContext) {
 			size++;
 		}
 		return size;

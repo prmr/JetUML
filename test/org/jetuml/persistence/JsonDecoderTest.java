@@ -22,37 +22,25 @@ package org.jetuml.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.persistence.json.JsonObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestJsonDecoder
-{
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
+public class JsonDecoderTest {
+
 	/*
-	 * Try to decode a valid but empty
-	 * JSON object.
+	 * Try to decode a valid but empty JSON object.
 	 */
 	@Test
-	public void testEmptyJSONObject()
-	{
+	void testEmptyJSONObject() {
 		JsonObject object = new JsonObject();
 		assertThrows(DeserializationException.class, () -> new JsonDecoder(object).decode());
 	}
-	
+
 	/*
-	 * Try to decode a valid JSON object missing
-	 * the nodes and edges.
+	 * Try to decode a valid JSON object missing the nodes and edges.
 	 */
 	@Test
-	public void testIncompleteJSONObject()
-	{
+	void testIncompleteJSONObject() {
 		JsonObject object = new JsonObject();
 		object.put("version", "1.2");
 		object.put("diagram", "StateDiagram");

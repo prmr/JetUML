@@ -27,62 +27,54 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TestJsonArrayParser
-{
+public class JsonArrayParserTest {
+
 	private static final JsonArrayParser PARSER = new JsonArrayParser();
 
 	@Test
-	void testIsApplicable_Empty()
-	{
+	void testIsApplicable_Empty() {
 		assertFalse(PARSER.isApplicable(new ParsableCharacterBuffer("")));
 	}
 
 	@Test
-	void testIsApplicable_SingleOpening()
-	{
+	void testIsApplicable_SingleOpening() {
 		assertTrue(PARSER.isApplicable(new ParsableCharacterBuffer("[")));
 	}
 
 	@Test
-	void testIsApplicable_SingleFalse()
-	{
+	void testIsApplicable_SingleFalse() {
 		assertFalse(PARSER.isApplicable(new ParsableCharacterBuffer(" ")));
 	}
 
 	@Test
-	void testParse_Empty()
-	{
+	void testParse_Empty() {
 		JsonArray result = PARSER.parse(new ParsableCharacterBuffer("[]"));
 		assertEquals(0, result.size());
 	}
 
 	@Test
-	void testParse_WithStringValue()
-	{
+	void testParse_WithStringValue() {
 		JsonArray result = PARSER.parse(new ParsableCharacterBuffer("[\"a\"]"));
 		assertEquals(1, result.size());
 		assertEquals("a", result.get(0));
 	}
-	
+
 	@Test
-	void testParse_WithIntegerValue()
-	{
+	void testParse_WithIntegerValue() {
 		JsonArray result = PARSER.parse(new ParsableCharacterBuffer("[5]"));
 		assertEquals(1, result.size());
 		assertEquals(5, result.get(0));
 	}
-	
+
 	@Test
-	void testParse_WithBooleanValue()
-	{
+	void testParse_WithBooleanValue() {
 		JsonArray result = PARSER.parse(new ParsableCharacterBuffer("[true]"));
 		assertEquals(1, result.size());
 		assertEquals(true, result.get(0));
 	}
-	
+
 	@Test
-	void testParse_WithMultipleValues()
-	{
+	void testParse_WithMultipleValues() {
 		JsonArray result = PARSER.parse(new ParsableCharacterBuffer("[\"a\",true , 5, false ,-1]"));
 		assertEquals(5, result.size());
 		assertEquals("a", result.get(0));
@@ -91,33 +83,29 @@ public class TestJsonArrayParser
 		assertEquals(false, result.get(3));
 		assertEquals(-1, result.get(4));
 	}
-	
+
 	@Test
-	void testWriteJsonArray_Empty()
-	{
+	void testWriteJsonArray_Empty() {
 		assertEquals("[]", JsonArrayParser.writeJsonArray(new JsonArray()));
 	}
-	
+
 	@Test
-	void testWriteJsonArray_SingleValue()
-	{
+	void testWriteJsonArray_SingleValue() {
 		JsonArray array = new JsonArray();
 		array.add(1);
 		assertEquals("[1]", JsonArrayParser.writeJsonArray(array));
 	}
-	
+
 	@Test
-	void testWriteJsonArray_TwoValues()
-	{
+	void testWriteJsonArray_TwoValues() {
 		JsonArray array = new JsonArray();
 		array.add(1);
 		array.add(2);
 		assertEquals("[1,2]", JsonArrayParser.writeJsonArray(array));
 	}
-	
+
 	@Test
-	void testWriteJsonArray_MixedValues()
-	{
+	void testWriteJsonArray_MixedValues() {
 		JsonArray array = new JsonArray();
 		array.add(1);
 		array.add("XXX");
@@ -126,10 +114,9 @@ public class TestJsonArrayParser
 		array.add(new JsonArray());
 		assertEquals("[1,\"XXX\",false,{},[]]", JsonArrayParser.writeJsonArray(array));
 	}
-	
+
 	@Test
-	void testWriteJsonArray_InvalidValue()
-	{
+	void testWriteJsonArray_InvalidValue() {
 		assertThrows(JsonException.class, () -> JsonArrayParser.writeJsonArray(1.0));
 	}
 }

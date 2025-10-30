@@ -37,89 +37,75 @@ import org.jetuml.persistence.json.JsonArray;
 import org.jetuml.persistence.json.JsonObject;
 
 /**
- * Utilities to facilitate writing tests for the persistence
- * classes.
+ * Utilities to facilitate writing tests for the persistence classes.
  */
-public final class PersistenceTestUtils
-{
+public final class PersistenceTestUtils {
+
 	private PersistenceTestUtils() {}
-	
+
 	/**
-	 * Creates a properties object with keys as even arguments and values as odd arguments.
+	 * Creates a properties object with keys as even arguments and values as odd
+	 * arguments.
 	 */
-	static Properties build(Object... pInput)
-	{
+	static Properties build(Object... pInput) {
 		Properties properties = new Properties();
-		for( int i = 0; i < pInput.length; i+=2 )
-		{
+		for (int i = 0; i < pInput.length; i += 2) {
 			final int j = i;
-			properties.add((PropertyName)pInput[i], () -> pInput[j+1], p -> {});
+			properties.add((PropertyName) pInput[i], () -> pInput[j + 1], p -> {
+			});
 		}
 		return properties;
 	}
-	
-	static void assertHasKeys(JsonObject pObject, String... pKeys)
-	{
-		for( String key : pKeys )
-		{
+
+	static void assertHasKeys(JsonObject pObject, String... pKeys) {
+		for (String key : pKeys) {
 			assertTrue(pObject.hasProperty(key));
 		}
 	}
-	
+
 	/*
-	 * Returns all the nodes in the diagram, both the root nodes
-	 * and all their children.
+	 * Returns all the nodes in the diagram, both the root nodes and all their
+	 * children.
 	 */
-	public static List<Node> getAllNodes(Diagram pDiagram)
-	{
+	public static List<Node> getAllNodes(Diagram pDiagram) {
 		List<Node> result = new ArrayList<>();
-		for( Node node : pDiagram.rootNodes() )
-		{
+		for (Node node : pDiagram.rootNodes()) {
 			result.addAll(getAllNodes(node));
 		}
 		return result;
 	}
-	
+
 	/*
 	 * Returns pNode and all its children.
 	 */
-	private static List<Node> getAllNodes(Node pNode)
-	{
+	private static List<Node> getAllNodes(Node pNode) {
 		List<Node> result = new ArrayList<>();
 		result.add(pNode);
-		for(Node child : pNode.getChildren() )
-		{
+		for (Node child : pNode.getChildren()) {
 			result.addAll(getAllNodes(child));
 		}
 		return result;
 	}
-	
+
 	/*
 	 * Finds the object in an array with the specified properties
 	 */
-	static JsonObject find(JsonArray pArray, String pType, Properties pProperties)
-	{
+	static JsonObject find(JsonArray pArray, String pType, Properties pProperties) {
 		JsonObject found = null;
-		for( int i = 0; i < pArray.size(); i++ )
-		{
+		for (int i = 0; i < pArray.size(); i++) {
 			boolean match = true;
 			JsonObject object = pArray.getJsonObject(i);
-			for( Property property : pProperties )
-			{
-				if( !object.hasProperty(property.name().external()))
-				{
+			for (Property property : pProperties) {
+				if (!object.hasProperty(property.name().external())) {
 					match = false;
 				}
-				else
-				{
-					if(!object.get(property.name().external()).equals(property.get()))
-					{
+				else {
+					if (!object.get(property.name().external()).equals(property.get())) {
 						match = false;
 					}
 				}
 			}
-			if( match && object.get("type").equals(pType) )
-			{
+			if (match && object.get("type").equals(pType)) {
 				found = object;
 				break;
 			}
@@ -127,25 +113,19 @@ public final class PersistenceTestUtils
 		assertNotNull(found);
 		return found;
 	}
-	
-	static Node findRootNode(Diagram pDiagram, Class<?> pClass, Properties pProperties)
-	{
-		for( Node node : pDiagram.rootNodes() )
-		{
-			if( node.getClass() == pClass )
-			{
+
+	static Node findRootNode(Diagram pDiagram, Class<?> pClass, Properties pProperties) {
+		for (Node node : pDiagram.rootNodes()) {
+			if (node.getClass() == pClass) {
 				boolean match = true;
 				Properties nodeProperties = node.properties();
-				for( Property property : pProperties )
-				{
-					if( !nodeProperties.get(property.name()).get().equals(property.get()))
-					{
+				for (Property property : pProperties) {
+					if (!nodeProperties.get(property.name()).get().equals(property.get())) {
 						match = false;
 						break;
 					}
 				}
-				if( match )
-				{
+				if (match) {
 					return node;
 				}
 			}
@@ -153,38 +133,29 @@ public final class PersistenceTestUtils
 		fail("Expected node not found");
 		return null;
 	}
-	
-	static Node findRootNode(Diagram pDiagram, Class<?> pClass, int pX)
-	{
-		for( Node node : pDiagram.rootNodes() )
-		{
-			if( node.getClass() == pClass && node.position().x() == pX )
-			{
+
+	static Node findRootNode(Diagram pDiagram, Class<?> pClass, int pX) {
+		for (Node node : pDiagram.rootNodes()) {
+			if (node.getClass() == pClass && node.position().x() == pX) {
 				return node;
 			}
 		}
 		fail("Expected node not found");
 		return null;
 	}
-	
-	static Edge findEdge(Diagram pDiagram, Class<?> pClass, Properties pProperties)
-	{
-		for( Edge edge : pDiagram.edges() )
-		{
-			if( edge.getClass() == pClass )
-			{
+
+	static Edge findEdge(Diagram pDiagram, Class<?> pClass, Properties pProperties) {
+		for (Edge edge : pDiagram.edges()) {
+			if (edge.getClass() == pClass) {
 				boolean match = true;
 				Properties edgeProperties = edge.properties();
-				for( Property property : pProperties )
-				{
-					if( !edgeProperties.get(property.name()).get().equals(property.get()))
-					{
+				for (Property property : pProperties) {
+					if (!edgeProperties.get(property.name()).get().equals(property.get())) {
 						match = false;
 						break;
 					}
 				}
-				if( match )
-				{
+				if (match) {
 					return edge;
 				}
 			}
