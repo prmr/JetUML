@@ -8,10 +8,11 @@ JetUML does not collect any information. The application only accesses the netwo
 
 ## Installation Instructions
 
-JetUML is distributed in two formats:
+JetUML is distributed in three formats:
 
 * **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform. Currently available for Windows only, with plans to offer binaries for Windows and Linux when resources permit it.
 * **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
+* **Nix package:** A standalone application installed on your system via Nix package manager. Available for MacOS/Linux systems with Nix package manager installed. Does not require the Java platform.
 
 ### Self-Contained Application
 
@@ -38,3 +39,27 @@ Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javaf
 ```shell
 javaw --module-path "C:\local\Java\javafx-sdk-21.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.9.jar
 ```
+
+### Nix Package
+Make sure you have [Nix package manager](https://nixos.org/download/) installed (not required if you are using NixOS), and the `nixpkgs` channel is set to at least version `25.11`. 
+
+**Installation on MacOS and Linux**
+```
+nix-env -iA nixpkgs.jetuml
+```
+
+**Installation on NixOS**
+
+Put the following code in your `configuration.nix` file:
+```
+  environment.systemPackages = [
+    pkgs.jetuml
+  ];
+```
+And then run `sudo nixos-rebuild switch`.
+
+**Running the application**
+
+After successful installation, simply run `jetuml` in the terminal to launch the program. 
+
+More information can be found in [the Nixpkgs registry](https://search.nixos.org/packages?channel=25.11&show=jetuml&query=jetuml)
