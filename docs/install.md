@@ -12,7 +12,7 @@ JetUML is distributed in three formats:
 
 * **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform. Currently available for Windows only, with plans to offer binaries for Windows and Linux when resources permit it.
 * **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
-* **Nix package:** A standalone application installed on your system via Nix package manager. Available for MacOS/Linux systems with Nix package manager installed. Does not require the Java platform.
+* **Nix package:** This is a community-contributed distribution. A standalone application installed on your system via Nix package manager. Available for MacOS/Linux systems with Nix package manager installed. Does not require the Java platform.
 
 ### Self-Contained Application
 
