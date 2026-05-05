@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2025 by McGill University.
+ * Copyright (C) 2026 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -107,7 +107,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		setTop(menuBar);
 		
 		TabPane tabPane = new TabPane();
-//		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER); // This JavaFX feature is too buggy to use at the moment see issue #455
+		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER); // See issue #455
 		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
 		setCenter(tabPane);
 
