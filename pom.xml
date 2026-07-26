@@ -1,0 +1,224 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jetuml</groupId>
+	<artifactId>jetuml</artifactId>
+	<version>3.10.0-SNAPSHOT</version>
+	<name>JetUML</name>
+	<url>https://www.jetuml.org</url>
+	<description>A simple free and open-source UML editor.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>25</maven.compiler.source>
+		<maven.compiler.target>25</maven.compiler.target>
+		<java.version>25</java.version>
+		<javafx.version>25</javafx.version>
+		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+		<src.dir>src</src.dir>           <!-- Override default -->
+		<testsrc.dir>test</testsrc.dir>  <!-- Override default -->
+		<!--By default, build only thin JAR (the flag being true skips execution
+         of shade plugin, responsible for creating a fat jar -->
+		<skip.shade.plugin>true</skip.shade.plugin>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>GPL-3</name>
+			<url>https://github.com/prmr/JetUML/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.14.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.14.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>JetUML-${project.version}</finalName>
+
+		<!-- Override source location (default for maven is src/main/java)-->
+		<sourceDirectory>${src.dir}</sourceDirectory>
+		<testSourceDirectory>${testsrc.dir}</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>icons</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>tipdata</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>25</release>
+					<proc>none</proc> <!-- Turn off annotation processing -->
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>${javafx.maven.plugin.version}</version>
+				<configuration>
+					<options>
+						<!-- Eliminates a warning java.lang.System::load has
+						been called by com.sun.glass.utils.NativeLibLoader in
+						module javafx.graphics -->
+						<option>--enable-native-access=javafx.graphics</option>
+					</options>
+				</configuration>
+				<!--  To run (without debugger), use: mvn clean javafx:run@run-->
+				<executions>
+					<execution>
+						<id>run</id>
+						<configuration>
+							<mainClass>
+								jetuml/org.jetuml.JetUML</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- The packaging plugin is included by default. We add it here
+				explicitly to include the main class in the jar manifest. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version> <!-- Or latest -->
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>
+								org.jetuml.JetUML</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- The shade plugin is needed to create a "self-contained / fat"
+			jar, that is,
+            a jar with all dependencies included.-->
+			<!-- Note, by default we want a thin jar, therefore this plugin has
+			a "skip"
+            configuration set to "true" by default (property defined in project properties) -->
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<!-- stop spamming the base project with a fused pom -->
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<!-- stop fusing meta files colliding from inner jars when
+					creating far jar -->
+					<!-- (not needed for project and silences warnings -->
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>module-info.class</exclude>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+								<exclude>META-INF/**/*.json</exclude>
+								<exclude>META-INF/*.MF</exclude>
+								<exclude>
+									META-INF/substrate/config/resourcebundles</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<!-- Skip this plugin if current profile says so-->
+							<skip>${skip.shade.plugin}</skip>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>
+										org.jetuml.JetUML.ShadeJetUml
+									</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<!-- Definition of various build profiles, depending on what kind of
+	deliverable is to be generated in the package phase.-->
+	<profiles>
+		<!--Build profile for building thin jar (i.e. without dependencies included). Is activated by default. -->
+		<profile>
+			<id>thin</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<!-- This profile does not need to define further properties, as the
+			default values at the start of the pom.xml files already serve as
+			default.-->
+		</profile>
+		<!--Build profile for building fat jar (i.e. with dependencies included). To activate, use -Pfat-->
+		<profile>
+			<id>fat</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- When selected, this profile overrides the default skip
+				value for the shade plugin ("true") to "false", 
+                     which activates the shade plugin and creates a fat JAR instead of a thin
+				jar.-->
+				<skip.shade.plugin>false</skip.shade.plugin>
+			</properties>
+		</profile>
+	</profiles>
+</project>
