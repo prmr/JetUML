@@ -28,8 +28,8 @@ import javafx.embed.swing.JFXPanel;
  * is available.
  */
 @SuppressWarnings("unused")
-public final class JavaFXLoader 
-{
+public final class JavaFXLoader {
+	
 	private static JFXPanel aJFXPanel = new JFXPanel();
 	
 	private JavaFXLoader() {}

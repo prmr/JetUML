@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,10 @@ public class DiagramTabToolBarTest {
 
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(DiagramType.newRendererInstanceFor(aDiagram));
+	
+	static {
+		JavaFXLoader.load();
+	}
 
 	@SuppressWarnings("unchecked")
 	private SelectableToolButton getButtonAtPosition(int pPosition) {
