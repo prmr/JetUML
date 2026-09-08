@@ -1,6 +1,6 @@
 # Download and Installation
 
-JetUML is available under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). The application is distributed as a Java archive (jar) file, or as native binary application on some operating systems. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page. Please consider supporting the project by starring [the GitHub repo](https://github.com/prmr/JetUML) and by [writing an endorsement](mailto:jetuml@cs.mcgill.ca).
+Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page. JetUML is available under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). The application is distributed as a Java archive (jar) file. Please support the project by starring [the GitHub repo](https://github.com/prmr/JetUML) and by [writing an endorsement](mailto:jetuml@cs.mcgill.ca).
 
 ## Privacy Policy
 
@@ -8,39 +8,24 @@ JetUML does not collect any information. The application only accesses the netwo
 
 ## Installation Instructions
 
-JetUML is distributed in three formats:
+JetUML is distributed in different formats:
 
-* **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform. Currently available for Windows only, with plans to offer binaries for Windows and Linux when resources permit it.
-* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
-* **Nix package:** This is a community-contributed distribution. A standalone application installed on your system via Nix package manager. Available for MacOS/Linux systems with Nix package manager installed. Does not require the Java platform.
+* **Fat Jar:** A large OS-specific Java archive (jar) file. Requires the Java platform.
+* **Thin Jar:** A small OS-independent Java archive (jar) file. Requires the Java platform and the JavaFX binaries.
+* **Nix package:** This is a community-contributed distribution. A standalone application installed on your system via the Nix package manager. Available for MacOS/Linux systems with the Nix package manager installed. Does not require the Java platform.
 
-### Self-Contained Application
+### Fat Jar
 
-* Download the file `JetUML-<Version>-<OS>.<ext>` that corresponds to your operating system from the [latest release page](https://github.com/prmr/JetUML/releases).
-
-* Run or install the file as customary on the appropriate operating system. You will be asked where to extract the application and a shortcut will be added to the desktop. 
-
-* If you are upgrading from a previous version, you can install the new application on top of the older version.
+Ensure you can run Java by entering `java -version` on a terminal console. Download file `JetUML-<OS>-<VERSION>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. Enter `java -jar JetUML-<OS>-<VERSION>.jar`.
 
 ### Thin Jar
 
-*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 21 or above installed on your system.* 
-
-Download file `JetUML-<Version>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. 
-
-To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently (use `java` instead of `javaw` on OSX/Linux).
-
-```shell
-javaw --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
-```
-
-Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
-
-```shell
-javaw --module-path "C:\local\Java\javafx-sdk-21.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.9.jar
-```
+Download file `JetUML-<VERSION>.jar`. The process is similar to the one used to run the fat jar, but requires linking to dependencies. See the [Guide for JetUML Developers](developers.md) for details.
 
 ### Nix Package
+
+_Note that external builds are not verified by the developers of JetUML. Only install packages from sources you trust._
+
 Make sure you have [Nix package manager](https://nixos.org/download/) installed (not required if you are using NixOS), and the `nixpkgs` channel is set to at least version `25.11`. 
 
 **Installation on MacOS and Linux**
