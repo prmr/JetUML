@@ -13,16 +13,41 @@ Thanks for considering contributing to the JetUML project. Please consult the [C
 
 ## System Requirements
 
-The current version of JetUML is built with Java 21, the latest long-term support (LTS) release. To build JetUML, it is necessary to have the [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) version 21 and the jar files of [JavaFX](https://jdk.java.net/javafx21/) version 21 available. The JetUML code base is configured to build easily with [Eclipse](https://eclipseide.org/), but use of this IDE is optional. To contribute code, it will be necessary to run the [Checkstyle](https://checkstyle.org/) tool.
+The current version of JetUML is built with Java 25. To build JetUML, it is necessary to have the [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) version 25 and the jar files of [JavaFX](https://jdk.java.net/javafx25/) version 25 available. The JetUML code base is configured to build easily with [Maven](https://maven.apache.org/), [Eclipse](https://eclipseide.org/), or both. To contribute code, it will be necessary to run the [Checkstyle](https://checkstyle.org/) tool.
 
-## Building the Application in Eclipse
+## Building and Running with Maven
 
-1. Ensure that you meet the system requirements, including a working version of Eclipse.
-2. In Eclipse, ensure that the JDK 21 is the default workspace JRE (_Window > Preferences > Java > Installed JREs_).
-3. Create a new _user library_ called `JavaFX` that includes all the JavaFX 21 jar files. To create this library, access _Window > Preferences > Java > User Libraries_, select _New..._, enter the exact string `JavaFX`. Then, select this library, and click _Add External JARS..._, then find and select the jar files under the `lib` directory of your JavaFX download.
-4. Import the [JetUML repo](https://github.com/prmr/JetUML.git) in Eclipse (_File > Import > Git > Projects from Git > Clone URI_). If you meet the system requirements, the project should build automatically.
-5. To run JetUML, right-click on the project in the Package Explorer and select _Run As > Java Application_, selecting `JetUML` as the main file.
-6. **If you are using a Mac**, to run the application, open the run configuration and make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is not checked.
+The following commands can be run from the command line or, in Eclipse, by right-clicking on the `pom.xml` file and selecting `Run As...`.
+
+* Compiling: `mvn clean compile`
+* Validating style: `mvn compile checkstyle:check`
+* Testing: `mvn clean test`
+* Packaging: `mvn clean package` or `mvn clean package -Pfat` to create a fat jar.
+* Running: `mvn clean javafx:run@run`
+
+By default, packaging creates a thin jar as `target/JetUML-<VERSION>.jar`. To run the packaged application from the thin jar, you must have the JavaFX library downloaded somewhere, assumed to be `PATH_TO_JAVAFX_LIB`. To run the jar, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
+
+```
+java --module-path <PATH_TO_JAVAFX_LIB> --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-<VERSION>.jar
+```
+
+To run the packaged application from the far jar, simply run the jar as:
+
+```
+java -jar JetUML-<VERSION>.jar
+```
+
+On Windows, you can use `javaw` instead of `java` to run without linking to the console.
+
+## Building and Running with Eclipse
+
+If you used Maven to fetch the dependencies, you can simply run the application and test directly from Eclipse.
+
+* Ensure that the application was built by selecting `Project -> Clean...`.
+* Right-click on the project and select `Run As -> Java Application`. Select `JetUML` from the list. 
+* To run the tests, select `Run As - > JUnit Test`.
+
+_**MacOs Users**: When you run the application, from the run configuration, make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is _not_ checked._ 
 
 ## Committing Code
 
@@ -31,7 +56,7 @@ The current version of JetUML is built with Java 21, the latest long-term suppor
 3. Ensure that any new file includes the [copyright notice](#copyright-notice).
 3. Ensure that all unit tests pass.
 
-## Packaging the Application
+## Packaging the Application as an Installable Executable
 
 JetUML can be packaged as a self-contained application for Windows, Linux, and possibly Mac. This is done with the [jpackage tool](https://docs.oracle.com/en/java/javase/14/docs/specs/man/jpackage.html) distributed with OpenJDK. 
 
@@ -40,8 +65,8 @@ JetUML can be packaged as a self-contained application for Windows, Linux, and p
 Run this from the git repo root (where `FXMODS` points to the JavaFX mods directory, e.g.,):
 
 ```
-set FXMODS="C:\local\Java\javafx-jmods-21.0.2"
-jpackage --module-path %FXMODS%;bin\main --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
+set FXMODS="...\javafx-jmods-25"
+jpackage --module-path %FXMODS%;classes --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.10 --icon ..\docs\JetUML.ico --win-shortcut --win-dir-chooser
 ```
 
 ### Linux
@@ -49,9 +74,9 @@ jpackage --module-path %FXMODS%;bin\main --add-modules jetuml --module jetuml/or
 Run this from the git repo root (adjust paths as needed):
 
 ``` 
-FXMODS=/usr/lib/jvm/javafx-jmods-21.0.2
-JMODS=/usr/lib/jvm/jdk-17-oracle-x64/jmods
-jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --icon icons/jet.png 
+FXMODS=/usr/lib/jvm/javafx-jmods-25
+JMODS=/usr/lib/jvm/jdk-25/jmods
+jpackage --module-path $JMODS:$FXMODS:classes --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version <VERSION> --icon icons/jet.png 
 ```
 
 ### Mac
@@ -59,7 +84,7 @@ jpackage --module-path $JMODS:$FXMODS:bin/jetuml --add-modules jetuml --module j
 Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
 
 ```
-$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.9 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
+$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:classes --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version <VERSION>> --module jetuml/org.jetuml.JetUML --type pkg --icon ../docs/JetUML.icns
 ```
 
 ## Copyright Notice
