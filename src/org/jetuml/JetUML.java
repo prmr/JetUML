@@ -54,7 +54,7 @@ import javafx.stage.Stage;
 public final class JetUML extends Application {
 
 	@SuppressWarnings("exports")
-	public static final Version VERSION = Version.create(3, 9);
+	public static final Version VERSION = Version.create(3, 10);
 	
 	private static final String CSS_FILE_NAME = "JetUML.css";
 

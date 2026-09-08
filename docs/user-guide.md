@@ -1,6 +1,6 @@
 # JetUML User Guide
 
-For JetUML Version 3.9. Updated 2025-08-28.
+For JetUML Version 3.10. Updated 2025-08-28.
 
 * [Main Features](#main-features)
 * [A Quick Tour of JetUML](#a-quick-tour-of-jetuml)
