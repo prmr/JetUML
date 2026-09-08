@@ -191,6 +191,29 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Enforces respecting checkstyle. -->
+			<!-- Not included in any execution. Must be run standalone with: mvn
+			compile checkstyle:check -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.6.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>10.24.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>style/Style.xml</configLocation>
+					<consoleOutput>true</consoleOutput>
+					<violationSeverity>warning</violationSeverity>
+					<failOnViolation>false</failOnViolation>
+					<failsOnError>true</failsOnError>
+					<linkXRef>false</linkXRef>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<!-- Definition of various build profiles, depending on what kind of
