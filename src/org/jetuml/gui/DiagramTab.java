@@ -55,7 +55,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	private static final double ZOOM_MIN = DEFAULT_SCALE / (SCALE_MULTIPLIER * SCALE_MULTIPLIER);
 	private static final double ZOOM_MAX = DEFAULT_SCALE * SCALE_MULTIPLIER * SCALE_MULTIPLIER;
 
-	private final DoubleProperty aZoom;
+    private static final char UNSAVED_SYMBOL = '*';
+	
+    private final DoubleProperty aZoom;
 	private DiagramCanvas aDiagramCanvas;
 	private Optional<File> aFile = Optional.empty(); // The file associated with
 														// this diagram
@@ -80,6 +82,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
+        aDiagramCanvas.addDiagramChangeListener(this::setTitle);
 
 		// We put the diagram in a fixed-size StackPane for the sole purpose of
 		// being able to
@@ -226,16 +229,22 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 
 	/**
 	 * Sets the title of the frame as the file name if there is a file name.
-	 * 
+	 * Adds a symbol if the diagram has unsaved changes.
 	 */
 	public void setTitle() {
+        String title = "";
 		if (aFile.isPresent()) {
-			String title = aFile.get().getName();
-			setText(title);
+			title = aFile.get().getName();
 		}
 		else {
-			setText(RESOURCES.getString(getDiagram().getType().getName().toLowerCase() + ".text"));
+			title = RESOURCES.getString(getDiagram().getType().getName().toLowerCase() + ".text");
 		}
+        if (hasUnsavedChanges()){
+            setText(title + UNSAVED_SYMBOL);
+        }
+        else {
+            setText(title);
+        }
 	}
 
 	/**
@@ -243,6 +252,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void diagramSaved() {
 		aDiagramCanvas.diagramSaved();
+        setTitle();
 	}
 
 	/**

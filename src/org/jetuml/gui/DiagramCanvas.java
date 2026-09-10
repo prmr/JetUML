@@ -92,6 +92,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private final RenderingContext aRenderingContext;
 	private final AccessoriesRenderer aAccessoriesRenderer;
 
+    private List<Runnable> aOnDiagramChanged = new ArrayList<>();
+
 	private enum DragMode {
 		DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO
 	}
@@ -191,6 +193,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		Clipboard.instance().copy(newElements);
 		paintPanel(); // TODO double-check if this is necessary since it's
 						// already called in setSelectionTo
+        diagramChanged();
 	}
 
 	/**
@@ -218,6 +221,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			if (!operation.isEmpty()) {
 				aProcessor.storeAlreadyExecutedOperation(operation);
 			}
+            diagramChanged();
 		}
 	}
 
@@ -270,6 +274,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		if (aProcessor.canUndo()) {
 			aProcessor.undoLastExecutedOperation();
 			paintPanel();
+            diagramChanged();
 		}
 	}
 
@@ -281,6 +286,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		if (aProcessor.canRedo()) {
 			aProcessor.redoLastUndoneOperation();
 			paintPanel();
+            diagramChanged();
 		}
 	}
 
@@ -303,6 +309,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aProcessor.executeNewOperation(aDiagramBuilder.createRemoveElementsOperation(aSelected));
 		clearSelection();
 		paintPanel();
+        diagramChanged();
 	}
 
 	/**
@@ -345,6 +352,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		// Place the modified nodes on the top
 		selectedNodes.forEach(node -> diagram().placeOnTop(node));
 		paintPanel();
+        diagramChanged();
 	}
 
 	@Override
@@ -516,6 +524,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			NotificationService.instance().spawnNotification(violation.get().description(),
 					ToastNotification.Type.ERROR);
 		}
+        diagramChanged();
 	}
 
 	private void handleEdgeStart(MouseEvent pEvent) {
@@ -613,6 +622,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			}
 		}
 		deactivateRubberband();
+        diagramChanged();
 	}
 
 	private void releaseMove() {
@@ -621,6 +631,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			aProcessor.storeAlreadyExecutedOperation(operation);
 		}
 		paintPanel();
+        diagramChanged();
 	}
 
 	private void mouseDragged(MouseEvent pEvent) {
@@ -896,4 +907,30 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aSelected.add(pElement);
 		paintPanel();
 	}
+    /**
+    * Adds pRunnable as a listener when the diagram changes.
+    * 
+    * @param pRunnable The runnable to be added.
+    * @pre pRunnable != null;
+    */
+    public void addDiagramChangeListener(Runnable pRunnable){
+        assert pRunnable != null;
+        aOnDiagramChanged.add(pRunnable);
+    }
+    /**
+    * Removes pRunnable as this diagram listener.
+    * 
+    * @param pRunnable The runnable to be removed.
+    * @pre pRunnable != null;
+    */
+    public void removeDiagramChangeListener(Runnable pRunnable){
+        assert pRunnable != null;
+        aOnDiagramChanged.remove(pRunnable);
+    }
+    private void diagramChanged(){
+        aOnDiagramChanged.forEach(runnable -> {
+            runnable.run();
+        });
+    }
+   
 }
