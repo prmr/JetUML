@@ -106,17 +106,19 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private Optional<Rectangle> aLasso = Optional.empty();
 
 	/**
-	 * Constructs the canvas, assigns the diagram to it.
+	 * Constructs the canvas and assigns the diagram to it.
 	 * 
-	 * @param pDiagramBuilder The builder wrapping the diagram to draw on this
-	 *     canvas.
-	 * @param pDiagramValidator The validator that checks the diagram's semantic
-	 *     validity.
-	 * @pre pDiagramBuilder != null;
+	 * @param pDiagramBuilder The builder wrapping the diagram to draw on this canvas.
+	 * @param pToolBar The dynamic toolbar associated with this canvas.
+	 * @param pDiagramValidator The validator that checks the diagram's semantic validity.
+	 * @param pHandler A callback for handling mouse dragged gestures.
 	 */
-	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, DiagramValidator pDiagramValidator,
-			MouseDraggedGestureHandler pHandler) {
-		assert pDiagramBuilder != null && pDiagramValidator.isValid();
+	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, 
+			DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler) {
+		assert pDiagramBuilder != null;
+		assert pToolBar != null;
+		assert pDiagramValidator != null && pDiagramValidator.isValid();
+		assert pHandler != null;
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramValidator = pDiagramValidator;
@@ -626,8 +628,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private void mouseDragged(MouseEvent pEvent) {
 		Point mousePoint = getMousePoint(pEvent);
 
-		// The second condition in the if is necessary in the case where a
-		// single
+		// The second condition in the if is necessary in the case where a single
 		// element is selected with the Ctrl button is down, which immediately
 		// deselects it.
 		if (aDragMode == DragMode.DRAG_MOVE && !aSelected.isEmpty()) {
