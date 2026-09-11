@@ -48,7 +48,7 @@ import javafx.scene.layout.StackPane;
 /**
  * A tab holding a single diagram.
  */
-public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEventHandler {
+public class DiagramTab extends Tab implements KeyEventHandler {
 
 	private static final double DEFAULT_SCALE = 1.0;
 	private static final double SCALE_MULTIPLIER = 1.25;
@@ -57,8 +57,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 
 	private final DoubleProperty aZoom;
 	private DiagramCanvas aDiagramCanvas;
-	private Optional<File> aFile = Optional.empty(); // The file associated with
-														// this diagram
+	private Optional<File> aFile = Optional.empty(); // The file associated with this diagram
 
 	/**
 	 * Constructs a diagram tab initialized with pDiagram.
@@ -69,7 +68,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		DiagramValidator validator = DiagramType.newValidatorInstanceFor(pDiagram);
 		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
-		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this);
+		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this::interactionTo);
 
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 
@@ -272,8 +271,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		setTitle();
 	}
 
-	@Override
-	public void interactionTo(Rectangle pBounds, Direction pDirection) {
+	private void interactionTo(Rectangle pBounds, Direction pDirection) {
 		// Compute point to reveal
 		int x = pBounds.maxX();
 		int y = pBounds.maxY();
