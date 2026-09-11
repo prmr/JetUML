@@ -51,11 +51,12 @@ _**MacOs Users**: When you run the application, from the run configuration, make
 
 ## Committing Code
 
-1. All committed code must respect all the JetUML style guidelines. These are available as a [style file](../style/Style.xml) for the [Checkstyle Eclipse Plug-in](https://marketplace.eclipse.org/content/checkstyle-plug). Before committing code for JetUML, make sure to install the plug-in, activate it, and check for any warning.
-2. All commits must be associated with an issues using an issue tag as the first token in the commit comment, using the format `[$NB]` where `NB` is the issue number. For example, [`[#519] Add constraint for connection to notes`](https://github.com/prmr/JetUML/commit/6af09b1289153cb5fd0aa5b0683da77bca2e5e58).
-3. Any new file must include the [copyright notice](#copyright-notice).
-4. All unit tests must pass.
-5. Pull requests must included a detailed description of the design decisions and their rationale.
+* **Policy on Generative AI: Contributions to the JetUML project must not include content generated, in part or in full, by large language models and tools built around them.** This policy is consistent in spirit with the [OpenJDK Interim Policy on Generative AI](https://openjdk.org/legal/ai): please refer to it for details.
+* All committed code must respect all the JetUML style guidelines. These are available as a [style file](../style/Style.xml) for the [Checkstyle Eclipse Plug-in](https://marketplace.eclipse.org/content/checkstyle-plug). Before committing code for JetUML, make sure to install the plug-in, activate it, and check for any warning.
+* All commits must be associated with an issues using an issue tag as the first token in the commit comment, using the format `[$NB]` where `NB` is the issue number. For example, [`[#519] Add constraint for connection to notes`](https://github.com/prmr/JetUML/commit/6af09b1289153cb5fd0aa5b0683da77bca2e5e58).
+* Any new file must include the [copyright notice](#copyright-notice).
+* All unit tests must pass.
+* Pull requests must include a detailed description of the design decisions and their rationale, and be opened against the current integration branch (usually named `Integration_V_vv`, where `V` and `v` stand for major and minor version, respectively).
 
 ## Packaging the Application as an Installable Executable
 
