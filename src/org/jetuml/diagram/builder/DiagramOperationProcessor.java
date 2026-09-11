@@ -35,6 +35,17 @@ public class DiagramOperationProcessor {
 	private final List<DiagramOperation> aExecutedOperations = new ArrayList<>();
 	private final List<DiagramOperation> aUndoneOperations = new ArrayList<>();
 	private Optional<DiagramOperation> aLastSavedOperation = Optional.empty();
+	private final DiagramOperationHistoryChangeHandler aChangeHandler;
+	
+	/**
+	 * Creates an operation precessor with an empty stack of operations.
+	 * 
+	 * @param pChangeHandler The callback to respond to changes in the operation history.
+	 */
+	public DiagramOperationProcessor(DiagramOperationHistoryChangeHandler pChangeHandler) {
+		assert pChangeHandler != null;
+		aChangeHandler = pChangeHandler;
+	}
 
 	/**
 	 * Executes pOperation and adds it to the list of executed operations.
@@ -46,6 +57,7 @@ public class DiagramOperationProcessor {
 		assert pOperation != null;
 		pOperation.execute();
 		aExecutedOperations.add(pOperation);
+		aChangeHandler.historyChanged();
 	}
 
 	/**
@@ -82,6 +94,7 @@ public class DiagramOperationProcessor {
 		if (aExecutedOperations.size() > 0) {
 			aLastSavedOperation = Optional.of(peek());
 		}
+		aChangeHandler.historyChanged();
 	}
 
 	/**
@@ -94,6 +107,7 @@ public class DiagramOperationProcessor {
 	public void storeAlreadyExecutedOperation(DiagramOperation pOperation) {
 		assert pOperation != null;
 		aExecutedOperations.add(pOperation);
+		aChangeHandler.historyChanged();
 	}
 
 	/**
@@ -107,6 +121,7 @@ public class DiagramOperationProcessor {
 		DiagramOperation operation = aExecutedOperations.remove(aExecutedOperations.size() - 1);
 		operation.undo();
 		aUndoneOperations.add(operation);
+		aChangeHandler.historyChanged();
 	}
 
 	/**
@@ -120,6 +135,7 @@ public class DiagramOperationProcessor {
 		DiagramOperation operation = aUndoneOperations.remove(aUndoneOperations.size() - 1);
 		operation.execute();
 		aExecutedOperations.add(operation);
+		aChangeHandler.historyChanged();
 	}
 
 	/**

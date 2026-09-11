@@ -45,6 +45,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.ClassDiagramBuilder;
 import org.jetuml.diagram.builder.CompoundOperation;
 import org.jetuml.diagram.builder.DiagramBuilder;
+import org.jetuml.diagram.builder.DiagramOperationHistoryChangeHandler;
 import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.PackageNode;
@@ -84,7 +85,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private static final int DIAGRAM_PADDING = 4;
 	private static final int CONNECT_THRESHOLD = 8;
 
-	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
+	private DiagramOperationProcessor aProcessor;
 	private final DiagramBuilder aDiagramBuilder;
 	private final DiagramValidator aDiagramValidator;
 	private final DiagramTabToolBar aToolBar;
@@ -114,14 +115,17 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pHandler A callback for handling mouse dragged gestures.
 	 */
 	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, 
-			DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler) {
+			DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler,
+			DiagramOperationHistoryChangeHandler pHistoryChangeHandler) {
 		assert pDiagramBuilder != null;
 		assert pToolBar != null;
 		assert pDiagramValidator != null && pDiagramValidator.isValid();
 		assert pHandler != null;
+		assert pHistoryChangeHandler != null;
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramValidator = pDiagramValidator;
+		aProcessor = new DiagramOperationProcessor(pHistoryChangeHandler);
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
 		Dimension dimension = getDiagramCanvasWidth();
 		setWidth(dimension.width());

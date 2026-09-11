@@ -54,6 +54,7 @@ public class DiagramTab extends Tab implements KeyEventHandler {
 	private static final double SCALE_MULTIPLIER = 1.25;
 	private static final double ZOOM_MIN = DEFAULT_SCALE / (SCALE_MULTIPLIER * SCALE_MULTIPLIER);
 	private static final double ZOOM_MAX = DEFAULT_SCALE * SCALE_MULTIPLIER * SCALE_MULTIPLIER;
+	private static final String UNSAVED_CHANGES_MARKER = "*";
 
 	private final DoubleProperty aZoom;
 	private DiagramCanvas aDiagramCanvas;
@@ -68,7 +69,8 @@ public class DiagramTab extends Tab implements KeyEventHandler {
 		DiagramValidator validator = DiagramType.newValidatorInstanceFor(pDiagram);
 		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
-		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this::interactionTo);
+		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this::interactionTo,
+				this::historyChanged);
 
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 
@@ -121,6 +123,16 @@ public class DiagramTab extends Tab implements KeyEventHandler {
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
+	}
+	
+	/*
+	 * Callback handling changes to the state of the diagram.
+	 */
+	private void historyChanged() {
+		String title = createTitle();
+		if (!title.equals(getText())) {
+			setText(title);
+		}
 	}
 
 	/* retrieves the toolbar from the component graph */
@@ -228,13 +240,18 @@ public class DiagramTab extends Tab implements KeyEventHandler {
 	 * 
 	 */
 	public void setTitle() {
+		setText(createTitle());
+	}
+	
+	private String createTitle() {
+		String title = RESOURCES.getString(getDiagram().getType().getName().toLowerCase() + ".text");
 		if (aFile.isPresent()) {
-			String title = aFile.get().getName();
-			setText(title);
+			title = aFile.get().getName();
+			if (hasUnsavedChanges()) {
+				title += UNSAVED_CHANGES_MARKER;
+			}
 		}
-		else {
-			setText(RESOURCES.getString(getDiagram().getType().getName().toLowerCase() + ".text"));
-		}
+		return title;
 	}
 
 	/**

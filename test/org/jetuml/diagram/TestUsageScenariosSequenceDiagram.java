@@ -504,7 +504,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 
 		Diagram diagram2 = new Diagram(DiagramType.SEQUENCE);
 		SequenceDiagramBuilder builder2 = new SequenceDiagramBuilder(diagram2);
-		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
+		DiagramOperationProcessor processor2 = new DiagramOperationProcessor(() -> {});
 		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));
 
 		Iterator<Node> nodes = diagram2.rootNodes().iterator();

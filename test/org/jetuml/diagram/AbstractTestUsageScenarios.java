@@ -43,7 +43,7 @@ class AbstractTestUsageScenarios {
 	private Diagram aDiagram;
 	private DiagramBuilder aBuilder;
 	private DiagramValidator aValidator;
-	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
+	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor(() -> {});
 	protected NoteNode aNoteNode = new NoteNode();
 	protected NoteEdge aNoteEdge = new NoteEdge();
 	private List<DiagramElement> aSelection = new ArrayList<>();

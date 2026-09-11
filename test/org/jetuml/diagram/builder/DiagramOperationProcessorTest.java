@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class DiagramOperationProcessorTest {
 
 	private StringBuilder aBuilder = new StringBuilder();
-	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
+	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor(() -> {});
 
 	/*
 	 * Creates a SimpleOperation that adds a single character to the builder.
