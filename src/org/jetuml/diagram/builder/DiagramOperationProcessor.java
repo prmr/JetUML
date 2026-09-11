@@ -49,6 +49,11 @@ public class DiagramOperationProcessor {
 	}
 
 	/**
+	 * The diagram is considered to have unsaved operations if the operation at the 
+	 * top of the operations stack is the one that was at the top of the stack
+	 * when the diagram was saved. If additional operations were added, or undone,
+	 * the diagram is considered unsaved.
+	 * 
 	 * @return True if the diagram has operations that have not been saved yet.
 	 */
 	public boolean hasUnsavedOperations() {
@@ -106,7 +111,7 @@ public class DiagramOperationProcessor {
 
 	/**
 	 * Re-executes the last undone operation, and adds it to the list of
-	 * executes operations.
+	 * executed operations.
 	 * 
 	 * @pre canRedo();
 	 */

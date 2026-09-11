@@ -126,35 +126,74 @@ public class DiagramOperationProcessorTest {
 	void testHasUnsavedOperations_Empty() {
 		assertFalse(aProcessor.hasUnsavedOperations());
 	}
-
+	
 	@Test
-	void testHasUnsavedOperations_False_OperationsNoSave() {
+	void testHasUnsavedOperation_OneUnsaved() {
 		aProcessor.executeNewOperation(createOperation('A'));
 		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	void testHasUnsavedOperation_ThreeUnsaved() {
+		aProcessor.executeNewOperation(createOperation('A'));
 		aProcessor.executeNewOperation(createOperation('B'));
 		aProcessor.executeNewOperation(createOperation('C'));
 		assertTrue(aProcessor.hasUnsavedOperations());
 	}
 
 	@Test
-	void testHasUnsavedOperations_False_WithSave() {
+	void testHasUnsavedOperations_OneUndid() {
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	void testHasUnsavedOperations_ThreeUndid() {
 		aProcessor.executeNewOperation(createOperation('A'));
 		aProcessor.executeNewOperation(createOperation('B'));
 		aProcessor.executeNewOperation(createOperation('C'));
-		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		aProcessor.undoLastExecutedOperation();
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+
+	@Test
+	void testHasUnsavedOperations_WithSave() {
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
 		aProcessor.diagramSaved();
 		assertFalse(aProcessor.hasUnsavedOperations());
 	}
 
 	@Test
-	void testHasUnsavedOperations_True_WithSave() {
+	void testHasUnsavedOperations_True_AfterSave() {
 		aProcessor.executeNewOperation(createOperation('A'));
-		aProcessor.executeNewOperation(createOperation('B'));
-		aProcessor.executeNewOperation(createOperation('C'));
-		assertTrue(aProcessor.hasUnsavedOperations());
 		aProcessor.diagramSaved();
-		assertFalse(aProcessor.hasUnsavedOperations());
 		aProcessor.executeNewOperation(createOperation('D'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	void testHasUnsavedOperations_True_AfterSaveWithMoreUndos() {
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		aProcessor.diagramSaved();
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	void testHasUnsavedOperations_False_AfterSaveWithMoreUndos() {
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.diagramSaved();
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
 		assertTrue(aProcessor.hasUnsavedOperations());
 	}
 
