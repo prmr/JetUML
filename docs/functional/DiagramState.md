@@ -14,6 +14,7 @@ The objects involved in this design are:
 * `Diagram`: The simple data model for a diagram: nodes and edges.
 * `DiagramRenderer`: A wrapper that can compute the geometry of the diagram. This wrapper has additional state to cache computations and support global path planning of edges.
 * `DiagramBuilder`: Wrapper around a `DiagramRenderer` that provides business rules for modifying a diagram while preserving its validity.
+* `DiagramValidator`: Wrapper around the same diagram as the renderer, which can check various constraints to determine whether the diagram is valid or not.
 * `DiagramCanvas`: The area of the GUI where the diagram is visually displayed.
 * `DiagramTab`: The top-level GUI component that hosts the diagram canvas.
 
