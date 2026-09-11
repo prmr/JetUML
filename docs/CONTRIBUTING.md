@@ -6,6 +6,8 @@ Thanks for considering contributing to JetUML.
 
 * [Code of Conduct](#code-of-conduct)
 * [Reporting Bugs](#reporting-bugs)
+* [Contributing Minor Fixes](#contributing-minor-fixes)
+* [Tackling Bigger Changes](#tackling-bigger-changes)
 
 ## Code of Conduct
 
@@ -33,16 +35,14 @@ Issue reports in the JetUML project are tagged according to the following system
 
 ## Contributing Minor Fixes
 
-If you would like to contribute a *minor fix*, you can directly submit a [pull request](https://help.github.com/en/articles/about-pull-requests) for it. A minor fix is a code change that is very short (a few lines maximum), typically located in a single place, and that has a well-isolated impact (i.e., does not require changing anything else). Examples of minor fixes include:
+A _minor fix_ is a code change that is very short (a few lines maximum), located within one or two methods, and that has a well-isolated impact (i.e., does not require changing anything else). Examples of minor fixes include:
 
 * Corrections of typos or inconsistencies in the documentation; 
 * Small, localized bug fixes;
 * Localized code improvements;
+
+If you would like to contribute a minor fix, please first read the [Guide of JetUML Developers](/developers.md) and submit a  [pull request](https://help.github.com/en/articles/about-pull-requests) for it. 
  
 ## Tackling Bigger Changes
  
- If you are considering contributing more than a minor fix, please comment on the corresponding issue first to share your ideas.
-
-## See Also
-
-The [developer guide](developers.md)
+ If you are considering contributing more than a minor fix, please comment on the corresponding issue first to share your ideas and read the [Guide of JetUML Developers](/developers.md).
