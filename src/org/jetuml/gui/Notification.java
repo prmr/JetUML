@@ -48,7 +48,7 @@ public final class Notification {
 	 * Different semantic categories for notifications, along with their visual
 	 * representation.
 	 */
-	enum Type { ERROR, SUCCESS, WARNING, INFO }
+	private enum Type { ERROR, SUCCESS, WARNING, INFO }
 
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
@@ -78,8 +78,30 @@ public final class Notification {
 	 * @param pType The type of the toast notification
 	 * @param pOwnerStage The main window stage
 	 */
-	public Notification(String pMessage, Type pType, Stage pOwnerStage) {
+	private Notification(String pMessage, Type pType, Stage pOwnerStage) {
 		aStage = createStage(pMessage, pType, pOwnerStage);
+	}
+	
+	/**
+	 * Creates a new error notification object using default fade in delay, fade
+	 * out delay and lifespan.
+	 *
+	 * @param pMessage The message to display
+	 * @param pOwnerStage The main window stage
+	 */
+	public static Notification error(String pMessage, Stage pOwnerStage) {
+		return new Notification(pMessage, Type.ERROR, pOwnerStage);
+	}
+	
+	/**
+	 * Creates a new success notification object using default fade in delay, fade
+	 * out delay and lifespan.
+	 *
+	 * @param pMessage The message to display
+	 * @param pOwnerStage The main window stage
+	 */
+	public static Notification success(String pMessage, Stage pOwnerStage) {
+		return new Notification(pMessage, Type.SUCCESS, pOwnerStage);
 	}
 	
 	private static Stage createStage(String pMessage, Type pType, Stage pOwnerStage) {

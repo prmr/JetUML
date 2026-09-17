@@ -136,7 +136,7 @@ public final class NotificationService {
 		if (aMainStage == null) {
 			return;
 		}
-		Notification toast = new Notification(pText, Notification.Type.ERROR, aMainStage);
+		Notification toast = Notification.error(pText, aMainStage);
 		spawnNotification(toast);
 	}
 	
@@ -148,7 +148,7 @@ public final class NotificationService {
 		if (aMainStage == null) {
 			return;
 		}
-		Notification toast = new Notification(pText, Notification.Type.SUCCESS, aMainStage);
+		Notification toast = Notification.success(pText, aMainStage);
 		spawnNotification(toast);
 	}
 }

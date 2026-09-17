@@ -228,10 +228,8 @@ public class NotificationServiceTest {
 		int yMargin = (int) notificationYMarginField.get(null);
 
 		Platform.runLater(() -> {
-			Notification errorNotification = new Notification("This is a test error notification.",
-					Notification.Type.ERROR, aStage);
-			Notification infoNotification = new Notification("This is a test info notification.",
-					Notification.Type.INFO, aStage);
+			Notification errorNotification = Notification.error("This is a test error notification.", aStage);
+			Notification infoNotification = Notification.success("This is a test info notification.", aStage);
 
 			NotificationService.instance().notifyError("This is a test error notification.");
 			NotificationService.instance().notifySuccess("This is a test success notification.");
