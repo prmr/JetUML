@@ -188,10 +188,13 @@ public final class ToastNotification implements Notification {
 	}
 
 	/**
-	 * @return The height of the Notification object.
+	 * Returns the height of this notification in pixels. The value can be fractional because
+	 * the size of the notification is a function of the font size, which is user-settable.
+	 * 
+	 * @return The height of the notification object.
 	 */
 	@Override
-	public double getHeight() {
+	public double height() {
 		return aStage.getHeight();
 	}
 }

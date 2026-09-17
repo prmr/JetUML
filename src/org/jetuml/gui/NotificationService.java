@@ -97,7 +97,8 @@ public final class NotificationService {
 		Collections.reverse(reverseNotifications);
 		for (Notification notification : reverseNotifications) {
 			notification.setPosition(x, y);
-			y = y - notification.getHeight() - NOTIFICATION_DISPLAY_SPACING;
+			y = y - notification.height() - NOTIFICATION_DISPLAY_SPACING;
+			IO.println(notification.height());
 
 			if (y < aMainStage.getY()) {
 				notification.close();

@@ -250,8 +250,8 @@ public class NotificationServiceTest {
 
 			// Let's compute the necessary height of the main window to fit two
 			// notifications
-			double height = yMargin + notificationSpacing * 2 + errorNotification.getHeight()
-					+ infoNotification.getHeight() + 1;
+			double height = yMargin + notificationSpacing * 2 + errorNotification.height()
+					+ infoNotification.height() + 1;
 			aStage.setHeight(height);
 
 			NotificationService.instance().spawnNotification("This is a test error notification.",

@@ -56,5 +56,5 @@ public interface Notification {
 	/**
 	 * @return The height in pixels of the notification object.
 	 */
-	double getHeight();
+	double height();
 }
