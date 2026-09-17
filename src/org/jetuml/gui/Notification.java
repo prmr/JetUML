@@ -42,7 +42,7 @@ import javafx.util.Duration;
  * A toast notification object (that pops up and disappears without requiring
  * any user interaction).
  */
-public final class ToastNotification {
+public final class Notification {
 	
 	/**
 	 * Different semantic categories for notifications, along with their visual
@@ -78,7 +78,7 @@ public final class ToastNotification {
 	 * @param pType The type of the toast notification
 	 * @param pOwnerStage The main window stage
 	 */
-	public ToastNotification(String pMessage, Type pType, Stage pOwnerStage) {
+	public Notification(String pMessage, Type pType, Stage pOwnerStage) {
 		aStage = createStage(pMessage, pType, pOwnerStage);
 	}
 	

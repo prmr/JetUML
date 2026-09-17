@@ -47,11 +47,11 @@ public final class NotificationService {
         is null.
      */
     private Stage aMainStage;
-    private final List<ToastNotification> aNotifications = new ArrayList<>();
+    private final List<Notification> aNotifications = new ArrayList<>();
     // Dead notifications are notifications that reached the end of their lifespan and should be
     // removed. We store them in a separate list so that we can close them all at once when
     // the window is maximized, to prevent having the JetUML taskbar window flashing. - See Issue #524
-    private final List<ToastNotification> aDeadNotifications = new ArrayList<>();
+    private final List<Notification> aDeadNotifications = new ArrayList<>();
 
     private NotificationService() {}
 
@@ -94,9 +94,9 @@ public final class NotificationService {
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
-		ArrayList<ToastNotification> reverseNotifications = new ArrayList<>(aNotifications);
+		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
 		Collections.reverse(reverseNotifications);
-		for (ToastNotification notification : reverseNotifications) {
+		for (Notification notification : reverseNotifications) {
 			notification.setPosition(x, y);
 			y = y - notification.height() - NOTIFICATION_DISPLAY_SPACING;
 
@@ -112,11 +112,11 @@ public final class NotificationService {
      *
      * @param pNotification The notification object to spawn
      */
-	private void spawnNotification(ToastNotification pNotification) {
+	private void spawnNotification(Notification pNotification) {
 		if (aMainStage == null) {
 			return;
 		}
-		aDeadNotifications.forEach(ToastNotification::close);
+		aDeadNotifications.forEach(Notification::close);
 		aDeadNotifications.clear();
 
 		aNotifications.add(pNotification);
@@ -136,7 +136,7 @@ public final class NotificationService {
 		if (aMainStage == null) {
 			return;
 		}
-		ToastNotification toast = new ToastNotification(pText, ToastNotification.Type.ERROR, aMainStage);
+		Notification toast = new Notification(pText, Notification.Type.ERROR, aMainStage);
 		spawnNotification(toast);
 	}
 	
@@ -148,7 +148,7 @@ public final class NotificationService {
 		if (aMainStage == null) {
 			return;
 		}
-		ToastNotification toast = new ToastNotification(pText, ToastNotification.Type.SUCCESS, aMainStage);
+		Notification toast = new Notification(pText, Notification.Type.SUCCESS, aMainStage);
 		spawnNotification(toast);
 	}
 }

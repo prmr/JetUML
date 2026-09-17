@@ -63,7 +63,7 @@ public class NotificationServiceTest {
 	static void setup() throws ReflectiveOperationException, InterruptedException {
 		aNotifications = NotificationService.class.getDeclaredField("aNotifications");
 		aNotifications.setAccessible(true);
-		aStageField = ToastNotification.class.getDeclaredField("aStage");
+		aStageField = Notification.class.getDeclaredField("aStage");
 		aStageField.setAccessible(true);
 
 		// Manually setting the parent stage of the NotificationService
@@ -85,7 +85,7 @@ public class NotificationServiceTest {
 
 	@BeforeEach
 	void resetListAndProperties() throws ReflectiveOperationException {
-		ArrayList<ToastNotification> newList = new ArrayList<>();
+		ArrayList<Notification> newList = new ArrayList<>();
 		aNotifications.set(NotificationService.instance(), newList);
 
 		aStage.setHeight(695.5);
@@ -105,7 +105,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		List<ToastNotification> notificationList = (List<ToastNotification>) aNotifications.get(NotificationService.instance());
+		List<Notification> notificationList = (List<Notification>) aNotifications.get(NotificationService.instance());
 		assertEquals(4, notificationList.size());
 	}
 
@@ -122,7 +122,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<ToastNotification> notificationList = (ArrayList<ToastNotification>) aNotifications
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
 				.get(NotificationService.instance());
 
 		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
@@ -146,7 +146,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<ToastNotification> notificationList = (ArrayList<ToastNotification>) aNotifications
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
 				.get(NotificationService.instance());
 
 		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
@@ -173,7 +173,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<ToastNotification> notificationList = (ArrayList<ToastNotification>) aNotifications
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
 				.get(NotificationService.instance());
 
 		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
@@ -199,7 +199,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<ToastNotification> notificationList = (ArrayList<ToastNotification>) aNotifications
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
 				.get(NotificationService.instance());
 
 		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
@@ -228,10 +228,10 @@ public class NotificationServiceTest {
 		int yMargin = (int) notificationYMarginField.get(null);
 
 		Platform.runLater(() -> {
-			ToastNotification errorNotification = new ToastNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR, aStage);
-			ToastNotification infoNotification = new ToastNotification("This is a test info notification.",
-					ToastNotification.Type.INFO, aStage);
+			Notification errorNotification = new Notification("This is a test error notification.",
+					Notification.Type.ERROR, aStage);
+			Notification infoNotification = new Notification("This is a test info notification.",
+					Notification.Type.INFO, aStage);
 
 			NotificationService.instance().notifyError("This is a test error notification.");
 			NotificationService.instance().notifySuccess("This is a test success notification.");
@@ -248,7 +248,7 @@ public class NotificationServiceTest {
 		waitForRunLater();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<ToastNotification> notificationList = (ArrayList<ToastNotification>) aNotifications
+		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
 				.get(NotificationService.instance());
 
 		assertEquals(2, notificationList.size());
