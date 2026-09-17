@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import java.util.EnumMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,6 +49,18 @@ public final class ToastNotification implements Notification {
 
 	private static final int FADE_IN_DELAY = 500;
 	private static final int FADE_OUT_DELAY = 500;
+	
+	private static final int FX_PADDING = 8;
+	private static final int FX_BACKGROUND_RADIUS = 6;
+	private static final EnumMap<Type, String> FX_BACKGROUND_COLOR = new EnumMap<>(Type.class);
+	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
+	
+	static { //CSOFF:
+		FX_BACKGROUND_COLOR.put(Type.ERROR, "rgb(255, 217, 217)");
+		FX_BACKGROUND_COLOR.put(Type.SUCCESS, "rgb(224, 255, 217)");
+		FX_BACKGROUND_COLOR.put(Type.WARNING, "rgb(255, 253, 217)");
+		FX_BACKGROUND_COLOR.put(Type.INFO, "rgb(217, 245, 255)");
+	} //CSON:
 
 	private final Stage aStage;
 
@@ -62,7 +75,7 @@ public final class ToastNotification implements Notification {
 	public ToastNotification(String pMessage, Type pType, Stage pOwnerStage) {
 		aStage = createStage(pMessage, pType, pOwnerStage);
 	}
-
+	
 	private static Stage createStage(String pMessage, Type pType, Stage pOwnerStage) {
 		Stage stage = new Stage();
 
@@ -78,7 +91,7 @@ public final class ToastNotification implements Notification {
 
 		StackPane pane = new StackPane(text);
 
-		pane.setStyle(pType.getStyle());
+		pane.setStyle(styleString(pType));
 		pane.setOpacity(0);
 
 		Scene scene = new Scene(pane);
@@ -86,6 +99,11 @@ public final class ToastNotification implements Notification {
 		stage.setScene(scene);
 
 		return stage;
+	}
+	
+	private static String styleString(Notification.Type pType) {
+		return FX_FORMAT_STRING.formatted(FX_PADDING, 
+				FX_BACKGROUND_COLOR.get(pType), FX_BACKGROUND_RADIUS);
 	}
 
 	/**

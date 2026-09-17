@@ -29,26 +29,7 @@ public interface Notification {
 	 * Different semantic categories for notifications, along with their visual
 	 * representation.
 	 */
-	enum Type {
-
-		ERROR("-fx-padding: 8px; -fx-background-color: rgb(255, 217, 217); -fx-background-radius: 7"),
-		SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(224, 255, 217); -fx-background-radius: 7"),
-		WARNING("-fx-padding: 8px; -fx-background-color: rgb(255, 253, 217); -fx-background-radius: 7"),
-		INFO("-fx-padding: 8px; -fx-background-color: rgb(217, 245, 255); -fx-background-radius: 7");
-
-		private final String aStyle;
-
-		Type(String pStyle) {
-			aStyle = pStyle;
-		}
-
-		/**
-		 * @return A string containing the CSS style of the type
-		 */
-		public String getStyle() {
-			return aStyle;
-		}
-	}
+	enum Type { ERROR, SUCCESS, WARNING, INFO }
 
 	/**
 	 * Show the Notification object.
