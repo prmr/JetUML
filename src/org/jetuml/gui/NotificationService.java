@@ -20,13 +20,14 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.stage.Stage;
-import org.jetuml.annotations.Singleton;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.jetuml.annotations.Singleton;
+
+import javafx.beans.value.ChangeListener;
+import javafx.stage.Stage;
 
 /**
  * Singleton object that manages the notification object positions and display states.
@@ -46,11 +47,11 @@ public final class NotificationService {
         is null.
      */
     private Stage aMainStage;
-    private final List<Notification> aNotifications = new ArrayList<>();
+    private final List<ToastNotification> aNotifications = new ArrayList<>();
     // Dead notifications are notifications that reached the end of their lifespan and should be
     // removed. We store them in a separate list so that we can close them all at once when
     // the window is maximized, to prevent having the JetUML taskbar window flashing. - See Issue #524
-    private final List<Notification> aDeadNotifications = new ArrayList<>();
+    private final List<ToastNotification> aDeadNotifications = new ArrayList<>();
 
     private NotificationService() {}
 
@@ -93,12 +94,11 @@ public final class NotificationService {
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
-		ArrayList<Notification> reverseNotifications = new ArrayList<>(aNotifications);
+		ArrayList<ToastNotification> reverseNotifications = new ArrayList<>(aNotifications);
 		Collections.reverse(reverseNotifications);
-		for (Notification notification : reverseNotifications) {
+		for (ToastNotification notification : reverseNotifications) {
 			notification.setPosition(x, y);
 			y = y - notification.height() - NOTIFICATION_DISPLAY_SPACING;
-			IO.println(notification.height());
 
 			if (y < aMainStage.getY()) {
 				notification.close();
@@ -112,11 +112,11 @@ public final class NotificationService {
      *
      * @param pNotification The notification object to spawn
      */
-	public void spawnNotification(Notification pNotification) {
+	private void spawnNotification(ToastNotification pNotification) {
 		if (aMainStage == null) {
 			return;
 		}
-		aDeadNotifications.forEach(Notification::close);
+		aDeadNotifications.forEach(ToastNotification::close);
 		aDeadNotifications.clear();
 
 		aNotifications.add(pNotification);
@@ -128,18 +128,27 @@ public final class NotificationService {
 		updateNotificationPosition();
 	}
 
-    /**
-     * Spawns a new toast notification without having to pass a ToastNotification object, i.e. without having
-     * to fetch the main stage.
-     *
-     * @param pText The text to show on the toast
-     */
-	public void spawnNotification(String pText, Notification.Type pType) {
+	/**
+	 * Spawns a new error notification.
+	 * @param pText The text of the notification.
+	 */
+	public void notifyError(String pText) {
 		if (aMainStage == null) {
 			return;
 		}
-
-		ToastNotification toast = new ToastNotification(pText, pType, aMainStage);
+		ToastNotification toast = new ToastNotification(pText, ToastNotification.Type.ERROR, aMainStage);
+		spawnNotification(toast);
+	}
+	
+	/**
+	 * Spawns a new success notification.
+	 * @param pText The text of the notification.
+	 */
+	public void notifySuccess(String pText) {
+		if (aMainStage == null) {
+			return;
+		}
+		ToastNotification toast = new ToastNotification(pText, ToastNotification.Type.SUCCESS, aMainStage);
 		spawnNotification(toast);
 	}
 }

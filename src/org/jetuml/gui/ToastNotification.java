@@ -42,7 +42,13 @@ import javafx.util.Duration;
  * A toast notification object (that pops up and disappears without requiring
  * any user interaction).
  */
-public final class ToastNotification implements Notification {
+public final class ToastNotification {
+	
+	/**
+	 * Different semantic categories for notifications, along with their visual
+	 * representation.
+	 */
+	enum Type { ERROR, SUCCESS, WARNING, INFO }
 
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
@@ -101,7 +107,7 @@ public final class ToastNotification implements Notification {
 		return stage;
 	}
 	
-	private static String styleString(Notification.Type pType) {
+	private static String styleString(Type pType) {
 		return FX_FORMAT_STRING.formatted(FX_PADDING, 
 				FX_BACKGROUND_COLOR.get(pType), FX_BACKGROUND_RADIUS);
 	}
@@ -114,7 +120,6 @@ public final class ToastNotification implements Notification {
 	 * @param pCleanUpCallback The Runnable to run when the notification should
 	 *     be removed from the notification list
 	 */
-	@Override
 	public void show(Runnable pCleanUpCallback) {
 		int duration = notificationDurationInMilliseconds();
 		// A duration of zero disables notifications
@@ -168,7 +173,6 @@ public final class ToastNotification implements Notification {
 	 * Close the stage of the Notification object (to end it prematurely).
 	 * Useful when the notifications go beyond the window.
 	 */
-	@Override
 	public void close() {
 		aStage.close();
 	}
@@ -179,7 +183,6 @@ public final class ToastNotification implements Notification {
 	 * @param pX The target X position
 	 * @param pY The target Y position
 	 */
-	@Override
 	public void setPosition(double pX, double pY) {
 		aStage.setX(pX);
 		aStage.setY(pY - aStage.getHeight()); // We consider the bottom-left
@@ -193,7 +196,6 @@ public final class ToastNotification implements Notification {
 	 * 
 	 * @return The height of the notification object.
 	 */
-	@Override
 	public double height() {
 		return aStage.getHeight();
 	}
