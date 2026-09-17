@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
-import java.util.EnumMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,12 +43,6 @@ import javafx.util.Duration;
  */
 public final class Notification {
 	
-	/**
-	 * Different semantic categories for notifications, along with their visual
-	 * representation.
-	 */
-	private enum Type { ERROR, SUCCESS, WARNING, INFO }
-
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
@@ -58,28 +51,14 @@ public final class Notification {
 	
 	private static final int FX_PADDING = 8;
 	private static final int FX_BACKGROUND_RADIUS = 6;
-	private static final EnumMap<Type, String> FX_BACKGROUND_COLOR = new EnumMap<>(Type.class);
+	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
+	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
 	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
 	
-	static { //CSOFF:
-		FX_BACKGROUND_COLOR.put(Type.ERROR, "rgb(255, 217, 217)");
-		FX_BACKGROUND_COLOR.put(Type.SUCCESS, "rgb(224, 255, 217)");
-		FX_BACKGROUND_COLOR.put(Type.WARNING, "rgb(255, 253, 217)");
-		FX_BACKGROUND_COLOR.put(Type.INFO, "rgb(217, 245, 255)");
-	} //CSON:
-
 	private final Stage aStage;
 
-	/**
-	 * Creates a new Toast notification object using default fade in delay, fade
-	 * out delay and lifespan.
-	 *
-	 * @param pMessage The message to display
-	 * @param pType The type of the toast notification
-	 * @param pOwnerStage The main window stage
-	 */
-	private Notification(String pMessage, Type pType, Stage pOwnerStage) {
-		aStage = createStage(pMessage, pType, pOwnerStage);
+	private Notification(String pMessage, String pColorString, Stage pOwnerStage) {
+		aStage = createStage(pMessage, pColorString, pOwnerStage);
 	}
 	
 	/**
@@ -90,7 +69,7 @@ public final class Notification {
 	 * @param pOwnerStage The main window stage
 	 */
 	public static Notification error(String pMessage, Stage pOwnerStage) {
-		return new Notification(pMessage, Type.ERROR, pOwnerStage);
+		return new Notification(pMessage, FX_COLOR_ERROR, pOwnerStage);
 	}
 	
 	/**
@@ -101,10 +80,10 @@ public final class Notification {
 	 * @param pOwnerStage The main window stage
 	 */
 	public static Notification success(String pMessage, Stage pOwnerStage) {
-		return new Notification(pMessage, Type.SUCCESS, pOwnerStage);
+		return new Notification(pMessage, FX_COLOR_SUCCESS, pOwnerStage);
 	}
 	
-	private static Stage createStage(String pMessage, Type pType, Stage pOwnerStage) {
+	private static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
 		Stage stage = new Stage();
 
 		stage.initOwner(pOwnerStage);
@@ -119,7 +98,7 @@ public final class Notification {
 
 		StackPane pane = new StackPane(text);
 
-		pane.setStyle(styleString(pType));
+		pane.setStyle(styleString(pColorString));
 		pane.setOpacity(0);
 
 		Scene scene = new Scene(pane);
@@ -129,9 +108,9 @@ public final class Notification {
 		return stage;
 	}
 	
-	private static String styleString(Type pType) {
+	private static String styleString(String pColorString) {
 		return FX_FORMAT_STRING.formatted(FX_PADDING, 
-				FX_BACKGROUND_COLOR.get(pType), FX_BACKGROUND_RADIUS);
+				pColorString, FX_BACKGROUND_RADIUS);
 	}
 
 	/**
