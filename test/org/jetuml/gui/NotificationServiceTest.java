@@ -97,13 +97,13 @@ public class NotificationServiceTest {
 	void testSpawnToast() throws InterruptedException, ReflectiveOperationException {
 		Platform.runLater(() -> {
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 			NotificationService.instance().spawnNotification("This is a test warning notification.",
-					ToastNotification.Type.WARNING);
+					Notification.Type.WARNING);
 			NotificationService.instance().spawnNotification("This is a test success notification.",
-					ToastNotification.Type.SUCCESS);
+					Notification.Type.SUCCESS);
 		});
 
 		waitForRunLater();
@@ -120,11 +120,11 @@ public class NotificationServiceTest {
 	void testNotificationPosition() throws InterruptedException, ReflectiveOperationException {
 		Platform.runLater(() -> {
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 			NotificationService.instance().spawnNotification("This is a test warning notification.",
-					ToastNotification.Type.WARNING);
+					Notification.Type.WARNING);
 		});
 		waitForRunLater();
 
@@ -148,9 +148,9 @@ public class NotificationServiceTest {
 		aStage.setX(0.5);
 		Platform.runLater(() -> {
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 		});
 		waitForRunLater();
 
@@ -177,9 +177,9 @@ public class NotificationServiceTest {
 		aStage.setHeight(600);
 		Platform.runLater(() -> {
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 		});
 		waitForRunLater();
 
@@ -205,9 +205,9 @@ public class NotificationServiceTest {
 	void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException {
 		Platform.runLater(() -> {
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 		});
 		waitForRunLater();
 
@@ -241,9 +241,9 @@ public class NotificationServiceTest {
 
 		Platform.runLater(() -> {
 			ToastNotification errorNotification = new ToastNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR, aStage);
+					Notification.Type.ERROR, aStage);
 			ToastNotification infoNotification = new ToastNotification("This is a test info notification.",
-					ToastNotification.Type.INFO, aStage);
+					Notification.Type.INFO, aStage);
 
 			NotificationService.instance().spawnNotification(errorNotification);
 			NotificationService.instance().spawnNotification(infoNotification);
@@ -255,9 +255,9 @@ public class NotificationServiceTest {
 			aStage.setHeight(height);
 
 			NotificationService.instance().spawnNotification("This is a test error notification.",
-					ToastNotification.Type.ERROR);
+					Notification.Type.ERROR);
 			NotificationService.instance().spawnNotification("This is a test info notification.",
-					ToastNotification.Type.INFO);
+					Notification.Type.INFO);
 		});
 		waitForRunLater();
 

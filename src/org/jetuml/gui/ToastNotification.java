@@ -46,30 +46,6 @@ public final class ToastNotification implements Notification {
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
-	/**
-	 * Defines the color of the toast notification.
-	 */
-	public enum Type {
-
-		ERROR("-fx-padding: 8px; -fx-background-color: rgb(255, 217, 217); -fx-background-radius: 7"), SUCCESS(
-				"-fx-padding: 8px; -fx-background-color: rgb(224, 255, 217); -fx-background-radius: 7"), WARNING(
-						"-fx-padding: 8px; -fx-background-color: rgb(255, 253, 217); -fx-background-radius: 7"), INFO(
-						"-fx-padding: 8px; -fx-background-color: rgb(217, 245, 255); -fx-background-radius: 7");
-
-		private final String aStyle;
-
-		Type(String pStyle) {
-			aStyle = pStyle;
-		}
-
-		/**
-		 * @return A string containing the CSS style of the type
-		 */
-		public String getStyle() {
-			return aStyle;
-		}
-	}
-
 	private static final int FADE_IN_DELAY = 500;
 	private static final int FADE_OUT_DELAY = 500;
 

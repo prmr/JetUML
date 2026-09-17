@@ -133,7 +133,7 @@ public final class NotificationService {
      *
      * @param pText The text to show on the toast
      */
-	public void spawnNotification(String pText, ToastNotification.Type pType) {
+	public void spawnNotification(String pText, Notification.Type pType) {
 		if (aMainStage == null) {
 			return;
 		}

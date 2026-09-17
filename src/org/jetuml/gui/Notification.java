@@ -26,16 +26,41 @@ package org.jetuml.gui;
 public interface Notification {
 
 	/**
+	 * Different semantic categories for notifications, along with their visual
+	 * representation.
+	 */
+	enum Type {
+
+		ERROR("-fx-padding: 8px; -fx-background-color: rgb(255, 217, 217); -fx-background-radius: 7"),
+		SUCCESS("-fx-padding: 8px; -fx-background-color: rgb(224, 255, 217); -fx-background-radius: 7"),
+		WARNING("-fx-padding: 8px; -fx-background-color: rgb(255, 253, 217); -fx-background-radius: 7"),
+		INFO("-fx-padding: 8px; -fx-background-color: rgb(217, 245, 255); -fx-background-radius: 7");
+
+		private final String aStyle;
+
+		Type(String pStyle) {
+			aStyle = pStyle;
+		}
+
+		/**
+		 * @return A string containing the CSS style of the type
+		 */
+		public String getStyle() {
+			return aStyle;
+		}
+	}
+
+	/**
 	 * Show the Notification object.
 	 *
-	 * @param pCleanUpCallback The Runnable to run when the notification should
-	 *     be removed from the notification list
+	 * @param pCleanUpCallback The Runnable to run when the notification should be
+	 *     removed from the notification list
 	 */
 	void show(Runnable pCleanUpCallback);
 
 	/**
-	 * Close the stage of the Notification object (to end it prematurely).
-	 * Useful when the notifications go beyond the window.
+	 * Close the stage of the Notification object (to end it prematurely). Useful
+	 * when the notifications go beyond the window.
 	 */
 	void close();
 
@@ -48,8 +73,7 @@ public interface Notification {
 	void setPosition(double pX, double pY);
 
 	/**
-	 * @return The height of the Notification object.
+	 * @return The height in pixels of the notification object.
 	 */
 	double getHeight();
-
 }
