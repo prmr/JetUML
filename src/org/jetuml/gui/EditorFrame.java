@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
-import static org.jetuml.application.ApplicationResources.RESOURCES;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Transparency;
@@ -43,6 +41,7 @@ import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 import org.jetuml.JetUML;
+import static org.jetuml.application.ApplicationResources.RESOURCES;
 import org.jetuml.application.FileExtensions;
 import org.jetuml.application.RecentFilesQueue;
 import org.jetuml.application.UserPreferences;
@@ -242,6 +241,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 						event -> new NotificationTimeDialog(aDialogStage).show()),
 				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
 				factory.createMenuItem("view.zoom_out", true, event -> getSelectedDiagramTab().zoomOut()),
+				factory.createMenuItem("view.full_screen", false, event -> aMainStage.setFullScreen(!aMainStage.isFullScreen())),
 				factory.createMenuItem("view.reset_zoom", true, event -> getSelectedDiagramTab().resetZoom())));
 	}
 	
