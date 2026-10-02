@@ -30,69 +30,70 @@ import javafx.beans.value.ChangeListener;
 import javafx.stage.Stage;
 
 /**
- * Singleton object that manages the notification object positions and display states.
+ * Singleton object that manages the notification object positions and display
+ * states.
  */
 @Singleton
 public final class NotificationService {
 
-    private static final int NOTIFICATION_DISPLAY_SPACING = 8;
-    private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
-    private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
+	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
+	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
+	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
 
-    private static final NotificationService INSTANCE = new NotificationService();
+	private static final NotificationService INSTANCE = new NotificationService();
 
 	/*
 	 * This attribute sets the parent stage of all notifications. It is set at
 	 * initialization, in JetUML.java. It is impossible to spawn a notification if
 	 * the main stage attribute is null.
 	 */
-    private Stage aMainStage;
-    private final List<Notification> aNotifications = new ArrayList<>();
+	private Stage aMainStage;
+	private final List<Notification> aNotifications = new ArrayList<>();
 	/*
 	 * Dead notifications are notifications that reached the end of their lifespan
 	 * and should be removed. We store them in a separate list so that we can close
 	 * them all at once when the window is maximized, to prevent having the JetUML
 	 * taskbar window flashing. - See Issue #524
 	 */
-    private final List<Notification> aDeadNotifications = new ArrayList<>();
+	private final List<Notification> aDeadNotifications = new ArrayList<>();
 
-    private NotificationService() {}
+	private NotificationService() {}
 
-    /**
-     * @return The NotificationService singleton instance
-     */
-    public static NotificationService instance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Sets the parent stage of all the notification stages.
-     * Only used once in JetUML.java at initialization. The parent stage should
-     * be the application stage.
-     *
-     * @param pStage The target parent stage of the notification objects
-     */
-	public void setMainStage(Stage pStage) {
-		aMainStage = pStage;
-
-		if (pStage != null) {
-			// Window position and size listener for notifications
-			ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
-					pNewValue) -> NotificationService.instance().updateNotificationPosition();
-
-			// When the stage is moved, update the notification positions
-			pStage.xProperty().addListener(stageTransformationListener);
-			pStage.yProperty().addListener(stageTransformationListener);
-
-			// When the stage is resized, update the notification positions
-			pStage.heightProperty().addListener(stageTransformationListener);
-			pStage.widthProperty().addListener(stageTransformationListener);
-		}
+	/**
+	 * @return The NotificationService singleton instance
+	 */
+	public static NotificationService instance() {
+		return INSTANCE;
 	}
 
-    /**
-     * Rearranges the notifications so that they are stacked properly and do not overlap.
-     */
+	/**
+	 * Sets the parent stage of all the notification stages. Only used once in
+	 * JetUML.java at initialization. The parent stage should be the application
+	 * stage.
+	 *
+	 * @param pStage The target parent stage of the notification objects
+	 */
+	public void setMainStage(Stage pStage) {
+		assert pStage != null;
+		aMainStage = pStage;
+
+		// Window position and size listener for notifications
+		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
+				pNewValue) -> NotificationService.instance().updateNotificationPosition();
+
+		// When the stage is moved, update the notification positions
+		pStage.xProperty().addListener(stageTransformationListener);
+		pStage.yProperty().addListener(stageTransformationListener);
+
+		// When the stage is resized, update the notification positions
+		pStage.heightProperty().addListener(stageTransformationListener);
+		pStage.widthProperty().addListener(stageTransformationListener);
+	}
+
+	/**
+	 * Rearranges the notifications so that they are stacked properly and do not
+	 * overlap.
+	 */
 	public void updateNotificationPosition() {
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
@@ -110,15 +111,13 @@ public final class NotificationService {
 		}
 	}
 
-    /**
-     * Spawns a notification (it should be instantiated first).
-     *
-     * @param pNotification The notification object to spawn
-     */
+	/**
+	 * Spawns a notification (it should be instantiated first).
+	 *
+	 * @param pNotification The notification object to spawn
+	 */
 	private void spawnNotification(Notification pNotification) {
-		if (aMainStage == null) {
-			return;
-		}
+		assert aMainStage != null;
 		aDeadNotifications.forEach(Notification::close);
 		aDeadNotifications.clear();
 
@@ -133,24 +132,22 @@ public final class NotificationService {
 
 	/**
 	 * Spawns a new error notification.
+	 * 
 	 * @param pText The text of the notification.
 	 */
 	public void notifyError(String pText) {
-		if (aMainStage == null) {
-			return;
-		}
+		assert aMainStage != null;
 		Notification toast = Notification.error(pText, aMainStage);
 		spawnNotification(toast);
 	}
-	
+
 	/**
 	 * Spawns a new success notification.
+	 * 
 	 * @param pText The text of the notification.
 	 */
 	public void notifySuccess(String pText) {
-		if (aMainStage == null) {
-			return;
-		}
+		assert aMainStage != null;
 		Notification toast = Notification.success(pText, aMainStage);
 		spawnNotification(toast);
 	}
