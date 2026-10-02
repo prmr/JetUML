@@ -41,16 +41,19 @@ public final class NotificationService {
 
     private static final NotificationService INSTANCE = new NotificationService();
 
-    /*
-        This attribute sets the parent stage of all notifications. It is set at initialization,
-        in JetUML.java. It is impossible to spawn a notification if the main stage attribute
-        is null.
-     */
+	/*
+	 * This attribute sets the parent stage of all notifications. It is set at
+	 * initialization, in JetUML.java. It is impossible to spawn a notification if
+	 * the main stage attribute is null.
+	 */
     private Stage aMainStage;
     private final List<Notification> aNotifications = new ArrayList<>();
-    // Dead notifications are notifications that reached the end of their lifespan and should be
-    // removed. We store them in a separate list so that we can close them all at once when
-    // the window is maximized, to prevent having the JetUML taskbar window flashing. - See Issue #524
+	/*
+	 * Dead notifications are notifications that reached the end of their lifespan
+	 * and should be removed. We store them in a separate list so that we can close
+	 * them all at once when the window is maximized, to prevent having the JetUML
+	 * taskbar window flashing. - See Issue #524
+	 */
     private final List<Notification> aDeadNotifications = new ArrayList<>();
 
     private NotificationService() {}
