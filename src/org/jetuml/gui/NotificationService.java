@@ -79,7 +79,7 @@ public final class NotificationService {
 
 		// Window position and size listener for notifications
 		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
-				pNewValue) -> NotificationService.instance().updateNotificationPosition();
+				pNewValue) -> updateNotificationPosition();
 
 		// When the stage is moved, update the notification positions
 		pStage.xProperty().addListener(stageTransformationListener);
@@ -137,8 +137,7 @@ public final class NotificationService {
 	 */
 	public void notifyError(String pText) {
 		assert aMainStage != null;
-		Notification toast = Notification.error(pText, aMainStage);
-		spawnNotification(toast);
+		spawnNotification(Notification.error(pText, aMainStage));
 	}
 
 	/**
@@ -148,7 +147,6 @@ public final class NotificationService {
 	 */
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
-		Notification toast = Notification.success(pText, aMainStage);
-		spawnNotification(toast);
+		spawnNotification(Notification.success(pText, aMainStage));
 	}
 }

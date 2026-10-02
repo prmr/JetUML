@@ -91,15 +91,12 @@ public final class Notification {
 		stage.initStyle(StageStyle.TRANSPARENT);
 
 		Text text = new Text(pMessage);
-
 		text.setFont(
 				Font.font("System", UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize)));
 		text.setFill(TEXT_COLOR);
 
 		StackPane pane = new StackPane(text);
-
 		pane.setStyle(styleString(pColorString));
-		pane.setOpacity(0);
 
 		Scene scene = new Scene(pane);
 		scene.setFill(Color.TRANSPARENT);
@@ -114,9 +111,8 @@ public final class Notification {
 	}
 
 	/**
-	 * Shows the Notification object to the screen. This method is also
-	 * responsible for terminating the notification and deleting it from the
-	 * NotificationService notification list.
+	 * Shows the Notification object to the screen by fading it in, showing
+	 * it for a user-defined amount of time, and fading it out.
 	 *
 	 * @param pCleanUpCallback The Runnable to run when the notification should
 	 *     be removed from the notification list
@@ -129,9 +125,9 @@ public final class Notification {
 		}
 
 		aStage.show();
-		aStage.getOwner().requestFocus(); // Keeps the main Stage focused (and
-											// not the notifications)
-
+		// Keeps the main Stage focused (and not the notifications)
+		aStage.getOwner().requestFocus(); 
+		
 		// We define the Timeline for the fadein animation
 		Timeline fadeInTimeline = new Timeline();
 		KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY),
@@ -185,10 +181,9 @@ public final class Notification {
 	 * @param pY The target Y position
 	 */
 	public void setPosition(double pX, double pY) {
+		// The bottom-left corner is the y position reference point.
 		aStage.setX(pX);
-		aStage.setY(pY - aStage.getHeight()); // We consider the bottom-left
-												// corner as the y position
-												// reference point
+		aStage.setY(pY - aStage.getHeight()); 
 	}
 
 	/**
