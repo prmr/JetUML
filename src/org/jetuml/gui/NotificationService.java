@@ -142,13 +142,8 @@ public final class NotificationService {
 		Notification notification = new Notification(pMessage, pColorString);
 		aDeadNotifications.forEach(Notification::close);
 		aDeadNotifications.clear();
-
 		aNotifications.add(notification);
-
-		notification.show(() -> {
-			aNotifications.remove(notification);
-			aDeadNotifications.add(notification);
-		});
+		notification.show();
 		updateNotificationPosition();
 	}
 
@@ -216,7 +211,7 @@ public final class NotificationService {
 		 * @param pCleanUpCallback The Runnable to run when the notification should
 		 *     be removed from the notification list
 		 */
-		public void show(Runnable pCleanUpCallback) {
+		public void show() {
 			int duration = notificationDurationInMilliseconds();
 			// A duration of zero disables notifications
 			if (duration == 0) {
@@ -224,24 +219,22 @@ public final class NotificationService {
 			}
 
 			aStage.show();
-			// Keeps the main Stage focused (and not the notifications)
-			aStage.getOwner().requestFocus(); 
+			aStage.getOwner().requestFocus(); // Keeps the main stage focused (and not the notifications)
 			
-			// We define the Timeline for the fadein animation
 			Timeline fadeInTimeline = new Timeline();
 			KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY),
 					new KeyValue(aStage.getScene().getRoot().opacityProperty(), 1));
 			fadeInTimeline.getKeyFrames().add(fadeInKey);
 
-			// We define the Timeline for the fadeout animation
 			Timeline fadeOutTimeline = new Timeline();
 			KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
 					new KeyValue(aStage.getScene().getRoot().opacityProperty(), 0));
 
 			fadeOutTimeline.getKeyFrames().add(fadeOutKey);
-			// We close the stage and execute the callback at the end of the fadeout
-			// animation
-			fadeOutTimeline.setOnFinished(actionEvent1 -> pCleanUpCallback.run());
+			fadeOutTimeline.setOnFinished(event -> {
+				aNotifications.remove(this);
+				aDeadNotifications.add(this);
+			});
 
 			Timer notificationTimer = new Timer();
 			TimerTask lifespan = new TimerTask() {
