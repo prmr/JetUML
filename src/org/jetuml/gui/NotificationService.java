@@ -23,11 +23,24 @@ package org.jetuml.gui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.jetuml.annotations.Singleton;
+import org.jetuml.application.UserPreferences;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  * Singleton object that manages the notification object positions and display
@@ -151,5 +164,137 @@ public final class NotificationService {
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
 		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS, aMainStage));
+	}
+	
+	static final class Notification {
+		
+		private static final int MILLISECONDS_PER_SECOND = 1000;
+		private static final Color TEXT_COLOR = Color.grayRgb(50);
+
+		private static final int FADE_IN_DELAY = 500;
+		private static final int FADE_OUT_DELAY = 500;
+		
+		private static final int FX_PADDING = 8;
+		private static final int FX_BACKGROUND_RADIUS = 6;
+		private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
+		
+		private final Stage aStage;
+
+		Notification(String pMessage, String pColorString, Stage pOwnerStage) {
+			aStage = createStage(pMessage, pColorString, pOwnerStage);
+		}
+		
+		static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
+			Stage stage = new Stage();
+
+			stage.initOwner(pOwnerStage);
+			stage.setResizable(false);
+			stage.initStyle(StageStyle.TRANSPARENT);
+
+			Text text = new Text(pMessage);
+			text.setFont(
+					Font.font("System", UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize)));
+			text.setFill(TEXT_COLOR);
+
+			StackPane pane = new StackPane(text);
+			pane.setStyle(styleString(pColorString));
+
+			Scene scene = new Scene(pane);
+			scene.setFill(Color.TRANSPARENT);
+			stage.setScene(scene);
+
+			return stage;
+		}
+		
+		private static String styleString(String pColorString) {
+			return FX_FORMAT_STRING.formatted(FX_PADDING, 
+					pColorString, FX_BACKGROUND_RADIUS);
+		}
+
+		/**
+		 * Shows the Notification object to the screen by fading it in, showing
+		 * it for a user-defined amount of time, and fading it out.
+		 *
+		 * @param pCleanUpCallback The Runnable to run when the notification should
+		 *     be removed from the notification list
+		 */
+		public void show(Runnable pCleanUpCallback) {
+			int duration = notificationDurationInMilliseconds();
+			// A duration of zero disables notifications
+			if (duration == 0) {
+				return;
+			}
+
+			aStage.show();
+			// Keeps the main Stage focused (and not the notifications)
+			aStage.getOwner().requestFocus(); 
+			
+			// We define the Timeline for the fadein animation
+			Timeline fadeInTimeline = new Timeline();
+			KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY),
+					new KeyValue(aStage.getScene().getRoot().opacityProperty(), 1));
+			fadeInTimeline.getKeyFrames().add(fadeInKey);
+
+			// We define the Timeline for the fadeout animation
+			Timeline fadeOutTimeline = new Timeline();
+			KeyFrame fadeOutKey = new KeyFrame(Duration.millis(FADE_OUT_DELAY),
+					new KeyValue(aStage.getScene().getRoot().opacityProperty(), 0));
+
+			fadeOutTimeline.getKeyFrames().add(fadeOutKey);
+			// We close the stage and execute the callback at the end of the fadeout
+			// animation
+			fadeOutTimeline.setOnFinished(actionEvent1 -> pCleanUpCallback.run());
+
+			Timer notificationTimer = new Timer();
+			TimerTask lifespan = new TimerTask() {
+
+				@Override
+				public void run() {
+					fadeOutTimeline.play();
+				}
+			};
+
+			// When the fadein animation ends, we start a timer that will execute
+			// the fadeout animation
+			fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, duration));
+
+			// We trigger the fadein animation
+			fadeInTimeline.play();
+		}
+
+		private static int notificationDurationInMilliseconds() {
+			return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration) *
+					MILLISECONDS_PER_SECOND;
+		}
+
+		/**
+		 * Close the stage of the Notification object (to end it prematurely).
+		 * Useful when the notifications go beyond the window.
+		 */
+		void close() {
+			aStage.close();
+		}
+
+		/**
+		 * Moves the Notification object to the desired position on the screen.
+		 *
+		 * @param pX The target X position
+		 * @param pY The target Y position
+		 */
+		void setPosition(double pX, double pY) {
+			// The bottom-left corner is the y position reference point.
+			aStage.setX(pX);
+			aStage.setY(pY - aStage.getHeight()); 
+		}
+
+		/**
+		 * Returns the height of this notification in pixels. The value can be fractional because
+		 * the size of the notification is a function of the font size, which is user-settable.
+		 * 
+		 * @return The height of the notification object.
+		 */
+		double height() {
+			return aStage.getHeight();
+		}
 	}
 }
