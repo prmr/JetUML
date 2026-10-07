@@ -176,7 +176,17 @@ public final class NotificationService {
 		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS, aMainStage));
 	}
 	
-	static final class Notification {
+	private static String styleString(String pColorString) {
+		return FX_FORMAT_STRING.formatted(FX_PADDING, 
+				pColorString, FX_BACKGROUND_RADIUS);
+	}
+	
+	private static int notificationDurationInMilliseconds() {
+		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration) *
+				MILLISECONDS_PER_SECOND;
+	}
+	
+	final class Notification {
 		
 		private final Stage aStage;
 
@@ -206,11 +216,6 @@ public final class NotificationService {
 			return stage;
 		}
 		
-		private static String styleString(String pColorString) {
-			return FX_FORMAT_STRING.formatted(FX_PADDING, 
-					pColorString, FX_BACKGROUND_RADIUS);
-		}
-
 		/**
 		 * Shows the Notification object to the screen by fading it in, showing
 		 * it for a user-defined amount of time, and fading it out.
@@ -260,11 +265,6 @@ public final class NotificationService {
 
 			// We trigger the fadein animation
 			fadeInTimeline.play();
-		}
-
-		private static int notificationDurationInMilliseconds() {
-			return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration) *
-					MILLISECONDS_PER_SECOND;
 		}
 
 		/**
