@@ -25,7 +25,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.IntSupplier;
 
+import org.jetuml.annotations.OnlyForTesting;
 import org.jetuml.application.UserPreferences;
 
 import javafx.animation.KeyFrame;
@@ -69,7 +71,9 @@ public final class NotificationServiceImpl implements NotificationService {
 	 * the main stage attribute is null.
 	 */
 	private Stage aMainStage;
+	private IntSupplier aNotificationDurationInSecondsSupplier;
 	private final List<Notification> aNotifications = new ArrayList<>();
+	
 	/*
 	 * Dead notifications are notifications that reached the end of their lifespan
 	 * and should be removed. We store them in a separate list so that we can close
@@ -82,10 +86,12 @@ public final class NotificationServiceImpl implements NotificationService {
 	 * Create a new NotificationService implementation.
 	 * 
 	 * @param pMainStage The parent stage for notifications.
+	 * @param pDurationSupplier An supplier for the notification duration, in seconds.
 	 */
-	public NotificationServiceImpl(Stage pMainStage) {
+	public NotificationServiceImpl(Stage pMainStage, IntSupplier pDurationSupplier) {
 		assert pMainStage != null;
 		aMainStage = pMainStage;
+		aNotificationDurationInSecondsSupplier = pDurationSupplier;
 
 		// Window position and size listener for notifications
 		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
@@ -98,6 +104,11 @@ public final class NotificationServiceImpl implements NotificationService {
 		// When the stage is resized, update the notification positions
 		aMainStage.heightProperty().addListener(stageTransformationListener);
 		aMainStage.widthProperty().addListener(stageTransformationListener);
+	}
+	
+	@OnlyForTesting
+	List<Notification> notifications() {
+		return Collections.unmodifiableList(aNotifications);
 	}
 
 	/*
@@ -157,11 +168,6 @@ public final class NotificationServiceImpl implements NotificationService {
 		return FX_FORMAT_STRING.formatted(FX_PADDING, pColorString, FX_BACKGROUND_RADIUS);
 	}
 
-	private static int notificationDurationInMilliseconds() {
-		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration) *
-				MILLISECONDS_PER_SECOND;
-	}
-
 	private static int fontSize() {
 		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 	}
@@ -197,7 +203,7 @@ public final class NotificationServiceImpl implements NotificationService {
 		 *                         removed from the notification list
 		 */
 		public void show() {
-			int duration = notificationDurationInMilliseconds();
+			int duration = aNotificationDurationInSecondsSupplier.getAsInt() * MILLISECONDS_PER_SECOND;
 			// A duration of zero disables notifications
 			if (duration == 0) {
 				return;

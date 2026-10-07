@@ -32,17 +32,18 @@ import javafx.stage.Stage;
 public class NotificationServiceImplTest {
 	
 	private static Stage aStage;
+	private static NotificationServiceImpl aNotificationService;
 	
 	@BeforeAll
 	static void setup() throws InterruptedException {
 		JavaFXLoader.load();
 		Platform.runLater(() -> {
 			aStage = new Stage();
-//			NotificationServiceImpl.instance().setMainStage(aStage);
 			aStage.setX(-10000);
 			aStage.setY(-10000);
 			aStage.setWidth(1000);
 			aStage.setHeight(300);
+			aNotificationService = new NotificationServiceImpl(aStage, ()-> 5);
 			aStage.show();
 		});
 		waitForRunLater();
@@ -59,10 +60,12 @@ public class NotificationServiceImplTest {
 		semaphore.acquire();
 	}
 	
-//	@Test
-//	void testNotifyError() {
-//		IO.println(NotificationService.instance().notifications());
-//	}
+	@Test
+	void testNotifyError() throws InterruptedException {
+		Platform.runLater(() -> aNotificationService.notifyError("Error"));
+		waitForRunLater();
+		IO.println(aNotificationService.notifications().size());
+	}
 //
 //	/* The aNotifications field in NotificationService. */
 //	private static Field aNotifications;

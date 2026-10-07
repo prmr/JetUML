@@ -100,7 +100,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	public EditorFrame(Stage pMainStage, Stage pDialogStage) {
 		aMainStage = pMainStage;
 		aDialogStage = pDialogStage;
-		aNotificationService = new NotificationServiceImpl(pMainStage);
+		aNotificationService = new NotificationServiceImpl(pMainStage, EditorFrame::supplyDurationInSeconds);
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
@@ -134,6 +134,10 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
+	}
+	
+	private static int supplyDurationInSeconds() {
+		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration);
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 
