@@ -264,31 +264,19 @@ public final class NotificationService {
 			fadeInTimeline.play();
 		}
 
-		/**
-		 * Close the stage of the Notification object (to end it prematurely).
-		 * Useful when the notifications go beyond the window.
-		 */
 		void close() {
 			aStage.close();
 		}
 
-		/**
-		 * Moves the Notification object to the desired position on the screen.
-		 *
-		 * @param pX The target X position
-		 * @param pY The target Y position
-		 */
 		void setPosition(double pX, double pY) {
 			// The bottom-left corner is the y position reference point.
 			aStage.setX(pX);
 			aStage.setY(pY - aStage.getHeight()); 
 		}
 
-		/**
+		/*
 		 * Returns the height of this notification in pixels. The value can be fractional because
 		 * the size of the notification is a function of the font size, which is user-settable.
-		 * 
-		 * @return The height of the notification object.
 		 */
 		double height() {
 			return aStage.getHeight();
