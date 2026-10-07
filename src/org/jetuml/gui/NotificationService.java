@@ -55,6 +55,16 @@ public final class NotificationService {
 
 	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
 	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
+	
+	private static final int MILLISECONDS_PER_SECOND = 1000;
+	private static final Color TEXT_COLOR = Color.grayRgb(50);
+
+	private static final int FADE_IN_DELAY = 500;
+	private static final int FADE_OUT_DELAY = 500;
+	
+	private static final int FX_PADDING = 8;
+	private static final int FX_BACKGROUND_RADIUS = 6;
+	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
 
 	private static final NotificationService INSTANCE = new NotificationService();
 
@@ -167,16 +177,6 @@ public final class NotificationService {
 	}
 	
 	static final class Notification {
-		
-		private static final int MILLISECONDS_PER_SECOND = 1000;
-		private static final Color TEXT_COLOR = Color.grayRgb(50);
-
-		private static final int FADE_IN_DELAY = 500;
-		private static final int FADE_OUT_DELAY = 500;
-		
-		private static final int FX_PADDING = 8;
-		private static final int FX_BACKGROUND_RADIUS = 6;
-		private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
 		
 		private final Stage aStage;
 
