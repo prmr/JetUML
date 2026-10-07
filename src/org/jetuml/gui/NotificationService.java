@@ -137,21 +137,17 @@ public final class NotificationService {
 		}
 	}
 
-	/**
-	 * Spawns a notification (it should be instantiated first).
-	 *
-	 * @param pNotification The notification object to spawn
-	 */
-	private void spawnNotification(Notification pNotification) {
+	private void spawnNotification(String pMessage, String pColorString) {
 		assert aMainStage != null;
+		Notification notification = new Notification(pMessage, pColorString);
 		aDeadNotifications.forEach(Notification::close);
 		aDeadNotifications.clear();
 
-		aNotifications.add(pNotification);
+		aNotifications.add(notification);
 
-		pNotification.show(() -> {
-			aNotifications.remove(pNotification);
-			aDeadNotifications.add(pNotification);
+		notification.show(() -> {
+			aNotifications.remove(notification);
+			aDeadNotifications.add(notification);
 		});
 		updateNotificationPosition();
 	}
@@ -163,7 +159,7 @@ public final class NotificationService {
 	 */
 	public void notifyError(String pText) {
 		assert aMainStage != null;
-		spawnNotification(new Notification(pText, FX_COLOR_ERROR));
+		spawnNotification(pText, FX_COLOR_ERROR);
 	}
 
 	/**
@@ -173,7 +169,7 @@ public final class NotificationService {
 	 */
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
-		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS));
+		spawnNotification(pText, FX_COLOR_SUCCESS);
 	}
 	
 	private static String styleString(String pColorString) {
