@@ -47,7 +47,7 @@ import javafx.util.Duration;
  * states.
  */
 @Singleton
-public final class NotificationServiceImpl {
+public final class NotificationServiceImpl implements NotificationService {
 
 	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
 	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
@@ -152,6 +152,7 @@ public final class NotificationServiceImpl {
 	 * 
 	 * @param pText The text of the notification.
 	 */
+	@Override
 	public void notifyError(String pText) {
 		assert aMainStage != null;
 		spawnNotification(pText, FX_COLOR_ERROR);
@@ -162,6 +163,7 @@ public final class NotificationServiceImpl {
 	 * 
 	 * @param pText The text of the notification.
 	 */
+	@Override
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
 		spawnNotification(pText, FX_COLOR_SUCCESS);
