@@ -163,7 +163,7 @@ public final class NotificationService {
 	 */
 	public void notifyError(String pText) {
 		assert aMainStage != null;
-		spawnNotification(new Notification(pText, FX_COLOR_ERROR, aMainStage));
+		spawnNotification(new Notification(pText, FX_COLOR_ERROR));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class NotificationService {
 	 */
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
-		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS, aMainStage));
+		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS));
 	}
 	
 	private static String styleString(String pColorString) {
@@ -190,14 +190,14 @@ public final class NotificationService {
 		
 		private final Stage aStage;
 
-		Notification(String pMessage, String pColorString, Stage pOwnerStage) {
-			aStage = createStage(pMessage, pColorString, pOwnerStage);
+		Notification(String pMessage, String pColorString) {
+			aStage = createStage(pMessage, pColorString);
 		}
 		
-		static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
+		Stage createStage(String pMessage, String pColorString) {
 			Stage stage = new Stage();
 
-			stage.initOwner(pOwnerStage);
+			stage.initOwner(aMainStage);
 			stage.setResizable(false);
 			stage.initStyle(StageStyle.TRANSPARENT);
 
