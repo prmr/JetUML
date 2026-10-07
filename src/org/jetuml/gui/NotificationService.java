@@ -116,11 +116,11 @@ public final class NotificationService {
 		pStage.widthProperty().addListener(stageTransformationListener);
 	}
 
-	/**
+	/*
 	 * Rearranges the notifications so that they are stacked properly and do not
 	 * overlap.
 	 */
-	public void updateNotificationPosition() {
+	private void updateNotificationPosition() {
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
@@ -181,7 +181,7 @@ public final class NotificationService {
 		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 	}
 	
-	final class Notification {
+	private final class Notification {
 		
 		private final Stage aStage;
 
