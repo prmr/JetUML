@@ -92,6 +92,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private MouseDraggedGestureHandler aHandler;
 	private final RenderingContext aRenderingContext;
 	private final AccessoriesRenderer aAccessoriesRenderer;
+	private final NotificationService aNotificationService;
 
 	private enum DragMode {
 		DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO
@@ -113,10 +114,12 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pToolBar The dynamic toolbar associated with this canvas.
 	 * @param pDiagramValidator The validator that checks the diagram's semantic validity.
 	 * @param pHandler A callback for handling mouse dragged gestures.
+	 * @param pHistoryChangeHandler The handler for changes to undo/redo
+	 * @param pNotificationService A notification service.
 	 */
 	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, 
 			DiagramValidator pDiagramValidator, MouseDraggedGestureHandler pHandler,
-			DiagramOperationHistoryChangeHandler pHistoryChangeHandler) {
+			DiagramOperationHistoryChangeHandler pHistoryChangeHandler, NotificationService pNotificationService) {
 		assert pDiagramBuilder != null;
 		assert pToolBar != null;
 		assert pDiagramValidator != null && pDiagramValidator.isValid();
@@ -125,6 +128,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramValidator = pDiagramValidator;
+		aNotificationService = pNotificationService;
 		aProcessor = new DiagramOperationProcessor(pHistoryChangeHandler);
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
 		Dimension dimension = getDiagramCanvasWidth();
@@ -519,7 +523,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		else {
 			aProcessor.undoLastExecutedOperation();
 			handleSelection(pEvent);
-			NotificationServiceImpl.instance().notifyError(violation.get().description());
+			aNotificationService.notifyError(violation.get().description());
 		}
 	}
 
@@ -609,7 +613,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 
 			if (violation.isPresent()) {
 				aProcessor.undoLastExecutedOperation();
-				NotificationServiceImpl.instance().notifyError(violation.get().description());
+				aNotificationService.notifyError(violation.get().description());
 			}
 			else {
 				setSelection(newEdge);

@@ -38,7 +38,7 @@ public class NotificationServiceImplTest {
 		JavaFXLoader.load();
 		Platform.runLater(() -> {
 			aStage = new Stage();
-			NotificationServiceImpl.instance().setMainStage(aStage);
+//			NotificationServiceImpl.instance().setMainStage(aStage);
 			aStage.setX(-10000);
 			aStage.setY(-10000);
 			aStage.setWidth(1000);

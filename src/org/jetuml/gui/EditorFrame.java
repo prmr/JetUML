@@ -89,6 +89,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
+	private NotificationService aNotificationService;
 
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
@@ -99,6 +100,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	public EditorFrame(Stage pMainStage, Stage pDialogStage) {
 		aMainStage = pMainStage;
 		aDialogStage = pDialogStage;
+		aNotificationService = new NotificationServiceImpl(pMainStage);
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
@@ -304,7 +306,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	 * @param pDiagram The diagram loaded from the file.
 	 */
 	public void setOpenFileAsDiagram(File pFile, Diagram pDiagram) {
-		DiagramTab frame = new DiagramTab(pDiagram);
+		DiagramTab frame = new DiagramTab(pDiagram, aNotificationService);
 		frame.setFile(pFile.getAbsoluteFile());
 		addRecentFile(pFile.getPath());
 		insertGraphFrameIntoTabbedPane(frame);
@@ -322,7 +324,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		List<NewDiagramHandler> result = new ArrayList<>();
 		for (DiagramType diagramType : DiagramType.values()) {
 			result.add(new NewDiagramHandler(diagramType, pEvent -> {
-				insertGraphFrameIntoTabbedPane(new DiagramTab(new Diagram(diagramType)));
+				insertGraphFrameIntoTabbedPane(new DiagramTab(new Diagram(diagramType), aNotificationService));
 			}));
 		}
 		return Collections.unmodifiableList(result);
@@ -379,7 +381,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		final ClipboardContent content = new ClipboardContent();
 		content.putImage(image);
 		clipboard.setContent(content);
-		NotificationServiceImpl.instance().notifySuccess(RESOURCES.getString("dialog.to_clipboard.message"));
+		aNotificationService.notifySuccess(RESOURCES.getString("dialog.to_clipboard.message"));
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */
@@ -436,7 +438,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	}
 	
 	private void duplicate() {
-		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate()));
+		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate(), aNotificationService));
 	}
 
 	private void save() {

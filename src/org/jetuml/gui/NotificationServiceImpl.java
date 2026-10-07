@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jetuml.annotations.Singleton;
 import org.jetuml.application.UserPreferences;
 
 import javafx.animation.KeyFrame;
@@ -43,10 +42,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * Singleton object that manages the notification object positions and display
- * states.
+ * Object that manages the notification object positions and display states.
  */
-@Singleton
 public final class NotificationServiceImpl implements NotificationService {
 
 	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
@@ -55,18 +52,16 @@ public final class NotificationServiceImpl implements NotificationService {
 
 	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
 	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
-	
+
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
 	private static final int FADE_IN_DELAY = 500;
 	private static final int FADE_OUT_DELAY = 500;
-	
+
 	private static final int FX_PADDING = 8;
 	private static final int FX_BACKGROUND_RADIUS = 6;
 	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
-
-	private static final NotificationServiceImpl INSTANCE = new NotificationServiceImpl();
 
 	/*
 	 * This attribute sets the parent stage of all notifications. It is set at
@@ -83,37 +78,26 @@ public final class NotificationServiceImpl implements NotificationService {
 	 */
 	private final List<Notification> aDeadNotifications = new ArrayList<>();
 
-	private NotificationServiceImpl() {}
-
 	/**
-	 * @return The NotificationService singleton instance
+	 * Create a new NotificationService implementation.
+	 * 
+	 * @param pMainStage The parent stage for notifications.
 	 */
-	public static NotificationServiceImpl instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Sets the parent stage of all the notification stages. Only used once in
-	 * JetUML.java at initialization. The parent stage should be the application
-	 * stage.
-	 *
-	 * @param pStage The target parent stage of the notification objects
-	 */
-	public void setMainStage(Stage pStage) {
-		assert pStage != null;
-		aMainStage = pStage;
+	public NotificationServiceImpl(Stage pMainStage) {
+		assert pMainStage != null;
+		aMainStage = pMainStage;
 
 		// Window position and size listener for notifications
 		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
 				pNewValue) -> updateNotificationPosition();
 
 		// When the stage is moved, update the notification positions
-		pStage.xProperty().addListener(stageTransformationListener);
-		pStage.yProperty().addListener(stageTransformationListener);
+		aMainStage.xProperty().addListener(stageTransformationListener);
+		aMainStage.yProperty().addListener(stageTransformationListener);
 
 		// When the stage is resized, update the notification positions
-		pStage.heightProperty().addListener(stageTransformationListener);
-		pStage.widthProperty().addListener(stageTransformationListener);
+		aMainStage.heightProperty().addListener(stageTransformationListener);
+		aMainStage.widthProperty().addListener(stageTransformationListener);
 	}
 
 	/*
@@ -168,23 +152,22 @@ public final class NotificationServiceImpl implements NotificationService {
 		assert aMainStage != null;
 		spawnNotification(pText, FX_COLOR_SUCCESS);
 	}
-	
+
 	private static String styleString(String pColorString) {
-		return FX_FORMAT_STRING.formatted(FX_PADDING, 
-				pColorString, FX_BACKGROUND_RADIUS);
+		return FX_FORMAT_STRING.formatted(FX_PADDING, pColorString, FX_BACKGROUND_RADIUS);
 	}
-	
+
 	private static int notificationDurationInMilliseconds() {
 		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.notificationDuration) *
 				MILLISECONDS_PER_SECOND;
 	}
-	
+
 	private static int fontSize() {
 		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 	}
-	
+
 	private final class Notification {
-		
+
 		private final Stage aStage;
 
 		Notification(String pMessage, String pColorString) {
@@ -205,13 +188,13 @@ public final class NotificationServiceImpl implements NotificationService {
 			scene.setFill(Color.TRANSPARENT);
 			aStage.setScene(scene);
 		}
-		
+
 		/**
-		 * Shows the Notification object to the screen by fading it in, showing
-		 * it for a user-defined amount of time, and fading it out.
+		 * Shows the Notification object to the screen by fading it in, showing it for a
+		 * user-defined amount of time, and fading it out.
 		 *
-		 * @param pCleanUpCallback The Runnable to run when the notification should
-		 *     be removed from the notification list
+		 * @param pCleanUpCallback The Runnable to run when the notification should be
+		 *                         removed from the notification list
 		 */
 		public void show() {
 			int duration = notificationDurationInMilliseconds();
@@ -222,7 +205,7 @@ public final class NotificationServiceImpl implements NotificationService {
 
 			aStage.show();
 			aStage.getOwner().requestFocus(); // Keeps the main stage focused (and not the notifications)
-			
+
 			Timeline fadeInTimeline = new Timeline();
 			KeyFrame fadeInKey = new KeyFrame(Duration.millis(FADE_IN_DELAY),
 					new KeyValue(aStage.getScene().getRoot().opacityProperty(), 1));
@@ -262,12 +245,13 @@ public final class NotificationServiceImpl implements NotificationService {
 		void setPosition(double pX, double pY) {
 			// The bottom-left corner is the y position reference point.
 			aStage.setX(pX);
-			aStage.setY(pY - aStage.getHeight()); 
+			aStage.setY(pY - aStage.getHeight());
 		}
 
 		/*
-		 * Returns the height of this notification in pixels. The value can be fractional because
-		 * the size of the notification is a function of the font size, which is user-settable.
+		 * Returns the height of this notification in pixels. The value can be
+		 * fractional because the size of the notification is a function of the font
+		 * size, which is user-settable.
 		 */
 		double height() {
 			return aStage.getHeight();

@@ -64,13 +64,14 @@ public class DiagramTab extends Tab implements KeyEventHandler {
 	 * Constructs a diagram tab initialized with pDiagram.
 	 * 
 	 * @param pDiagram The initial diagram
+	 * @param pNotificationService A notification service.
 	 */
-	public DiagramTab(Diagram pDiagram) {
+	public DiagramTab(Diagram pDiagram, NotificationService pNotificationService) {
 		DiagramValidator validator = DiagramType.newValidatorInstanceFor(pDiagram);
 		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
 		aDiagramCanvas = new DiagramCanvas(builder, sideBar, validator, this::interactionTo,
-				this::historyChanged);
+				this::historyChanged, pNotificationService);
 
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 
