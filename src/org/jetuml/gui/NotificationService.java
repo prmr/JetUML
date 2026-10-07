@@ -186,24 +186,23 @@ public final class NotificationService {
 				MILLISECONDS_PER_SECOND;
 	}
 	
+	private static int fontSize() {
+		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+	}
+	
 	final class Notification {
 		
 		private final Stage aStage;
 
 		Notification(String pMessage, String pColorString) {
-			aStage = createStage(pMessage, pColorString);
-		}
-		
-		Stage createStage(String pMessage, String pColorString) {
-			Stage stage = new Stage();
+			aStage = new Stage();
 
-			stage.initOwner(aMainStage);
-			stage.setResizable(false);
-			stage.initStyle(StageStyle.TRANSPARENT);
+			aStage.initOwner(aMainStage);
+			aStage.setResizable(false);
+			aStage.initStyle(StageStyle.TRANSPARENT);
 
 			Text text = new Text(pMessage);
-			text.setFont(
-					Font.font("System", UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize)));
+			text.setFont(Font.font("System", fontSize()));
 			text.setFill(TEXT_COLOR);
 
 			StackPane pane = new StackPane(text);
@@ -211,9 +210,7 @@ public final class NotificationService {
 
 			Scene scene = new Scene(pane);
 			scene.setFill(Color.TRANSPARENT);
-			stage.setScene(scene);
-
-			return stage;
+			aStage.setScene(scene);
 		}
 		
 		/**
