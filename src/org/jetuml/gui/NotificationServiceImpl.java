@@ -47,7 +47,7 @@ import javafx.util.Duration;
  * states.
  */
 @Singleton
-public final class NotificationService {
+public final class NotificationServiceImpl {
 
 	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
 	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
@@ -66,7 +66,7 @@ public final class NotificationService {
 	private static final int FX_BACKGROUND_RADIUS = 6;
 	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
 
-	private static final NotificationService INSTANCE = new NotificationService();
+	private static final NotificationServiceImpl INSTANCE = new NotificationServiceImpl();
 
 	/*
 	 * This attribute sets the parent stage of all notifications. It is set at
@@ -83,12 +83,12 @@ public final class NotificationService {
 	 */
 	private final List<Notification> aDeadNotifications = new ArrayList<>();
 
-	private NotificationService() {}
+	private NotificationServiceImpl() {}
 
 	/**
 	 * @return The NotificationService singleton instance
 	 */
-	public static NotificationService instance() {
+	public static NotificationServiceImpl instance() {
 		return INSTANCE;
 	}
 

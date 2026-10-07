@@ -379,7 +379,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 		final ClipboardContent content = new ClipboardContent();
 		content.putImage(image);
 		clipboard.setContent(content);
-		NotificationService.instance().notifySuccess(RESOURCES.getString("dialog.to_clipboard.message"));
+		NotificationServiceImpl.instance().notifySuccess(RESOURCES.getString("dialog.to_clipboard.message"));
 	}
 
 	/* @pre there is a selected diagram tab, not just the welcome tab */

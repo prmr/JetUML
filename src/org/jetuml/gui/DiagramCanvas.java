@@ -519,7 +519,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		else {
 			aProcessor.undoLastExecutedOperation();
 			handleSelection(pEvent);
-			NotificationService.instance().notifyError(violation.get().description());
+			NotificationServiceImpl.instance().notifyError(violation.get().description());
 		}
 	}
 
@@ -609,7 +609,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 
 			if (violation.isPresent()) {
 				aProcessor.undoLastExecutedOperation();
-				NotificationService.instance().notifyError(violation.get().description());
+				NotificationServiceImpl.instance().notifyError(violation.get().description());
 			}
 			else {
 				setSelection(newEdge);

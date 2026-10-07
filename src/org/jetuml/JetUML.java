@@ -36,7 +36,7 @@ import org.jetuml.gui.DeserializationErrorAlert;
 import org.jetuml.gui.DialogStage;
 import org.jetuml.gui.EditorFrame;
 import org.jetuml.gui.GuiUtils;
-import org.jetuml.gui.NotificationService;
+import org.jetuml.gui.NotificationServiceImpl;
 import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
@@ -106,7 +106,7 @@ public final class JetUML extends Application {
 		diagramToOpen.ifPresent(diagram -> editor.setOpenFileAsDiagram(fileToOpen.get(), diagram));
 		pStage.setScene(new Scene(editor));
 
-		NotificationService.instance().setMainStage(pStage);
+		NotificationServiceImpl.instance().setMainStage(pStage);
 
 		pStage.getScene().getStylesheets().add(getClass().getResource(CSS_FILE_NAME).toExternalForm());
 		editor.booleanPreferenceChanged(UserPreferences.BooleanPreference.darkMode);

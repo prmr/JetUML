@@ -20,7 +20,49 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
-public class NotificationServiceTest {
+import java.util.concurrent.Semaphore;
+
+import org.jetuml.JavaFXLoader;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import javafx.application.Platform;
+import javafx.stage.Stage;
+
+public class NotificationServiceImplTest {
+	
+	private static Stage aStage;
+	
+	@BeforeAll
+	static void setup() throws InterruptedException {
+		JavaFXLoader.load();
+		Platform.runLater(() -> {
+			aStage = new Stage();
+			NotificationServiceImpl.instance().setMainStage(aStage);
+			aStage.setX(-10000);
+			aStage.setY(-10000);
+			aStage.setWidth(1000);
+			aStage.setHeight(300);
+			aStage.show();
+		});
+		waitForRunLater();
+	}
+	
+	/*
+	 * Allows waiting for the platform instructions to finish executing before continuing
+	 * on. It then prevents having a test running before the JavaFX instructions
+	 * are run. 
+	 */
+	private static void waitForRunLater() throws InterruptedException {
+		Semaphore semaphore = new Semaphore(0);
+		Platform.runLater(semaphore::release);
+		semaphore.acquire();
+	}
+	
+//	@Test
+//	void testNotifyError() {
+//		IO.println(NotificationService.instance().notifications());
+//	}
 //
 //	/* The aNotifications field in NotificationService. */
 //	private static Field aNotifications;
@@ -28,20 +70,9 @@ public class NotificationServiceTest {
 //	/* The aStage field in ToastNotification. */
 //	private static Field aStageField;
 //
-//	/* A working stage used for testing. */
-//	private static Stage aStage;
-//
-//	/*
-//	 * Allows waiting for the platform instructions to be executed before continuing
-//	 * on. It then prevents having a test finishing before the JavaFX instructions
-//	 * are run.
-//	 */
-//	private static void waitForRunLater() throws InterruptedException {
-//		Semaphore semaphore = new Semaphore(0);
-//		Platform.runLater(semaphore::release);
-//		semaphore.acquire();
-//	}
-//
+
+	
+
 //	@BeforeAll
 //	static void setup() throws ReflectiveOperationException, InterruptedException {
 //		aNotifications = NotificationService.class.getDeclaredField("aNotifications");
@@ -58,7 +89,7 @@ public class NotificationServiceTest {
 //		});
 //		waitForRunLater();
 //	}
-//
+
 //	@AfterAll
 //	static void closeStage() throws InterruptedException {
 //		Platform.runLater(aStage::close);
