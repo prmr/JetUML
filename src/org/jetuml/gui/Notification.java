@@ -41,7 +41,7 @@ import javafx.util.Duration;
  * A toast notification object (that pops up and disappears without requiring
  * any user interaction).
  */
-public final class Notification {
+final class Notification {
 	
 	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
@@ -68,7 +68,7 @@ public final class Notification {
 	 * @param pMessage The message to display
 	 * @param pOwnerStage The main window stage
 	 */
-	public static Notification error(String pMessage, Stage pOwnerStage) {
+	static Notification error(String pMessage, Stage pOwnerStage) {
 		return new Notification(pMessage, FX_COLOR_ERROR, pOwnerStage);
 	}
 	
@@ -79,11 +79,11 @@ public final class Notification {
 	 * @param pMessage The message to display
 	 * @param pOwnerStage The main window stage
 	 */
-	public static Notification success(String pMessage, Stage pOwnerStage) {
+	static Notification success(String pMessage, Stage pOwnerStage) {
 		return new Notification(pMessage, FX_COLOR_SUCCESS, pOwnerStage);
 	}
 	
-	private static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
+	static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
 		Stage stage = new Stage();
 
 		stage.initOwner(pOwnerStage);
@@ -170,7 +170,7 @@ public final class Notification {
 	 * Close the stage of the Notification object (to end it prematurely).
 	 * Useful when the notifications go beyond the window.
 	 */
-	public void close() {
+	void close() {
 		aStage.close();
 	}
 
@@ -180,7 +180,7 @@ public final class Notification {
 	 * @param pX The target X position
 	 * @param pY The target Y position
 	 */
-	public void setPosition(double pX, double pY) {
+	void setPosition(double pX, double pY) {
 		// The bottom-left corner is the y position reference point.
 		aStage.setX(pX);
 		aStage.setY(pY - aStage.getHeight()); 
@@ -192,7 +192,7 @@ public final class Notification {
 	 * 
 	 * @return The height of the notification object.
 	 */
-	public double height() {
+	double height() {
 		return aStage.getHeight();
 	}
 }
