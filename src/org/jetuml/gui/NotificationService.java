@@ -40,6 +40,9 @@ public final class NotificationService {
 	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
 	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
 
+	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
+	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
+
 	private static final NotificationService INSTANCE = new NotificationService();
 
 	/*
@@ -137,7 +140,7 @@ public final class NotificationService {
 	 */
 	public void notifyError(String pText) {
 		assert aMainStage != null;
-		spawnNotification(Notification.error(pText, aMainStage));
+		spawnNotification(new Notification(pText, FX_COLOR_ERROR, aMainStage));
 	}
 
 	/**
@@ -147,6 +150,6 @@ public final class NotificationService {
 	 */
 	public void notifySuccess(String pText) {
 		assert aMainStage != null;
-		spawnNotification(Notification.success(pText, aMainStage));
+		spawnNotification(new Notification(pText, FX_COLOR_SUCCESS, aMainStage));
 	}
 }

@@ -51,36 +51,12 @@ final class Notification {
 	
 	private static final int FX_PADDING = 8;
 	private static final int FX_BACKGROUND_RADIUS = 6;
-	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
-	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
 	private static final String FX_FORMAT_STRING = "-fx-padding: %dpx; -fx-background-color: %s; -fx-background-radius: %dpx";
 	
 	private final Stage aStage;
 
-	private Notification(String pMessage, String pColorString, Stage pOwnerStage) {
+	Notification(String pMessage, String pColorString, Stage pOwnerStage) {
 		aStage = createStage(pMessage, pColorString, pOwnerStage);
-	}
-	
-	/**
-	 * Creates a new error notification object using default fade in delay, fade
-	 * out delay and lifespan.
-	 *
-	 * @param pMessage The message to display
-	 * @param pOwnerStage The main window stage
-	 */
-	static Notification error(String pMessage, Stage pOwnerStage) {
-		return new Notification(pMessage, FX_COLOR_ERROR, pOwnerStage);
-	}
-	
-	/**
-	 * Creates a new success notification object using default fade in delay, fade
-	 * out delay and lifespan.
-	 *
-	 * @param pMessage The message to display
-	 * @param pOwnerStage The main window stage
-	 */
-	static Notification success(String pMessage, Stage pOwnerStage) {
-		return new Notification(pMessage, FX_COLOR_SUCCESS, pOwnerStage);
 	}
 	
 	static Stage createStage(String pMessage, String pColorString, Stage pOwnerStage) {
