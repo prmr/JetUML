@@ -20,136 +20,155 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.concurrent.Semaphore;
 
 import org.jetuml.JavaFXLoader;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
+/*
+ * Some of the tests in this class have timeouts because the tests
+ * are only valid while a notification is alive, and notifications
+ * have self timeout. The lightweight strategy is simply to assume
+ * that the tests run more or less instantly, and add a timeout with
+ * a value that is lower than the expected notification death to avoid
+ * falsely failing the test in case of unexpected delays. 
+ */
 public class NotificationServiceImplTest {
-	
-	private static Stage aStage;
-	private static NotificationServiceImpl aNotificationService;
-	
-	@BeforeAll
-	static void setup() throws InterruptedException {
+
+	private static final int NOTIFICATION_DURATION = 5;
+	private static final int STAGE_X = -10000;
+	private static final int STAGE_Y = -10000;
+	private static final int STAGE_WIDTH = 1000;
+	private static final int STAGE_HEIGHT = 300;
+
+	private Stage aStage;
+	private NotificationServiceImpl aNotificationService;
+
+	static {
 		JavaFXLoader.load();
-		Platform.runLater(() -> {
+	}
+
+	NotificationServiceImplTest() throws InterruptedException {
+
+		runInJavaFX(() -> {
 			aStage = new Stage();
-			aStage.setX(-10000);
-			aStage.setY(-10000);
-			aStage.setWidth(1000);
-			aStage.setHeight(300);
-			aNotificationService = new NotificationServiceImpl(aStage, ()-> 5);
+			aStage.setX(STAGE_X);
+			aStage.setY(STAGE_Y);
+			aStage.setWidth(STAGE_WIDTH);
+			aStage.setHeight(STAGE_HEIGHT);
+			aNotificationService = new NotificationServiceImpl(aStage, () -> NOTIFICATION_DURATION);
 			aStage.show();
 		});
-		waitForRunLater();
 	}
-	
+
+	@BeforeEach
+	@Timeout(1)
+	void checkTimeout() {} // Ensures that the tests finish before any notification expires
+
+	@AfterEach
+	void tearDown() throws InterruptedException {
+		runInJavaFX(aStage::close);
+	}
+
 	/*
-	 * Allows waiting for the platform instructions to finish executing before continuing
-	 * on. It then prevents having a test running before the JavaFX instructions
-	 * are run. 
+	 * Runs some instructions in the JavaFX event thread and waits for these
+	 * instructions to finish before returning. It then prevents having a test
+	 * running before the JavaFX instructions are run.
 	 */
-	private static void waitForRunLater() throws InterruptedException {
-		Semaphore semaphore = new Semaphore(0);
-		Platform.runLater(semaphore::release);
-		semaphore.acquire();
+	private static void runInJavaFX(Runnable pRunnable) {
+		try {
+			Platform.runLater(pRunnable);
+			Semaphore semaphore = new Semaphore(0);
+			Platform.runLater(semaphore::release);
+			semaphore.acquire();
+		}
+		catch (InterruptedException exception) {
+			Assertions.fail();
+		}
 	}
-	
+
 	@Test
-	void testNotifyError() throws InterruptedException {
-		Platform.runLater(() -> aNotificationService.notifyError("Error"));
-		waitForRunLater();
-		IO.println(aNotificationService.notifications().size());
+	void testNotifyError_SingleNotification() {
+		runInJavaFX(() -> aNotificationService.notifyError("Error"));
+		assertEquals(1, aNotificationService.notifications().size());
 	}
-//
-//	/* The aNotifications field in NotificationService. */
-//	private static Field aNotifications;
-//
-//	/* The aStage field in ToastNotification. */
-//	private static Field aStageField;
-//
 
-	
+	@Test
+	void testNotifySuccess_SingleNotification() {
+		runInJavaFX(() -> aNotificationService.notifySuccess("Sucess"));
+		assertEquals(1, aNotificationService.notifications().size());
+	}
 
-//	@BeforeAll
-//	static void setup() throws ReflectiveOperationException, InterruptedException {
-//		aNotifications = NotificationService.class.getDeclaredField("aNotifications");
-//		aNotifications.setAccessible(true);
-//		aStageField = Notification.class.getDeclaredField("aStage");
-//		aStageField.setAccessible(true);
-//
-//		// Manually setting the parent stage of the NotificationService
-//		JavaFXLoader.load();
-//		Platform.runLater(() -> {
-//			aStage = new Stage();
-//			NotificationService.instance().setMainStage(aStage);
-//			aStage.show();
-//		});
-//		waitForRunLater();
-//	}
+	/*
+	 * notifyError and notifySuccess have essentially the same logic. The remaining
+	 * tests only need to be executed on one of the two. We choose notifyError
+	 * arbitrarily.
+	 */
 
-//	@AfterAll
-//	static void closeStage() throws InterruptedException {
-//		Platform.runLater(aStage::close);
-//		waitForRunLater();
-//		NotificationService.instance().setMainStage(null);
-//	}
-//
-//	@BeforeEach
-//	void resetListAndProperties() throws ReflectiveOperationException {
-//		ArrayList<Notification> newList = new ArrayList<>();
-//		aNotifications.set(NotificationService.instance(), newList);
-//
-//		aStage.setHeight(695.5);
-//		aStage.setWidth(1125.0);
-//		aStage.setX(220.5);
-//		aStage.setY(220.5);
-//	}
-//
-//	@Test
-//	@Disabled
-//	void testSpawnToast() throws InterruptedException, ReflectiveOperationException {
-//		Platform.runLater(() -> {
-//			NotificationService.instance().notifyError("This is a test error notification.");
-//			NotificationService.instance().notifySuccess("This is a test success notification.");
-//		});
-//
-//		waitForRunLater();
-//
-//		@SuppressWarnings("unchecked")
-//		List<Notification> notificationList = (List<Notification>) aNotifications.get(NotificationService.instance());
-//		assertEquals(4, notificationList.size());
-//	}
-//
-//	/*
-//	 * Notifications should stack, one on top of the other.
-//	 */
-//	@Test
-//	void testNotificationPosition() throws InterruptedException, ReflectiveOperationException {
-//		Platform.runLater(() -> {
-//			NotificationService.instance().notifyError("This is a test error notification 1.");
-//			NotificationService.instance().notifyError("This is a test error notification 2.");
-//			NotificationService.instance().notifyError("This is a test error notification 3.");
-//		});
-//		waitForRunLater();
-//
-//		@SuppressWarnings("unchecked")
-//		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
-//				.get(NotificationService.instance());
-//
-//		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
-//		Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
-//		Stage stage3 = (Stage) aStageField.get(notificationList.get(2));
-//
-//		assertTrue(stage1.getY() < stage2.getY());
-//		assertTrue(stage2.getY() < stage3.getY());
-//	}
-//
+	@Test
+	void testNotify_TwoNotifications() {
+		runInJavaFX(() -> {
+			aNotificationService.notifyError("Error 1");
+			aNotificationService.notifyError("Error 2");
+		});
+		assertEquals(2, aNotificationService.notifications().size());
+	}
+
+	@Test
+	void testPosition_SingleNotificationPosition() {
+		runInJavaFX(() -> aNotificationService.notifyError("Error"));
+		Stage stage = aNotificationService.notifications().get(0).stage();
+
+		// Notifications are left-aligned with a margin from the edge
+		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+
+		// Notifications are bottom-aligned with a margin from the edge
+		double expectedY = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				stage.getHeight();
+
+		assertEquals(expectedX, stage.getX());
+		assertEquals(expectedY, stage.getY());
+	}
+
+	@Test
+	void testPosition_StackedNotificationsPositions() {
+		runInJavaFX(() -> aNotificationService.notifyError("Error 1"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 2"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 3"));
+
+		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+
+		// Third = bottom notification
+		Stage stage1 = aNotificationService.notifications().get(2).stage();
+		double expectedY1 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				stage1.getHeight();
+		assertEquals(expectedX, stage1.getX());
+		assertEquals(expectedY1, stage1.getY());
+
+		// Second = 2nd notification from the bottom
+		Stage stage2 = aNotificationService.notifications().get(1).stage();
+		double expectedY2 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
+		assertEquals(expectedX, stage2.getX());
+		assertEquals(expectedY2, stage2.getY());
+
+		// First = 3rd notification from the bottom
+		Stage stage3 = aNotificationService.notifications().get(0).stage();
+		double expectedY3 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
+		assertEquals(expectedX, stage3.getX());
+		assertEquals(expectedY3, stage3.getY());
+	}
+
 //	/*
 //	 * If the stage is moved, the notifications should move as well.
 //	 */

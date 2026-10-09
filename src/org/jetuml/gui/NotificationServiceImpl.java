@@ -28,6 +28,7 @@ import java.util.TimerTask;
 import java.util.function.IntSupplier;
 
 import org.jetuml.annotations.OnlyForTesting;
+import org.jetuml.annotations.VisibleForTesting;
 import org.jetuml.application.UserPreferences;
 
 import javafx.animation.KeyFrame;
@@ -48,9 +49,14 @@ import javafx.util.Duration;
  */
 public final class NotificationServiceImpl implements NotificationService {
 
-	private static final int NOTIFICATION_DISPLAY_SPACING = 8;
-	private static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
-	private static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
+	@VisibleForTesting
+	static final int NOTIFICATION_DISPLAY_SPACING = 8;
+	
+	@VisibleForTesting
+	static final int NOTIFICATION_DISPLAY_X_MARGIN = 25;
+	
+	@VisibleForTesting
+	static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
 
 	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
 	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
@@ -172,7 +178,8 @@ public final class NotificationServiceImpl implements NotificationService {
 		return UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 	}
 
-	private final class Notification {
+	@VisibleForTesting
+	final class Notification {
 
 		private final Stage aStage;
 
@@ -261,6 +268,20 @@ public final class NotificationServiceImpl implements NotificationService {
 		 */
 		double height() {
 			return aStage.getHeight();
+		}
+		
+		@OnlyForTesting
+		Stage stage() {
+			return aStage;
+		}
+		
+		private String getMessage() {
+			return ((Text) aStage.getScene().getRoot().getChildrenUnmodifiable().get(0)).getText();
+		}
+		
+		public String toString() {
+			return "[Notification \"%s\" at (%.0f, %.0f)]".formatted(getMessage(), aStage.getX(), aStage.getY());
+
 		}
 	}
 }
