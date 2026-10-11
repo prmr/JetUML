@@ -23,7 +23,7 @@ package org.jetuml.gui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CountDownLatch;
 
 import org.jetuml.JavaFXLoader;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -82,19 +83,32 @@ public class ToastNotificationServiceTest {
 
 	/*
 	 * Runs some instructions in the JavaFX event thread and waits for these
-	 * instructions to finish before returning. It then prevents having a test
+	 * instructions to finish and JavaFX's next pulse. It prevents having a test
 	 * running before the JavaFX instructions are run.
 	 */
-	private static void runInJavaFX(Runnable pRunnable) {
-		try {
-			Platform.runLater(pRunnable);
-			Semaphore semaphore = new Semaphore(0);
-			Platform.runLater(semaphore::release);
-			semaphore.acquire();
-		}
-		catch (InterruptedException exception) {
-			Assertions.fail();
-		}
+	private static void runInJavaFX(Runnable runnable)
+	{
+	    CountDownLatch latch = new CountDownLatch(1);
+
+	    Platform.runLater(() -> {
+	        runnable.run();
+
+	        new AnimationTimer() {
+	            @Override
+	            public void handle(long now) {
+	                stop();
+	                latch.countDown();
+	            }
+	        }.start();
+	    });
+
+	    try {
+	        latch.await();
+	    }
+	    catch (InterruptedException e) {
+	        Thread.currentThread().interrupt();
+	        Assertions.fail(e);
+	    }
 	}
 
 	@Test
