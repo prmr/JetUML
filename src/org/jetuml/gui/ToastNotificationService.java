@@ -29,6 +29,7 @@ import org.jetuml.annotations.OnlyForTesting;
 import org.jetuml.annotations.VisibleForTesting;
 import org.jetuml.application.UserPreferences;
 
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
@@ -153,7 +154,13 @@ public final class ToastNotificationService implements NotificationService {
 			// on the display before their position is updated.
 			notification.aStage.setX(X_OFF_DISPLAY);
 			notification.show(durationInSeconds);
-			updateNotificationPositions();
+			new AnimationTimer() {
+			    @Override
+			    public void handle(long pNow) {
+			        stop();
+			        updateNotificationPositions();
+			    }
+			}.start();
 		}
 	}
 
