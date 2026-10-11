@@ -58,6 +58,8 @@ public final class NotificationServiceImpl implements NotificationService {
 	@VisibleForTesting
 	static final int NOTIFICATION_DISPLAY_Y_MARGIN = 25;
 
+	private static final int X_OFF_DISPLAY = -100000;
+
 	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
 	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
 
@@ -147,6 +149,10 @@ public final class NotificationServiceImpl implements NotificationService {
 		int durationInSeconds = aNotificationDurationInSecondsSupplier.getAsInt();
 		if (durationInSeconds > 0) {
 			aNotifications.add(notification);
+			// We set X to an arbitrary location off display to be able to compute
+			// notification heights precisely without the risks of them flashing
+			// on the display before their position is updated.
+			notification.aStage.setX(X_OFF_DISPLAY);
 			notification.show(durationInSeconds);
 			updateNotificationPositions();
 		}
