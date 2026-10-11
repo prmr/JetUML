@@ -239,65 +239,24 @@ public class NotificationServiceImplTest {
 		assertEquals(expectedY3, stage3.getY());
 	}
 	
-//	@Test
-//	void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException {
-//		Platform.runLater(() -> {
-//			NotificationService.instance().notifyError("This is a test error notification.");
-//			NotificationService.instance().notifySuccess("This is a test success notification.");
-//		});
-//		waitForRunLater();
-//
-//		@SuppressWarnings("unchecked")
-//		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
-//				.get(NotificationService.instance());
-//
-//		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
-//
-//		double stage1Y = stage1.getY();
-//
-//		notificationList.remove(1);
-//		NotificationService.instance().updateNotificationPosition();
-//
-//		assertTrue(stage1.getY() > stage1Y);
-//	}
-//
-//	/*
-//	 * If the notifications overshoot the main window, the oldest ones are removed
-//	 * to keep the whole notification stack in the frame.
-//	 */
-//	@Test
-//	@Disabled
-//	void testNotificationDeletionWhenWindowBorderReached() throws InterruptedException, ReflectiveOperationException {
-//		Field notificationSpacingField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_SPACING");
-//		notificationSpacingField.setAccessible(true);
-//		Field notificationYMarginField = NotificationService.class.getDeclaredField("NOTIFICATION_DISPLAY_Y_MARGIN");
-//		notificationYMarginField.setAccessible(true);
-//
-//		int notificationSpacing = (int) notificationSpacingField.get(null);
-//		int yMargin = (int) notificationYMarginField.get(null);
-//
-//		Platform.runLater(() -> {
-//			Notification errorNotification = Notification.error("This is a test error notification.", aStage);
-//			Notification infoNotification = Notification.success("This is a test info notification.", aStage);
-//
-//			NotificationService.instance().notifyError("This is a test error notification.");
-//			NotificationService.instance().notifySuccess("This is a test success notification.");
-//
-//			// Let's compute the necessary height of the main window to fit two
-//			// notifications
-//			double height = yMargin + notificationSpacing * 2 + errorNotification.height()
-//					+ infoNotification.height() + 1;
-//			aStage.setHeight(height);
-//
-//			NotificationService.instance().notifyError("This is a test error notification.");
-//			NotificationService.instance().notifySuccess("This is a test success notification.");
-//		});
-//		waitForRunLater();
-//
-//		@SuppressWarnings("unchecked")
-//		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
-//				.get(NotificationService.instance());
-//
-//		assertEquals(2, notificationList.size());
-//	}
+	/*
+	 * Notifications that overflow the stage height should be deleted.
+	 */
+	@Test
+	void testNotificationsOverflowStageHeight() {
+		
+		runInJavaFX(() -> aNotificationService.notifyError("Error 1"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 2"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 3"));
+		
+		// We artificially set the stage height to only fit two notifications
+		final double newHeight = aNotificationService.notifications().get(0).stage().getHeight() * 2 + 
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN + 
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2; // *2 is for a bit of extra buffer
+		
+		runInJavaFX(() -> aStage.setHeight(newHeight));
+		assertEquals(2, aNotificationService.notifications().size());
+	}
+	
+
 }
