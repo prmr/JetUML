@@ -170,7 +170,7 @@ public class NotificationServiceImplTest {
 	}
 
 	@Test
-	void testMoveStage() {
+	void testStageMoved() {
 		runInJavaFX(() -> aNotificationService.notifyError("Error 1"));
 		runInJavaFX(() -> aNotificationService.notifyError("Error 2"));
 		runInJavaFX(() -> aNotificationService.notifyError("Error 3"));
@@ -206,34 +206,39 @@ public class NotificationServiceImplTest {
 		assertEquals(expectedY3, stage3.getY());
 	}
 	
+	@Test
+	void testStageResized() {
+		runInJavaFX(() -> aNotificationService.notifyError("Error 1"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 2"));
+		runInJavaFX(() -> aNotificationService.notifyError("Error 3"));
+		
+		final int stageHeight = 400;
+		runInJavaFX(() -> aStage.setHeight(stageHeight));
+		
+		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
 
-//	@Test
-//	void testNotificationPositionWhenStageResized() throws InterruptedException, ReflectiveOperationException {
-//		aStage.setHeight(600);
-//		Platform.runLater(() -> {
-//			NotificationService.instance().notifyError("This is a test error notification.");
-//			NotificationService.instance().notifySuccess("This is a test info notification.");
-//		});
-//		waitForRunLater();
-//
-//		@SuppressWarnings("unchecked")
-//		ArrayList<Notification> notificationList = (ArrayList<Notification>) aNotifications
-//				.get(NotificationService.instance());
-//
-//		Stage stage1 = (Stage) aStageField.get(notificationList.get(0));
-//		Stage stage2 = (Stage) aStageField.get(notificationList.get(1));
-//
-//		double stage1Y = stage1.getY();
-//		double stage2Y = stage2.getY();
-//
-//		aStage.setHeight(300);
-//
-//		assertNotEquals(stage1.getY(), stage1Y);
-//		assertNotEquals(stage2.getY(), stage2Y);
-//
-//		assertTrue(stage1.getY() < stage2.getY());
-//	}
-//
+		// Third = bottom notification
+		Stage stage1 = aNotificationService.notifications().get(2).stage();
+		double expectedY1 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				stage1.getHeight();
+		assertEquals(expectedX, stage1.getX());
+		assertEquals(expectedY1, stage1.getY());
+
+		// Second = 2nd notification from the bottom
+		Stage stage2 = aNotificationService.notifications().get(1).stage();
+		double expectedY2 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
+		assertEquals(expectedX, stage2.getX());
+		assertEquals(expectedY2, stage2.getY());
+
+		// First = 3rd notification from the bottom
+		Stage stage3 = aNotificationService.notifications().get(0).stage();
+		double expectedY3 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
+		assertEquals(expectedX, stage3.getX());
+		assertEquals(expectedY3, stage3.getY());
+	}
+	
 //	@Test
 //	void testNotificationPositionWhenRemoval() throws InterruptedException, ReflectiveOperationException {
 //		Platform.runLater(() -> {
