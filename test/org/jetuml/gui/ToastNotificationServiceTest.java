@@ -43,7 +43,7 @@ import javafx.stage.Stage;
  * a value that is lower than the expected notification death to avoid
  * falsely failing the test in case of unexpected delays. 
  */
-public class NotificationServiceImplTest {
+public class ToastNotificationServiceTest {
 
 	private static final int NOTIFICATION_DURATION = 5;
 	private static final int STAGE_X = -10000;
@@ -52,13 +52,13 @@ public class NotificationServiceImplTest {
 	private static final int STAGE_HEIGHT = 300;
 
 	private Stage aStage;
-	private NotificationServiceImpl aNotificationService;
+	private ToastNotificationService aNotificationService;
 
 	static {
 		JavaFXLoader.load();
 	}
 
-	NotificationServiceImplTest() throws InterruptedException {
+	ToastNotificationServiceTest() throws InterruptedException {
 
 		runInJavaFX(() -> {
 			aStage = new Stage();
@@ -66,7 +66,7 @@ public class NotificationServiceImplTest {
 			aStage.setY(STAGE_Y);
 			aStage.setWidth(STAGE_WIDTH);
 			aStage.setHeight(STAGE_HEIGHT);
-			aNotificationService = new NotificationServiceImpl(aStage, () -> NOTIFICATION_DURATION);
+			aNotificationService = new ToastNotificationService(aStage, () -> NOTIFICATION_DURATION);
 			aStage.show();
 		});
 	}
@@ -130,10 +130,10 @@ public class NotificationServiceImplTest {
 		Stage stage = aNotificationService.notifications().get(0).stage();
 
 		// Notifications are left-aligned with a margin from the edge
-		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+		double expectedX = STAGE_X + ToastNotificationService.NOTIFICATION_DISPLAY_X_MARGIN;
 
 		// Notifications are bottom-aligned with a margin from the edge
-		double expectedY = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+		double expectedY = STAGE_Y + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
 				stage.getHeight();
 
 		assertEquals(expectedX, stage.getX());
@@ -146,26 +146,26 @@ public class NotificationServiceImplTest {
 		runInJavaFX(() -> aNotificationService.notifyError("Error 2"));
 		runInJavaFX(() -> aNotificationService.notifyError("Error 3"));
 
-		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+		double expectedX = STAGE_X + ToastNotificationService.NOTIFICATION_DISPLAY_X_MARGIN;
 
 		// Third = bottom notification
 		Stage stage1 = aNotificationService.notifications().get(2).stage();
-		double expectedY1 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+		double expectedY1 = STAGE_Y + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
 				stage1.getHeight();
 		assertEquals(expectedX, stage1.getX());
 		assertEquals(expectedY1, stage1.getY());
 
 		// Second = 2nd notification from the bottom
 		Stage stage2 = aNotificationService.notifications().get(1).stage();
-		double expectedY2 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
+		double expectedY2 = STAGE_Y + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
 		assertEquals(expectedX, stage2.getX());
 		assertEquals(expectedY2, stage2.getY());
 
 		// First = 3rd notification from the bottom
 		Stage stage3 = aNotificationService.notifications().get(0).stage();
-		double expectedY3 = STAGE_Y + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
+		double expectedY3 = STAGE_Y + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
 		assertEquals(expectedX, stage3.getX());
 		assertEquals(expectedY3, stage3.getY());
 	}
@@ -183,26 +183,26 @@ public class NotificationServiceImplTest {
 			aStage.setY(newY);
 		});
 		
-		double expectedX = newX + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+		double expectedX = newX + ToastNotificationService.NOTIFICATION_DISPLAY_X_MARGIN;
 
 		// Third = bottom notification
 		Stage stage1 = aNotificationService.notifications().get(2).stage();
-		double expectedY1 = newY + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+		double expectedY1 = newY + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
 				stage1.getHeight();
 		assertEquals(expectedX, stage1.getX());
 		assertEquals(expectedY1, stage1.getY());
 
 		// Second = 2nd notification from the bottom
 		Stage stage2 = aNotificationService.notifications().get(1).stage();
-		double expectedY2 = newY + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
+		double expectedY2 = newY + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
 		assertEquals(expectedX, stage2.getX());
 		assertEquals(expectedY2, stage2.getY());
 
 		// First = 3rd notification from the bottom
 		Stage stage3 = aNotificationService.notifications().get(0).stage();
-		double expectedY3 = newY + STAGE_HEIGHT - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
+		double expectedY3 = newY + STAGE_HEIGHT - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
 		assertEquals(expectedX, stage3.getX());
 		assertEquals(expectedY3, stage3.getY());
 	}
@@ -216,26 +216,26 @@ public class NotificationServiceImplTest {
 		final int stageHeight = 400;
 		runInJavaFX(() -> aStage.setHeight(stageHeight));
 		
-		double expectedX = STAGE_X + NotificationServiceImpl.NOTIFICATION_DISPLAY_X_MARGIN;
+		double expectedX = STAGE_X + ToastNotificationService.NOTIFICATION_DISPLAY_X_MARGIN;
 
 		// Third = bottom notification
 		Stage stage1 = aNotificationService.notifications().get(2).stage();
-		double expectedY1 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
+		double expectedY1 = STAGE_Y + stageHeight - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
 				stage1.getHeight();
 		assertEquals(expectedX, stage1.getX());
 		assertEquals(expectedY1, stage1.getY());
 
 		// Second = 2nd notification from the bottom
 		Stage stage2 = aNotificationService.notifications().get(1).stage();
-		double expectedY2 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
+		double expectedY2 = STAGE_Y + stageHeight - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING - stage1.getHeight() - stage2.getHeight();
 		assertEquals(expectedX, stage2.getX());
 		assertEquals(expectedY2, stage2.getY());
 
 		// First = 3rd notification from the bottom
 		Stage stage3 = aNotificationService.notifications().get(0).stage();
-		double expectedY3 = STAGE_Y + stageHeight - NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN -
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
+		double expectedY3 = STAGE_Y + stageHeight - ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN -
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING * 2 - stage1.getHeight() - stage2.getHeight() - stage3.getHeight();
 		assertEquals(expectedX, stage3.getX());
 		assertEquals(expectedY3, stage3.getY());
 	}
@@ -252,8 +252,8 @@ public class NotificationServiceImplTest {
 		
 		// We artificially set the stage height to only fit two notifications
 		final double newHeight = aNotificationService.notifications().get(0).stage().getHeight() * 2 + 
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_Y_MARGIN + 
-				NotificationServiceImpl.NOTIFICATION_DISPLAY_SPACING * 2; // *2 is for a bit of extra buffer
+				ToastNotificationService.NOTIFICATION_DISPLAY_Y_MARGIN + 
+				ToastNotificationService.NOTIFICATION_DISPLAY_SPACING * 2; // *2 is for a bit of extra buffer
 		
 		runInJavaFX(() -> aStage.setHeight(newHeight));
 		assertEquals(2, aNotificationService.notifications().size());
@@ -264,7 +264,7 @@ public class NotificationServiceImplTest {
 	 */
 	@Test
 	void testNotificationsDisabled() {
-		NotificationServiceImpl notificationService = new NotificationServiceImpl(aStage, () -> 0);
+		ToastNotificationService notificationService = new ToastNotificationService(aStage, () -> 0);
 		runInJavaFX(() -> notificationService.notifyError("Error 1"));
 		runInJavaFX(() -> notificationService.notifyError("Error 2"));
 		runInJavaFX(() -> notificationService.notifyError("Error 3"));

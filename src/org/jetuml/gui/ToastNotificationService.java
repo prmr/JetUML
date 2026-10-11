@@ -45,9 +45,10 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * Object that manages the notification object positions and display states.
+ * Notification service that shows notifications as "toasts" that
+ * stay visible for a predetermined number of seconds and vanish automatically.
  */
-public final class NotificationServiceImpl implements NotificationService {
+public final class ToastNotificationService implements NotificationService {
 
 	@VisibleForTesting
 	static final int NOTIFICATION_DISPLAY_SPACING = 8;
@@ -96,7 +97,7 @@ public final class NotificationServiceImpl implements NotificationService {
 	 * @param pMainStage The parent stage for notifications.
 	 * @param pDurationSupplier An supplier for the notification duration, in seconds.
 	 */
-	public NotificationServiceImpl(Stage pMainStage, IntSupplier pDurationSupplier) {
+	public ToastNotificationService(Stage pMainStage, IntSupplier pDurationSupplier) {
 		assert pMainStage != null;
 		aMainStage = pMainStage;
 		aNotificationDurationInSecondsSupplier = pDurationSupplier;

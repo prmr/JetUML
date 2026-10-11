@@ -100,7 +100,7 @@ public class EditorFrame extends BorderPane implements BooleanPreferenceChangeHa
 	public EditorFrame(Stage pMainStage, Stage pDialogStage) {
 		aMainStage = pMainStage;
 		aDialogStage = pDialogStage;
-		aNotificationService = new NotificationServiceImpl(pMainStage, EditorFrame::supplyDurationInSeconds);
+		aNotificationService = new ToastNotificationService(pMainStage, EditorFrame::supplyDurationInSeconds);
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
