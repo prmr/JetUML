@@ -21,6 +21,7 @@
 package org.jetuml.gui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.Semaphore;
 
@@ -258,5 +259,15 @@ public class NotificationServiceImplTest {
 		assertEquals(2, aNotificationService.notifications().size());
 	}
 	
-
+	/* 
+	 * A notification duration of zero cancels the notifications altogether.
+	 */
+	@Test
+	void testNotificationsDisabled() {
+		NotificationServiceImpl notificationService = new NotificationServiceImpl(aStage, () -> 0);
+		runInJavaFX(() -> notificationService.notifyError("Error 1"));
+		runInJavaFX(() -> notificationService.notifyError("Error 2"));
+		runInJavaFX(() -> notificationService.notifyError("Error 3"));
+		assertTrue(notificationService.notifications().isEmpty());
+	}
 }

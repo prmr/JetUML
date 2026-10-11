@@ -143,9 +143,13 @@ public final class NotificationServiceImpl implements NotificationService {
 		Notification notification = new Notification(pMessage, pColorString);
 		aDeadNotifications.forEach(Notification::close);
 		aDeadNotifications.clear();
-		aNotifications.add(notification);
-		notification.show();
-		updateNotificationPosition();
+		
+		int durationInSeconds = aNotificationDurationInSecondsSupplier.getAsInt();
+		if (durationInSeconds > 0) {
+			aNotifications.add(notification);
+			notification.show(durationInSeconds);
+			updateNotificationPosition();
+		}
 	}
 
 	/**
@@ -202,19 +206,12 @@ public final class NotificationServiceImpl implements NotificationService {
 			aStage.setScene(scene);
 		}
 
-		/**
+		/*
 		 * Shows the Notification object to the screen by fading it in, showing it for a
 		 * user-defined amount of time, and fading it out.
-		 *
-		 * @param pCleanUpCallback The Runnable to run when the notification should be
-		 *                         removed from the notification list
 		 */
-		public void show() {
-			int duration = aNotificationDurationInSecondsSupplier.getAsInt() * MILLISECONDS_PER_SECOND;
-			// A duration of zero disables notifications
-			if (duration == 0) {
-				return;
-			}
+		void show(int pDurationInSeconds) {
+			assert pDurationInSeconds > 0;
 
 			aStage.show();
 			aStage.getOwner().requestFocus(); // Keeps the main stage focused (and not the notifications)
@@ -245,7 +242,8 @@ public final class NotificationServiceImpl implements NotificationService {
 
 			// When the fadein animation ends, we start a timer that will execute
 			// the fadeout animation
-			fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, duration));
+			fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, 
+					pDurationInSeconds * MILLISECONDS_PER_SECOND));
 
 			// We trigger the fadein animation
 			fadeInTimeline.play();
