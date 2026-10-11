@@ -101,7 +101,7 @@ public final class NotificationServiceImpl implements NotificationService {
 
 		// Window position and size listener for notifications
 		ChangeListener<Number> stageTransformationListener = (pObservableValue, pOldValue,
-				pNewValue) -> updateNotificationPosition();
+				pNewValue) -> updateNotificationPositions();
 
 		// When the stage is moved, update the notification positions
 		aMainStage.xProperty().addListener(stageTransformationListener);
@@ -121,7 +121,7 @@ public final class NotificationServiceImpl implements NotificationService {
 	 * Rearranges the notifications so that they are stacked properly and do not
 	 * overlap.
 	 */
-	private void updateNotificationPosition() {
+	private void updateNotificationPositions() {
 		double y = aMainStage.getY() + aMainStage.getHeight() - NOTIFICATION_DISPLAY_Y_MARGIN;
 		double x = aMainStage.getX() + NOTIFICATION_DISPLAY_X_MARGIN;
 
@@ -148,7 +148,7 @@ public final class NotificationServiceImpl implements NotificationService {
 		if (durationInSeconds > 0) {
 			aNotifications.add(notification);
 			notification.show(durationInSeconds);
-			updateNotificationPosition();
+			updateNotificationPositions();
 		}
 	}
 
@@ -253,8 +253,8 @@ public final class NotificationServiceImpl implements NotificationService {
 			aStage.close();
 		}
 
+		// (x,y) is bottom left exceptionally so the client code doesn't need the height of the internal stage
 		void setPosition(double pX, double pY) {
-			// The bottom-left corner is the y position reference point.
 			aStage.setX(pX);
 			aStage.setY(pY - aStage.getHeight());
 		}
