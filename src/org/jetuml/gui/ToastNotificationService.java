@@ -23,8 +23,6 @@ package org.jetuml.gui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.IntSupplier;
 
 import org.jetuml.annotations.OnlyForTesting;
@@ -33,6 +31,7 @@ import org.jetuml.application.UserPreferences;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
@@ -64,7 +63,6 @@ public final class ToastNotificationService implements NotificationService {
 	private static final String FX_COLOR_ERROR = "rgb(255, 217, 217)";
 	private static final String FX_COLOR_SUCCESS = "rgb(224, 255, 217)";
 
-	private static final int MILLISECONDS_PER_SECOND = 1000;
 	private static final Color TEXT_COLOR = Color.grayRgb(50);
 
 	private static final int FADE_IN_DELAY = 500;
@@ -238,19 +236,12 @@ public final class ToastNotificationService implements NotificationService {
 				aDeadNotifications.add(this);
 			});
 
-			Timer notificationTimer = new Timer();
-			TimerTask lifespan = new TimerTask() {
-
-				@Override
-				public void run() {
-					fadeOutTimeline.play();
-				}
-			};
+			PauseTransition life = new PauseTransition(Duration.seconds(pDurationInSeconds));
+			life.setOnFinished(e -> fadeOutTimeline.play());
 
 			// When the fadein animation ends, we start a timer that will execute
 			// the fadeout animation
-			fadeInTimeline.setOnFinished(actionEvent -> notificationTimer.schedule(lifespan, 
-					pDurationInSeconds * MILLISECONDS_PER_SECOND));
+			fadeInTimeline.setOnFinished(actionEvent -> life.play());
 
 			// We trigger the fadein animation
 			fadeInTimeline.play();
